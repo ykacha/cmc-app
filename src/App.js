@@ -286,6 +286,10 @@ function Dashboard({ setView }) {
   ];
 
   const [randQ, setRandQ] = useState(null);
+  const [pipeOffset, setPipeOffset] = useState(0);
+  const [hoveredStage, setHoveredStage] = useState(null);
+  const PIPE_CARD_W = 120; // card width (110px) + gap (10px)
+  const PIPE_MAX = PIPELINE.length - 6; // max offset so last 6+ cards always reachable
   const random = () => {
     const all = [...allPipelineQ, ...allDomainQ];
     setRandQ(all[Math.floor(Math.random()*all.length)]);
@@ -328,47 +332,123 @@ function Dashboard({ setView }) {
         ))}
       </div>
 
-      {/* Pipeline Flow Overview */}
+      {/* Pipeline Carousel */}
       <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:24, marginBottom:28 }}>
-        <h3 style={{ color:"var(--text-h)", margin:"0 0 20px", fontSize:16, fontWeight:800 }}>🗺️ Biologic Development Pipeline — At a Glance</h3>
-        <div style={{ overflowX:"auto", paddingBottom:8 }}>
-          {/* Row 1: stages 1–8 */}
-          {[
-            [PIPELINE.slice(0,8), "→"],
-            [PIPELINE.slice(8,16).reverse(), "←"],
-          ].map(([stages, dir], rowIdx) => (
-            <div key={rowIdx} style={{ display:"flex", alignItems:"center", gap:0, marginBottom: rowIdx===0 ? 0 : 0 }}>
-              {stages.map((s, i) => (
-                <div key={s.id} style={{ display:"flex", alignItems:"center", flexShrink:0 }}>
-                  <div style={{
-                    background:`${s.accent}18`, border:`1.5px solid ${s.accent}55`,
-                    borderRadius:10, padding:"8px 10px", textAlign:"center", minWidth:72,
-                    cursor:"default", transition:"transform 0.2s"
-                  }}
-                    onMouseEnter={e => e.currentTarget.style.transform="scale(1.1)"}
-                    onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}
-                  >
-                    <div style={{ fontSize:16 }}>{s.icon}</div>
-                    <div style={{ color:`${s.accent}`, fontSize:9, fontWeight:800, marginTop:3, lineHeight:1.2 }}>
-                      {s.stage}. {s.label.length > 9 ? s.label.slice(0,9)+"…" : s.label}
-                    </div>
-                  </div>
-                  {i < stages.length-1 && (
-                    <div style={{ color:"var(--text-faint)", fontSize:16, padding:"0 3px", flexShrink:0 }}>
-                      {dir === "→" ? "›" : "‹"}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {rowIdx === 0 && (
-                <div style={{ color:"var(--text-faint)", fontSize:20, padding:"0 4px", flexShrink:0 }}>↓</div>
-              )}
-            </div>
-          ))}
+        {/* Header row */}
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+          <h3 style={{ color:"var(--text-h)", margin:0, fontSize:16, fontWeight:800 }}>🗺️ Biologic Development Pipeline — At a Glance</h3>
+          <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+            <span style={{ color:"var(--text-faint)", fontSize:11, marginRight:4 }}>
+              {pipeOffset+1}–{Math.min(pipeOffset+8, PIPELINE.length)} of {PIPELINE.length}
+            </span>
+            {[
+              { dir:-3, label:"‹", disabled: pipeOffset===0 },
+              { dir:3,  label:"›", disabled: pipeOffset>=PIPE_MAX },
+            ].map(btn => (
+              <button key={btn.label}
+                onClick={() => !btn.disabled && setPipeOffset(o => Math.max(0, Math.min(PIPE_MAX, o+btn.dir)))}
+                style={{
+                  background: btn.disabled ? "var(--bg-surface)" : "var(--bg-raised)",
+                  border:`1px solid ${btn.disabled ? "var(--border)" : "var(--border-bright)"}`,
+                  borderRadius:8, width:34, height:34, cursor: btn.disabled ? "default" : "pointer",
+                  color: btn.disabled ? "var(--text-faint)" : "var(--text-h)",
+                  fontSize:20, fontWeight:700, display:"flex", alignItems:"center", justifyContent:"center",
+                  transition:"all 0.18s",
+                }}
+                onMouseEnter={e => !btn.disabled && (e.currentTarget.style.background="var(--accent)", e.currentTarget.style.color="#fff")}
+                onMouseLeave={e => !btn.disabled && (e.currentTarget.style.background="var(--bg-raised)", e.currentTarget.style.color="var(--text-h)")}>
+                {btn.label}
+              </button>
+            ))}
+          </div>
         </div>
-        <p style={{ color:"var(--text-muted)", fontSize:12, marginTop:12, margin:"12px 0 0", fontStyle:"italic" }}>
-          Hover to highlight · Click "Pipeline Explorer" for full detail
-        </p>
+
+        {/* Scrolling window */}
+        <div style={{ overflow:"hidden", position:"relative" }}>
+          <div style={{
+            display:"flex", gap:10,
+            transition:"transform 0.48s cubic-bezier(0.22,1,0.36,1)",
+            transform:`translateX(-${pipeOffset * PIPE_CARD_W}px)`,
+            willChange:"transform",
+          }}>
+            {PIPELINE.map(s => {
+              const isHov = hoveredStage === s.id;
+              return (
+                <div key={s.id}
+                  onMouseEnter={() => setHoveredStage(s.id)}
+                  onMouseLeave={() => setHoveredStage(null)}
+                  style={{
+                    flexShrink:0, width:110, borderRadius:12, padding:"12px 8px", textAlign:"center",
+                    background: isHov ? `${s.accent}22` : `${s.accent}0D`,
+                    border:`1.5px solid ${isHov ? s.accent : s.accent+"44"}`,
+                    cursor:"default", userSelect:"none",
+                    transition:"all 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+                    transform: isHov ? "translateY(-6px) scale(1.06)" : "none",
+                    boxShadow: isHov ? `0 10px 28px ${s.accent}30` : "none",
+                  }}>
+                  <div style={{ fontSize:22, marginBottom:5 }}>{s.icon}</div>
+                  <div style={{ color: isHov ? s.accent : s.accent+"CC", fontSize:9, fontWeight:900, lineHeight:1.3, letterSpacing:"0.02em" }}>
+                    {s.stage}. {s.label}
+                  </div>
+                  <div style={{ color:"var(--text-faint)", fontSize:8, marginTop:3, lineHeight:1.3 }}>{s.sub}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dot progress */}
+        <div style={{ display:"flex", justifyContent:"center", gap:5, marginTop:12 }}>
+          {Array.from({ length: Math.ceil(PIPELINE.length / 3) }).map((_, i) => {
+            const active = Math.round(pipeOffset / 3) === i;
+            return (
+              <div key={i} onClick={() => setPipeOffset(Math.min(PIPE_MAX, i*3))}
+                style={{
+                  width: active ? 18 : 6, height:6, borderRadius:3,
+                  background: active ? "var(--accent-glow)" : "var(--border)",
+                  transition:"all 0.3s ease", cursor:"pointer",
+                }}/>
+            );
+          })}
+        </div>
+
+        {/* Hover info panel */}
+        <div style={{
+          marginTop:14, borderTop:"1px solid var(--border)", paddingTop:14,
+          minHeight:84, transition:"opacity 0.2s ease",
+          opacity: hoveredStage ? 1 : 0, pointerEvents:"none",
+        }}>
+          {(() => {
+            const s = hoveredStage ? PIPELINE.find(p => p.id===hoveredStage) : null;
+            if (!s) return <div style={{ height:84 }}/>;
+            return (
+              <div style={{ display:"flex", gap:14, alignItems:"flex-start", animation:"fadeIn 0.15s ease" }}>
+                <span style={{
+                  fontSize:28, background:`${s.accent}22`, borderRadius:10, width:50, height:50,
+                  display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                  border:`1.5px solid ${s.accent}44`,
+                }}>{s.icon}</span>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
+                    <span style={{ color:s.accent, fontWeight:900, fontSize:14 }}>Stage {s.stage}: {s.label}</span>
+                    <span style={{ background:`${s.accent}22`, color:s.accent, borderRadius:8, padding:"2px 8px", fontSize:9, fontWeight:800 }}>
+                      {s.questions?.length || 0} questions
+                    </span>
+                  </div>
+                  <p style={{ color:"var(--text-sec)", fontSize:12, margin:"0 0 8px", lineHeight:1.5 }}>{s.sub}</p>
+                  <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
+                    {s.topics?.slice(0,3).map(t => (
+                      <div key={t.id} style={{ display:"flex", gap:5, alignItems:"flex-start" }}>
+                        <span style={{ color:s.accent, fontSize:10, marginTop:1, flexShrink:0 }}>▸</span>
+                        <span style={{ color:"var(--text-body)", fontSize:12, lineHeight:1.4 }}>{t.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
       </div>
 
       {/* Level breakdown */}
