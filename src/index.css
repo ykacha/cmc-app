@@ -1,13 +1,301 @@
+/* ════════════════════════════════════════════════════════════ */
+/* CMC Master App — Global Styles v2                          */
+/* ════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ─── CSS Variables — Dark ───────────────────────────────── */
+:root, [data-theme="dark"] {
+  --bg-base:       #070C18;
+  --bg-card:       #0F1929;
+  --bg-raised:     #182236;
+  --bg-surface:    #0B1220;
+  --border:        #1C2E48;
+  --border-bright: #253F60;
+  --text-h:        #EEF4FF;
+  --text-body:     #C4D4E8;
+  --text-sec:      #6B88A8;
+  --text-muted:    #3E5878;
+  --text-faint:    #243448;
+  --nav-bg:        #080E1C;
+  --nav-active:    #141F35;
+  --nav-inactive:  transparent;
+  --input-bg:      #0B1220;
+  --select-bg:     #0F1929;
+  --accent:        #6D28D9;
+  --accent-glow:   #7C3AED;
+  --accent-light:  #A78BFA;
+  --shadow-sm:     0 2px 8px rgba(0,0,0,0.5);
+  --shadow:        0 6px 24px rgba(0,0,0,0.6);
+  --shadow-lg:     0 12px 48px rgba(0,0,0,0.75);
+}
+
+/* ─── CSS Variables — Light ──────────────────────────────── */
+[data-theme="light"] {
+  --bg-base:       #F2F6FD;
+  --bg-card:       #FFFFFF;
+  --bg-raised:     #F8FAFF;
+  --bg-surface:    #EBF0FA;
+  --border:        #D2DFF0;
+  --border-bright: #B0C4DD;
+  --text-h:        #0A1628;
+  --text-body:     #223044;
+  --text-sec:      #3E5878;
+  --text-muted:    #6B88A8;
+  --text-faint:    #A0B8CC;
+  --nav-bg:        #FFFFFF;
+  --nav-active:    #EBF0FA;
+  --nav-inactive:  transparent;
+  --input-bg:      #F2F6FD;
+  --select-bg:     #FFFFFF;
+  --accent:        #6D28D9;
+  --accent-glow:   #7C3AED;
+  --accent-light:  #7C3AED;
+  --shadow-sm:     0 2px 8px rgba(0,0,0,0.06);
+  --shadow:        0 6px 24px rgba(0,0,0,0.08);
+  --shadow-lg:     0 12px 48px rgba(0,0,0,0.11);
+}
+
+/* ─── Selective theme transitions (not body *) ───────────── */
+.theme-transition-all {
+  transition: background-color 0.28s ease, border-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+}
+
+/* Apply theme transitions to layout elements only */
+body { transition: background-color 0.28s ease, color 0.28s ease; }
+nav, main, aside, header, footer, section, article { transition: background-color 0.28s ease, border-color 0.28s ease; }
+
+/* ─── Keyframes ──────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  40%       { transform: translateY(-10px) rotate(1deg); }
+  70%       { transform: translateY(-5px) rotate(0deg); }
+}
+@keyframes navSlideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -400% 0; }
+  100% { background-position: 400% 0; }
+}
+@keyframes drawBar {
+  from { width: 0; }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.65; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── View entrance ──────────────────────────────────────── */
+.view-enter {
+  animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+/* ─── Nav ────────────────────────────────────────────────── */
+.main-nav {
+  animation: navSlideDown 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ─── Staggered stat cards ───────────────────────────────── */
+.stat-card {
+  opacity: 0;
+  animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+.stat-card:nth-child(1) { animation-delay: 0.04s; }
+.stat-card:nth-child(2) { animation-delay: 0.10s; }
+.stat-card:nth-child(3) { animation-delay: 0.16s; }
+.stat-card:nth-child(4) { animation-delay: 0.22s; }
+.stat-card:nth-child(5) { animation-delay: 0.28s; }
+.stat-card:nth-child(6) { animation-delay: 0.34s; }
+
+/* ─── Method cards stagger ───────────────────────────────── */
+.method-card {
+  opacity: 0;
+  animation: fadeUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+.method-card:nth-child(1)  { animation-delay: 0.03s; }
+.method-card:nth-child(2)  { animation-delay: 0.07s; }
+.method-card:nth-child(3)  { animation-delay: 0.11s; }
+.method-card:nth-child(4)  { animation-delay: 0.15s; }
+.method-card:nth-child(5)  { animation-delay: 0.19s; }
+.method-card:nth-child(6)  { animation-delay: 0.23s; }
+.method-card:nth-child(7)  { animation-delay: 0.27s; }
+.method-card:nth-child(8)  { animation-delay: 0.31s; }
+.method-card:nth-child(9)  { animation-delay: 0.35s; }
+.method-card:nth-child(10) { animation-delay: 0.38s; }
+
+/* ─── Hover interactions ─────────────────────────────────── */
+.card-hover {
+  will-change: transform, box-shadow;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.22s ease,
+              border-color 0.18s ease !important;
+}
+.card-hover:hover {
+  transform: translateY(-5px) scale(1.005);
+  box-shadow: var(--shadow);
+}
+.card-hover:active {
+  transform: translateY(-1px) scale(0.99);
+  transition-duration: 0.08s !important;
+}
+
+.stage-btn {
+  will-change: transform;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+.stage-btn:hover  { transform: translateY(-4px) scale(1.06); box-shadow: var(--shadow); }
+.stage-btn:active { transform: scale(0.95); transition-duration: 0.08s !important; }
+
+.nav-btn {
+  will-change: transform;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+.nav-btn:hover { transform: translateY(-2px); }
+.nav-btn:active { transform: scale(0.95); }
+
+/* ─── Logo button ────────────────────────────────────────── */
+.logo-btn {
+  transition: opacity 0.15s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+.logo-btn:hover { opacity: 0.85; transform: scale(1.04); }
+.logo-btn:active { transform: scale(0.97); }
+
+/* ─── Float emoji ────────────────────────────────────────── */
+.float-emoji {
+  display: inline-block;
+  animation: float 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ─── Theme toggle ───────────────────────────────────────── */
+.theme-toggle {
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease !important;
+}
+.theme-toggle:hover { transform: rotate(22deg) scale(1.15); }
+.theme-toggle:active { transform: rotate(10deg) scale(0.9); }
+
+/* ─── Panel slide-in ─────────────────────────────────────── */
+.panel-enter { animation: slideInRight 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.scale-in    { animation: scaleIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ─── Details/summary expand ─────────────────────────────── */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details[open] > *:not(summary) { animation: slideDown 0.22s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ─── Rating bar animation ───────────────────────────────── */
+.rating-fill {
+  animation: drawBar 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: width;
+}
+
+/* ─── Progress bar ───────────────────────────────────────── */
+.progress-bar {
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Category filter tabs ───────────────────────────────── */
+.cat-tab {
+  will-change: transform;
+  transition: all 0.18s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+.cat-tab:hover { transform: translateY(-2px); opacity: 0.9; }
+.cat-tab:active { transform: scale(0.95); }
+
+/* ─── Gradient text ──────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #A78BFA 0%, #60A5FA 45%, #34D399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Timeline track ─────────────────────────────────────── */
+.timeline-track {
+  position: relative;
+}
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent-glow), var(--border));
+  border-radius: 2px;
+}
+
+/* ─── CTD tree ───────────────────────────────────────────── */
+.ctd-tree-line {
+  border-left: 2px solid var(--border-bright);
+  margin-left: 16px;
+  padding-left: 16px;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ─── Input focus ────────────────────────────────────────── */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-glow) !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* ─── Method diagram SVG ─────────────────────────────────── */
+.method-diagram { transition: opacity 0.3s ease; }
+.method-diagram:hover { opacity: 0.8; }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hide-mobile { display: none !important; }
+  .stack-mobile { flex-direction: column !important; }
+}
+@media (max-width: 900px) {
+  .method-grid-2col { grid-template-columns: 1fr !important; }
 }
