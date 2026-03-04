@@ -1,4 +1,12 @@
 import { useState, useMemo } from "react";
+import StabilityView from "./views/StabilityView";
+import OOSView from "./views/OOSView";
+import CaseStudiesView from "./views/CaseStudiesView";
+import CompendialView from "./views/CompendialView";
+import ExcipientView from "./views/ExcipientView";
+import PathwayView from "./views/PathwayView";
+import BatchRecordView from "./views/BatchRecordView";
+import ProgressView from "./views/ProgressView";
 import { PIPELINE, DOMAINS, GLOSSARY } from "./cmc-data";
 import { ANALYTICAL_METHODS, CTD_MODULES, CMC_TIMELINE, ICH_GUIDELINES } from "./extra-data";
 import { CAREER_PATHS, INTERVIEW_QUESTIONS, SKILLS_MATRIX } from "./career-data";
@@ -307,6 +315,14 @@ function Dashboard({ setView }) {
     { view:"career",    icon:"🚀", label:"Career & Interviews",     desc:"Career ladder, salaries, 18 expert Q&As",  color:"#60A5FA" },
     { view:"notes",     icon:"📝", label:"My Notes",                desc:"Capture and organize your CMC notes",      color:"#FB923C" },
     { view:"glossary",  icon:"📖", label:"CMC Glossary",            desc:"50 essential terms defined",               color:"#34D399" },
+    { view:"stability", icon:"🧊", label:"Stability Studies",       desc:"ICH Q1A(R2) conditions, zones & T90 calc", color:"#38BDF8" },
+    { view:"oos",       icon:"🚨", label:"OOS/OOT Investigation",   desc:"FDA 2006 interactive decision tree",       color:"#F59E0B" },
+    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation practice",  color:"#34D399" },
+    { view:"cases",     icon:"📰", label:"Case Studies",            desc:"6 landmark CMC failures & lessons",        color:"#F472B6" },
+    { view:"compendial",icon:"📗", label:"Compendial Reference",    desc:"USP/EP/JP/ICH cross-reference guide",      color:"#A78BFA" },
+    { view:"excipient", icon:"⚗️", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",    color:"#60A5FA" },
+    { view:"pathway",   icon:"🎓", label:"Learning Pathways",       desc:"30/60/90-day plans per career level",      color:"#FB923C" },
+    { view:"progress",  icon:"📊", label:"My Progress",             desc:"SM-2 queue, activity & badges",            color:"#C084FC" },
   ];
 
   return (
@@ -1253,6 +1269,24 @@ function DomainsView() {
 // ════════════════════════════════════════════════════════════════
 // EXAM MODE
 // ════════════════════════════════════════════════════════════════
+// SM-2 Algorithm implementation
+function sm2Update(card, quality) {
+  // quality: 0=Again, 1=Hard, 2=Hard+, 3=Good, 4=Easy, 5=Perfect
+  let { n = 0, ef = 2.5, interval = 1 } = card;
+  if (quality >= 3) {
+    if (n === 0) interval = 1;
+    else if (n === 1) interval = 6;
+    else interval = Math.round(interval * ef);
+    n++;
+  } else {
+    n = 0;
+    interval = 1;
+  }
+  ef = Math.max(1.3, ef + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+  const nextDue = new Date(Date.now() + interval * 86400000).toISOString().slice(0, 10);
+  return { n, ef: parseFloat(ef.toFixed(2)), interval, nextDue };
+}
+
 function ExamView() {
   const [source, setSource] = useState("domains");
   const [levelFilter, setLevelFilter] = useState("All");
@@ -1260,6 +1294,29 @@ function ExamView() {
   const [questions, setQuestions] = useState([]);
   const [revealed, setRevealed] = useState({});
   const [started, setStarted] = useState(false);
+  const [srMode, setSrMode] = useState(false);
+  const [quizProgress, setQuizProgress] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("cmc-quiz-progress") || "{}"); } catch { return {}; }
+  });
+  const [srRated, setSrRated] = useState({});
+
+  const saveProgress = (data) => {
+    setQuizProgress(data);
+    try { localStorage.setItem("cmc-quiz-progress", JSON.stringify(data)); } catch { /* ignore */ }
+  };
+
+  const rateSR = (qid, quality) => {
+    const existing = quizProgress[qid] || {};
+    const updated = sm2Update(existing, quality);
+    const history = [...(existing.history || []), { quality, date: new Date().toISOString().slice(0, 10) }];
+    saveProgress({ ...quizProgress, [qid]: { ...updated, history } });
+    setSrRated(r => ({ ...r, [qid]: quality }));
+  };
+
+  const dueToday = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    return Object.entries(quizProgress).filter(([, v]) => v?.nextDue && v.nextDue <= today).length;
+  }, [quizProgress]);
 
   const allQ = useMemo(() => {
     const pool = source==="pipeline"
@@ -1289,8 +1346,26 @@ function ExamView() {
     <div style={{ maxWidth:700, margin:"0 auto", padding:"32px 20px" }}>
       <SectionHeader icon="🎯" title="Exam Mode" subtitle="Answers are hidden — reveal them one at a time as you work through each question" />
 
+      {dueToday > 0 && (
+        <div style={{ background:"#F59E0B18", border:"1px solid #F59E0B44", borderRadius:10, padding:"10px 16px",
+          marginBottom:16, display:"flex", alignItems:"center", gap:10 }}>
+          <span style={{ color:"#F59E0B", fontWeight:800 }}>🧠 {dueToday} SM-2 questions due today</span>
+          <button onClick={() => setSrMode(true)}
+            style={{ background:"#F59E0B", color:"#000", border:"none", borderRadius:6, padding:"4px 12px",
+              cursor:"pointer", fontWeight:700, fontSize:12 }}>Enable Spaced Rep Mode</button>
+        </div>
+      )}
+
       <div style={{ background:"var(--bg-card)", borderRadius:14, border:"1px solid var(--border)", padding:28, marginBottom:24 }}>
-        <h3 style={{ color:"var(--text-h)", margin:"0 0 20px", fontSize:16, fontWeight:800 }}>Configure Your Exam</h3>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+          <h3 style={{ color:"var(--text-h)", margin:0, fontSize:16, fontWeight:800 }}>Configure Your Exam</h3>
+          <button onClick={() => setSrMode(m => !m)}
+            style={{ background: srMode ? "#F59E0B" : "var(--bg-surface)", color: srMode ? "#000" : "var(--text-sec)",
+              border:`1px solid ${srMode ? "#F59E0B" : "var(--border)"}`, borderRadius:8, padding:"6px 14px",
+              cursor:"pointer", fontWeight:700, fontSize:12, transition:"all 0.18s" }}>
+            🧠 Spaced Rep {srMode ? "ON" : "OFF"}
+          </button>
+        </div>
 
         <div style={{ marginBottom:18 }}>
           <label style={{ color:"var(--text-sec)", fontSize:12, fontWeight:700, display:"block", marginBottom:8, letterSpacing:"0.05em" }}>QUESTION SOURCE</label>
@@ -1409,6 +1484,24 @@ function ExamView() {
               <InfoBox color="#22D3EE" label="WHY IT MATTERS" text={q.why} />
               <InfoBox color="#34D399" label="HOW TO FIND THE ANSWER" text={q.how} />
               <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>📎 {q.ref}</p>
+              {srMode && (
+                <div style={{ marginTop:14, padding:"12px", background:"var(--bg-surface)", borderRadius:8 }}>
+                  <div style={{ color:"var(--text-faint)", fontSize:11, fontWeight:700, marginBottom:8 }}>
+                    🧠 HOW WELL DID YOU KNOW THIS? {srRated[q.id] !== undefined && <span style={{ color:"#34D399" }}>✓ Rated</span>}
+                  </div>
+                  <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                    {[{q:0,label:"Again",c:"#F87171"},{q:1,label:"Hard",c:"#F59E0B"},{q:3,label:"Good",c:"#34D399"},{q:5,label:"Easy",c:"#22D3EE"}].map(r => (
+                      <button key={r.q} onClick={() => rateSR(q.id, r.q)}
+                        style={{ background: srRated[q.id]===r.q ? r.c : "transparent",
+                          color: srRated[q.id]===r.q ? "#fff" : r.c,
+                          border:`1px solid ${r.c}`, borderRadius:6, padding:"5px 14px",
+                          cursor:"pointer", fontWeight:700, fontSize:12, transition:"all 0.15s" }}>
+                        {r.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -2570,9 +2663,27 @@ export default function App() {
     { id:"career",    icon:"🚀", label:"Career" },
     { id:"notes",     icon:"📝", label:"Notes" },
     { id:"glossary",  icon:"📖", label:"Glossary" },
+    { id:"stability", icon:"🧊", label:"Stability" },
+    { id:"oos",       icon:"🚨", label:"OOS/OOT" },
+    { id:"batch",     icon:"📋", label:"Batch Sim" },
+    { id:"cases",     icon:"📰", label:"Case Studies" },
+    { id:"compendial",icon:"📗", label:"Compendial" },
+    { id:"excipient", icon:"⚗️", label:"Excipients" },
+    { id:"pathway",   icon:"🎓", label:"Learning Path" },
+    { id:"progress",  icon:"📊", label:"My Progress" },
   ];
 
-  const navigate = (id) => { setView(id); setMobileMenuOpen(false); };
+  const navigate = (id) => {
+    setView(id);
+    setMobileMenuOpen(false);
+    try {
+      const visited = JSON.parse(localStorage.getItem("cmc-visited-views") || "[]");
+      if (!visited.includes(id)) {
+        visited.push(id);
+        localStorage.setItem("cmc-visited-views", JSON.stringify(visited));
+      }
+    } catch (e) { /* ignore */ }
+  };
 
   return (
     <div data-theme={darkMode ? "dark" : "light"}
@@ -2668,6 +2779,14 @@ export default function App() {
         {view==="career"    && <CareerView navigate={navigate} />}
         {view==="notes"     && <NotesView adminMode={adminMode} />}
         {view==="glossary"  && <GlossaryView />}
+        {view==="stability" && <StabilityView />}
+        {view==="oos"       && <OOSView />}
+        {view==="batch"     && <BatchRecordView />}
+        {view==="cases"     && <CaseStudiesView />}
+        {view==="compendial"&& <CompendialView />}
+        {view==="excipient" && <ExcipientView />}
+        {view==="pathway"   && <PathwayView />}
+        {view==="progress"  && <ProgressView />}
       </main>
     </div>
   );
