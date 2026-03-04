@@ -277,12 +277,12 @@ function Dashboard({ setView }) {
   const dcounts = l => allDomainQ.filter(q => q.level===l).length;
 
   const stats = [
-    { label:"Pipeline Stages", value:PIPELINE.length, icon:"🗺️", color:"#C084FC" },
-    { label:"Pipeline Questions", value:allPipelineQ.length, icon:"❓", color:"#38BDF8" },
-    { label:"Domain Questions", value:allDomainQ.length, icon:"📚", color:"#34D399" },
-    { label:"Analytical Methods", value:ANALYTICAL_METHODS.length, icon:"🔬", color:"#22D3EE" },
-    { label:"ICH Guidelines", value:ICH_GUIDELINES.length, icon:"📜", color:"#A78BFA" },
-    { label:"Glossary Terms", value:GLOSSARY.length, icon:"📖", color:"#FB923C" },
+    { label:"Pipeline Stages", value:PIPELINE.length, icon:"🗺️", color:"#C084FC", view:"pipeline" },
+    { label:"Pipeline Questions", value:allPipelineQ.length, icon:"❓", color:"#38BDF8", view:"pipeline" },
+    { label:"Domain Questions", value:allDomainQ.length, icon:"📚", color:"#34D399", view:"domains" },
+    { label:"Analytical Methods", value:ANALYTICAL_METHODS.length, icon:"🔬", color:"#22D3EE", view:"methods" },
+    { label:"ICH Guidelines", value:ICH_GUIDELINES.length, icon:"📜", color:"#A78BFA", view:"ich" },
+    { label:"Glossary Terms", value:GLOSSARY.length, icon:"📖", color:"#FB923C", view:"glossary" },
   ];
 
   const [randQ, setRandQ] = useState(null);
@@ -323,12 +323,17 @@ function Dashboard({ setView }) {
       {/* Stat cards */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:14, marginBottom:36 }}>
         {stats.map(s => (
-          <div key={s.label} className="stat-card card-hover"
-            style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:"20px 14px", textAlign:"center", cursor:"default" }}>
+          <button key={s.label} onClick={() => setView(s.view)} className="stat-card card-hover"
+            style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:"20px 14px",
+              textAlign:"center", cursor:"pointer", borderTop:`3px solid ${s.color}`,
+              transition:"all 0.22s cubic-bezier(0.34,1.56,0.64,1)" }}
+            onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 8px 24px ${s.color}20`; }}
+            onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; }}>
             <div style={{ fontSize:26, marginBottom:6 }}>{s.icon}</div>
             <div style={{ fontSize:30, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
             <div style={{ color:"var(--text-sec)", fontSize:12, marginTop:6, lineHeight:1.4 }}>{s.label}</div>
-          </div>
+            <div style={{ color:s.color, fontSize:9, marginTop:6, fontWeight:800, letterSpacing:"0.06em", opacity:0.7 }}>EXPLORE →</div>
+          </button>
         ))}
       </div>
 
@@ -1180,11 +1185,12 @@ function DomainsView() {
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(165px,1fr))", gap:12, marginBottom:28 }}>
         {DOMAINS.map(d => (
           <button key={d.id} onClick={() => { setActiveDomain(d.id===activeDomain?null:d.id); setLevelFilter("All"); setSearch(""); }}
-            className="card-hover"
+            className="card-hover method-card"
             style={{
               background: d.id===activeDomain ? `${d.accent}22` : "var(--bg-card)",
               border:`1.5px solid ${d.id===activeDomain ? d.accent : "var(--border)"}`,
               borderRadius:12, padding:14, cursor:"pointer", textAlign:"left",
+              borderTop:`2px solid ${d.id===activeDomain ? d.accent : d.accent+"55"}`,
             }}>
             <div style={{ fontSize:24 }}>{d.icon}</div>
             <div style={{ color:"var(--text-h)", fontSize:12, fontWeight:800, marginTop:6, lineHeight:1.4 }}>{d.label}</div>
@@ -1194,6 +1200,14 @@ function DomainsView() {
         ))}
       </div>
 
+      {!domain && (
+        <div style={{ background:"var(--bg-card)", borderRadius:14, border:"1px solid var(--border)" }}>
+          <div className="empty-hint">
+            <span className="eh-icon">📚</span>
+            <p>Select a domain above to browse questions and filter by difficulty level.</p>
+          </div>
+        </div>
+      )}
       {domain && (
         <div style={{ background:"var(--bg-card)", borderRadius:14, border:`1px solid ${domain.accent}44`, padding:26, animation:"scaleIn 0.22s ease" }}>
           <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
@@ -1353,9 +1367,20 @@ function ExamView() {
       </div>
 
       {/* Progress */}
-      <div style={{ background:"var(--bg-card)", borderRadius:4, height:7, marginBottom:26, overflow:"hidden" }}>
-        <div className="progress-bar" style={{ background:`linear-gradient(90deg, var(--accent), #22D3EE)`, borderRadius:4, height:7,
-          width:`${score/questions.length*100}%` }} />
+      <div style={{ marginBottom:22 }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+          <span style={{ color:"var(--text-muted)", fontSize:12, fontWeight:600 }}>
+            Progress: <strong style={{ color:"var(--text-h)" }}>{score}</strong> / {questions.length} revealed
+          </span>
+          <span style={{ background:`${score===questions.length?"#34D39922":"var(--bg-surface)"}`, color:score===questions.length?"#34D399":"var(--accent-light)",
+            borderRadius:8, padding:"3px 10px", fontSize:11, fontWeight:800 }}>
+            {score===questions.length ? "✓ Complete" : `${Math.round(score/questions.length*100)}%`}
+          </span>
+        </div>
+        <div style={{ background:"var(--bg-surface)", borderRadius:4, height:7, overflow:"hidden" }}>
+          <div className="progress-bar" style={{ background:`linear-gradient(90deg, var(--accent), #22D3EE)`, borderRadius:4, height:7,
+            width:`${score/questions.length*100}%` }} />
+        </div>
       </div>
 
       {questions.map((q, i) => (
@@ -1431,11 +1456,23 @@ function ICHView() {
           ))}
         </div>
 
+        {!gl && (
+          <div style={{ background:"var(--bg-card)", borderRadius:14, border:"1px solid var(--border)", position:"sticky", top:80 }}>
+            <div className="empty-hint">
+              <span className="eh-icon">📜</span>
+              <p>Select a guideline on the left to see key requirements and CMC practical context.</p>
+            </div>
+          </div>
+        )}
         {gl && (
-          <div style={{ background:"var(--bg-card)", borderRadius:14, border:`1.5px solid ${gl.color}55`,
-            padding:28, animation:"scaleIn 0.22s ease", position:"sticky", top:80 }}>
-            <div style={{ background:`${gl.color}22`, borderRadius:10, padding:"4px 14px", display:"inline-block", marginBottom:12 }}>
-              <span style={{ color:gl.color, fontWeight:900, fontSize:18, fontFamily:"monospace" }}>{gl.code}</span>
+          <div className="panel-enter" style={{ background:"var(--bg-card)", borderRadius:14, border:`1.5px solid ${gl.color}55`,
+            padding:28, position:"sticky", top:80, maxHeight:"calc(100vh - 100px)", overflowY:"auto" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:12 }}>
+              <div style={{ background:`${gl.color}22`, borderRadius:10, padding:"4px 14px", display:"inline-block" }}>
+                <span style={{ color:gl.color, fontWeight:900, fontSize:18, fontFamily:"monospace" }}>{gl.code}</span>
+              </div>
+              <button onClick={() => setActiveGl(null)}
+                style={{ background:"none", border:"none", color:"var(--text-muted)", cursor:"pointer", fontSize:18, padding:4, lineHeight:1 }}>✕</button>
             </div>
             <h3 style={{ color:"var(--text-h)", margin:"0 0 10px", fontSize:19, fontWeight:900 }}>{gl.topic}</h3>
             <p style={{ color:"var(--text-body)", fontSize:14, lineHeight:1.75, marginBottom:20 }}>{gl.summary}</p>
@@ -1674,7 +1711,7 @@ function CareerView({ navigate }) {
               </thead>
               <tbody>
                 {SKILLS_MATRIX.map((row, i) => (
-                  <tr key={row.skill} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"transparent":"`var(--bg-surface)`" }}>
+                  <tr key={row.skill} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"transparent":"var(--bg-surface)" }}>
                     <td style={{ color:"var(--text-sec)", padding:"5px 8px", fontSize:10, lineHeight:1.3 }}>{row.skill}</td>
                     {CAREER_PATHS.map(p => {
                       const val = row[p.id] || 0;
