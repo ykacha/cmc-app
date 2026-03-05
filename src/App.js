@@ -37,6 +37,10 @@ const METHOD_STEPS = {
   "am-bioburden":     ["Filter sample (≤0.45 µm membrane, aseptic technique)","Transfer membrane to TAMC plate (R2A or TSA)","Incubate 3–5 days at 30–35°C (TAMC)","Transfer second membrane to TYMC plate (SDA)","Incubate 5–7 days at 20–25°C (TYMC)","Count colonies (25–250 CFU per plate rule)","Report CFU/mL or CFU/g vs. specification"],
   "am-cd":            ["Buffer exchange into CD-compatible buffer (no TRIS)","Measure A280 for exact protein concentration","Load into 0.1 mm cuvette (far-UV) or 10 mm (near-UV)","Scan 190–250 nm (far) or 250–320 nm (near), 3 accumulations","Subtract buffer spectrum baseline","Convert to mean residue ellipticity (MRE)","Compare spectrum shape to reference standard"],
   "am-a280":          ["Pipette 2 µL into NanoDrop (or 1 cm cuvette)","Blank with formulation buffer","Measure A280 and A320 (turbidity correction)","Apply: Conc = (A280–A320) / ε × pathlength","Verify result within ±10% of nominal","Dilute if >3.5 AU or use SoloVPE for HiConc","Report mg/mL with units and method reference"],
+  "am-hcp-elisa":     ["Prepare MRD dilution of sample in assay buffer","Set up 8-point HCP standard curve (0.78–100 ng/mL, 2-fold serial)","Add 100 µL standards + samples to anti-HCP coated plate (1h RT)","Wash plate 3× PBST; add HRP-conjugated anti-HCP detection antibody (1h RT)","Wash 5× PBST; add TMB substrate (15 min RT, protected from light)","Stop reaction with 2N H₂SO₄; read OD450–OD620","Interpolate HCP concentration from 4PL curve; convert to ppm vs. protein concentration"],
+  "am-pra-elisa":     ["Dilute DS to appropriate MRD in sample diluent buffer","Prepare Protein A standard curve (0.25–16 ng/mL, 2-fold dilutions)","Coat plate with capture anti-PrA antibody (overnight 4°C); block 1h (2% BSA)","Add 100 µL standards + samples; incubate 1h RT on plate shaker","Wash 5× PBST; add HRP-conjugated detection anti-PrA antibody (1h RT)","Wash 5× PBST; add TMB substrate (20 min); stop with H₂SO₄","Read OD450; fit 4PL; report ng PrA/mg DS (ppm)"],
+  "am-qpcr":          ["Extract and purify DNA from sample (proteinase K + silica column)","Quantify extracted DNA with PicoGreen fluorescence to assess recovery","Prepare CHO genomic DNA standard curve (7 points, 10-fold dilutions: 100 pg–0.001 pg/µL)","Set up triplicate TaqMan reactions: 20 µL volume, 1× master mix, 900 nM primers, 250 nM probe","Include no-template control (NTC) and positive spike control (IPC)","Run qPCR: 95°C 10 min hold → [95°C 15s → 60°C 60s] × 40 cycles","Determine Ct values; validate spike recovery ≥50%; calculate pg DNA/mL in sample"],
+  "am-octet":         ["Load Protein A (or antigen) biosensor tips in buffer (hydrate ≥10 min)","Baseline in assay buffer (60 s); load ligand (60 s, ~0.5–2 nm shift)","Wash in buffer (30 s) to remove non-specifically bound ligand","Dip into analyte dilution series (5–7 concentrations spanning expected KD, 120–300 s)","Transfer to buffer-only wells for dissociation phase (120–600 s)","Regenerate tip with glycine pH 1.5–2.0 (2 × 30 s); baseline again","Globally fit association + dissociation to 1:1 Langmuir model; extract kon, koff, KD"],
 };
 
 // ── Shared Components ─────────────────────────────────────────
@@ -76,24 +80,33 @@ const PhasePill = ({ phase, active }) => (
   }}>{phase}</span>
 );
 
-// ── DNA Logo SVG ───────────────────────────────────────────────
+// ── App Logo SVG ───────────────────────────────────────────────
 const DNALogo = () => (
-  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="30" height="30" rx="8" fill="url(#yk-grad)"/>
+  <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="yk-grad" x1="0" y1="0" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#7C3AED"/>
-        <stop offset="100%" stopColor="#A78BFA"/>
+      <linearGradient id="yk-grad" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#4F46E5"/>
+        <stop offset="100%" stopColor="#7C3AED"/>
+      </linearGradient>
+      <linearGradient id="yk-grad2" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#A78BFA"/>
+        <stop offset="100%" stopColor="#38BDF8"/>
       </linearGradient>
     </defs>
-    {/* Y */}
-    <line x1="6" y1="7" x2="10.5" y2="14" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="15" y1="7" x2="10.5" y2="14" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="10.5" y1="14" x2="10.5" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    {/* K */}
-    <line x1="17" y1="7" x2="17" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="17" y1="14.5" x2="23" y2="7" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="17" y1="14.5" x2="23" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    {/* Background circle */}
+    <circle cx="17" cy="17" r="17" fill="url(#yk-grad)"/>
+    {/* Outer ring arc */}
+    <circle cx="17" cy="17" r="13.5" stroke="url(#yk-grad2)" strokeWidth="1" strokeOpacity="0.4" fill="none"/>
+    {/* Central molecule node */}
+    <circle cx="17" cy="17" r="3.5" fill="white" fillOpacity="0.95"/>
+    {/* Three satellite nodes */}
+    <circle cx="17" cy="7" r="2" fill="white" fillOpacity="0.85"/>
+    <circle cx="26.3" cy="22.5" r="2" fill="white" fillOpacity="0.85"/>
+    <circle cx="7.7" cy="22.5" r="2" fill="white" fillOpacity="0.85"/>
+    {/* Bond lines */}
+    <line x1="17" y1="13.5" x2="17" y2="9" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
+    <line x1="19.8" y1="19.6" x2="24.7" y2="21.3" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
+    <line x1="14.2" y1="19.6" x2="9.3" y2="21.3" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
   </svg>
 );
 
@@ -118,11 +131,7 @@ function Dashboard({ setView }) {
   const allDomainQ = DOMAINS.flatMap(d => d.questions);
 
   const [randQ, setRandQ] = useState(null);
-  const [pipeOffset, setPipeOffset] = useState(0);
   const [hoveredStage, setHoveredStage] = useState(null);
-  const [exploreTab, setExploreTab] = useState("All");
-  const PIPE_CARD_W = 120;
-  const PIPE_MAX = PIPELINE.length - 6;
   const random = () => {
     const all = [...allPipelineQ, ...allDomainQ];
     setRandQ(all[Math.floor(Math.random() * all.length)]);
@@ -135,29 +144,29 @@ function Dashboard({ setView }) {
     { label:"Case Studies",       value: CASE_STUDIES.length,                     icon:"📰", color:"#F472B6", view:"cases" },
   ];
 
-  const allCards = [
-    { view:"pipeline",  icon:"🗺️", label:"Pipeline Explorer",      desc:"16-stage biologic development lifecycle", color:"#C084FC", group:"Learn" },
-    { view:"timeline",  icon:"📅", label:"CMC Timeline",            desc:"Phase-by-phase CMC deliverables",         color:"#F59E0B", group:"Learn" },
-    { view:"domains",   icon:"📚", label:"Domain Q-Bank",           desc:"100 questions across 10 domains",         color:"#38BDF8", group:"Learn" },
-    { view:"ich",       icon:"📜", label:"ICH Guidelines",          desc:"9 core quality guidelines decoded",       color:"#A78BFA", group:"Learn" },
-    { view:"glossary",  icon:"📖", label:"CMC Glossary",            desc:"50 essential terms defined",              color:"#34D399", group:"Learn" },
-    { view:"methods",   icon:"🔬", label:"Analytical Methods",      desc:"20 detailed assay cards with specs",      color:"#22D3EE", group:"Science" },
-    { view:"qbd",       icon:"⚗️", label:"QbD / CQA / CPP",        desc:"Quality by Design — FMEA, design space", color:"#F472B6", group:"Science" },
-    { view:"stability", icon:"🧊", label:"Stability Studies",       desc:"ICH Q1A(R2) conditions, zones & T90",    color:"#38BDF8", group:"Science" },
-    { view:"compendial",icon:"📗", label:"Compendial Reference",    desc:"USP/EP/JP/ICH cross-reference guide",     color:"#A78BFA", group:"Science" },
-    { view:"excipient", icon:"🧫", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",   color:"#60A5FA", group:"Science" },
-    { view:"ctd",       icon:"📂", label:"CTD Navigator",           desc:"Modules 1–5 complete CMC reference",      color:"#34D399", group:"Tools" },
-    { view:"oos",       icon:"🚨", label:"OOS/OOT Investigation",   desc:"FDA 2006 interactive decision tree",      color:"#F59E0B", group:"Tools" },
-    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation scenarios",color:"#34D399", group:"Tools" },
-    { view:"cases",     icon:"📰", label:"Case Studies",            desc:"6 landmark CMC failures & lessons",       color:"#F472B6", group:"Tools" },
-    { view:"exam",      icon:"🎯", label:"Exam Mode",               desc:"SM-2 spaced repetition quizzing",         color:"#F472B6", group:"Practice" },
-    { view:"notes",     icon:"📝", label:"My Notes",                desc:"Capture and organise your CMC notes",     color:"#FB923C", group:"Practice" },
-    { view:"career",    icon:"🚀", label:"Career & Interviews",     desc:"Ladder, salaries & 18 expert Q&As",       color:"#60A5FA", group:"Career" },
-    { view:"pathway",   icon:"🎓", label:"Learning Pathways",       desc:"30/60/90-day plans per career level",     color:"#FB923C", group:"Career" },
-    { view:"progress",  icon:"📊", label:"My Progress",             desc:"SM-2 queue, activity & milestone badges", color:"#C084FC", group:"Career" },
+  const coreCards = [
+    { view:"pipeline",  icon:"🗺️", label:"Pipeline Explorer",      desc:"16-stage biologic development lifecycle", color:"#C084FC" },
+    { view:"methods",   icon:"🔬", label:"Analytical Methods",      desc:"22 detailed assay cards with full specs",  color:"#22D3EE" },
+    { view:"qbd",       icon:"⚗️", label:"QbD / CQA / CPP / COA",  desc:"Quality by Design — FMEA, design space",  color:"#F472B6" },
+    { view:"ctd",       icon:"📂", label:"CTD Navigator",           desc:"Modules 1–5 complete CMC reference",       color:"#34D399" },
+    { view:"timeline",  icon:"📅", label:"CMC Timeline",            desc:"Phase-by-phase CMC deliverables",          color:"#F59E0B" },
+    { view:"domains",   icon:"📚", label:"Domain Q-Bank",           desc:"100 questions across 10 domains",          color:"#38BDF8" },
+    { view:"exam",      icon:"🎯", label:"Exam Mode",               desc:"Test yourself with SM-2 spaced repetition",color:"#F472B6" },
+    { view:"ich",       icon:"📜", label:"ICH Guidelines",          desc:"9 core quality guidelines decoded",        color:"#A78BFA" },
+    { view:"career",    icon:"🚀", label:"Career & Interviews",     desc:"Career ladder, salaries, 18 expert Q&As",  color:"#60A5FA" },
+    { view:"notes",     icon:"📝", label:"My Notes",                desc:"Capture and organize your CMC notes",      color:"#FB923C" },
+    { view:"glossary",  icon:"📖", label:"CMC Glossary",            desc:"50 essential terms defined",               color:"#34D399" },
   ];
-  const tabs = ["All", "Learn", "Science", "Tools", "Practice", "Career"];
-  const visibleCards = exploreTab === "All" ? allCards : allCards.filter(c => c.group === exploreTab);
+  const advancedCards = [
+    { view:"stability", icon:"🧊", label:"Stability Studies",       desc:"ICH Q1A(R2) conditions, zones & T90 calc", color:"#38BDF8" },
+    { view:"oos",       icon:"🚨", label:"OOS/OOT Investigation",   desc:"FDA 2006 interactive decision tree",       color:"#F59E0B" },
+    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation scenarios", color:"#34D399" },
+    { view:"cases",     icon:"📰", label:"Case Studies",            desc:"6 landmark CMC failures & lessons",        color:"#F472B6" },
+    { view:"compendial",icon:"📗", label:"Compendial Reference",    desc:"USP/EP/JP/ICH cross-reference guide",      color:"#A78BFA" },
+    { view:"excipient", icon:"🧫", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",    color:"#60A5FA" },
+    { view:"pathway",   icon:"🎓", label:"Learning Pathways",       desc:"30/60/90-day plans per career level",      color:"#FB923C" },
+    { view:"progress",  icon:"📊", label:"My Progress",             desc:"SM-2 queue, activity & badges",            color:"#C084FC" },
+  ];
 
   return (
     <div style={{ maxWidth: 1020, margin: "0 auto", padding: "32px 20px" }}>
@@ -223,159 +232,129 @@ function Dashboard({ setView }) {
         ))}
       </div>
 
-      {/* Pipeline Carousel */}
+      {/* ── Pipeline — Stage Strip ── */}
       <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:24, marginBottom:28 }}>
-        {/* Header row */}
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
-          <h3 style={{ color:"var(--text-h)", margin:0, fontSize:16, fontWeight:800 }}>🗺️ Biologic Development Pipeline — At a Glance</h3>
-          <div style={{ display:"flex", gap:6, alignItems:"center" }}>
-            <span style={{ color:"var(--text-faint)", fontSize:11, marginRight:4 }}>
-              {pipeOffset+1}–{Math.min(pipeOffset+8, PIPELINE.length)} of {PIPELINE.length}
-            </span>
-            {[
-              { dir:-3, label:"‹", disabled: pipeOffset===0 },
-              { dir:3,  label:"›", disabled: pipeOffset>=PIPE_MAX },
-            ].map(btn => (
-              <button key={btn.label}
-                onClick={() => !btn.disabled && setPipeOffset(o => Math.max(0, Math.min(PIPE_MAX, o+btn.dir)))}
-                style={{
-                  background: btn.disabled ? "var(--bg-surface)" : "var(--bg-raised)",
-                  border:`1px solid ${btn.disabled ? "var(--border)" : "var(--border-bright)"}`,
-                  borderRadius:8, width:34, height:34, cursor: btn.disabled ? "default" : "pointer",
-                  color: btn.disabled ? "var(--text-faint)" : "var(--text-h)",
-                  fontSize:20, fontWeight:700, display:"flex", alignItems:"center", justifyContent:"center",
-                  transition:"all 0.18s",
-                }}
-                onMouseEnter={e => !btn.disabled && (e.currentTarget.style.background="var(--accent)", e.currentTarget.style.color="#fff")}
-                onMouseLeave={e => !btn.disabled && (e.currentTarget.style.background="var(--bg-raised)", e.currentTarget.style.color="var(--text-h)")}>
-                {btn.label}
-              </button>
-            ))}
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
+          <div>
+            <h3 style={{ color:"var(--text-h)", margin:"0 0 2px", fontSize:16, fontWeight:800 }}>🗺️ Biologic Development Pipeline</h3>
+            <p style={{ color:"var(--text-muted)", margin:0, fontSize:11 }}>Hover any stage for details · {PIPELINE.length} stages from discovery to commercial</p>
           </div>
+          <button onClick={() => setView("pipeline")}
+            style={{ background:"var(--accent)", color:"#fff", border:"none", borderRadius:8,
+              padding:"7px 16px", cursor:"pointer", fontWeight:700, fontSize:12 }}>
+            Explore All →
+          </button>
         </div>
 
-        {/* Scrolling window */}
-        <div style={{ overflow:"hidden", position:"relative" }}>
-          <div style={{
-            display:"flex", gap:10,
-            transition:"transform 0.48s cubic-bezier(0.22,1,0.36,1)",
-            transform:`translateX(-${pipeOffset * PIPE_CARD_W}px)`,
-            willChange:"transform",
-          }}>
-            {PIPELINE.map(s => {
-              const isHov = hoveredStage === s.id;
-              return (
-                <div key={s.id}
-                  onMouseEnter={() => setHoveredStage(s.id)}
-                  onMouseLeave={() => setHoveredStage(null)}
-                  style={{
-                    flexShrink:0, width:110, borderRadius:12, padding:"12px 8px", textAlign:"center",
-                    background: isHov ? `${s.accent}22` : `${s.accent}0D`,
-                    border:`1.5px solid ${isHov ? s.accent : s.accent+"44"}`,
-                    cursor:"default", userSelect:"none",
-                    transition:"all 0.25s cubic-bezier(0.34,1.56,0.64,1)",
-                    transform: isHov ? "translateY(-6px) scale(1.06)" : "none",
-                    boxShadow: isHov ? `0 10px 28px ${s.accent}30` : "none",
-                  }}>
-                  <div style={{ fontSize:22, marginBottom:5 }}>{s.icon}</div>
-                  <div style={{ color: isHov ? s.accent : s.accent+"CC", fontSize:9, fontWeight:900, lineHeight:1.3, letterSpacing:"0.02em" }}>
-                    {s.stage}. {s.label}
-                  </div>
-                  <div style={{ color:"var(--text-faint)", fontSize:8, marginTop:3, lineHeight:1.3 }}>{s.sub}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Dot progress */}
-        <div style={{ display:"flex", justifyContent:"center", gap:5, marginTop:12 }}>
-          {Array.from({ length: Math.ceil(PIPELINE.length / 3) }).map((_, i) => {
-            const active = Math.round(pipeOffset / 3) === i;
+        {/* All-stages pill strip */}
+        <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom: hoveredStage ? 16 : 0 }}>
+          {PIPELINE.map(s => {
+            const isHov = hoveredStage === s.id;
             return (
-              <div key={i} onClick={() => setPipeOffset(Math.min(PIPE_MAX, i*3))}
+              <div key={s.id}
+                onMouseEnter={() => setHoveredStage(s.id)}
+                onMouseLeave={() => setHoveredStage(null)}
                 style={{
-                  width: active ? 18 : 6, height:6, borderRadius:3,
-                  background: active ? "var(--accent-glow)" : "var(--border)",
-                  transition:"all 0.3s ease", cursor:"pointer",
-                }}/>
+                  display:"flex", alignItems:"center", gap:7, padding:"8px 14px", borderRadius:24,
+                  background: isHov ? `${s.accent}25` : "var(--bg-surface)",
+                  border:`1.5px solid ${isHov ? s.accent : "var(--border)"}`,
+                  cursor:"default", userSelect:"none",
+                  transition:"all 0.22s cubic-bezier(0.34,1.56,0.64,1)",
+                  transform: isHov ? "translateY(-3px)" : "none",
+                  boxShadow: isHov ? `0 6px 20px ${s.accent}30` : "none",
+                }}>
+                <span style={{
+                  width:20, height:20, borderRadius:"50%",
+                  background: isHov ? s.accent : "var(--bg-raised)",
+                  border:`1.5px solid ${isHov ? s.accent : "var(--border)"}`,
+                  color: isHov ? "#fff" : "var(--text-faint)",
+                  fontSize:9, fontWeight:900, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                  transition:"all 0.2s",
+                }}>{s.stage}</span>
+                <span style={{ fontSize:14 }}>{s.icon}</span>
+                <span style={{
+                  color: isHov ? s.accent : "var(--text-sec)",
+                  fontSize:12, fontWeight: isHov ? 700 : 500,
+                  transition:"color 0.2s",
+                }}>{s.label}</span>
+              </div>
             );
           })}
         </div>
 
-        {/* Hover info panel */}
-        <div style={{
-          marginTop:14, borderTop:"1px solid var(--border)", paddingTop:14,
-          minHeight:84, transition:"opacity 0.2s ease",
-          opacity: hoveredStage ? 1 : 0, pointerEvents:"none",
-        }}>
-          {(() => {
-            const s = hoveredStage ? PIPELINE.find(p => p.id===hoveredStage) : null;
-            if (!s) return <div style={{ height:84 }}/>;
-            return (
-              <div style={{ display:"flex", gap:14, alignItems:"flex-start", animation:"fadeIn 0.15s ease" }}>
-                <span style={{
-                  fontSize:28, background:`${s.accent}22`, borderRadius:10, width:50, height:50,
-                  display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
-                  border:`1.5px solid ${s.accent}44`,
-                }}>{s.icon}</span>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
-                    <span style={{ color:s.accent, fontWeight:900, fontSize:14 }}>Stage {s.stage}: {s.label}</span>
-                    <span style={{ background:`${s.accent}22`, color:s.accent, borderRadius:8, padding:"2px 8px", fontSize:9, fontWeight:800 }}>
-                      {s.questions?.length || 0} questions
-                    </span>
-                  </div>
-                  <p style={{ color:"var(--text-sec)", fontSize:12, margin:"0 0 8px", lineHeight:1.5 }}>{s.sub}</p>
-                  <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
-                    {s.topics?.slice(0,3).map(t => (
-                      <div key={t.id} style={{ display:"flex", gap:5, alignItems:"flex-start" }}>
-                        <span style={{ color:s.accent, fontSize:10, marginTop:1, flexShrink:0 }}>▸</span>
-                        <span style={{ color:"var(--text-body)", fontSize:12, lineHeight:1.4 }}>{t.title}</span>
-                      </div>
-                    ))}
-                  </div>
+        {/* Hover detail panel */}
+        {hoveredStage && (() => {
+          const s = PIPELINE.find(p => p.id === hoveredStage);
+          if (!s) return null;
+          return (
+            <div style={{
+              borderTop:"1px solid var(--border)", paddingTop:16,
+              display:"flex", gap:14, alignItems:"flex-start", animation:"fadeUp 0.18s ease",
+            }}>
+              <span style={{
+                fontSize:32, background:`${s.accent}20`, borderRadius:12, width:56, height:56,
+                display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                border:`2px solid ${s.accent}44`,
+              }}>{s.icon}</span>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
+                  <span style={{ color:s.accent, fontWeight:900, fontSize:15 }}>Stage {s.stage}: {s.label}</span>
+                  <span style={{ background:`${s.accent}20`, color:s.accent, borderRadius:8, padding:"2px 8px", fontSize:10, fontWeight:800 }}>
+                    {s.questions?.length || 0} exam questions
+                  </span>
+                </div>
+                <p style={{ color:"var(--text-sec)", fontSize:13, margin:"0 0 10px", lineHeight:1.5 }}>{s.sub}</p>
+                <div style={{ display:"flex", gap:20, flexWrap:"wrap" }}>
+                  {s.topics?.slice(0,4).map(t => (
+                    <div key={t.id} style={{ display:"flex", gap:5, alignItems:"flex-start" }}>
+                      <span style={{ color:s.accent, fontSize:11, marginTop:2, flexShrink:0 }}>▸</span>
+                      <span style={{ color:"var(--text-body)", fontSize:13, lineHeight:1.4 }}>{t.title}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            );
-          })()}
-        </div>
+            </div>
+          );
+        })()}
       </div>
 
-      {/* ── Explore All Sections ── */}
+      {/* ── Core Curriculum ── */}
       <div style={{ marginBottom:28 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>EXPLORE</span>
+          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>CORE CURRICULUM</span>
           <div style={{ flex:1, height:1, background:"var(--border)" }}/>
-          <span style={{ color:"var(--text-faint)", fontSize:11 }}>{visibleCards.length} sections</span>
         </div>
-        {/* Tab bar */}
-        <div style={{ display:"flex", gap:6, marginBottom:16, flexWrap:"wrap" }}>
-          {tabs.map(tab => (
-            <button key={tab} onClick={() => setExploreTab(tab)}
-              style={{
-                background: exploreTab === tab ? "var(--accent)" : "var(--bg-raised)",
-                color: exploreTab === tab ? "#fff" : "var(--text-sec)",
-                border: `1px solid ${exploreTab === tab ? "var(--accent)" : "var(--border)"}`,
-                borderRadius: 20, padding: "5px 16px", cursor: "pointer",
-                fontWeight: exploreTab === tab ? 700 : 500, fontSize: 12, transition: "all 0.18s",
-              }}>
-              {tab}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))", gap:12 }}>
+          {coreCards.map(n => (
+            <button key={n.view} onClick={() => setView(n.view)}
+              style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:18,
+                cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}`, transition:"all 0.18s" }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 6px 24px ${n.color}20`; e.currentTarget.style.transform="translateY(-2px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; e.currentTarget.style.transform="none"; }}>
+              <div style={{ fontSize:24, marginBottom:8 }}>{n.icon}</div>
+              <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:13, marginBottom:4 }}>{n.label}</div>
+              <div style={{ color:"var(--text-muted)", fontSize:11, lineHeight:1.5 }}>{n.desc}</div>
             </button>
           ))}
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:12 }}>
-          {visibleCards.map(n => (
+      </div>
+
+      {/* ── Advanced Tools ── */}
+      <div style={{ marginBottom:28 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>ADVANCED TOOLS</span>
+          <div style={{ flex:1, height:1, background:"var(--border)" }}/>
+          <span style={{ background:"#A78BFA22", color:"#A78BFA", borderRadius:20, padding:"2px 10px",
+            fontSize:10, fontWeight:800, border:"1px solid #A78BFA44" }}>PRO</span>
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))", gap:12 }}>
+          {advancedCards.map(n => (
             <button key={n.view} onClick={() => setView(n.view)}
-              style={{ background:"var(--bg-card)", border:`1px solid var(--border)`, borderRadius:14, padding:18,
+              style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:18,
                 cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}`, transition:"all 0.18s" }}
-              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 4px 20px ${n.color}20`; e.currentTarget.style.transform="translateY(-2px)"; }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 6px 24px ${n.color}20`; e.currentTarget.style.transform="translateY(-2px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; e.currentTarget.style.transform="none"; }}>
-              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:8 }}>
-                <span style={{ fontSize:24 }}>{n.icon}</span>
-                <span style={{ background:`${n.color}18`, color:n.color, borderRadius:6, padding:"2px 7px",
-                  fontSize:9, fontWeight:800, border:`1px solid ${n.color}33` }}>{n.group}</span>
-              </div>
+              <div style={{ fontSize:24, marginBottom:8 }}>{n.icon}</div>
               <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:13, marginBottom:4 }}>{n.label}</div>
               <div style={{ color:"var(--text-muted)", fontSize:11, lineHeight:1.5 }}>{n.desc}</div>
             </button>
