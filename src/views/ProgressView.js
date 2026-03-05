@@ -103,7 +103,7 @@ export default function ProgressView() {
         <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)", padding: 20 }}>
           <h3 style={{ margin: "0 0 16px", color: "var(--text-h)", fontWeight: 800, fontSize: 15 }}>🧠 Spaced Repetition Queue</h3>
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-            <div style={{ background: "#F47228220", border: "1px solid #F4722844", borderRadius: 8, padding: "10px 14px", flex: 1, textAlign: "center" }}>
+            <div style={{ background: "#F4722822", border: "1px solid #F4722844", borderRadius: 8, padding: "10px 14px", flex: 1, textAlign: "center" }}>
               <div style={{ color: "#F47228", fontWeight: 900, fontSize: 22 }}>{dueToday.length}</div>
               <div style={{ color: "var(--text-muted)", fontSize: 11 }}>Due Today</div>
             </div>

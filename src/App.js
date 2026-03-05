@@ -11,6 +11,10 @@ import { PIPELINE, DOMAINS, GLOSSARY } from "./cmc-data";
 import { ANALYTICAL_METHODS, CTD_MODULES, CMC_TIMELINE, ICH_GUIDELINES } from "./extra-data";
 import { CAREER_PATHS, INTERVIEW_QUESTIONS, SKILLS_MATRIX } from "./career-data";
 import { QTPP, CQA_LIST, CPP_LIST, FMEA_TABLE, DOE_STUDIES, DESIGN_SPACE, CONTROL_STRATEGY, COA_ELEMENTS } from "./qbd-data";
+import { CASE_STUDIES } from "./case-study-data";
+import { COMPENDIAL_METHODS } from "./compendial-data";
+import { EXCIPIENTS } from "./excipient-data";
+import { STABILITY_CONDITIONS } from "./stability-data";
 
 // ── Level colors ──────────────────────────────────────────────
 const LC = { Foundational:"#22D3EE", Intermediate:"#34D399", Advanced:"#F59E0B", Expert:"#F472B6" };
@@ -285,12 +289,14 @@ function Dashboard({ setView }) {
   const dcounts = l => allDomainQ.filter(q => q.level===l).length;
 
   const stats = [
-    { label:"Pipeline Stages", value:PIPELINE.length, icon:"🗺️", color:"#C084FC", view:"pipeline" },
-    { label:"Pipeline Questions", value:allPipelineQ.length, icon:"❓", color:"#38BDF8", view:"pipeline" },
-    { label:"Domain Questions", value:allDomainQ.length, icon:"📚", color:"#34D399", view:"domains" },
-    { label:"Analytical Methods", value:ANALYTICAL_METHODS.length, icon:"🔬", color:"#22D3EE", view:"methods" },
-    { label:"ICH Guidelines", value:ICH_GUIDELINES.length, icon:"📜", color:"#A78BFA", view:"ich" },
-    { label:"Glossary Terms", value:GLOSSARY.length, icon:"📖", color:"#FB923C", view:"glossary" },
+    { label:"Pipeline Stages",     value:PIPELINE.length,            icon:"🗺️", color:"#C084FC", view:"pipeline"  },
+    { label:"Exam Questions",      value:allPipelineQ.length + allDomainQ.length, icon:"🎯", color:"#38BDF8", view:"exam" },
+    { label:"Analytical Methods",  value:ANALYTICAL_METHODS.length,  icon:"🔬", color:"#22D3EE", view:"methods"   },
+    { label:"ICH Guidelines",      value:ICH_GUIDELINES.length,      icon:"📜", color:"#A78BFA", view:"ich"       },
+    { label:"Compendial Methods",  value:COMPENDIAL_METHODS.length,  icon:"📗", color:"#34D399", view:"compendial"},
+    { label:"Case Studies",        value:CASE_STUDIES.length,        icon:"📰", color:"#F472B6", view:"cases"     },
+    { label:"Excipients",          value:EXCIPIENTS.length,          icon:"⚗️", color:"#60A5FA", view:"excipient" },
+    { label:"Stability Conditions",value:STABILITY_CONDITIONS.length, icon:"🧊", color:"#F59E0B", view:"stability" },
   ];
 
   const [randQ, setRandQ] = useState(null);
@@ -303,24 +309,26 @@ function Dashboard({ setView }) {
     setRandQ(all[Math.floor(Math.random()*all.length)]);
   };
 
-  const navCards = [
+  const coreCards = [
     { view:"pipeline",  icon:"🗺️", label:"Pipeline Explorer",      desc:"16-stage biologic development lifecycle", color:"#C084FC" },
     { view:"methods",   icon:"🔬", label:"Analytical Methods",      desc:"20 detailed assay cards with specs",       color:"#22D3EE" },
     { view:"qbd",       icon:"⚗️", label:"QbD / CQA / CPP / COA",  desc:"Quality by Design — FMEA, design space",  color:"#F472B6" },
     { view:"ctd",       icon:"📂", label:"CTD Navigator",           desc:"Modules 1–5 complete CMC reference",       color:"#34D399" },
     { view:"timeline",  icon:"📅", label:"CMC Timeline",            desc:"Phase-by-phase CMC deliverables",          color:"#F59E0B" },
     { view:"domains",   icon:"📚", label:"Domain Q-Bank",           desc:"100 questions across 10 domains",          color:"#38BDF8" },
-    { view:"exam",      icon:"🎯", label:"Exam Mode",               desc:"Test yourself — answers hidden",           color:"#F472B6" },
+    { view:"exam",      icon:"🎯", label:"Exam Mode",               desc:"Test yourself with SM-2 spaced repetition",color:"#F472B6" },
     { view:"ich",       icon:"📜", label:"ICH Guidelines",          desc:"9 core quality guidelines decoded",        color:"#A78BFA" },
     { view:"career",    icon:"🚀", label:"Career & Interviews",     desc:"Career ladder, salaries, 18 expert Q&As",  color:"#60A5FA" },
     { view:"notes",     icon:"📝", label:"My Notes",                desc:"Capture and organize your CMC notes",      color:"#FB923C" },
     { view:"glossary",  icon:"📖", label:"CMC Glossary",            desc:"50 essential terms defined",               color:"#34D399" },
+  ];
+  const advancedCards = [
     { view:"stability", icon:"🧊", label:"Stability Studies",       desc:"ICH Q1A(R2) conditions, zones & T90 calc", color:"#38BDF8" },
     { view:"oos",       icon:"🚨", label:"OOS/OOT Investigation",   desc:"FDA 2006 interactive decision tree",       color:"#F59E0B" },
-    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation practice",  color:"#34D399" },
+    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation scenarios", color:"#34D399" },
     { view:"cases",     icon:"📰", label:"Case Studies",            desc:"6 landmark CMC failures & lessons",        color:"#F472B6" },
     { view:"compendial",icon:"📗", label:"Compendial Reference",    desc:"USP/EP/JP/ICH cross-reference guide",      color:"#A78BFA" },
-    { view:"excipient", icon:"⚗️", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",    color:"#60A5FA" },
+    { view:"excipient", icon:"🧫", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",    color:"#60A5FA" },
     { view:"pathway",   icon:"🎓", label:"Learning Pathways",       desc:"30/60/90-day plans per career level",      color:"#FB923C" },
     { view:"progress",  icon:"📊", label:"My Progress",             desc:"SM-2 queue, activity & badges",            color:"#C084FC" },
   ];
@@ -489,20 +497,49 @@ function Dashboard({ setView }) {
         </div>
       </div>
 
-      {/* Navigation cards */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))", gap:14, marginBottom:28 }}>
-        {navCards.map(n => (
-          <button key={n.view} onClick={() => setView(n.view)} className="card-hover"
-            style={{ background:"var(--bg-card)", border:`1px solid var(--border)`, borderRadius:14, padding:20,
-              cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}` }}
-            onMouseEnter={e => e.currentTarget.style.background="var(--bg-raised)"}
-            onMouseLeave={e => e.currentTarget.style.background="var(--bg-card)"}
-          >
-            <div style={{ fontSize:26, marginBottom:10 }}>{n.icon}</div>
-            <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:14, marginBottom:5 }}>{n.label}</div>
-            <div style={{ color:"var(--text-muted)", fontSize:12, lineHeight:1.5 }}>{n.desc}</div>
-          </button>
-        ))}
+      {/* Core curriculum cards */}
+      <div style={{ marginBottom:32 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>CORE CURRICULUM</span>
+          <div style={{ flex:1, height:1, background:"var(--border)" }}/>
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:12 }}>
+          {coreCards.map(n => (
+            <button key={n.view} onClick={() => setView(n.view)} className="card-hover"
+              style={{ background:"var(--bg-card)", border:`1px solid var(--border)`, borderRadius:14, padding:18,
+                cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}` }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 4px 20px ${n.color}18`; }}
+              onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; }}>
+              <div style={{ fontSize:24, marginBottom:8 }}>{n.icon}</div>
+              <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:13, marginBottom:4 }}>{n.label}</div>
+              <div style={{ color:"var(--text-muted)", fontSize:11, lineHeight:1.5 }}>{n.desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Advanced tools cards */}
+      <div style={{ marginBottom:28 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>ADVANCED TOOLS</span>
+          <div style={{ flex:1, height:1, background:"var(--border)" }}/>
+          <span style={{ background:"#A78BFA22", color:"#A78BFA", borderRadius:20, padding:"2px 10px",
+            fontSize:10, fontWeight:800, border:"1px solid #A78BFA44" }}>NEW</span>
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:12 }}>
+          {advancedCards.map(n => (
+            <button key={n.view} onClick={() => setView(n.view)} className="card-hover"
+              style={{ background:"var(--bg-card)", border:`1px solid var(--border)`, borderRadius:14, padding:18,
+                cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}`,
+                position:"relative" }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 4px 20px ${n.color}18`; }}
+              onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; }}>
+              <div style={{ fontSize:24, marginBottom:8 }}>{n.icon}</div>
+              <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:13, marginBottom:4 }}>{n.label}</div>
+              <div style={{ color:"var(--text-muted)", fontSize:11, lineHeight:1.5 }}>{n.desc}</div>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Random question */}
@@ -2668,7 +2705,7 @@ export default function App() {
     { id:"batch",     icon:"📋", label:"Batch Sim" },
     { id:"cases",     icon:"📰", label:"Case Studies" },
     { id:"compendial",icon:"📗", label:"Compendial" },
-    { id:"excipient", icon:"⚗️", label:"Excipients" },
+    { id:"excipient", icon:"🧫", label:"Excipients" },
     { id:"pathway",   icon:"🎓", label:"Learning Path" },
     { id:"progress",  icon:"📊", label:"My Progress" },
   ];
