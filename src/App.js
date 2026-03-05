@@ -19,27 +19,6 @@ import { STABILITY_CONDITIONS } from "./stability-data";
 // ── Level colors ──────────────────────────────────────────────
 const LC = { Foundational:"#22D3EE", Intermediate:"#34D399", Advanced:"#F59E0B", Expert:"#F472B6" };
 
-// ── Method ratings (sensitivity / throughput / cost 0-100) ────
-const RATINGS = {
-  "am-peptide-map":  { sensitivity:93, throughput:25, cost:90, reg:5 },
-  "am-intact-mass":  { sensitivity:88, throughput:42, cost:83, reg:4 },
-  "am-ce-sds":       { sensitivity:84, throughput:78, cost:38, reg:5 },
-  "am-cief":         { sensitivity:82, throughput:73, cost:36, reg:5 },
-  "am-sec":          { sensitivity:70, throughput:92, cost:28, reg:5 },
-  "am-iex":          { sensitivity:76, throughput:76, cost:34, reg:4 },
-  "am-sec-mals":     { sensitivity:86, throughput:40, cost:72, reg:3 },
-  "am-cell-bioassay":{ sensitivity:82, throughput:22, cost:88, reg:5 },
-  "am-elisa":        { sensitivity:91, throughput:82, cost:28, reg:4 },
-  "am-spr":          { sensitivity:96, throughput:36, cost:84, reg:4 },
-  "am-glycan":       { sensitivity:88, throughput:44, cost:60, reg:5 },
-  "am-dls":          { sensitivity:64, throughput:92, cost:23, reg:3 },
-  "am-dsc":          { sensitivity:82, throughput:52, cost:54, reg:3 },
-  "am-mfi":          { sensitivity:76, throughput:70, cost:44, reg:5 },
-  "am-endotoxin":    { sensitivity:96, throughput:82, cost:18, reg:5 },
-  "am-bioburden":    { sensitivity:88, throughput:18, cost:22, reg:5 },
-  "am-cd":           { sensitivity:78, throughput:55, cost:50, reg:4 },
-  "am-a280":         { sensitivity:58, throughput:98, cost:4,  reg:5 },
-};
 
 // ── Method workflow steps ─────────────────────────────────────
 const METHOD_STEPS = {
@@ -61,158 +40,6 @@ const METHOD_STEPS = {
   "am-cd":            ["Buffer exchange into CD-compatible buffer (no TRIS)","Measure A280 for exact protein concentration","Load into 0.1 mm cuvette (far-UV) or 10 mm (near-UV)","Scan 190–250 nm (far) or 250–320 nm (near), 3 accumulations","Subtract buffer spectrum baseline","Convert to mean residue ellipticity (MRE)","Compare spectrum shape to reference standard"],
   "am-a280":          ["Pipette 2 µL into NanoDrop (or 1 cm cuvette)","Blank with formulation buffer","Measure A280 and A320 (turbidity correction)","Apply: Conc = (A280–A320) / ε × pathlength","Verify result within ±10% of nominal","Dilute if >3.5 AU or use SoloVPE for HiConc","Report mg/mL with units and method reference"],
 };
-
-// ── SVG Mini Diagrams (per method visual type) ────────────────
-const Chromatogram = ({ color, peaks=[0.35,1,0.18], label="UV 280nm" }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <defs>
-      <linearGradient id={`g${color.replace('#','')}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={color} stopOpacity="0.55"/>
-        <stop offset="100%" stopColor={color} stopOpacity="0"/>
-      </linearGradient>
-    </defs>
-    <line x1="0" y1="62" x2="200" y2="62" stroke="var(--border-bright)" strokeWidth="1"/>
-    {peaks.map((h,i)=>{
-      const cx=28+i*58; const ry=h*52; const rx=12+h*10;
-      return <g key={i}>
-        <ellipse cx={cx} cy={62} rx={rx} ry={ry} fill={`url(#g${color.replace('#','')})`}/>
-        <ellipse cx={cx} cy={62} rx={rx} ry={ry} fill="none" stroke={color} strokeWidth="1.5"/>
-      </g>;
-    })}
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">{label}</text>
-  </svg>
-);
-
-const SigmoidCurve = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <defs>
-      <linearGradient id={`sg${color.replace('#','')}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={color} stopOpacity="0.4"/>
-        <stop offset="100%" stopColor={color} stopOpacity="0"/>
-      </linearGradient>
-    </defs>
-    <line x1="0" y1="62" x2="200" y2="62" stroke="var(--border-bright)" strokeWidth="1"/>
-    <path d="M5,60 C30,60 50,55 80,32 C110,10 130,5 195,4" stroke={color} strokeWidth="2.5" fill="none"/>
-    <path d="M5,62 C30,62 50,57 80,33 C110,11 130,6 195,6 L195,62 Z" fill={`url(#sg${color.replace('#','')})`}/>
-    <line x1="97" y1="32" x2="97" y2="62" stroke={color} strokeWidth="1" strokeDasharray="3,2" opacity="0.6"/>
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">Dose →</text>
-    <text x="80" y="66" fill={color} fontSize="7">EC₅₀</text>
-  </svg>
-);
-
-const GelBands = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <rect x="0" y="0" width="200" height="68" fill="var(--bg-surface)" rx="4"/>
-    {[[30,8,"HC ~50kDa"],[18,22,"LC ~25kDa"],[8,38,"frag"],[25,48,"HC+LC"]].map(([w,y,lbl],i)=>(
-      <g key={i}>
-        <rect x={10} y={y} width={w} height={7} fill={color} opacity={0.7} rx="2"/>
-        <text x={10+w+4} y={y+6} fill="var(--text-faint)" fontSize="6.5">{lbl}</text>
-      </g>
-    ))}
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">CE-SDS Gel</text>
-  </svg>
-);
-
-const MultiPeaks = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <defs>
-      <linearGradient id={`mp${color.replace('#','')}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={color} stopOpacity="0.5"/>
-        <stop offset="100%" stopColor={color} stopOpacity="0"/>
-      </linearGradient>
-    </defs>
-    <line x1="0" y1="62" x2="200" y2="62" stroke="var(--border-bright)" strokeWidth="1"/>
-    {[[18,0.4],[38,0.85],[60,1],[80,0.7],[100,0.45],[120,0.6],[145,0.38],[168,0.28]].map(([cx,h],i)=>(
-      <ellipse key={i} cx={cx} cy={62} rx={8} ry={h*52} fill={`url(#mp${color.replace('#','')})`} stroke={color} strokeWidth="1.2"/>
-    ))}
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">Glycan Profile</text>
-  </svg>
-);
-
-const ScatterDot = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <line x1="0" y1="62" x2="200" y2="62" stroke="var(--border-bright)" strokeWidth="1"/>
-    <line x1="5" y1="0" x2="5" y2="62" stroke="var(--border-bright)" strokeWidth="1"/>
-    {[[20,50],[45,22],[70,8],[95,14],[115,42],[140,58],[160,55],[180,36]].map(([x,y],i)=>(
-      <circle key={i} cx={x} cy={y} r="3.5" fill={color} opacity={0.75}/>
-    ))}
-    <path d="M20,50 C50,20 80,8 120,25 C150,40 165,54 180,38" stroke={color} strokeWidth="1.5" fill="none" strokeDasharray="4,3" opacity="0.6"/>
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">kD / Rh</text>
-  </svg>
-);
-
-const ThermalCurve = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <line x1="0" y1="55" x2="200" y2="55" stroke="var(--border-bright)" strokeWidth="1"/>
-    <path d="M5,52 C20,52 35,52 55,52 C65,52 68,30 75,10 C82,30 85,52 95,52 C120,52 125,52 145,52 C155,52 158,35 163,20 C168,35 171,52 185,52" stroke={color} strokeWidth="2.2" fill="none"/>
-    <text x="70" y="8" fill={color} fontSize="7">Tm₁</text>
-    <text x="156" y="18" fill={color} fontSize="7">Tm₂</text>
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">Temperature →</text>
-  </svg>
-);
-
-const BarSpectrum = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <line x1="0" y1="62" x2="200" y2="62" stroke="var(--border-bright)" strokeWidth="1"/>
-    {[[18,45],[30,20],[48,55],[62,12],[80,38],[92,8],[108,50],[125,18],[142,30],[160,42],[178,10]].map(([x,h],i)=>(
-      <rect key={i} x={x-2} y={62-h} width={4} height={h} fill={color} opacity={0.7+(i%3)*0.1} rx="1"/>
-    ))}
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">m/z →</text>
-  </svg>
-);
-
-const CDSpectrum = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <line x1="0" y1="34" x2="200" y2="34" stroke="var(--border-bright)" strokeWidth="1"/>
-    <path d="M5,34 C20,34 30,12 45,8 C60,12 70,34 85,54 C100,34 115,14 135,22 C155,30 175,34 195,34" stroke={color} strokeWidth="2.2" fill="none"/>
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">λ (nm) →  [θ] MRE</text>
-  </svg>
-);
-
-const PassFailViz = ({ color }) => (
-  <svg width="100%" height="68" viewBox="0 0 200 68" preserveAspectRatio="none" className="method-diagram">
-    <rect x="10" y="16" width="78" height="36" fill={color+"22"} stroke={color} strokeWidth="1.5" rx="6"/>
-    <text x="49" y="38" textAnchor="middle" fill={color} fontSize="11" fontWeight="bold">PASS</text>
-    <rect x="112" y="16" width="78" height="36" fill="var(--bg-surface)" stroke="var(--border)" strokeWidth="1.5" rx="6" strokeDasharray="4,3"/>
-    <text x="151" y="38" textAnchor="middle" fill="var(--text-muted)" fontSize="11" fontWeight="bold">FAIL</text>
-    <text x="2" y="66" fill="var(--text-faint)" fontSize="7">Lot Release Decision</text>
-  </svg>
-);
-
-// Map method ID → diagram component
-const MethodDiagram = ({ method }) => {
-  const c = method.color;
-  if (method.id==="am-ce-sds") return <GelBands color={c}/>;
-  if (method.id==="am-glycan") return <MultiPeaks color={c}/>;
-  if (method.id==="am-cief")   return <Chromatogram color={c} peaks={[0.25,0.55,1,0.6,0.3,0.18]} label="pI →"/>;
-  if (method.id==="am-cell-bioassay"||method.id==="am-elisa"||method.id==="am-spr") return <SigmoidCurve color={c}/>;
-  if (method.id==="am-dls")    return <ScatterDot color={c}/>;
-  if (method.id==="am-dsc")    return <ThermalCurve color={c}/>;
-  if (method.id==="am-cd")     return <CDSpectrum color={c}/>;
-  if (method.id==="am-intact-mass"||method.id==="am-a280") return <BarSpectrum color={c}/>;
-  if (method.category==="Safety") return <PassFailViz color={c}/>;
-  return <Chromatogram color={c}/>;
-};
-
-// ── Rating Bar ─────────────────────────────────────────────────
-const RatingBar = ({ label, value, color }) => (
-  <div style={{ marginBottom:6 }}>
-    <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
-      <span style={{ color:"var(--text-muted)", fontSize:10, fontWeight:700, letterSpacing:"0.04em" }}>{label}</span>
-      <span style={{ color, fontSize:10, fontWeight:800 }}>{value}%</span>
-    </div>
-    <div style={{ background:"var(--bg-surface)", borderRadius:4, height:5, overflow:"hidden" }}>
-      <div className="rating-fill" style={{ width:`${value}%`, background:color, height:5, borderRadius:4 }}/>
-    </div>
-  </div>
-);
-
-// ── Reg Stars ──────────────────────────────────────────────────
-const RegStars = ({ n, color }) => (
-  <span>{[1,2,3,4,5].map(i=>(
-    <span key={i} style={{ color: i<=n ? color : "var(--text-faint)", fontSize:12 }}>★</span>
-  ))}</span>
-);
 
 // ── Shared Components ─────────────────────────────────────────
 const Badge = ({ level }) => (
@@ -253,17 +80,22 @@ const PhasePill = ({ phase, active }) => (
 
 // ── DNA Logo SVG ───────────────────────────────────────────────
 const DNALogo = () => (
-  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 2C8.5 2 15 5.5 19.5 5.5" stroke="#A78BFA" strokeWidth="2.2" strokeLinecap="round"/>
-    <path d="M5 6.5C8.5 6.5 15 10 19.5 10" stroke="#7C3AED" strokeWidth="2.2" strokeLinecap="round"/>
-    <path d="M5 11C8.5 11 15 14.5 19.5 14.5" stroke="#A78BFA" strokeWidth="2.2" strokeLinecap="round"/>
-    <path d="M5 15.5C8.5 15.5 15 19 19.5 19" stroke="#7C3AED" strokeWidth="2.2" strokeLinecap="round"/>
-    <path d="M5 20C8.5 20 15 23.5 19.5 23.5" stroke="#A78BFA" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="9" y1="2" x2="9" y2="6.5" stroke="#DDD6FE" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="15.5" y1="5.5" x2="15.5" y2="10" stroke="#DDD6FE" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="9" y1="11" x2="9" y2="15.5" stroke="#DDD6FE" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="15.5" y1="14.5" x2="15.5" y2="19" stroke="#DDD6FE" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="9" y1="20" x2="9" y2="23.5" stroke="#DDD6FE" strokeWidth="1.4" strokeLinecap="round"/>
+  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="30" height="30" rx="8" fill="url(#yk-grad)"/>
+    <defs>
+      <linearGradient id="yk-grad" x1="0" y1="0" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#7C3AED"/>
+        <stop offset="100%" stopColor="#A78BFA"/>
+      </linearGradient>
+    </defs>
+    {/* Y */}
+    <line x1="6" y1="7" x2="10.5" y2="14" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="15" y1="7" x2="10.5" y2="14" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="10.5" y1="14" x2="10.5" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    {/* K */}
+    <line x1="17" y1="7" x2="17" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="17" y1="14.5" x2="23" y2="7" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="17" y1="14.5" x2="23" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
   </svg>
 );
 
@@ -338,7 +170,7 @@ function Dashboard({ setView }) {
       {/* Hero */}
       <div style={{ textAlign:"center", marginBottom:48 }}>
         <div className="float-emoji" style={{ fontSize:56, marginBottom:12 }}>🧬</div>
-        <h1 className="gradient-text" style={{ fontSize:38, fontWeight:900, margin:0, letterSpacing:"-0.02em" }}>CMC Master App</h1>
+        <h1 className="gradient-text" style={{ fontSize:38, fontWeight:900, margin:0, letterSpacing:"-0.02em" }}>CMC App</h1>
         <p style={{ color:"var(--text-sec)", marginTop:10, fontSize:17, maxWidth:520, margin:"10px auto 0" }}>
           Your complete Chemistry, Manufacturing & Controls career development toolkit
         </p>
@@ -706,7 +538,7 @@ function MethodsView({ navigate }) {
   const [catFilter, setCatFilter] = useState("All");
   const [activeMethod, setActiveMethod] = useState(null);
   const [search, setSearch] = useState("");
-  const [detailTab, setDetailTab] = useState("overview");
+  const [detailTab, setDetailTab] = useState("about");
 
   const filtered = ANALYTICAL_METHODS.filter(m =>
     (catFilter==="All" || m.category===catFilter) &&
@@ -719,15 +551,15 @@ function MethodsView({ navigate }) {
 
   const handleSelect = (id) => {
     setActiveMethod(prev => prev===id ? null : id);
-    setDetailTab("overview");
+    setDetailTab("about");
   };
 
   return (
     <div style={{ maxWidth:1300, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="🔬" title="Analytical Methods"
-        subtitle="20 detailed assay cards — SVG diagrams, performance ratings, workflow steps, regulatory requirements & CQA linkage" />
+        subtitle="20 assay reference cards — principle, protocol, parameters, CQA linkage & regulatory context" />
 
-      {/* Filters */}
+      {/* Filters row */}
       <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:20, alignItems:"center" }}>
         {categories.map(c => (
           <FilterBtn key={c} label={c} active={catFilter===c}
@@ -735,80 +567,85 @@ function MethodsView({ navigate }) {
             onClick={() => { setCatFilter(c); setActiveMethod(null); }} />
         ))}
         <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Search assays, abbreviations, or purpose…"
+          placeholder="Search by name, abbreviation or purpose…"
           style={{ flex:1, minWidth:200, background:"var(--bg-card)", border:"1px solid var(--border)",
             borderRadius:10, padding:"7px 14px", color:"var(--text-body)", fontSize:13 }} />
+        <span style={{ color:"var(--text-faint)", fontSize:12, whiteSpace:"nowrap" }}>
+          {filtered.length} / {ANALYTICAL_METHODS.length}
+        </span>
       </div>
 
-      <div style={{ display:"grid", gridTemplateColumns: method ? "minmax(0,340px) 1fr" : "1fr", gap:20, alignItems:"start" }}>
+      <div style={{ display:"grid", gridTemplateColumns: method ? "minmax(0,360px) 1fr" : "1fr", gap:20, alignItems:"start" }}>
 
         {/* ── Card Grid ─────────────────────────────────────────── */}
-        <div style={{ display:"grid", gridTemplateColumns: method ? "1fr" : "repeat(auto-fill,minmax(270px,1fr))", gap:14 }}>
+        <div style={{ display:"grid", gridTemplateColumns: method ? "1fr" : "repeat(auto-fill,minmax(280px,1fr))", gap:12 }}>
           {filtered.map((m, i) => {
-            const r = RATINGS[m.id] || { sensitivity:70, throughput:60, cost:50, reg:3 };
             const isActive = m.id===activeMethod;
+            const col = catColors[m.category] || m.color;
             return (
-              <div key={m.id} className={`card-hover method-card`}
+              <div key={m.id} className="card-hover method-card"
                 onClick={() => handleSelect(m.id)}
                 style={{
-                  background: isActive ? `${m.color}14` : "var(--bg-card)",
-                  border:`1.5px solid ${isActive ? m.color : "var(--border)"}`,
-                  borderRadius:14, overflow:"hidden", cursor:"pointer",
-                  boxShadow: isActive ? `0 0 20px ${m.color}25` : "none",
-                  animationDelay:`${i*0.04}s`,
+                  background: isActive ? `${col}0E` : "var(--bg-card)",
+                  border:`1.5px solid ${isActive ? col : "var(--border)"}`,
+                  borderLeft:`3px solid ${col}`,
+                  borderRadius:12, cursor:"pointer",
+                  boxShadow: isActive ? `0 0 18px ${col}22` : "none",
+                  transition:"all 0.18s", animationDelay:`${i*0.04}s`,
                 }}>
 
-                {/* ── Diagram strip ── */}
-                <div style={{ background:`${m.color}0E`, padding:"10px 14px 6px",
-                  borderBottom:`1px solid ${m.color}22` }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                      <span style={{ fontSize:20 }}>{m.icon}</span>
-                      <span style={{ background:`${m.color}28`, color:m.color, borderRadius:20, padding:"2px 9px",
-                        fontSize:10, fontWeight:800, fontFamily:"monospace" }}>{m.abbreviation}</span>
-                    </div>
-                    <span style={{ background:`${m.color}18`, color:m.color, border:`1px solid ${m.color}33`,
-                      borderRadius:20, padding:"2px 8px", fontSize:9, fontWeight:700 }}>{m.category}</span>
+                {/* Card header */}
+                <div style={{ padding:"14px 16px 10px", display:"flex", alignItems:"center", gap:10,
+                  borderBottom:`1px solid ${col}18` }}>
+                  <span style={{ fontSize:22, flexShrink:0 }}>{m.icon}</span>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:14, lineHeight:1.2 }}>{m.name}</div>
+                    <div style={{ color:"var(--text-muted)", fontSize:10, marginTop:2 }}>{m.fullName}</div>
                   </div>
-                  <MethodDiagram method={m}/>
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4, flexShrink:0 }}>
+                    <span style={{ background:`${col}20`, color:col, borderRadius:6, padding:"2px 8px",
+                      fontSize:10, fontWeight:800, fontFamily:"monospace" }}>{m.abbreviation}</span>
+                    <span style={{ background:`${col}12`, color:col, border:`1px solid ${col}30`,
+                      borderRadius:10, padding:"1px 7px", fontSize:9, fontWeight:700 }}>{m.category}</span>
+                  </div>
                 </div>
 
-                {/* ── Card body ── */}
-                <div style={{ padding:"12px 14px" }}>
-                  <div style={{ color:"var(--text-h)", fontWeight:900, fontSize:14, marginBottom:3 }}>{m.name}</div>
-                  <div style={{ color:"var(--text-muted)", fontSize:10, marginBottom:8, lineHeight:1.4 }}>{m.fullName}</div>
-
+                {/* Purpose */}
+                <div style={{ padding:"10px 16px 8px" }}>
                   <p style={{ color:"var(--text-sec)", fontSize:12, margin:"0 0 10px", lineHeight:1.55,
                     display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
                     {m.purpose}
                   </p>
 
-                  {/* Rating bars */}
-                  {!method && (
-                    <div style={{ marginBottom:10 }}>
-                      <RatingBar label="SENSITIVITY" value={r.sensitivity} color={m.color}/>
-                      <RatingBar label="THROUGHPUT" value={r.throughput} color="#38BDF8"/>
-                      <RatingBar label="COST (lower=cheaper)" value={100-r.cost} color="#34D399"/>
-                    </div>
-                  )}
-
-                  {/* Regulatory stars + phases */}
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                    <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
-                      {phaseList.map(p => <PhasePill key={p} phase={p} active={m.phases[p]} />)}
-                    </div>
-                    {!method && (
-                      <div style={{ display:"flex", alignItems:"center", gap:3, flexShrink:0 }}>
-                        <span style={{ color:"var(--text-faint)", fontSize:9 }}>REG</span>
-                        <RegStars n={r.reg} color={m.color}/>
-                      </div>
+                  {/* Detects chips — top 3 */}
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:5, marginBottom:10 }}>
+                    {m.detects.slice(0,3).map((d,di) => (
+                      <span key={di} style={{ background:`${col}14`, color:"var(--text-body)",
+                        border:`1px solid ${col}28`, borderRadius:14, padding:"2px 9px",
+                        fontSize:10, lineHeight:1.5, whiteSpace:"nowrap",
+                        overflow:"hidden", textOverflow:"ellipsis", maxWidth:160 }}>
+                        {d}
+                      </span>
+                    ))}
+                    {m.detects.length > 3 && (
+                      <span style={{ color:"var(--text-faint)", fontSize:10, lineHeight:1.8 }}>+{m.detects.length-3} more</span>
                     )}
+                  </div>
+
+                  {/* Phase pills */}
+                  <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+                    {phaseList.map(p => <PhasePill key={p} phase={p} active={m.phases[p]} />)}
                   </div>
                 </div>
               </div>
             );
           })}
-          {filtered.length===0 && <p style={{ color:"var(--text-muted)", fontStyle:"italic", gridColumn:"1/-1" }}>No methods match your search.</p>}
+          {filtered.length===0 && (
+            <div style={{ gridColumn:"1/-1", textAlign:"center", padding:40, color:"var(--text-muted)" }}>
+              <div style={{ fontSize:32, marginBottom:8 }}>🔍</div>
+              <p style={{ margin:0, fontSize:14 }}>No methods match — try a different search or filter</p>
+            </div>
+          )}
         </div>
 
         {/* ── Detail Panel ───────────────────────────────────────── */}
@@ -816,113 +653,113 @@ function MethodsView({ navigate }) {
           <div className="panel-enter" style={{ background:"var(--bg-card)", borderRadius:16,
             border:`1.5px solid ${method.color}44`, overflow:"hidden",
             position:"sticky", top:70, maxHeight:"calc(100vh - 90px)", overflowY:"auto",
-            boxShadow:`0 0 48px ${method.color}18` }}>
+            boxShadow:`0 8px 40px ${method.color}15` }}>
 
-            {/* Header with diagram */}
+            {/* Header */}
             <div style={{ background:`linear-gradient(135deg, ${method.color}18 0%, var(--bg-surface) 100%)`,
-              padding:"22px 24px 16px", borderBottom:`1px solid ${method.color}33` }}>
-              <div style={{ display:"flex", alignItems:"flex-start", gap:14, marginBottom:14 }}>
-                <span style={{ fontSize:36, background:`${method.color}22`, borderRadius:12, width:58, height:58,
-                  display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{method.icon}</span>
+              padding:"22px 22px 16px", borderBottom:`1px solid ${method.color}28` }}>
+              <div style={{ display:"flex", alignItems:"flex-start", gap:14, marginBottom:16 }}>
+                <span style={{ fontSize:34, background:`${method.color}22`, borderRadius:12, width:56, height:56,
+                  display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                  border:`1px solid ${method.color}33` }}>{method.icon}</span>
                 <div style={{ flex:1, minWidth:0 }}>
-                  <h3 style={{ color:"var(--text-h)", margin:"0 0 3px", fontSize:19, fontWeight:900, lineHeight:1.2 }}>{method.name}</h3>
-                  <div style={{ color:method.color, fontSize:11, fontFamily:"monospace", fontWeight:800 }}>{method.abbreviation}</div>
-                  <div style={{ color:"var(--text-sec)", fontSize:11, marginTop:3, lineHeight:1.4 }}>{method.fullName}</div>
+                  <h3 style={{ color:"var(--text-h)", margin:"0 0 2px", fontSize:18, fontWeight:900, lineHeight:1.2 }}>{method.name}</h3>
+                  <div style={{ color:method.color, fontSize:11, fontFamily:"monospace", fontWeight:800, marginBottom:3 }}>{method.abbreviation}</div>
+                  <div style={{ color:"var(--text-sec)", fontSize:11, lineHeight:1.4 }}>{method.fullName}</div>
                 </div>
                 <button onClick={() => setActiveMethod(null)}
-                  style={{ background:"none", border:"none", color:"var(--text-muted)", cursor:"pointer",
-                    fontSize:18, padding:4, lineHeight:1, flexShrink:0 }}>✕</button>
+                  style={{ background:"var(--bg-raised)", border:"1px solid var(--border)", color:"var(--text-muted)",
+                    cursor:"pointer", fontSize:14, padding:"4px 8px", lineHeight:1, borderRadius:6, flexShrink:0 }}>✕</button>
               </div>
 
-              {/* Mini diagram (larger in panel) */}
-              <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"10px 14px",
-                border:`1px solid ${method.color}22`, marginBottom:12 }}>
-                <div style={{ height:80 }}>
-                  <MethodDiagram method={method}/>
+              {/* Quick-facts row */}
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:14 }}>
+                {[
+                  { label:"CTD Section", value:method.ctdSection, icon:"📂" },
+                  { label:"ICH Reference", value:method.ichRef, icon:"📜" },
+                  { label:"Category", value:method.category, icon:"🏷️" },
+                ].map(f => (
+                  <div key={f.label} style={{ background:"var(--bg-card)", border:"1px solid var(--border)",
+                    borderRadius:8, padding:"7px 10px" }}>
+                    <div style={{ color:"var(--text-faint)", fontSize:9, fontWeight:700, marginBottom:2 }}>{f.icon} {f.label}</div>
+                    <div style={{ color:"var(--text-h)", fontWeight:700, fontSize:11 }}>{f.value}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CQA linkage badge */}
+              <div style={{ background:`${method.color}12`, border:`1px solid ${method.color}30`,
+                borderRadius:8, padding:"7px 12px", display:"flex", alignItems:"center", gap:8 }}>
+                <span style={{ color:method.color, fontSize:12 }}>🎯</span>
+                <div>
+                  <div style={{ color:method.color, fontSize:9, fontWeight:800, letterSpacing:"0.06em" }}>CQA LINKAGE</div>
+                  <div style={{ color:"var(--text-body)", fontSize:12, fontWeight:600, marginTop:1 }}>{method.cqaLink}</div>
                 </div>
-              </div>
-
-              {/* Badges row */}
-              <div style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
-                <span style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:8,
-                  padding:"3px 10px", fontSize:10, color:"var(--text-sec)", fontWeight:600 }}>📂 {method.ctdSection}</span>
-                <span style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:8,
-                  padding:"3px 10px", fontSize:10, color:"var(--text-sec)", fontWeight:600 }}>📜 {method.ichRef}</span>
-                <span style={{ background:`${method.color}20`, border:`1px solid ${method.color}44`, borderRadius:8,
-                  padding:"3px 10px", fontSize:10, color:method.color, fontWeight:700 }}>🎯 {method.cqaLink}</span>
               </div>
             </div>
 
-            {/* Detail tabs */}
+            {/* Tabs */}
             <div style={{ display:"flex", borderBottom:"1px solid var(--border)" }}>
-              {["overview","workflow","parameters","regulatory"].map(t => (
-                <button key={t} onClick={() => setDetailTab(t)}
-                  style={{ flex:1, background: detailTab===t ? `${method.color}18` : "none",
-                    border:"none", borderBottom: detailTab===t ? `2px solid ${method.color}` : "2px solid transparent",
-                    color: detailTab===t ? method.color : "var(--text-muted)",
-                    padding:"10px 6px", cursor:"pointer", fontWeight:700, fontSize:11,
-                    textTransform:"uppercase", letterSpacing:"0.04em", transition:"all 0.18s" }}>
-                  {t}
+              {[
+                { id:"about",      label:"About" },
+                { id:"protocol",   label:"Protocol" },
+                { id:"parameters", label:"Parameters" },
+                { id:"regulatory", label:"Regulatory" },
+              ].map(t => (
+                <button key={t.id} onClick={() => setDetailTab(t.id)}
+                  style={{ flex:1, background: detailTab===t.id ? `${method.color}14` : "none",
+                    border:"none", borderBottom: detailTab===t.id ? `2px solid ${method.color}` : "2px solid transparent",
+                    color: detailTab===t.id ? method.color : "var(--text-muted)",
+                    padding:"10px 6px", cursor:"pointer", fontWeight:700, fontSize:12,
+                    letterSpacing:"0.02em", transition:"all 0.18s" }}>
+                  {t.label}
                 </button>
               ))}
             </div>
 
-            <div style={{ padding:"18px 22px 24px" }}>
+            <div style={{ padding:"18px 20px 24px" }}>
 
-              {/* ── OVERVIEW TAB ── */}
-              {detailTab==="overview" && (
+              {/* ── ABOUT TAB ── */}
+              {detailTab==="about" && (
                 <>
                   {/* Phase applicability */}
-                  <div style={{ marginBottom:18 }}>
-                    <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:7, letterSpacing:"0.08em" }}>PHASE APPLICABILITY</div>
+                  <div style={{ marginBottom:16 }}>
+                    <div style={{ color:"var(--text-faint)", fontSize:10, fontWeight:800, marginBottom:7, letterSpacing:"0.08em" }}>PHASE APPLICABILITY</div>
                     <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
                       {phaseList.map(p => <PhasePill key={p} phase={p} active={method.phases[p]} />)}
                     </div>
                   </div>
 
-                  {/* Ratings */}
-                  {RATINGS[method.id] && (
-                    <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px", marginBottom:14 }}>
-                      <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:10, letterSpacing:"0.08em" }}>PERFORMANCE PROFILE</div>
-                      <RatingBar label="SENSITIVITY" value={RATINGS[method.id].sensitivity} color={method.color}/>
-                      <RatingBar label="THROUGHPUT" value={RATINGS[method.id].throughput} color="#38BDF8"/>
-                      <RatingBar label="COST (lower = cheaper)" value={100-RATINGS[method.id].cost} color="#34D399"/>
-                      <div style={{ display:"flex", justifyContent:"space-between", marginTop:10, alignItems:"center" }}>
-                        <span style={{ color:"var(--text-muted)", fontSize:10, fontWeight:700 }}>REGULATORY IMPORTANCE</span>
-                        <RegStars n={RATINGS[method.id].reg} color={method.color}/>
-                      </div>
-                    </div>
-                  )}
-
                   <InfoBox color={method.color} label="PURPOSE & APPLICATION" text={method.purpose} />
                   <InfoBox color="#60A5FA" label="SCIENTIFIC PRINCIPLE" text={method.principle} />
 
-                  {/* Detects as chips */}
-                  <div style={{ background:`${method.color}0A`, border:`1px solid ${method.color}22`, borderRadius:10, padding:"12px 14px", marginBottom:8 }}>
-                    <div style={{ color:"#34D399", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.08em" }}>DETECTS / MEASURES</div>
-                    <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                  {/* Detects chips */}
+                  <div style={{ background:`${method.color}08`, border:`1px solid ${method.color}22`,
+                    borderRadius:10, padding:"12px 14px" }}>
+                    <div style={{ color:"#34D399", fontSize:10, fontWeight:800, marginBottom:10, letterSpacing:"0.08em" }}>DETECTS / MEASURES</div>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
                       {method.detects.map((d,i) => (
-                        <span key={i} style={{ background:`${method.color}20`, color:"var(--text-body)",
-                          border:`1px solid ${method.color}33`, borderRadius:20, padding:"3px 10px",
-                          fontSize:11, lineHeight:1.4 }}>{d}</span>
+                        <span key={i} style={{ background:`${method.color}18`, color:"var(--text-body)",
+                          border:`1px solid ${method.color}30`, borderRadius:20, padding:"4px 11px",
+                          fontSize:12, lineHeight:1.4 }}>{d}</span>
                       ))}
                     </div>
                   </div>
                 </>
               )}
 
-              {/* ── WORKFLOW TAB ── */}
-              {detailTab==="workflow" && (
+              {/* ── PROTOCOL TAB ── */}
+              {detailTab==="protocol" && (
                 <div>
-                  <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:14, letterSpacing:"0.08em" }}>METHOD PROCEDURE — STEP BY STEP</div>
+                  <div style={{ color:"var(--text-faint)", fontSize:10, fontWeight:800, marginBottom:14, letterSpacing:"0.08em" }}>STEP-BY-STEP PROCEDURE</div>
                   {(METHOD_STEPS[method.id] || ["Method steps not yet defined."]).map((step, i) => (
-                    <div key={i} style={{ display:"flex", gap:12, marginBottom:12, alignItems:"flex-start" }}>
-                      <div style={{ flexShrink:0, width:26, height:26, borderRadius:"50%",
+                    <div key={i} style={{ display:"flex", gap:12, marginBottom:10, alignItems:"flex-start" }}>
+                      <div style={{ flexShrink:0, width:24, height:24, borderRadius:"50%",
                         background:`${method.color}22`, border:`1.5px solid ${method.color}55`,
                         display:"flex", alignItems:"center", justifyContent:"center",
-                        color:method.color, fontSize:11, fontWeight:900 }}>{i+1}</div>
+                        color:method.color, fontSize:10, fontWeight:900 }}>{i+1}</div>
                       <div style={{ background:"var(--bg-surface)", borderRadius:8, padding:"8px 12px", flex:1,
-                        border:"1px solid var(--border)", fontSize:13, color:"var(--text-body)", lineHeight:1.55 }}>
+                        border:"1px solid var(--border)", fontSize:12, color:"var(--text-body)", lineHeight:1.6 }}>
                         {step}
                       </div>
                     </div>
@@ -933,29 +770,31 @@ function MethodsView({ navigate }) {
               {/* ── PARAMETERS TAB ── */}
               {detailTab==="parameters" && (
                 <>
-                  <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:12, letterSpacing:"0.08em" }}>KEY ASSAY PARAMETERS</div>
-                  <div style={{ background:"var(--bg-surface)", borderRadius:10, overflow:"hidden", border:"1px solid var(--border)", marginBottom:14 }}>
+                  <div style={{ color:"var(--text-faint)", fontSize:10, fontWeight:800, marginBottom:12, letterSpacing:"0.08em" }}>KEY ASSAY PARAMETERS</div>
+                  <div style={{ background:"var(--bg-surface)", borderRadius:10, overflow:"hidden",
+                    border:"1px solid var(--border)", marginBottom:16 }}>
                     <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
                       <thead>
-                        <tr style={{ background:`${method.color}14`, borderBottom:`1px solid ${method.color}33` }}>
-                          <th style={{ color:method.color, padding:"8px 14px", textAlign:"left", fontSize:10, fontWeight:800, letterSpacing:"0.06em" }}>PARAMETER</th>
-                          <th style={{ color:method.color, padding:"8px 14px", textAlign:"left", fontSize:10, fontWeight:800, letterSpacing:"0.06em" }}>TYPICAL VALUE / SPECIFICATION</th>
+                        <tr style={{ background:`${method.color}12`, borderBottom:`1px solid ${method.color}28` }}>
+                          <th style={{ color:method.color, padding:"9px 14px", textAlign:"left", fontSize:10, fontWeight:800, letterSpacing:"0.06em" }}>PARAMETER</th>
+                          <th style={{ color:method.color, padding:"9px 14px", textAlign:"left", fontSize:10, fontWeight:800, letterSpacing:"0.06em" }}>TYPICAL VALUE</th>
                         </tr>
                       </thead>
                       <tbody>
                         {method.parameters.map((p,i) => (
-                          <tr key={p.name} style={{ borderBottom:"1px solid var(--border)", background: i%2===0 ? "transparent" : `${method.color}06` }}>
-                            <td style={{ color:"var(--text-sec)", padding:"8px 14px", fontWeight:700, whiteSpace:"nowrap" }}>{p.name}</td>
-                            <td style={{ color:"var(--text-body)", padding:"8px 14px", fontFamily:"monospace", fontSize:11 }}>{p.typical}</td>
+                          <tr key={p.name} style={{ borderBottom:"1px solid var(--border)",
+                            background: i%2===0 ? "transparent" : `${method.color}05` }}>
+                            <td style={{ color:"var(--text-sec)", padding:"9px 14px", fontWeight:700 }}>{p.name}</td>
+                            <td style={{ color:"var(--text-body)", padding:"9px 14px", fontFamily:"monospace", fontSize:11 }}>{p.typical}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
 
-                  <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px", border:"1px solid var(--border)" }}>
-                    <div style={{ color:"#A78BFA", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.08em" }}>KEY CONSIDERATIONS</div>
-                    <ul style={{ margin:0, paddingLeft:18, color:"var(--text-body)", fontSize:13, lineHeight:1.75 }}>
+                  <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"14px", border:"1px solid var(--border)" }}>
+                    <div style={{ color:"#A78BFA", fontSize:10, fontWeight:800, marginBottom:10, letterSpacing:"0.08em" }}>KEY CONSIDERATIONS</div>
+                    <ul style={{ margin:0, paddingLeft:18, color:"var(--text-body)", fontSize:13, lineHeight:1.8 }}>
                       {method.keyConsiderations.map((k,i) => <li key={i} style={{ marginBottom:4 }}>{k}</li>)}
                     </ul>
                   </div>
@@ -965,35 +804,41 @@ function MethodsView({ navigate }) {
               {/* ── REGULATORY TAB ── */}
               {detailTab==="regulatory" && (
                 <>
-                  <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:12, letterSpacing:"0.08em" }}>REGULATORY CONTEXT</div>
+                  <div style={{ color:"var(--text-faint)", fontSize:10, fontWeight:800, marginBottom:12, letterSpacing:"0.08em" }}>REGULATORY CONTEXT</div>
 
-                  <div style={{ background:"#7C3AED0F", border:"1px solid #7C3AED33", borderRadius:10, padding:"14px", marginBottom:14 }}>
+                  <div style={{ background:"#7C3AED0F", border:"1px solid #7C3AED33", borderRadius:10,
+                    padding:"14px 16px", marginBottom:14 }}>
                     <div style={{ color:"var(--accent-light)", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>FDA / EMA EXPECTATION</div>
-                    <p style={{ color:"var(--text-body)", margin:0, fontSize:13, lineHeight:1.7 }}>{method.regulatoryNote}</p>
+                    <p style={{ color:"var(--text-body)", margin:0, fontSize:13, lineHeight:1.75 }}>{method.regulatoryNote}</p>
                   </div>
 
                   <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:14 }}>
                     <button onClick={() => navigate && navigate("ctd")}
-                      style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px", border:"1px solid var(--border)", cursor:navigate?"pointer":"default", textAlign:"left", transition:"all 0.15s" }}
-                      onMouseEnter={e => navigate && (e.currentTarget.style.borderColor="var(--accent-glow)")}
+                      style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px",
+                        border:"1px solid var(--border)", cursor:navigate?"pointer":"default",
+                        textAlign:"left", transition:"all 0.15s" }}
+                      onMouseEnter={e => navigate && (e.currentTarget.style.borderColor=method.color)}
                       onMouseLeave={e => (e.currentTarget.style.borderColor="var(--border)")}>
-                      <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:6, letterSpacing:"0.06em" }}>📂 CTD SECTION</div>
+                      <div style={{ color:"var(--text-faint)", fontSize:10, fontWeight:800, marginBottom:6 }}>📂 CTD SECTION</div>
                       <div style={{ color:"var(--text-h)", fontWeight:700, fontSize:13 }}>{method.ctdSection}</div>
-                      {navigate && <div style={{ color:"var(--accent-light)", fontSize:9, marginTop:3 }}>Click to open CTD Navigator →</div>}
+                      {navigate && <div style={{ color:"var(--accent-light)", fontSize:10, marginTop:4 }}>Open CTD Navigator →</div>}
                     </button>
                     <button onClick={() => navigate && navigate("ich")}
-                      style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px", border:"1px solid var(--border)", cursor:navigate?"pointer":"default", textAlign:"left", transition:"all 0.15s" }}
-                      onMouseEnter={e => navigate && (e.currentTarget.style.borderColor="var(--accent-glow)")}
+                      style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px",
+                        border:"1px solid var(--border)", cursor:navigate?"pointer":"default",
+                        textAlign:"left", transition:"all 0.15s" }}
+                      onMouseEnter={e => navigate && (e.currentTarget.style.borderColor=method.color)}
                       onMouseLeave={e => (e.currentTarget.style.borderColor="var(--border)")}>
-                      <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:6, letterSpacing:"0.06em" }}>📜 GUIDELINE REF</div>
+                      <div style={{ color:"var(--text-faint)", fontSize:10, fontWeight:800, marginBottom:6 }}>📜 ICH REFERENCE</div>
                       <div style={{ color:"var(--text-h)", fontWeight:700, fontSize:13 }}>{method.ichRef}</div>
-                      {navigate && <div style={{ color:"var(--accent-light)", fontSize:9, marginTop:3 }}>Click to open ICH Guidelines →</div>}
+                      {navigate && <div style={{ color:"var(--accent-light)", fontSize:10, marginTop:4 }}>Open ICH Guidelines →</div>}
                     </button>
                   </div>
 
-                  <div style={{ background:`${method.color}0A`, border:`1px solid ${method.color}33`, borderRadius:10, padding:"12px 14px" }}>
-                    <div style={{ color:method.color, fontSize:10, fontWeight:800, marginBottom:6, letterSpacing:"0.06em" }}>CQA LINKAGE</div>
-                    <div style={{ color:"var(--text-body)", fontSize:13, lineHeight:1.6 }}>{method.cqaLink}</div>
+                  <div style={{ background:`${method.color}0A`, border:`1px solid ${method.color}30`,
+                    borderRadius:10, padding:"12px 14px" }}>
+                    <div style={{ color:method.color, fontSize:10, fontWeight:800, marginBottom:6, letterSpacing:"0.06em" }}>🎯 CQA LINKAGE</div>
+                    <div style={{ color:"var(--text-body)", fontSize:13, lineHeight:1.65 }}>{method.cqaLink}</div>
                   </div>
                 </>
               )}
@@ -2738,7 +2583,7 @@ export default function App() {
             cursor:"pointer", padding:"4px 8px 4px 0", marginRight:4, flexShrink:0 }}>
           <DNALogo/>
           <span style={{ color:"#A78BFA", fontWeight:900, fontSize:15, whiteSpace:"nowrap", letterSpacing:"-0.01em" }}>
-            CMC Master
+            Yash Kacha
           </span>
         </button>
 
