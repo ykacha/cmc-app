@@ -534,35 +534,37 @@ function SimulatorTab() {
                   fontSize: 11, color: "var(--text-sec)", marginBottom: 12,
                   whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                 }}>{s.product}</div>
-                {/* Finding card — vertical layout */}
+                {/* Finding card — fully stacked, all overflow contained */}
                 <div style={{
                   background: "var(--bg-raised)", border: "1px solid var(--border)",
                   borderRadius: 8, padding: "9px 12px", marginBottom: 12,
+                  overflow: "hidden",
                 }}>
-                  {/* Method name — truncated single line */}
+                  {/* Method name — 1-line truncated */}
                   <div style={{
                     fontSize: 10, fontWeight: 700, color: "var(--text-muted)",
                     textTransform: "uppercase", letterSpacing: "0.05em",
                     whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                    marginBottom: 6,
+                    marginBottom: 5,
                   }}>
                     {s.method}
                   </div>
-                  {/* Result + spec row */}
-                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
-                    <span style={{
-                      fontWeight: 900, fontSize: 16, color: s.isOOT ? "#38BDF8" : "#F87171",
-                      letterSpacing: "-0.2px", flexShrink: 0,
-                    }}>
-                      {s.finding.result}
-                    </span>
-                    <span style={{
-                      fontSize: 10, color: "var(--text-faint)", fontWeight: 600,
-                      whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                      textAlign: "right",
-                    }}>
-                      Spec: {s.finding.spec}
-                    </span>
+                  {/* Result — 2-line clamp, never overflows */}
+                  <div style={{
+                    fontWeight: 900, fontSize: 14,
+                    color: s.isOOT ? "#38BDF8" : "#F87171",
+                    lineHeight: 1.35, marginBottom: 4,
+                    display: "-webkit-box", WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical", overflow: "hidden",
+                  }}>
+                    {s.finding.result}
+                  </div>
+                  {/* Spec — 1-line truncated */}
+                  <div style={{
+                    fontSize: 10, color: "var(--text-faint)", fontWeight: 600,
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                  }}>
+                    Spec: {s.finding.spec}
                   </div>
                 </div>
                 <div style={{
