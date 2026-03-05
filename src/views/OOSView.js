@@ -408,12 +408,16 @@ function DecisionTreeTab() {
 }
 
 /* ─── Tab 2: Case Simulator ───────────────────────────────── */
+const DIFF_LEVELS = ["All", "Beginner", "Intermediate", "Advanced", "Expert"];
+const DIFF_COLORS = { Beginner: "#34D399", Intermediate: "#F59E0B", Advanced: "#F97316", Expert: "#EF4444" };
+
 function SimulatorTab() {
   const [selected, setSelected] = useState(null);
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [revealed, setRevealed] = useState(new Set());
   const [decisions, setDecisions] = useState({});
   const [score, setScore] = useState(0);
+  const [diffFilter, setDiffFilter] = useState("All");
 
   const phase = selected ? selected.phases[phaseIdx] : null;
   const decided = phase ? !!decisions[phase.id] : false;
@@ -444,6 +448,8 @@ function SimulatorTab() {
     setRevealed(new Set());
   }
 
+  const filteredScenarios = diffFilter === "All" ? OOS_SCENARIOS : OOS_SCENARIOS.filter(s => s.difficulty === diffFilter);
+
   // ── Scenario selection ──
   if (!selected) {
     return (
@@ -451,10 +457,35 @@ function SimulatorTab() {
         <SectionHeader
           icon="🎮"
           title="Investigation Simulator"
-          subtitle="Choose a case and conduct a real OOS/OOT investigation — reveal evidence, make decisions, and follow the regulatory path to a verdict."
+          subtitle="20 cases across 4 difficulty levels — reveal evidence, make decisions, and follow the regulatory path to a verdict."
         />
+
+        {/* Difficulty filter + stats */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
+          {DIFF_LEVELS.map(d => {
+            const count = d === "All" ? OOS_SCENARIOS.length : OOS_SCENARIOS.filter(s => s.difficulty === d).length;
+            const active = diffFilter === d;
+            const col = DIFF_COLORS[d] || "var(--accent)";
+            return (
+              <button key={d} onClick={() => setDiffFilter(d)}
+                style={{
+                  background: active ? (d === "All" ? "var(--accent)" : col) : "var(--bg-raised)",
+                  color: active ? "#fff" : "var(--text-sec)",
+                  border: `1.5px solid ${active ? (d === "All" ? "var(--accent)" : col) : "var(--border)"}`,
+                  borderRadius: 20, padding: "5px 14px", cursor: "pointer", fontWeight: active ? 700 : 500, fontSize: 12,
+                  transition: "all 0.15s",
+                }}>
+                {d} <span style={{ opacity: 0.7 }}>({count})</span>
+              </button>
+            );
+          })}
+          <span style={{ marginLeft: "auto", color: "var(--text-faint)", fontSize: 11 }}>
+            {filteredScenarios.length} case{filteredScenarios.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
-          {OOS_SCENARIOS.map(s => (
+          {filteredScenarios.map(s => (
             <button
               key={s.id}
               onClick={() => startScenario(s)}
