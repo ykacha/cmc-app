@@ -54,264 +54,354 @@ const PHASE_COLORS = {
 };
 function phaseColor(phase) { return PHASE_COLORS[phase] || "#6B88A8"; }
 
+/* ─── Decision Tree: node order + phase groups ────────────── */
+const NODE_ORDER = [
+  "start",
+  "phase1-start", "phase1-invalidate", "phase1-retest", "phase1-pass", "phase1-no-cause",
+  "phase2a-start", "phase2a-confirm", "phase2a-resolved", "phase2a-inconclusive",
+  "phase2b-start", "phase2b-cause-found", "phase2b-no-cause", "phase2b-further", "phase2b-reject",
+];
+const NODE_NUM = Object.fromEntries(NODE_ORDER.map((id, i) => [id, i + 1]));
+
+const PHASE_HEADERS = {
+  "start":        { label: "Initial Assessment", color: "#38BDF8", desc: "Confirm and document the OOS/OOT result before starting the investigation" },
+  "phase1-start": { label: "Phase 1 — Laboratory Investigation", color: "#34D399", desc: "Immediate laboratory investigation by the analyst (FDA 2006 Section IVA)" },
+  "phase2a-start":{ label: "Phase 2A — Expanded Laboratory", color: "#F59E0B", desc: "Additional testing of retained samples with a second analyst (Section IVB1)" },
+  "phase2b-start":{ label: "Phase 2B — Manufacturing Investigation", color: "#F472B6", desc: "Full batch record review and manufacturing investigation (Section IVB2)" },
+};
+
 /* ─── Tab 1: Decision Tree ────────────────────────────────── */
 function DecisionTreeTab() {
   const [currentId, setCurrentId] = useState("start");
   const [visited, setVisited] = useState([]);
-  const [animKey, setAnimKey] = useState(0);
-
-  const node = OOS_TREE[currentId];
 
   function navigate(targetId) {
-    if (!targetId) return;
+    if (!targetId || !OOS_TREE[targetId]) return;
     setVisited(prev => [...prev, currentId]);
     setCurrentId(targetId);
-    setAnimKey(k => k + 1);
+    setTimeout(() => {
+      document.getElementById(`oos-node-${targetId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
   }
 
-  function reset() {
-    setCurrentId("start");
-    setVisited([]);
-    setAnimKey(k => k + 1);
-  }
+  function reset() { setCurrentId("start"); setVisited([]); }
 
   function goBack() {
-    if (visited.length === 0) return;
+    if (!visited.length) return;
     const prev = [...visited];
     const last = prev.pop();
     setVisited(prev);
     setCurrentId(last);
-    setAnimKey(k => k + 1);
   }
 
-  const isResult = node.type === "result";
-  const pColor = phaseColor(node.phase);
 
   return (
     <div>
-      <SectionHeader
-        icon="🔍"
-        title="OOS Decision Tree"
-        subtitle="FDA 2006 OOS Guidance — Phase 1 laboratory investigation → Phase 2A expanded lab → Phase 2B manufacturing investigation"
-      />
-
-      {/* Path breadcrumb */}
-      {visited.length > 0 && (
-        <div style={{
-          display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap",
-          padding: "10px 14px", background: "var(--bg-raised)", border: "1px solid var(--border)",
-          borderRadius: 10, marginBottom: 20,
-        }}>
-          <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", marginRight: 4 }}>
-            Path:
-          </span>
-          {visited.map((vid, i) => {
-            const vNode = OOS_TREE[vid];
-            const vColor = phaseColor(vNode?.phase || "");
-            return (
-              <span key={vid} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <button
-                  onClick={() => {
-                    setVisited(visited.slice(0, i));
-                    setCurrentId(vid);
-                    setAnimKey(k => k + 1);
-                  }}
-                  style={{
-                    padding: "3px 10px", borderRadius: 14,
-                    border: `1.5px solid ${vColor}44`, background: vColor + "18",
-                    color: vColor, fontSize: 11, fontWeight: 700, cursor: "pointer",
-                  }}
-                >
-                  {vNode?.phase?.replace("Phase ", "P") || vid}
-                </button>
-                {i < visited.length - 1 && <span style={{ color: "var(--text-muted)", fontSize: 13 }}>›</span>}
-              </span>
-            );
-          })}
-          <span style={{ fontSize: 12, color: "var(--text-muted)" }}>›</span>
-          <span style={{
-            padding: "3px 10px", borderRadius: 14,
-            border: `1.5px solid ${pColor}66`, background: pColor + "22",
-            color: pColor, fontSize: 11, fontWeight: 700,
-          }}>
-            {node.phase?.replace("Phase ", "P")}
-          </span>
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h3 style={{ margin: "0 0 4px", fontSize: 18, fontWeight: 800, color: "var(--text-h)" }}>
+            OOS Decision Tree — FDA 2006 Guidance
+          </h3>
+          <p style={{ margin: 0, fontSize: 13, color: "var(--text-sec)" }}>
+            All {NODE_ORDER.length} nodes shown below. Click any node to focus it, then use YES / NO to navigate the investigation path.
+          </p>
         </div>
-      )}
-
-      {/* Node card */}
-      <div
-        key={animKey}
-        style={{
-          background: "var(--bg-card)",
-          border: `1.5px solid ${isResult ? (node.outcome === "pass" ? "#34D399" : "#F472B6") : "var(--border)"}`,
-          borderTop: `4px solid ${pColor}`,
-          borderRadius: 14, padding: 28, animation: "fadeUp 0.25s ease", marginBottom: 20,
-          boxShadow: isResult
-            ? `0 8px 32px ${node.outcome === "pass" ? "rgba(52,211,153,0.25)" : "rgba(244,114,182,0.25)"}`
-            : "0 4px 16px rgba(0,0,0,0.3)",
-        }}
-      >
-        {/* Phase badge + ref */}
-        <div style={{ marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{
-            display: "inline-block", padding: "4px 12px", borderRadius: 20,
-            background: pColor + "22", color: pColor, fontSize: 11, fontWeight: 800,
-            letterSpacing: "0.4px", border: `1.5px solid ${pColor}44`,
-          }}>
-            {node.phase}
-          </span>
-          {node.ref && <span style={{ fontSize: 11, color: "var(--text-muted)", fontStyle: "italic" }}>{node.ref}</span>}
+        <div style={{ display: "flex", gap: 8 }}>
+          {visited.length > 0 && (
+            <button
+              onClick={goBack}
+              style={{
+                padding: "8px 16px", borderRadius: 8, border: "1.5px solid var(--border)",
+                background: "transparent", color: "var(--text-sec)", fontSize: 13, fontWeight: 600, cursor: "pointer",
+              }}
+            >
+              ← Back
+            </button>
+          )}
+          <button
+            onClick={reset}
+            style={{
+              padding: "8px 16px", borderRadius: 8, border: "1.5px solid #F4727288",
+              background: "#F4727218", color: "#F47272", fontSize: 13, fontWeight: 700, cursor: "pointer",
+            }}
+          >
+            ↺ Restart
+          </button>
         </div>
+      </div>
 
-        {/* Result banner */}
-        {isResult && (
-          <div style={{
-            padding: "14px 18px", borderRadius: 10,
-            background: node.outcome === "pass" ? "#34D39920" : "#F472B620",
-            border: `1.5px solid ${node.outcome === "pass" ? "#34D39955" : "#F472B655"}`,
-            marginBottom: 18, display: "flex", alignItems: "center", gap: 12,
+      {/* Phase legend */}
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28 }}>
+        {Object.entries(PHASE_HEADERS).map(([, ph]) => (
+          <div key={ph.label} style={{
+            display: "flex", alignItems: "center", gap: 6,
+            padding: "5px 12px", borderRadius: 20,
+            background: ph.color + "18", border: `1px solid ${ph.color}44`,
           }}>
-            <span style={{ fontSize: 28 }}>{node.outcome === "pass" ? "✅" : "❌"}</span>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: 16, color: node.outcome === "pass" ? "#34D399" : "#F472B6", marginBottom: 2 }}>
-                {node.outcome === "pass" ? "INVESTIGATION RESOLVED — BATCH MAY PROCEED" : "BATCH REJECTED — OOS CONFIRMED"}
-              </div>
-              <div style={{ fontSize: 12, color: "var(--text-sec)" }}>
-                {node.outcome === "pass"
-                  ? "Document all findings. Apply CAPA if systemic issue. Close deviation."
-                  : "Mandatory CAPA required. Regulatory notification assessment. Complete all documentation."}
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: ph.color, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: ph.color }}>{ph.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Full tree — all nodes */}
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {NODE_ORDER.map((nodeId) => {
+          const n = OOS_TREE[nodeId];
+          if (!n) return null;
+          const isActive = nodeId === currentId;
+          const wasVisited = visited.includes(nodeId);
+          const isResult = n.type === "result";
+          const pc = phaseColor(n.phase);
+          const num = NODE_NUM[nodeId];
+
+          // Phase header divider
+          const phaseHeader = PHASE_HEADERS[nodeId];
+
+          // Outcome type styling
+          const outcomeColor = isResult
+            ? (n.outcome === "pass" ? "#34D399" : "#F87171")
+            : null;
+
+          return (
+            <div key={nodeId}>
+              {/* Phase divider */}
+              {phaseHeader && (
+                <div style={{
+                  display: "flex", alignItems: "center", gap: 12,
+                  margin: nodeId === "start" ? "0 0 12px" : "20px 0 12px",
+                  paddingBottom: 10, borderBottom: `2px solid ${phaseHeader.color}33`,
+                }}>
+                  <div style={{
+                    width: 12, height: 12, borderRadius: "50%",
+                    background: phaseHeader.color, flexShrink: 0,
+                    boxShadow: `0 0 8px ${phaseHeader.color}88`,
+                  }} />
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: 13, color: phaseHeader.color, letterSpacing: "0.3px" }}>
+                      {phaseHeader.label}
+                    </div>
+                    <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 1 }}>{phaseHeader.desc}</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Node card */}
+              <div
+                id={`oos-node-${nodeId}`}
+                onClick={() => { if (!isActive) { setVisited(prev => [...prev, currentId]); setCurrentId(nodeId); } }}
+                style={{
+                  display: "flex", gap: 0, marginBottom: 8, cursor: isActive ? "default" : "pointer",
+                  borderRadius: 12, overflow: "hidden",
+                  border: `1.5px solid ${isActive ? pc : wasVisited ? pc + "55" : "var(--border)"}`,
+                  boxShadow: isActive ? `0 4px 20px ${pc}33` : "none",
+                  transition: "all 0.2s",
+                  opacity: (!isActive && !wasVisited && nodeId !== "start") ? 0.65 : 1,
+                }}
+              >
+                {/* Left phase stripe + node number */}
+                <div style={{
+                  width: 48, flexShrink: 0,
+                  background: isResult ? (outcomeColor + "20") : (isActive ? pc + "22" : pc + "0C"),
+                  borderRight: `3px solid ${isResult ? outcomeColor : pc}`,
+                  display: "flex", flexDirection: "column", alignItems: "center",
+                  justifyContent: "flex-start", paddingTop: 16, gap: 4,
+                }}>
+                  <div style={{
+                    width: 26, height: 26, borderRadius: "50%",
+                    background: isResult ? (outcomeColor + "30") : (isActive ? pc + "33" : "var(--bg-raised)"),
+                    border: `2px solid ${isResult ? outcomeColor : (isActive ? pc : pc + "55")}`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 11, fontWeight: 800,
+                    color: isResult ? outcomeColor : (isActive ? pc : "var(--text-muted)"),
+                  }}>
+                    {num}
+                  </div>
+                  {wasVisited && !isActive && (
+                    <div style={{ fontSize: 10, color: pc, fontWeight: 700, marginTop: 2 }}>✓</div>
+                  )}
+                  {isActive && (
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: pc, marginTop: 2 }} />
+                  )}
+                </div>
+
+                {/* Node body */}
+                <div style={{
+                  flex: 1, padding: isActive ? "16px 20px" : "12px 18px",
+                  background: isActive ? "var(--bg-card)" : "var(--bg-raised)",
+                  transition: "all 0.2s",
+                }}>
+                  {/* Phase badge + ref */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+                    <span style={{
+                      padding: "2px 10px", borderRadius: 12,
+                      background: (isResult ? outcomeColor : pc) + "18",
+                      color: isResult ? outcomeColor : pc,
+                      fontSize: 10, fontWeight: 700, letterSpacing: "0.3px",
+                      border: `1px solid ${(isResult ? outcomeColor : pc) + "44"}`,
+                    }}>
+                      {isResult ? (n.outcome === "pass" ? "✅ RESOLVED" : "❌ REJECTED") : n.phase}
+                    </span>
+                    {n.ref && isActive && (
+                      <span style={{ fontSize: 10, color: "var(--text-muted)", fontStyle: "italic" }}>{n.ref}</span>
+                    )}
+                  </div>
+
+                  {/* Question */}
+                  <div style={{
+                    fontWeight: isActive ? 700 : 600,
+                    fontSize: isActive ? 15 : 13,
+                    color: isActive ? "var(--text-h)" : "var(--text-body)",
+                    lineHeight: 1.45,
+                    marginBottom: isActive ? 16 : 8,
+                    overflow: isActive ? "visible" : "hidden",
+                    display: isActive ? "block" : "-webkit-box",
+                    WebkitLineClamp: isActive ? "none" : 2,
+                    WebkitBoxOrient: "vertical",
+                  }}>
+                    {n.question}
+                  </div>
+
+                  {/* YES/NO path arrows — always visible when not active */}
+                  {!isActive && (
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                      {n.yes && (
+                        <button
+                          onClick={e => { e.stopPropagation(); navigate(n.yes); }}
+                          style={{
+                            padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
+                            background: "#34D39918", border: "1px solid #34D39944",
+                            color: "#34D399", cursor: "pointer",
+                          }}
+                        >
+                          YES → #{NODE_NUM[n.yes]}
+                        </button>
+                      )}
+                      {n.no && (
+                        <button
+                          onClick={e => { e.stopPropagation(); navigate(n.no); }}
+                          style={{
+                            padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
+                            background: "#F59E0B18", border: "1px solid #F59E0B44",
+                            color: "#F59E0B", cursor: "pointer",
+                          }}
+                        >
+                          NO → #{NODE_NUM[n.no]}
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Expanded detail — only for active node */}
+                  {isActive && (
+                    <div style={{ animation: "fadeUp 0.2s ease" }}>
+                      {/* Guidance */}
+                      <div style={{
+                        padding: "12px 16px", background: "var(--bg-raised)",
+                        border: "1px solid var(--border)", borderLeft: `3px solid ${pc}`,
+                        borderRadius: 8, fontSize: 13, color: "var(--text-sec)",
+                        lineHeight: 1.7, marginBottom: 10,
+                      }}>
+                        <strong style={{ color: "var(--text-h)", display: "block", marginBottom: 5, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                          Guidance
+                        </strong>
+                        {n.guidance}
+                      </div>
+
+                      {/* Example */}
+                      {n.example && (
+                        <div style={{
+                          padding: "10px 14px", background: "#A78BFA0C",
+                          border: "1px solid #A78BFA30", borderLeft: "3px solid #A78BFA",
+                          borderRadius: 8, fontSize: 12, color: "var(--text-sec)", lineHeight: 1.65, marginBottom: 16,
+                        }}>
+                          <strong style={{ color: "#A78BFA", display: "block", marginBottom: 4, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                            Real-World Example
+                          </strong>
+                          {n.example}
+                        </div>
+                      )}
+
+                      {/* YES / NO action buttons */}
+                      {!isResult && (
+                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                          {n.yes && (
+                            <button
+                              onClick={() => navigate(n.yes)}
+                              style={{
+                                flex: 1, minWidth: 160, padding: "11px 16px", borderRadius: 10,
+                                border: "1.5px solid #34D39966",
+                                background: "linear-gradient(135deg, #34D39922, #34D39910)",
+                                color: "#34D399", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                                textAlign: "center", transition: "all 0.15s",
+                              }}
+                              onMouseEnter={e => e.currentTarget.style.background = "#34D39935"}
+                              onMouseLeave={e => e.currentTarget.style.background = "linear-gradient(135deg, #34D39922, #34D39910)"}
+                            >
+                              <span style={{ fontSize: 14 }}>✓</span><br />
+                              <span style={{ fontSize: 12 }}>{n.yesLabel || "Yes"}</span>
+                            </button>
+                          )}
+                          {n.no && (
+                            <button
+                              onClick={() => navigate(n.no)}
+                              style={{
+                                flex: 1, minWidth: 160, padding: "11px 16px", borderRadius: 10,
+                                border: "1.5px solid #F59E0B66",
+                                background: "linear-gradient(135deg, #F59E0B18, #F59E0B0A)",
+                                color: "#F59E0B", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                                textAlign: "center", transition: "all 0.15s",
+                              }}
+                              onMouseEnter={e => e.currentTarget.style.background = "#F59E0B28"}
+                              onMouseLeave={e => e.currentTarget.style.background = "linear-gradient(135deg, #F59E0B18, #F59E0B0A)"}
+                            >
+                              <span style={{ fontSize: 14 }}>✗</span><br />
+                              <span style={{ fontSize: 12 }}>{n.noLabel || "No"}</span>
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Outcome result banner */}
+                      {isResult && (
+                        <div style={{
+                          padding: "14px 18px", borderRadius: 10,
+                          background: n.outcome === "pass" ? "#34D39918" : "#F8717118",
+                          border: `1.5px solid ${n.outcome === "pass" ? "#34D39955" : "#F8717155"}`,
+                          display: "flex", alignItems: "center", gap: 12,
+                        }}>
+                          <span style={{ fontSize: 26 }}>{n.outcome === "pass" ? "✅" : "❌"}</span>
+                          <div>
+                            <div style={{ fontWeight: 800, fontSize: 14, color: n.outcome === "pass" ? "#34D399" : "#F87171", marginBottom: 2 }}>
+                              {n.outcome === "pass" ? "INVESTIGATION RESOLVED — BATCH MAY PROCEED" : "BATCH REJECTED — OOS CONFIRMED"}
+                            </div>
+                            <div style={{ fontSize: 12, color: "var(--text-sec)" }}>
+                              {n.outcome === "pass"
+                                ? "Document all findings. Apply CAPA if systemic issue. Close deviation. ↺ Click Restart to investigate a new path."
+                                : "Mandatory CAPA required. Regulatory notification assessment. Complete documentation. ↺ Click Restart to investigate a new path."}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Question */}
-        <h3 style={{ margin: "0 0 14px", fontSize: isResult ? 16 : 17, fontWeight: 700, color: "var(--text-h)", lineHeight: 1.45 }}>
-          {node.question}
-        </h3>
-
-        {/* Guidance */}
-        <div style={{
-          padding: "14px 16px", background: "var(--bg-raised)", border: "1px solid var(--border)",
-          borderLeft: `3px solid ${pColor}`, borderRadius: 8, fontSize: 13,
-          color: "var(--text-sec)", lineHeight: 1.7, marginBottom: node.example ? 12 : 0,
-        }}>
-          <strong style={{ color: "var(--text-h)", display: "block", marginBottom: 6, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.4px" }}>
-            Guidance
-          </strong>
-          {node.guidance}
-        </div>
-
-        {/* Example */}
-        {node.example && (
-          <div style={{
-            padding: "12px 16px", background: "#A78BFA10",
-            border: "1px solid #A78BFA33", borderLeft: "3px solid #A78BFA",
-            borderRadius: 8, fontSize: 12, color: "var(--text-sec)", lineHeight: 1.65,
-          }}>
-            <strong style={{ color: "#A78BFA", display: "block", marginBottom: 5, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.4px" }}>
-              Real-World Example
-            </strong>
-            {node.example}
-          </div>
-        )}
-      </div>
-
-      {/* Action buttons */}
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
-        {!isResult && node.yes && (
-          <button
-            onClick={() => navigate(node.yes)}
-            style={{
-              flex: 1, minWidth: 200, padding: "13px 20px", borderRadius: 10,
-              border: "1.5px solid #34D39955",
-              background: "linear-gradient(135deg, #34D39920, #34D39910)",
-              color: "#34D399", fontWeight: 700, fontSize: 14, cursor: "pointer",
-              transition: "all 0.18s ease", textAlign: "center",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#34D39930"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "linear-gradient(135deg, #34D39920, #34D39910)"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >
-            <div style={{ fontSize: 18, marginBottom: 2 }}>✓</div>
-            <div>{node.yesLabel || "Yes"}</div>
-          </button>
-        )}
-        {!isResult && node.no && (
-          <button
-            onClick={() => navigate(node.no)}
-            style={{
-              flex: 1, minWidth: 200, padding: "13px 20px", borderRadius: 10,
-              border: "1.5px solid #F59E0B55",
-              background: "linear-gradient(135deg, #F59E0B18, #F59E0B10)",
-              color: "#F59E0B", fontWeight: 700, fontSize: 14, cursor: "pointer",
-              transition: "all 0.18s ease", textAlign: "center",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#F59E0B28"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "linear-gradient(135deg, #F59E0B18, #F59E0B10)"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >
-            <div style={{ fontSize: 18, marginBottom: 2 }}>✗</div>
-            <div>{node.noLabel || "No"}</div>
-          </button>
-        )}
-      </div>
-
-      {/* Nav controls */}
-      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        {visited.length > 0 && (
-          <button
-            onClick={goBack}
-            style={{
-              padding: "9px 18px", borderRadius: 8, border: "1.5px solid var(--border)",
-              background: "transparent", color: "var(--text-sec)", fontSize: 13,
-              fontWeight: 600, cursor: "pointer",
-            }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--text-sec)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
-          >
-            ← Back
-          </button>
-        )}
-        <button
-          onClick={reset}
-          style={{
-            padding: "9px 18px", borderRadius: 8, border: "1.5px solid #F4727288",
-            background: "#F4727218", color: "#F47272", fontSize: 13, fontWeight: 700, cursor: "pointer",
-          }}
-          onMouseEnter={e => e.currentTarget.style.background = "#F4727230"}
-          onMouseLeave={e => e.currentTarget.style.background = "#F4727218"}
-        >
-          ↺ Restart
-        </button>
-        <div style={{
-          marginLeft: "auto", padding: "9px 14px", borderRadius: 8,
-          background: "var(--bg-raised)", border: "1px solid var(--border)",
-          fontSize: 12, color: "var(--text-muted)", display: "flex", alignItems: "center", gap: 6,
-        }}>
-          Step {visited.length + 1}
-          {isResult && (
-            <span style={{
-              marginLeft: 6, padding: "2px 8px", borderRadius: 10,
-              background: node.outcome === "pass" ? "#34D39920" : "#F472B620",
-              color: node.outcome === "pass" ? "#34D399" : "#F472B6",
-              fontWeight: 700, fontSize: 11,
-            }}>
-              {node.outcome === "pass" ? "RESOLVED" : "REJECTED"}
-            </span>
-          )}
-        </div>
+          );
+        })}
       </div>
 
       {/* Regulatory callout */}
       <div style={{
-        marginTop: 28, padding: "14px 18px", background: "var(--bg-raised)",
+        marginTop: 24, padding: "14px 18px", background: "var(--bg-raised)",
         border: "1px solid var(--border)", borderLeft: "4px solid #38BDF8",
         borderRadius: 10, fontSize: 12, color: "var(--text-sec)", lineHeight: 1.65,
       }}>
         <strong style={{ color: "var(--text-h)" }}>Key regulatory principle:</strong> Per FDA 2006 OOS Guidance and <em>United States v. Barr Laboratories</em> (1993),
         an unexplained OOS result that cannot be traced to a confirmed, documented laboratory error must be treated as a real OOS.
-        A batch <em>cannot</em> be released solely on the basis of passing retests when the original OOS cannot be explained.
-        Phase 1 invalidation requires confirmed, documented cause — suspicion alone is insufficient.
+        Phase 1 invalidation requires a confirmed, documented cause — suspicion alone is insufficient.
       </div>
     </div>
   );
