@@ -13,8 +13,6 @@ import { CAREER_PATHS, INTERVIEW_QUESTIONS, SKILLS_MATRIX } from "./career-data"
 import { QTPP, CQA_LIST, CPP_LIST, FMEA_TABLE, DOE_STUDIES, DESIGN_SPACE, CONTROL_STRATEGY, COA_ELEMENTS } from "./qbd-data";
 import { CASE_STUDIES } from "./case-study-data";
 import { COMPENDIAL_METHODS } from "./compendial-data";
-import { EXCIPIENTS } from "./excipient-data";
-import { STABILITY_CONDITIONS } from "./stability-data";
 
 // ── Level colors ──────────────────────────────────────────────
 const LC = { Foundational:"#22D3EE", Intermediate:"#34D399", Advanced:"#F59E0B", Expert:"#F472B6" };
@@ -118,77 +116,109 @@ const FilterBtn = ({ label, active, color, onClick }) => (
 function Dashboard({ setView }) {
   const allPipelineQ = PIPELINE.flatMap(s => s.questions);
   const allDomainQ = DOMAINS.flatMap(d => d.questions);
-  const dcounts = l => allDomainQ.filter(q => q.level===l).length;
-
-  const stats = [
-    { label:"Pipeline Stages",     value:PIPELINE.length,            icon:"🗺️", color:"#C084FC", view:"pipeline"  },
-    { label:"Exam Questions",      value:allPipelineQ.length + allDomainQ.length, icon:"🎯", color:"#38BDF8", view:"exam" },
-    { label:"Analytical Methods",  value:ANALYTICAL_METHODS.length,  icon:"🔬", color:"#22D3EE", view:"methods"   },
-    { label:"ICH Guidelines",      value:ICH_GUIDELINES.length,      icon:"📜", color:"#A78BFA", view:"ich"       },
-    { label:"Compendial Methods",  value:COMPENDIAL_METHODS.length,  icon:"📗", color:"#34D399", view:"compendial"},
-    { label:"Case Studies",        value:CASE_STUDIES.length,        icon:"📰", color:"#F472B6", view:"cases"     },
-    { label:"Excipients",          value:EXCIPIENTS.length,          icon:"⚗️", color:"#60A5FA", view:"excipient" },
-    { label:"Stability Conditions",value:STABILITY_CONDITIONS.length, icon:"🧊", color:"#F59E0B", view:"stability" },
-  ];
 
   const [randQ, setRandQ] = useState(null);
   const [pipeOffset, setPipeOffset] = useState(0);
   const [hoveredStage, setHoveredStage] = useState(null);
-  const PIPE_CARD_W = 120; // card width (110px) + gap (10px)
-  const PIPE_MAX = PIPELINE.length - 6; // max offset so last 6+ cards always reachable
+  const [exploreTab, setExploreTab] = useState("All");
+  const PIPE_CARD_W = 120;
+  const PIPE_MAX = PIPELINE.length - 6;
   const random = () => {
     const all = [...allPipelineQ, ...allDomainQ];
-    setRandQ(all[Math.floor(Math.random()*all.length)]);
+    setRandQ(all[Math.floor(Math.random() * all.length)]);
   };
 
-  const coreCards = [
-    { view:"pipeline",  icon:"🗺️", label:"Pipeline Explorer",      desc:"16-stage biologic development lifecycle", color:"#C084FC" },
-    { view:"methods",   icon:"🔬", label:"Analytical Methods",      desc:"20 detailed assay cards with specs",       color:"#22D3EE" },
-    { view:"qbd",       icon:"⚗️", label:"QbD / CQA / CPP / COA",  desc:"Quality by Design — FMEA, design space",  color:"#F472B6" },
-    { view:"ctd",       icon:"📂", label:"CTD Navigator",           desc:"Modules 1–5 complete CMC reference",       color:"#34D399" },
-    { view:"timeline",  icon:"📅", label:"CMC Timeline",            desc:"Phase-by-phase CMC deliverables",          color:"#F59E0B" },
-    { view:"domains",   icon:"📚", label:"Domain Q-Bank",           desc:"100 questions across 10 domains",          color:"#38BDF8" },
-    { view:"exam",      icon:"🎯", label:"Exam Mode",               desc:"Test yourself with SM-2 spaced repetition",color:"#F472B6" },
-    { view:"ich",       icon:"📜", label:"ICH Guidelines",          desc:"9 core quality guidelines decoded",        color:"#A78BFA" },
-    { view:"career",    icon:"🚀", label:"Career & Interviews",     desc:"Career ladder, salaries, 18 expert Q&As",  color:"#60A5FA" },
-    { view:"notes",     icon:"📝", label:"My Notes",                desc:"Capture and organize your CMC notes",      color:"#FB923C" },
-    { view:"glossary",  icon:"📖", label:"CMC Glossary",            desc:"50 essential terms defined",               color:"#34D399" },
+  const keyStats = [
+    { label:"Exam Questions",     value: allPipelineQ.length + allDomainQ.length, icon:"🎯", color:"#38BDF8", view:"exam" },
+    { label:"Analytical Methods", value: ANALYTICAL_METHODS.length,               icon:"🔬", color:"#22D3EE", view:"methods" },
+    { label:"Guidelines & Refs",  value: ICH_GUIDELINES.length + COMPENDIAL_METHODS.length, icon:"📜", color:"#A78BFA", view:"ich" },
+    { label:"Case Studies",       value: CASE_STUDIES.length,                     icon:"📰", color:"#F472B6", view:"cases" },
   ];
-  const advancedCards = [
-    { view:"stability", icon:"🧊", label:"Stability Studies",       desc:"ICH Q1A(R2) conditions, zones & T90 calc", color:"#38BDF8" },
-    { view:"oos",       icon:"🚨", label:"OOS/OOT Investigation",   desc:"FDA 2006 interactive decision tree",       color:"#F59E0B" },
-    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation scenarios", color:"#34D399" },
-    { view:"cases",     icon:"📰", label:"Case Studies",            desc:"6 landmark CMC failures & lessons",        color:"#F472B6" },
-    { view:"compendial",icon:"📗", label:"Compendial Reference",    desc:"USP/EP/JP/ICH cross-reference guide",      color:"#A78BFA" },
-    { view:"excipient", icon:"🧫", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",    color:"#60A5FA" },
-    { view:"pathway",   icon:"🎓", label:"Learning Pathways",       desc:"30/60/90-day plans per career level",      color:"#FB923C" },
-    { view:"progress",  icon:"📊", label:"My Progress",             desc:"SM-2 queue, activity & badges",            color:"#C084FC" },
+
+  const allCards = [
+    { view:"pipeline",  icon:"🗺️", label:"Pipeline Explorer",      desc:"16-stage biologic development lifecycle", color:"#C084FC", group:"Learn" },
+    { view:"timeline",  icon:"📅", label:"CMC Timeline",            desc:"Phase-by-phase CMC deliverables",         color:"#F59E0B", group:"Learn" },
+    { view:"domains",   icon:"📚", label:"Domain Q-Bank",           desc:"100 questions across 10 domains",         color:"#38BDF8", group:"Learn" },
+    { view:"ich",       icon:"📜", label:"ICH Guidelines",          desc:"9 core quality guidelines decoded",       color:"#A78BFA", group:"Learn" },
+    { view:"glossary",  icon:"📖", label:"CMC Glossary",            desc:"50 essential terms defined",              color:"#34D399", group:"Learn" },
+    { view:"methods",   icon:"🔬", label:"Analytical Methods",      desc:"20 detailed assay cards with specs",      color:"#22D3EE", group:"Science" },
+    { view:"qbd",       icon:"⚗️", label:"QbD / CQA / CPP",        desc:"Quality by Design — FMEA, design space", color:"#F472B6", group:"Science" },
+    { view:"stability", icon:"🧊", label:"Stability Studies",       desc:"ICH Q1A(R2) conditions, zones & T90",    color:"#38BDF8", group:"Science" },
+    { view:"compendial",icon:"📗", label:"Compendial Reference",    desc:"USP/EP/JP/ICH cross-reference guide",     color:"#A78BFA", group:"Science" },
+    { view:"excipient", icon:"🧫", label:"Excipient Compatibility", desc:"18 excipients, incompatibility matrix",   color:"#60A5FA", group:"Science" },
+    { view:"ctd",       icon:"📂", label:"CTD Navigator",           desc:"Modules 1–5 complete CMC reference",      color:"#34D399", group:"Tools" },
+    { view:"oos",       icon:"🚨", label:"OOS/OOT Investigation",   desc:"FDA 2006 interactive decision tree",      color:"#F59E0B", group:"Tools" },
+    { view:"batch",     icon:"📋", label:"Batch Record Simulator",  desc:"Sterile mAb BPR with deviation scenarios",color:"#34D399", group:"Tools" },
+    { view:"cases",     icon:"📰", label:"Case Studies",            desc:"6 landmark CMC failures & lessons",       color:"#F472B6", group:"Tools" },
+    { view:"exam",      icon:"🎯", label:"Exam Mode",               desc:"SM-2 spaced repetition quizzing",         color:"#F472B6", group:"Practice" },
+    { view:"notes",     icon:"📝", label:"My Notes",                desc:"Capture and organise your CMC notes",     color:"#FB923C", group:"Practice" },
+    { view:"career",    icon:"🚀", label:"Career & Interviews",     desc:"Ladder, salaries & 18 expert Q&As",       color:"#60A5FA", group:"Career" },
+    { view:"pathway",   icon:"🎓", label:"Learning Pathways",       desc:"30/60/90-day plans per career level",     color:"#FB923C", group:"Career" },
+    { view:"progress",  icon:"📊", label:"My Progress",             desc:"SM-2 queue, activity & milestone badges", color:"#C084FC", group:"Career" },
   ];
+  const tabs = ["All", "Learn", "Science", "Tools", "Practice", "Career"];
+  const visibleCards = exploreTab === "All" ? allCards : allCards.filter(c => c.group === exploreTab);
 
   return (
-    <div style={{ maxWidth:1000, margin:"0 auto", padding:"36px 20px" }}>
-      {/* Hero */}
-      <div style={{ textAlign:"center", marginBottom:48 }}>
-        <div className="float-emoji" style={{ fontSize:56, marginBottom:12 }}>🧬</div>
-        <h1 className="gradient-text" style={{ fontSize:38, fontWeight:900, margin:0, letterSpacing:"-0.02em" }}>CMC App</h1>
-        <p style={{ color:"var(--text-sec)", marginTop:10, fontSize:17, maxWidth:520, margin:"10px auto 0" }}>
-          Your complete Chemistry, Manufacturing & Controls career development toolkit
+    <div style={{ maxWidth: 1020, margin: "0 auto", padding: "32px 20px" }}>
+
+      {/* ── Hero Banner ── */}
+      <div style={{
+        background: "linear-gradient(135deg, #1E1B4B 0%, #2D1B69 50%, #1a1a3e 100%)",
+        borderRadius: 20, border: "1px solid #4C1D9544",
+        padding: "48px 40px", marginBottom: 28,
+        textAlign: "center", position: "relative", overflow: "hidden",
+      }}>
+        <div style={{ position:"absolute", top:-50, right:-50, width:220, height:220, borderRadius:"50%", background:"#7C3AED12", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", bottom:-70, left:-50, width:260, height:260, borderRadius:"50%", background:"#38BDF810", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", top:"30%", left:"10%", width:6, height:6, borderRadius:"50%", background:"#A78BFA60" }}/>
+        <div style={{ position:"absolute", top:"20%", right:"15%", width:4, height:4, borderRadius:"50%", background:"#38BDF860" }}/>
+        <div className="float-emoji" style={{ fontSize:52, marginBottom:16 }}>🧬</div>
+        <h1 style={{ fontSize:36, fontWeight:900, margin:"0 0 12px", letterSpacing:"-0.02em",
+          background:"linear-gradient(135deg,#C4B5FD,#A78BFA,#38BDF8)",
+          WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+          CMC App
+        </h1>
+        <p style={{ color:"#C4B5FD88", fontSize:16, margin:"0 auto 28px", maxWidth:520, lineHeight:1.6 }}>
+          Your complete Chemistry, Manufacturing &amp; Controls career development toolkit — from pipeline to launch
         </p>
+        <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
+          <button onClick={() => setView("exam")}
+            style={{ background:"linear-gradient(135deg,#7C3AED,#A78BFA)", color:"#fff", border:"none",
+              borderRadius:10, padding:"12px 28px", cursor:"pointer", fontWeight:800, fontSize:14,
+              boxShadow:"0 4px 20px #7C3AED44", transition:"transform 0.18s, box-shadow 0.18s" }}
+            onMouseEnter={e => { e.currentTarget.style.transform="scale(1.05)"; e.currentTarget.style.boxShadow="0 6px 28px #7C3AED66"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.boxShadow="0 4px 20px #7C3AED44"; }}>
+            🎯 Start Exam Mode
+          </button>
+          <button onClick={() => setView("pipeline")}
+            style={{ background:"transparent", color:"#A78BFA", border:"1px solid #A78BFA55",
+              borderRadius:10, padding:"12px 28px", cursor:"pointer", fontWeight:700, fontSize:14, transition:"all 0.18s" }}
+            onMouseEnter={e => { e.currentTarget.style.background="#A78BFA18"; e.currentTarget.style.borderColor="#A78BFA"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#A78BFA55"; }}>
+            🗺️ Explore Pipeline
+          </button>
+          <button onClick={() => setView("progress")}
+            style={{ background:"transparent", color:"#38BDF8", border:"1px solid #38BDF855",
+              borderRadius:10, padding:"12px 28px", cursor:"pointer", fontWeight:700, fontSize:14, transition:"all 0.18s" }}
+            onMouseEnter={e => { e.currentTarget.style.background="#38BDF818"; e.currentTarget.style.borderColor="#38BDF8"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#38BDF855"; }}>
+            📊 My Progress
+          </button>
+        </div>
       </div>
 
-      {/* Stat cards */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:14, marginBottom:36 }}>
-        {stats.map(s => (
-          <button key={s.label} onClick={() => setView(s.view)} className="stat-card card-hover"
-            style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:"20px 14px",
-              textAlign:"center", cursor:"pointer", borderTop:`3px solid ${s.color}`,
-              transition:"all 0.22s cubic-bezier(0.34,1.56,0.64,1)" }}
-            onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 8px 24px ${s.color}20`; }}
-            onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; }}>
-            <div style={{ fontSize:26, marginBottom:6 }}>{s.icon}</div>
-            <div style={{ fontSize:30, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
-            <div style={{ color:"var(--text-sec)", fontSize:12, marginTop:6, lineHeight:1.4 }}>{s.label}</div>
-            <div style={{ color:s.color, fontSize:9, marginTop:6, fontWeight:800, letterSpacing:"0.06em", opacity:0.7 }}>EXPLORE →</div>
+      {/* ── 4 Key Stats ── */}
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:14, marginBottom:28 }}>
+        {keyStats.map(s => (
+          <button key={s.label} onClick={() => setView(s.view)}
+            style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:"22px 16px",
+              textAlign:"center", cursor:"pointer", borderTop:`3px solid ${s.color}`, transition:"all 0.22s" }}
+            onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 8px 24px ${s.color}25`; e.currentTarget.style.transform="translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; e.currentTarget.style.transform="none"; }}>
+            <div style={{ fontSize:28, marginBottom:8 }}>{s.icon}</div>
+            <div style={{ fontSize:34, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
+            <div style={{ color:"var(--text-sec)", fontSize:12, marginTop:8, lineHeight:1.4 }}>{s.label}</div>
           </button>
         ))}
       </div>
@@ -312,61 +342,40 @@ function Dashboard({ setView }) {
         </div>
       </div>
 
-      {/* Level breakdown */}
-      <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:20, marginBottom:28 }}>
-        <h3 style={{ color:"var(--text-h)", margin:"0 0 14px", fontSize:15, fontWeight:800 }}>📊 Domain Q-Bank by Difficulty</h3>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10 }}>
-          {["Foundational","Intermediate","Advanced","Expert"].map(l => (
-            <div key={l} style={{ textAlign:"center", background:"var(--bg-surface)", borderRadius:10, padding:14,
-              border:`1px solid ${LC[l]}44`, transition:"all 0.2s" }}
-              onMouseEnter={e => e.currentTarget.style.borderColor=LC[l]}
-              onMouseLeave={e => e.currentTarget.style.borderColor=LC[l]+"44"}
-            >
-              <div style={{ fontSize:26, fontWeight:900, color:LC[l] }}>{dcounts(l)}</div>
-              <div style={{ color:"var(--text-sec)", fontSize:11, marginTop:4, fontWeight:600 }}>{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Core curriculum cards */}
-      <div style={{ marginBottom:32 }}>
+      {/* ── Explore All Sections ── */}
+      <div style={{ marginBottom:28 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>CORE CURRICULUM</span>
+          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>EXPLORE</span>
           <div style={{ flex:1, height:1, background:"var(--border)" }}/>
+          <span style={{ color:"var(--text-faint)", fontSize:11 }}>{visibleCards.length} sections</span>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:12 }}>
-          {coreCards.map(n => (
-            <button key={n.view} onClick={() => setView(n.view)} className="card-hover"
-              style={{ background:"var(--bg-card)", border:`1px solid var(--border)`, borderRadius:14, padding:18,
-                cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}` }}
-              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 4px 20px ${n.color}18`; }}
-              onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; }}>
-              <div style={{ fontSize:24, marginBottom:8 }}>{n.icon}</div>
-              <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:13, marginBottom:4 }}>{n.label}</div>
-              <div style={{ color:"var(--text-muted)", fontSize:11, lineHeight:1.5 }}>{n.desc}</div>
+        {/* Tab bar */}
+        <div style={{ display:"flex", gap:6, marginBottom:16, flexWrap:"wrap" }}>
+          {tabs.map(tab => (
+            <button key={tab} onClick={() => setExploreTab(tab)}
+              style={{
+                background: exploreTab === tab ? "var(--accent)" : "var(--bg-raised)",
+                color: exploreTab === tab ? "#fff" : "var(--text-sec)",
+                border: `1px solid ${exploreTab === tab ? "var(--accent)" : "var(--border)"}`,
+                borderRadius: 20, padding: "5px 16px", cursor: "pointer",
+                fontWeight: exploreTab === tab ? 700 : 500, fontSize: 12, transition: "all 0.18s",
+              }}>
+              {tab}
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Advanced tools cards */}
-      <div style={{ marginBottom:28 }}>
-        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-          <span style={{ color:"var(--text-faint)", fontSize:11, fontWeight:800, letterSpacing:"0.08em" }}>ADVANCED TOOLS</span>
-          <div style={{ flex:1, height:1, background:"var(--border)" }}/>
-          <span style={{ background:"#A78BFA22", color:"#A78BFA", borderRadius:20, padding:"2px 10px",
-            fontSize:10, fontWeight:800, border:"1px solid #A78BFA44" }}>NEW</span>
-        </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:12 }}>
-          {advancedCards.map(n => (
-            <button key={n.view} onClick={() => setView(n.view)} className="card-hover"
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:12 }}>
+          {visibleCards.map(n => (
+            <button key={n.view} onClick={() => setView(n.view)}
               style={{ background:"var(--bg-card)", border:`1px solid var(--border)`, borderRadius:14, padding:18,
-                cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}`,
-                position:"relative" }}
-              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 4px 20px ${n.color}18`; }}
-              onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; }}>
-              <div style={{ fontSize:24, marginBottom:8 }}>{n.icon}</div>
+                cursor:"pointer", textAlign:"left", borderTop:`3px solid ${n.color}`, transition:"all 0.18s" }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 4px 20px ${n.color}20`; e.currentTarget.style.transform="translateY(-2px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; e.currentTarget.style.transform="none"; }}>
+              <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:8 }}>
+                <span style={{ fontSize:24 }}>{n.icon}</span>
+                <span style={{ background:`${n.color}18`, color:n.color, borderRadius:6, padding:"2px 7px",
+                  fontSize:9, fontWeight:800, border:`1px solid ${n.color}33` }}>{n.group}</span>
+              </div>
               <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:13, marginBottom:4 }}>{n.label}</div>
               <div style={{ color:"var(--text-muted)", fontSize:11, lineHeight:1.5 }}>{n.desc}</div>
             </button>
@@ -377,9 +386,12 @@ function Dashboard({ setView }) {
       {/* Random question */}
       <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:22 }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom: randQ ? 16 : 0 }}>
-          <h3 style={{ color:"var(--text-h)", margin:0, fontSize:15, fontWeight:800 }}>🎲 Random Question</h3>
+          <div>
+            <h3 style={{ color:"var(--text-h)", margin:"0 0 2px", fontSize:15, fontWeight:800 }}>🎲 Random Question</h3>
+            <p style={{ color:"var(--text-muted)", margin:0, fontSize:11 }}>Test your knowledge on a random CMC topic</p>
+          </div>
           <button onClick={random}
-            style={{ background:"var(--accent)", color:"white", border:"none", borderRadius:8, padding:"8px 18px",
+            style={{ background:"var(--accent)", color:"white", border:"none", borderRadius:8, padding:"9px 20px",
               cursor:"pointer", fontWeight:700, fontSize:13, transition:"opacity 0.2s, transform 0.15s" }}
             onMouseEnter={e => { e.currentTarget.style.opacity="0.85"; e.currentTarget.style.transform="scale(1.03)"; }}
             onMouseLeave={e => { e.currentTarget.style.opacity="1"; e.currentTarget.style.transform="scale(1)"; }}>
@@ -2525,6 +2537,7 @@ export default function App() {
   const [, setMobileMenuOpen] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [openGroup, setOpenGroup] = useState(null);
 
   const toggleTheme = () => setDarkMode(d => {
     const next = !d;
@@ -2532,27 +2545,36 @@ export default function App() {
     return next;
   });
 
-  const NAV = [
-    { id:"dashboard", icon:"🏠", label:"Home" },
-    { id:"pipeline",  icon:"🗺️", label:"Pipeline" },
-    { id:"methods",   icon:"🔬", label:"Methods" },
-    { id:"qbd",       icon:"⚗️", label:"QbD/CQA" },
-    { id:"ctd",       icon:"📂", label:"CTD" },
-    { id:"timeline",  icon:"📅", label:"Timeline" },
-    { id:"domains",   icon:"📚", label:"Domains" },
-    { id:"exam",      icon:"🎯", label:"Exam" },
-    { id:"ich",       icon:"📜", label:"ICH" },
-    { id:"career",    icon:"🚀", label:"Career" },
-    { id:"notes",     icon:"📝", label:"Notes" },
-    { id:"glossary",  icon:"📖", label:"Glossary" },
-    { id:"stability", icon:"🧊", label:"Stability" },
-    { id:"oos",       icon:"🚨", label:"OOS/OOT" },
-    { id:"batch",     icon:"📋", label:"Batch Sim" },
-    { id:"cases",     icon:"📰", label:"Case Studies" },
-    { id:"compendial",icon:"📗", label:"Compendial" },
-    { id:"excipient", icon:"🧫", label:"Excipients" },
-    { id:"pathway",   icon:"🎓", label:"Learning Path" },
-    { id:"progress",  icon:"📊", label:"My Progress" },
+  const NAV_GROUPS = [
+    { id:"learn",    icon:"📚", label:"Learn",    color:"#38BDF8", items:[
+      { id:"pipeline",  icon:"🗺️", label:"Pipeline Explorer" },
+      { id:"timeline",  icon:"📅", label:"CMC Timeline" },
+      { id:"domains",   icon:"📚", label:"Domain Q-Bank" },
+      { id:"ich",       icon:"📜", label:"ICH Guidelines" },
+      { id:"glossary",  icon:"📖", label:"CMC Glossary" },
+    ]},
+    { id:"science",  icon:"🔬", label:"Science",  color:"#22D3EE", items:[
+      { id:"methods",   icon:"🔬", label:"Analytical Methods" },
+      { id:"qbd",       icon:"⚗️", label:"QbD / CQA / CPP" },
+      { id:"stability", icon:"🧊", label:"Stability Studies" },
+      { id:"compendial",icon:"📗", label:"Compendial Reference" },
+      { id:"excipient", icon:"🧫", label:"Excipient Compatibility" },
+    ]},
+    { id:"tools",    icon:"🛠️", label:"Tools",    color:"#F59E0B", items:[
+      { id:"ctd",       icon:"📂", label:"CTD Navigator" },
+      { id:"oos",       icon:"🚨", label:"OOS/OOT Investigation" },
+      { id:"batch",     icon:"📋", label:"Batch Record Simulator" },
+      { id:"cases",     icon:"📰", label:"Case Studies" },
+    ]},
+    { id:"practice", icon:"🎯", label:"Practice", color:"#F472B6", items:[
+      { id:"exam",      icon:"🎯", label:"Exam Mode" },
+      { id:"notes",     icon:"📝", label:"My Notes" },
+    ]},
+    { id:"career",   icon:"🚀", label:"Career",   color:"#60A5FA", items:[
+      { id:"career",    icon:"🚀", label:"Career & Interviews" },
+      { id:"pathway",   icon:"🎓", label:"Learning Pathways" },
+      { id:"progress",  icon:"📊", label:"My Progress" },
+    ]},
   ];
 
   const navigate = (id) => {
@@ -2572,44 +2594,100 @@ export default function App() {
       style={{ minHeight:"100vh", background:"var(--bg-base)", fontFamily:"system-ui,sans-serif", color:"var(--text-body)" }}>
 
       {/* ── Navigation ── */}
+      {openGroup && (
+        <div onClick={() => setOpenGroup(null)}
+          style={{ position:"fixed", inset:0, zIndex:198 }} />
+      )}
       <nav className="main-nav"
         style={{ background:"var(--nav-bg)", borderBottom:"1px solid var(--border)",
-          padding:"0 16px", display:"flex", alignItems:"center", gap:2,
-          position:"sticky", top:0, zIndex:200, height:52,
-          boxShadow:"0 1px 12px rgba(0,0,0,0.15)" }}>
+          padding:"0 16px", display:"flex", alignItems:"center", gap:4,
+          position:"sticky", top:0, zIndex:200, height:56,
+          boxShadow:"0 2px 16px rgba(0,0,0,0.18)" }}>
 
-        <button onClick={() => navigate("dashboard")} className="logo-btn"
-          style={{ display:"flex", alignItems:"center", gap:7, background:"none", border:"none",
-            cursor:"pointer", padding:"4px 8px 4px 0", marginRight:4, flexShrink:0 }}>
+        {/* Logo */}
+        <button onClick={() => { navigate("dashboard"); setOpenGroup(null); }} className="logo-btn"
+          style={{ display:"flex", alignItems:"center", gap:8, background:"none", border:"none",
+            cursor:"pointer", padding:"4px 12px 4px 0", marginRight:8, flexShrink:0,
+            borderRight:"1px solid var(--border)" }}>
           <DNALogo/>
-          <span style={{ color:"#A78BFA", fontWeight:900, fontSize:15, whiteSpace:"nowrap", letterSpacing:"-0.01em" }}>
-            Yash Kacha
-          </span>
+          <div style={{ textAlign:"left" }}>
+            <div style={{ color:"#A78BFA", fontWeight:900, fontSize:14, whiteSpace:"nowrap", lineHeight:1.1 }}>
+              Yash Kacha
+            </div>
+            <div style={{ color:"var(--text-faint)", fontSize:9, fontWeight:600, letterSpacing:"0.06em" }}>
+              CMC APP
+            </div>
+          </div>
         </button>
 
-        {/* Nav items — scrollable */}
-        <div style={{ display:"flex", gap:2, overflowX:"auto", flex:1, scrollbarWidth:"none" }}>
-          {NAV.map(n => (
-            <button key={n.id} onClick={() => navigate(n.id)} className="nav-btn"
-              style={{
-                background: view===n.id ? "var(--nav-active)" : "var(--nav-inactive)",
-                color: view===n.id ? "var(--text-h)" : "var(--text-sec)",
-                border:"none",
-                borderBottom: view===n.id ? `2px solid var(--accent-glow)` : "2px solid transparent",
-                padding:"8px 12px", cursor:"pointer",
-                fontWeight: view===n.id ? 700 : 500, fontSize:13, whiteSpace:"nowrap",
-                borderRadius:"6px 6px 0 0",
-              }}>
-              {n.icon} <span className="hide-mobile">{n.label}</span>
-            </button>
-          ))}
+        {/* Grouped nav */}
+        <div style={{ display:"flex", gap:2, flex:1 }}>
+          {NAV_GROUPS.map(group => {
+            const isActive = view !== "dashboard" && group.items.some(item => item.id === view);
+            const isOpen = openGroup === group.id;
+            return (
+              <div key={group.id} style={{ position:"relative" }}>
+                <button
+                  onClick={() => setOpenGroup(isOpen ? null : group.id)}
+                  style={{
+                    background: isActive ? "var(--nav-active)" : "transparent",
+                    color: isActive ? group.color : "var(--text-sec)",
+                    border: "none",
+                    borderBottom: isActive ? `2px solid ${group.color}` : "2px solid transparent",
+                    padding: "10px 14px", cursor: "pointer",
+                    fontWeight: isActive ? 700 : 500, fontSize: 14, whiteSpace: "nowrap",
+                    borderRadius: "6px 6px 0 0", display: "flex", alignItems: "center", gap: 6,
+                    transition: "all 0.15s",
+                  }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = "var(--text-h)"; }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = "var(--text-sec)"; }}>
+                  <span>{group.icon}</span>
+                  <span className="hide-mobile">{group.label}</span>
+                  <span style={{ fontSize:8, opacity:0.5, marginLeft:1 }}>{isOpen ? "▲" : "▼"}</span>
+                </button>
+                {isOpen && (
+                  <div style={{
+                    position:"absolute", top:"calc(100% + 1px)", left:0,
+                    background:"var(--bg-card)", border:"1px solid var(--border)",
+                    borderRadius:"0 10px 10px 10px", padding:"6px 0", zIndex:300,
+                    minWidth:210, boxShadow:"0 12px 40px rgba(0,0,0,0.35)",
+                    animation:"fadeUp 0.15s ease",
+                  }}>
+                    <div style={{ padding:"6px 14px 8px", borderBottom:"1px solid var(--border)", marginBottom:4 }}>
+                      <span style={{ color:group.color, fontSize:10, fontWeight:800, letterSpacing:"0.06em" }}>
+                        {group.icon} {group.label.toUpperCase()}
+                      </span>
+                    </div>
+                    {group.items.map(item => (
+                      <button key={item.id}
+                        onClick={() => { navigate(item.id); setOpenGroup(null); }}
+                        style={{
+                          display:"flex", alignItems:"center", gap:10, width:"100%",
+                          background: view === item.id ? `${group.color}15` : "transparent",
+                          color: view === item.id ? group.color : "var(--text-body)",
+                          border:"none", padding:"9px 16px", cursor:"pointer",
+                          fontSize:13, fontWeight: view === item.id ? 700 : 400,
+                          textAlign:"left", transition:"background 0.12s",
+                        }}
+                        onMouseEnter={e => { if (view !== item.id) e.currentTarget.style.background = "var(--bg-raised)"; }}
+                        onMouseLeave={e => { if (view !== item.id) e.currentTarget.style.background = "transparent"; }}>
+                        <span style={{ fontSize:16 }}>{item.icon}</span>
+                        <span>{item.label}</span>
+                        {view === item.id && <span style={{ marginLeft:"auto", fontSize:10 }}>✓</span>}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Theme toggle */}
         <button onClick={toggleTheme} className="theme-toggle"
           style={{ background:"var(--bg-surface)", border:"1px solid var(--border)",
-            borderRadius:8, padding:"5px 9px", cursor:"pointer",
-            color:"var(--text-h)", fontSize:15, lineHeight:1, flexShrink:0, marginLeft:8 }}>
+            borderRadius:8, padding:"6px 10px", cursor:"pointer",
+            color:"var(--text-h)", fontSize:15, lineHeight:1, flexShrink:0, marginLeft:4 }}>
           {darkMode ? "☀️" : "🌙"}
         </button>
 
@@ -2618,7 +2696,7 @@ export default function App() {
           title={adminMode ? "Admin Mode Active — Click to logout" : "Admin Login"}
           style={{ background: adminMode ? "#34D39922" : "var(--bg-surface)",
             border:`1px solid ${adminMode ? "#34D399" : "var(--border)"}`,
-            borderRadius:8, padding:"5px 9px", cursor:"pointer",
+            borderRadius:8, padding:"6px 10px", cursor:"pointer",
             color: adminMode ? "#34D399" : "var(--text-muted)", fontSize:15, lineHeight:1, flexShrink:0, marginLeft:4,
             transition:"all 0.2s" }}>
           {adminMode ? "🔓" : "🔒"}
