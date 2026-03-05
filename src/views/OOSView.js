@@ -524,21 +524,46 @@ function SimulatorTab() {
                 </div>
               </div>
               {/* Body */}
-              <div style={{ padding: "16px 18px" }}>
-                <div style={{ fontWeight: 800, fontSize: 15, color: "var(--text-h)", marginBottom: 4 }}>{s.title}</div>
-                <div style={{ fontSize: 12, color: "var(--text-sec)", marginBottom: 12 }}>{s.product}</div>
-                {/* Finding pill */}
+              <div style={{ padding: "14px 16px" }}>
                 <div style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
+                  fontWeight: 800, fontSize: 14, color: "var(--text-h)", marginBottom: 3,
+                  lineHeight: 1.35, display: "-webkit-box", WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical", overflow: "hidden",
+                }}>{s.title}</div>
+                <div style={{
+                  fontSize: 11, color: "var(--text-sec)", marginBottom: 12,
+                  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                }}>{s.product}</div>
+                {/* Finding card — vertical layout */}
+                <div style={{
                   background: "var(--bg-raised)", border: "1px solid var(--border)",
-                  borderRadius: 8, padding: "8px 12px", marginBottom: 14, width: "100%", boxSizing: "border-box",
+                  borderRadius: 8, padding: "9px 12px", marginBottom: 12,
                 }}>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.4px", flexShrink: 0 }}>
+                  {/* Method name — truncated single line */}
+                  <div style={{
+                    fontSize: 10, fontWeight: 700, color: "var(--text-muted)",
+                    textTransform: "uppercase", letterSpacing: "0.05em",
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                    marginBottom: 6,
+                  }}>
                     {s.method}
-                  </span>
-                  <span style={{ flex: 1, textAlign: "right", fontWeight: 800, fontSize: 14, color: s.isOOT ? "#38BDF8" : "#F87171" }}>
-                    {s.finding.result}
-                  </span>
+                  </div>
+                  {/* Result + spec row */}
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
+                    <span style={{
+                      fontWeight: 900, fontSize: 16, color: s.isOOT ? "#38BDF8" : "#F87171",
+                      letterSpacing: "-0.2px", flexShrink: 0,
+                    }}>
+                      {s.finding.result}
+                    </span>
+                    <span style={{
+                      fontSize: 10, color: "var(--text-faint)", fontWeight: 600,
+                      whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                      textAlign: "right",
+                    }}>
+                      Spec: {s.finding.spec}
+                    </span>
+                  </div>
                 </div>
                 <div style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
