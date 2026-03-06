@@ -1124,7 +1124,7 @@ export default function OOSView() {
   const resultNodes = Object.values(OOS_TREE).filter(n => n.type === "result").length;
 
   return (
-    <div className="view-enter" style={{ maxWidth: 1080, margin: "0 auto", padding: "32px 24px" }}>
+    <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
 
       {/* Page header */}
       <div style={{ marginBottom: 32 }}>

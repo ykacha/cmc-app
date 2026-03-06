@@ -482,7 +482,7 @@ export default function CompendialView() {
   return (
     <div
       className="view-enter"
-      style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 20px" }}
+      style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}
     >
       {/* Header */}
       <div style={{ marginBottom: 32 }}>

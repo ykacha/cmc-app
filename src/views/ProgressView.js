@@ -69,7 +69,7 @@ export default function ProgressView() {
   const isEmpty = stats.attempted === 0 && visitedViews.length === 0;
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 20px" }}>
+    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "28px 24px" }}>
       <div style={{ marginBottom: 28, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
         <div>
           <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 26, fontWeight: 900 }}>📊 My Progress</h2>

@@ -356,14 +356,14 @@ export default function CaseStudiesView() {
 
   if (selectedCase) {
     return (
-      <div className="view-enter" style={{ maxWidth: 900, margin: "0 auto", padding: "32px 20px" }}>
+      <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
         <CaseDetailPanel cs={selectedCase} onBack={() => setSelectedCase(null)} />
       </div>
     );
   }
 
   return (
-    <div className="view-enter" style={{ maxWidth: 1100, margin: "0 auto", padding: "28px 20px" }}>
+    <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "28px 24px" }}>
 
       {/* ── Header ── */}
       <div style={{

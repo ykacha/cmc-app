@@ -124,16 +124,16 @@ const HeroBiologic = () => (
       <svg width="170" height="170" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="hb-fc" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F59E0B"/>
-            <stop offset="100%" stopColor="#92400E"/>
+            <stop offset="0%" stopColor="#A78BFA"/>
+            <stop offset="100%" stopColor="#5B21B6"/>
           </linearGradient>
           <linearGradient id="hb-fab" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#FDE68A"/>
-            <stop offset="100%" stopColor="#B45309"/>
+            <stop offset="0%" stopColor="#DDD6FE"/>
+            <stop offset="100%" stopColor="#7C3AED"/>
           </linearGradient>
           <radialGradient id="hb-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#D97706" stopOpacity="0.8"/>
-            <stop offset="100%" stopColor="#34D399" stopOpacity="0"/>
+            <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.75"/>
+            <stop offset="100%" stopColor="#7C3AED" stopOpacity="0"/>
           </radialGradient>
         </defs>
 
@@ -143,16 +143,16 @@ const HeroBiologic = () => (
 
         {/* Orbital rings — 3 at different angles */}
         <g style={{transformOrigin:"85px 85px", animation:"cmc-ring-cw 11s linear infinite"}}>
-          <ellipse cx="85" cy="85" rx="70" ry="22" stroke="#F59E0B" strokeWidth="0.8"
-            strokeOpacity="0.45" strokeDasharray="6 5" fill="none" transform="rotate(-18,85,85)"/>
+          <ellipse cx="85" cy="85" rx="70" ry="22" stroke="#A78BFA" strokeWidth="0.7"
+            strokeOpacity="0.35" strokeDasharray="6 5" fill="none" transform="rotate(-18,85,85)"/>
         </g>
         <g style={{transformOrigin:"85px 85px", animation:"cmc-ring-ccw 15s linear infinite"}}>
-          <ellipse cx="85" cy="85" rx="60" ry="19" stroke="#34D399" strokeWidth="0.8"
-            strokeOpacity="0.4" strokeDasharray="4 7" fill="none" transform="rotate(25,85,85)"/>
+          <ellipse cx="85" cy="85" rx="60" ry="19" stroke="#38BDF8" strokeWidth="0.7"
+            strokeOpacity="0.3" strokeDasharray="4 7" fill="none" transform="rotate(25,85,85)"/>
         </g>
         <g style={{transformOrigin:"85px 85px", animation:"cmc-ring-tilt 20s linear infinite"}}>
-          <ellipse cx="85" cy="85" rx="76" ry="24" stroke="#FBBF24" strokeWidth="0.6"
-            strokeOpacity="0.28" strokeDasharray="5 9" fill="none" transform="rotate(50,85,85)"/>
+          <ellipse cx="85" cy="85" rx="76" ry="24" stroke="#F472B6" strokeWidth="0.6"
+            strokeOpacity="0.22" strokeDasharray="5 9" fill="none" transform="rotate(50,85,85)"/>
         </g>
 
         {/* mAb structure — float wrapper */}
@@ -164,9 +164,9 @@ const HeroBiologic = () => (
           {/* CH2 domain hub */}
           <rect x="77" y="78" width="16" height="17" rx="7" fill="url(#hb-fc)"/>
           {/* Hinge disulfide bridges */}
-          <line x1="77" y1="84" x2="93" y2="84" stroke="#FDE68A" strokeWidth="1.2"
+          <line x1="77" y1="84" x2="93" y2="84" stroke="#E9D5FF" strokeWidth="1.2"
             strokeDasharray="2 2" strokeOpacity="0.65"/>
-          <line x1="77" y1="89" x2="93" y2="89" stroke="#FDE68A" strokeWidth="1.2"
+          <line x1="77" y1="89" x2="93" y2="89" stroke="#E9D5FF" strokeWidth="1.2"
             strokeDasharray="2 2" strokeOpacity="0.65"/>
 
           {/* Left Fab arm */}
@@ -174,12 +174,12 @@ const HeroBiologic = () => (
             fill="url(#hb-fab)" opacity="0.9"
             style={{animation:"cmc-fab-glow 3.4s ease-in-out infinite"}}/>
           {/* Left VH/VL domain */}
-          <ellipse cx="38" cy="26" rx="10" ry="8" fill="#FCD34D"/>
+          <ellipse cx="38" cy="26" rx="10" ry="8" fill="#C4B5FD"/>
           {/* Left CDR loop */}
           <path d="M31 22 Q38 13 45 22" stroke="white" strokeWidth="1.6" fill="none"
-            strokeOpacity="0.9" strokeLinecap="round"/>
+            strokeOpacity="0.85" strokeLinecap="round"/>
           {/* Left CH1 domain */}
-          <ellipse cx="56" cy="38" rx="8" ry="7" fill="#F59E0B" opacity="0.6"/>
+          <ellipse cx="56" cy="38" rx="8" ry="7" fill="#A78BFA" opacity="0.6"/>
 
           {/* Right Fab arm */}
           <path d="M90 80 Q102 68 120 52 Q127 45 132 40 Q137 34 132 28 Q127 22 119 26 Q114 29 110 35 Q98 54 87 72"
@@ -187,12 +187,12 @@ const HeroBiologic = () => (
             style={{animation:"cmc-fab-glow 3.4s ease-in-out infinite"}}>
           </path>
           {/* Right VH/VL domain */}
-          <ellipse cx="132" cy="26" rx="10" ry="8" fill="#FCD34D"/>
+          <ellipse cx="132" cy="26" rx="10" ry="8" fill="#C4B5FD"/>
           {/* Right CDR loop */}
           <path d="M125 22 Q132 13 139 22" stroke="white" strokeWidth="1.6" fill="none"
-            strokeOpacity="0.9" strokeLinecap="round"/>
+            strokeOpacity="0.85" strokeLinecap="round"/>
           {/* Right CH1 domain */}
-          <ellipse cx="114" cy="38" rx="8" ry="7" fill="#F59E0B" opacity="0.6"/>
+          <ellipse cx="114" cy="38" rx="8" ry="7" fill="#A78BFA" opacity="0.6"/>
 
           {/* Glycan chains — branched N-glycan at Fc */}
           <path d="M81 112 Q73 120 69 130" stroke="#34D399" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
@@ -213,21 +213,27 @@ const HeroBiologic = () => (
         <g transform="translate(85,85)">
           {/* N-Glycan — r=68, 4.5s */}
           <g style={{transformOrigin:"0px 0px", animation:"cmc-orbit-a 4.5s linear infinite"}}>
-            <circle cx="0" cy="-68" r="12" fill="#031A0F" stroke="#34D399" strokeWidth="1.8"/>
+            <circle cx="0" cy="-68" r="12" fill="#0F172A" stroke="#34D399" strokeWidth="1.8"/>
             <circle cx="0" cy="-68" r="4" fill="#34D399"
               style={{animation:"cmc-dot-pulse 2.2s ease-in-out infinite"}}/>
+            <text x="0" y="-82" textAnchor="middle" fill="#34D399" fontSize="7.5"
+              fontWeight="800" fontFamily="system-ui,sans-serif">N-Glycan</text>
           </g>
           {/* Aggregation — r=62, 6.5s */}
           <g style={{transformOrigin:"0px 0px", animation:"cmc-orbit-b 6.5s linear infinite"}}>
-            <circle cx="0" cy="-62" r="12" fill="#1C1000" stroke="#F59E0B" strokeWidth="1.8"/>
-            <circle cx="0" cy="-62" r="4" fill="#F59E0B"
+            <circle cx="0" cy="-62" r="12" fill="#0F172A" stroke="#F472B6" strokeWidth="1.8"/>
+            <circle cx="0" cy="-62" r="4" fill="#F472B6"
               style={{animation:"cmc-dot-pulse 2.8s ease-in-out infinite"}}/>
+            <text x="0" y="-76" textAnchor="middle" fill="#F472B6" fontSize="7.5"
+              fontWeight="800" fontFamily="system-ui,sans-serif">Aggreg.</text>
           </g>
           {/* Charge Variants — r=73, 9s */}
           <g style={{transformOrigin:"0px 0px", animation:"cmc-orbit-c 9s linear infinite"}}>
-            <circle cx="0" cy="-73" r="12" fill="#031A0F" stroke="#34D399" strokeWidth="1.8"/>
-            <circle cx="0" cy="-73" r="4" fill="#34D399"
+            <circle cx="0" cy="-73" r="12" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.8"/>
+            <circle cx="0" cy="-73" r="4" fill="#38BDF8"
               style={{animation:"cmc-dot-pulse 3.4s ease-in-out infinite"}}/>
+            <text x="0" y="-87" textAnchor="middle" fill="#38BDF8" fontSize="7.5"
+              fontWeight="800" fontFamily="system-ui,sans-serif">Charge</text>
           </g>
         </g>
       </svg>
@@ -294,119 +300,67 @@ function Dashboard({ setView }) {
   ];
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
+    <div style={{ maxWidth: 1020, margin: "0 auto", padding: "32px 20px" }}>
 
       {/* ── Hero Banner ── */}
       <div style={{
-        background: "radial-gradient(circle at 1px 1px, rgba(245,158,11,0.13) 1px, transparent 0) center/28px 28px, linear-gradient(135deg, #100A00 0%, #1E1400 50%, #100A00 100%)",
-        borderRadius: 20, border: "1px solid #F59E0B44",
-        padding: "40px 48px", marginBottom: 28,
-        position: "relative", overflow: "hidden",
-        display: "flex", alignItems: "center", gap: 48, flexWrap: "wrap",
+        background: "linear-gradient(135deg, #1E1B4B 0%, #2D1B69 50%, #1a1a3e 100%)",
+        borderRadius: 20, border: "1px solid #4C1D9544",
+        padding: "48px 40px", marginBottom: 28,
+        textAlign: "center", position: "relative", overflow: "hidden",
       }}>
-        {/* Background blobs */}
-        <div style={{ position:"absolute", top:-60, right:-60, width:280, height:280, borderRadius:"50%", background:"#F59E0B12", pointerEvents:"none" }}/>
-        <div style={{ position:"absolute", bottom:-80, left:-60, width:300, height:300, borderRadius:"50%", background:"#34D3990C", pointerEvents:"none" }}/>
-        <div style={{ position:"absolute", top:"40%", right:"30%", width:180, height:180, borderRadius:"50%", background:"#FBBF2408", pointerEvents:"none" }}/>
-
-        {/* ── Left: mAb instrument panel ── */}
-        <div style={{ flex:"0 0 320px", display:"flex", flexDirection:"column", alignItems:"center", position:"relative", minHeight:240 }}>
-          {/* Instrument bezel rings */}
-          <div style={{ position:"absolute", width:260, height:260, borderRadius:"50%", border:"1px dashed #F59E0B28", top:"50%", left:"50%", transform:"translate(-50%,-52%)", pointerEvents:"none" }}/>
-          <div style={{ position:"absolute", width:220, height:220, borderRadius:"50%", border:"1px dashed #34D39920", top:"50%", left:"50%", transform:"translate(-50%,-52%)", pointerEvents:"none" }}/>
-          <div style={{ position:"absolute", width:290, height:290, borderRadius:"50%", border:"0.5px solid #FBBF2414", top:"50%", left:"50%", transform:"translate(-50%,-52%)", pointerEvents:"none" }}/>
-          {/* Cross-hair lines */}
-          <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-52%)", width:290, height:1, background:"linear-gradient(90deg,transparent 0%,#F59E0B18 40%,#34D39918 60%,transparent 100%)", pointerEvents:"none" }}/>
-          <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-52%) rotate(90deg)", width:290, height:1, background:"linear-gradient(90deg,transparent 0%,#F59E0B18 40%,#34D39918 60%,transparent 100%)", pointerEvents:"none" }}/>
-
-          {/* Floating bioreactor readout chips */}
-          <div style={{ position:"absolute", top:-36, left:"50%", transform:"translateX(-50%)", background:"#052e16ee", border:"1px solid #34D39977", borderRadius:8, padding:"3px 10px", fontSize:10, fontWeight:800, color:"#34D399", whiteSpace:"nowrap" }}>
-            Viability 98.4% ✓
-          </div>
-          <div style={{ position:"absolute", top:"38%", right:0, zIndex:10, background:"#0c1a2eee", border:"1px solid #38BDF877", borderRadius:8, padding:"3px 10px", fontSize:10, fontWeight:800, color:"#38BDF8", whiteSpace:"nowrap" }}>
-            Titer 3.2 g/L
-          </div>
-          <div style={{ position:"absolute", top:"38%", left:0, zIndex:10, background:"#1e1b4bee", border:"1px solid #A78BFA77", borderRadius:8, padding:"3px 10px", fontSize:10, fontWeight:800, color:"#A78BFA", whiteSpace:"nowrap" }}>
-            pH 7.10 ✓
-          </div>
-          <div style={{ position:"absolute", bottom:2, left:"50%", transform:"translateX(-50%)", zIndex:10, background:"#1c1028ee", border:"1px solid #F472B677", borderRadius:8, padding:"3px 10px", fontSize:10, fontWeight:800, color:"#F472B6", whiteSpace:"nowrap" }}>
-            pO₂ 40% DO
-          </div>
-
-          {/* Mini HPLC chromatogram */}
-          <svg style={{ position:"absolute", bottom:-8, left:8, opacity:0.55 }} width="100" height="44" viewBox="0 0 100 44" fill="none">
-            <polyline points="0,40 8,40 14,38 16,22 18,6 20,22 22,38 30,39 38,40 42,40 46,28 48,14 50,28 52,40 60,40 64,38 66,34 68,38 72,40 100,40" stroke="#F59E0B" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-            <line x1="0" y1="43" x2="100" y2="43" stroke="#F59E0B" strokeWidth="0.5" strokeOpacity="0.5"/>
-            <text x="18" y="4" fill="#F59E0B" fontSize="5.5" textAnchor="middle" fontFamily="system-ui">Monomer</text>
-            <text x="48" y="12" fill="#B45309" fontSize="4.5" textAnchor="middle" fontFamily="system-ui">Aggr.</text>
-            <text x="67" y="31" fill="#B45309" fontSize="4" textAnchor="middle" fontFamily="system-ui">Frag.</text>
-          </svg>
-          {/* Mini stability line */}
-          <svg style={{ position:"absolute", bottom:-8, right:8, opacity:0.5 }} width="80" height="44" viewBox="0 0 80 44" fill="none">
-            <polyline points="2,8 15,10 28,13 40,18 52,26 64,36 78,42" stroke="#34D399" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-            <text x="2" y="6" fill="#34D399" fontSize="5" fontFamily="system-ui">Stability</text>
-            <text x="58" y="42" fill="#34D399" fontSize="4" fontFamily="system-ui">t=24mo</text>
-          </svg>
-
-          <HeroBiologic/>
+        <div style={{ position:"absolute", top:-50, right:-50, width:220, height:220, borderRadius:"50%", background:"#7C3AED12", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", bottom:-70, left:-50, width:260, height:260, borderRadius:"50%", background:"#38BDF810", pointerEvents:"none" }}/>
+        <div style={{ position:"absolute", top:"30%", left:"10%", width:6, height:6, borderRadius:"50%", background:"#A78BFA60" }}/>
+        <div style={{ position:"absolute", top:"20%", right:"15%", width:4, height:4, borderRadius:"50%", background:"#38BDF860" }}/>
+        <HeroBiologic/>
+        <h1 style={{ fontSize:36, fontWeight:900, margin:"0 0 12px", letterSpacing:"-0.02em",
+          background:"linear-gradient(135deg,#C4B5FD,#A78BFA,#38BDF8)",
+          WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+          CMC App
+        </h1>
+        <p style={{ color:"#C4B5FD88", fontSize:16, margin:"0 auto 28px", maxWidth:520, lineHeight:1.6 }}>
+          Your complete Chemistry, Manufacturing &amp; Controls career development toolkit — from pipeline to launch
+        </p>
+        <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
+          <button onClick={() => setView("exam")}
+            style={{ background:"linear-gradient(135deg,#7C3AED,#A78BFA)", color:"#fff", border:"none",
+              borderRadius:10, padding:"12px 28px", cursor:"pointer", fontWeight:800, fontSize:14,
+              boxShadow:"0 4px 20px #7C3AED44", transition:"transform 0.18s, box-shadow 0.18s" }}
+            onMouseEnter={e => { e.currentTarget.style.transform="scale(1.05)"; e.currentTarget.style.boxShadow="0 6px 28px #7C3AED66"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.boxShadow="0 4px 20px #7C3AED44"; }}>
+            🎯 Start Exam Mode
+          </button>
+          <button onClick={() => setView("pipeline")}
+            style={{ background:"transparent", color:"#A78BFA", border:"1px solid #A78BFA55",
+              borderRadius:10, padding:"12px 28px", cursor:"pointer", fontWeight:700, fontSize:14, transition:"all 0.18s" }}
+            onMouseEnter={e => { e.currentTarget.style.background="#A78BFA18"; e.currentTarget.style.borderColor="#A78BFA"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#A78BFA55"; }}>
+            🗺️ Explore Pipeline
+          </button>
+          <button onClick={() => setView("progress")}
+            style={{ background:"transparent", color:"#38BDF8", border:"1px solid #38BDF855",
+              borderRadius:10, padding:"12px 28px", cursor:"pointer", fontWeight:700, fontSize:14, transition:"all 0.18s" }}
+            onMouseEnter={e => { e.currentTarget.style.background="#38BDF818"; e.currentTarget.style.borderColor="#38BDF8"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="#38BDF855"; }}>
+            📊 My Progress
+          </button>
         </div>
+      </div>
 
-        {/* ── Right: text, stats, buttons ── */}
-        <div style={{ flex:1, minWidth:280 }}>
-          <div style={{ fontSize:10, fontWeight:800, color:"#FCD34D", letterSpacing:"0.12em", marginBottom:10, textTransform:"uppercase" }}>
-            Biologic Drug Development Platform
-          </div>
-          <h1 style={{ fontSize:44, fontWeight:900, margin:"0 0 14px", letterSpacing:"-0.025em", lineHeight:1.1,
-            background:"linear-gradient(135deg, #FFFFFF 0%, #FDE68A 30%, #F59E0B 60%, #34D399 100%)",
-            WebkitBackgroundClip:"text", backgroundClip:"text",
-            WebkitTextFillColor:"transparent", display:"inline-block" }}>
-            CMC App
-          </h1>
-          <p style={{ color:"#FEF3C7", fontSize:15, margin:"0 0 28px", maxWidth:440, lineHeight:1.65 }}>
-            Your complete Chemistry, Manufacturing &amp; Controls career development toolkit — from gene construction to post-approval lifecycle.
-          </p>
-
-          {/* 4 stats as compact row */}
-          <div style={{ display:"flex", gap:10, marginBottom:28, flexWrap:"wrap" }}>
-            {keyStats.map(s => (
-              <button key={s.label} onClick={() => setView(s.view)}
-                style={{ background:"rgba(255,255,255,0.08)", border:`1px solid ${s.color}55`,
-                  borderRadius:12, padding:"12px 18px", cursor:"pointer", textAlign:"center",
-                  transition:"all 0.2s", minWidth:90 }}
-                onMouseEnter={e => { e.currentTarget.style.background=`${s.color}22`; e.currentTarget.style.borderColor=`${s.color}99`; e.currentTarget.style.transform="translateY(-2px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background="rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor=`${s.color}55`; e.currentTarget.style.transform="none"; }}>
-                <div style={{ fontSize:22, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
-                <div style={{ color:"#FDE68A", fontSize:10, marginTop:5, fontWeight:600, lineHeight:1.3 }}>{s.label}</div>
-              </button>
-            ))}
-          </div>
-
-          {/* Action buttons */}
-          <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
-            <button onClick={() => setView("exam")}
-              style={{ background:"linear-gradient(135deg,#92400E,#F59E0B)", color:"#fff", border:"none",
-                borderRadius:10, padding:"12px 26px", cursor:"pointer", fontWeight:800, fontSize:14,
-                boxShadow:"0 4px 20px #F59E0B44", transition:"transform 0.18s, box-shadow 0.18s" }}
-              onMouseEnter={e => { e.currentTarget.style.transform="scale(1.04)"; e.currentTarget.style.boxShadow="0 6px 28px #F59E0B66"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.boxShadow="0 4px 20px #F59E0B44"; }}>
-              🎯 Start Exam Mode
-            </button>
-            <button onClick={() => setView("pipeline")}
-              style={{ background:"rgba(245,158,11,0.1)", color:"#FCD34D", border:"1px solid #F59E0B50",
-                borderRadius:10, padding:"12px 26px", cursor:"pointer", fontWeight:700, fontSize:14, transition:"all 0.18s" }}
-              onMouseEnter={e => { e.currentTarget.style.background="#F59E0B22"; e.currentTarget.style.borderColor="#F59E0B"; }}
-              onMouseLeave={e => { e.currentTarget.style.background="rgba(245,158,11,0.1)"; e.currentTarget.style.borderColor="#F59E0B50"; }}>
-              🗺️ Explore Pipeline
-            </button>
-            <button onClick={() => setView("progress")}
-              style={{ background:"rgba(52,211,153,0.08)", color:"#34D399", border:"1px solid #34D39950",
-                borderRadius:10, padding:"12px 26px", cursor:"pointer", fontWeight:700, fontSize:14, transition:"all 0.18s" }}
-              onMouseEnter={e => { e.currentTarget.style.background="#34D39918"; e.currentTarget.style.borderColor="#34D399"; }}
-              onMouseLeave={e => { e.currentTarget.style.background="rgba(52,211,153,0.08)"; e.currentTarget.style.borderColor="#34D39950"; }}>
-              📊 My Progress
-            </button>
-          </div>
-        </div>
+      {/* ── 4 Key Stats ── */}
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:14, marginBottom:28 }}>
+        {keyStats.map(s => (
+          <button key={s.label} onClick={() => setView(s.view)}
+            style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:"22px 16px",
+              textAlign:"center", cursor:"pointer", borderTop:`3px solid ${s.color}`, transition:"all 0.22s" }}
+            onMouseEnter={e => { e.currentTarget.style.background="var(--bg-raised)"; e.currentTarget.style.boxShadow=`0 8px 24px ${s.color}25`; e.currentTarget.style.transform="translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="var(--bg-card)"; e.currentTarget.style.boxShadow="none"; e.currentTarget.style.transform="none"; }}>
+            <div style={{ fontSize:28, marginBottom:8 }}>{s.icon}</div>
+            <div style={{ fontSize:34, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
+            <div style={{ color:"var(--text-sec)", fontSize:12, marginTop:8, lineHeight:1.4 }}>{s.label}</div>
+          </button>
+        ))}
       </div>
 
       {/* ── Pipeline — Stage Strip ── */}
@@ -584,7 +538,7 @@ function PipelineView() {
   const filteredQ = stage?.questions.filter(q => levelFilter==="All" || q.level===levelFilter) || [];
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="🗺️" title="Pipeline Explorer" subtitle="All 16 stages of the biologic drug development lifecycle — click any stage for in-depth coverage" />
 
       {/* Stage grid */}
@@ -723,7 +677,7 @@ function MethodsView({ navigate }) {
   };
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1300, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="🔬" title="Analytical Methods"
         subtitle="20 assay reference cards — principle, protocol, parameters, CQA linkage & regulatory context" />
 
@@ -1028,7 +982,7 @@ function CTDView() {
   const sec = activeSection ? mod?.sections.find(s => s.id===activeSection) : null;
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1200, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="📂" title="CTD Navigator" subtitle="Common Technical Document — complete Module 1–5 reference with CMC deep-dive on Module 3" />
 
       {/* Module tabs */}
@@ -1126,7 +1080,7 @@ function TimelineView() {
   const phase = activePhase ? CMC_TIMELINE.find(p => p.phase===activePhase) : null;
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="📅" title="CMC Development Timeline" subtitle="Phase-by-phase CMC deliverables, from Hit-to-Lead through Post-Approval lifecycle management" />
 
       {/* Phase selector pills */}
@@ -1245,7 +1199,7 @@ function DomainsView() {
   ) || [];
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="📚" title="Domain Question Bank" subtitle="100 questions across 10 CMC domains — filter by difficulty and search by keyword" />
 
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(165px,1fr))", gap:12, marginBottom:28 }}>
@@ -1393,7 +1347,7 @@ function ExamView() {
   const score = Object.keys(revealed).length;
 
   if (!started) return (
-    <div style={{ maxWidth:960, margin:"0 auto", padding:"32px 24px" }}>
+    <div style={{ maxWidth:700, margin:"0 auto", padding:"32px 20px" }}>
       <SectionHeader icon="🎯" title="Exam Mode" subtitle="Answers are hidden — reveal them one at a time as you work through each question" />
 
       {dueToday > 0 && (
@@ -1471,7 +1425,7 @@ function ExamView() {
   );
 
   return (
-    <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:820, margin:"0 auto", padding:"28px 20px" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:22, flexWrap:"wrap", gap:12 }}>
         <div>
           <h2 style={{ color:"var(--text-h)", margin:0, fontSize:24, fontWeight:900 }}>🎯 Exam Mode</h2>
@@ -1568,7 +1522,7 @@ function ICHView() {
   const gl = activeGl ? ICH_GUIDELINES.find(g => g.id===activeGl) : null;
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="📜" title="ICH Quality Guidelines" subtitle="9 core guidelines every CMC professional must know — decoded with practical CMC context" />
 
       <div style={{ display:"grid", gridTemplateColumns: gl ? "1fr 2fr" : "repeat(auto-fill,minmax(260px,1fr))", gap:16, alignItems:"start" }}>
@@ -1659,7 +1613,7 @@ function GlossaryView() {
   ).sort((a,b) => a.term.localeCompare(b.term));
 
   return (
-    <div style={{ maxWidth:1200, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:940, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="📖" title="CMC Glossary" subtitle={`${GLOSSARY.length} essential terms and definitions — search or filter by category`} />
 
       <div style={{ display:"flex", gap:10, marginBottom:20, flexWrap:"wrap", alignItems:"center" }}>
@@ -1725,7 +1679,7 @@ function CareerView({ navigate }) {
   );
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1200, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="🚀" title="Career & Interviews"
         subtitle="CMC career ladder, salary benchmarks, skills matrix, and 18 expert interview Q&As with model answers" />
 
@@ -2007,7 +1961,7 @@ function NotesView({ adminMode }) {
     .sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0));
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="📝" title="My CMC Notes" subtitle="Capture study notes, key concepts, and personal annotations — all saved locally in your browser"/>
 
       {/* Top bar */}
@@ -2130,7 +2084,7 @@ function QbDView({ navigate }) {
   const sortedFMEA = [...FMEA_TABLE].sort((a,b) => fmeaSort==="rpn" ? b.rpn-a.rpn : b.severity-a.severity);
 
   return (
-    <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
+    <div style={{ maxWidth:1300, margin:"0 auto", padding:"28px 20px" }}>
       <SectionHeader icon="🔬" title="QbD / CQA / CPP / COA"
         subtitle="Quality by Design framework — QTPP, Critical Quality Attributes, Critical Process Parameters, FMEA, Design Space, Control Strategy, and Certificate of Analysis" />
 

@@ -223,7 +223,7 @@ export default function PathwayView() {
     : 0;
 
   return (
-    <div className="view-enter" style={{ padding: "24px 28px", maxWidth: 1200, margin: "0 auto" }}>
+    <div className="view-enter" style={{ padding: "24px 28px", maxWidth: 1400, margin: "0 auto" }}>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

@@ -800,7 +800,7 @@ export default function StabilityView() {
   const tabs = ["Conditions", "ICH Zones", "Study Matrix", "Shelf Life"];
 
   return (
-    <div className="view-enter" style={{ maxWidth: 1080, margin: "0 auto", padding: "32px 24px" }}>
+    <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
 
       {/* Page header */}
       <div style={{ marginBottom: 32 }}>

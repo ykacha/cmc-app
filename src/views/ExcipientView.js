@@ -367,7 +367,7 @@ export default function ExcipientView() {
   const functionEntries = useMemo(() => Object.entries(FUNCTION_MAP), []);
 
   return (
-    <div className="view-enter" style={{ padding: "24px 28px", maxWidth: 1100, margin: "0 auto" }}>
+    <div className="view-enter" style={{ padding: "24px 28px", maxWidth: 1400, margin: "0 auto" }}>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
