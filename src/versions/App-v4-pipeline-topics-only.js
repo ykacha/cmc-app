@@ -13,7 +13,6 @@ import { CAREER_PATHS, INTERVIEW_QUESTIONS, SKILLS_MATRIX } from "./career-data"
 import { QTPP, CQA_LIST, CPP_LIST, FMEA_TABLE, DOE_STUDIES, DESIGN_SPACE, CONTROL_STRATEGY, COA_ELEMENTS } from "./qbd-data";
 import { CASE_STUDIES } from "./case-study-data";
 import { COMPENDIAL_METHODS } from "./compendial-data";
-import { STAGE_OVERVIEWS } from "./pipeline-overview-data";
 
 // ── Level colors ──────────────────────────────────────────────
 const LC = { Foundational:"#22D3EE", Intermediate:"#34D399", Advanced:"#F59E0B", Expert:"#F472B6" };
@@ -579,24 +578,19 @@ function Dashboard({ setView }) {
 // ════════════════════════════════════════════════════════════════
 function PipelineView() {
   const [active, setActive] = useState(null);
-  const [tab, setTab] = useState("overview");
+  const [tab, setTab] = useState("topics");
   const [levelFilter, setLevelFilter] = useState("All");
   const stage = active ? PIPELINE.find(s => s.id === active) : null;
   const filteredQ = stage?.questions.filter(q => levelFilter==="All" || q.level===levelFilter) || [];
-  const overview = stage ? STAGE_OVERVIEWS[stage.id] : null;
-
-  const activeIdx = stage ? PIPELINE.findIndex(s => s.id === stage.id) : -1;
-  const prevStage = activeIdx > 0 ? PIPELINE[activeIdx - 1] : null;
-  const nextStage = activeIdx < PIPELINE.length - 1 ? PIPELINE[activeIdx + 1] : null;
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <SectionHeader icon="🗺️" title="Pipeline Explorer" subtitle="All 16 stages of the biologic drug development lifecycle — click any stage for a full deep-dive" />
+      <SectionHeader icon="🗺️" title="Pipeline Explorer" subtitle="All 16 stages of the biologic drug development lifecycle — click any stage for in-depth coverage" />
 
       {/* Stage grid */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(115px,1fr))", gap:10, marginBottom:28 }}>
         {PIPELINE.map(s => (
-          <button key={s.id} onClick={() => { setActive(s.id===active?null:s.id); setTab("overview"); setLevelFilter("All"); }}
+          <button key={s.id} onClick={() => { setActive(s.id===active?null:s.id); setTab("topics"); setLevelFilter("All"); }}
             className="stage-btn"
             style={{
               background: s.id===active ? `${s.accent}28` : "var(--bg-card)",
@@ -618,12 +612,10 @@ function PipelineView() {
         <div style={{ background:"var(--bg-card)", borderRadius:14, border:`1px solid ${stage.accent}44`,
           padding:28, animation:"scaleIn 0.25s ease",
           boxShadow:`0 0 32px ${stage.accent}15` }}>
-
-          {/* Header */}
           <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:22 }}>
             <span style={{ fontSize:38, background:`${stage.accent}22`, borderRadius:12, width:60, height:60,
-              display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{stage.icon}</span>
-            <div style={{ flex:1 }}>
+              display:"flex", alignItems:"center", justifyContent:"center" }}>{stage.icon}</span>
+            <div>
               <h3 style={{ color:"var(--text-h)", margin:0, fontSize:22, fontWeight:900 }}>Stage {stage.stage}: {stage.label}</h3>
               <p style={{ color:"var(--text-sec)", margin:"4px 0 0", fontSize:14 }}>{stage.sub}</p>
             </div>
@@ -639,146 +631,22 @@ function PipelineView() {
             </div>
           </div>
 
-          {/* Pipeline flow breadcrumb */}
-          <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:22, flexWrap:"wrap",
-            background:"var(--bg-surface)", borderRadius:10, padding:"10px 16px", border:"1px solid var(--border)" }}>
-            {prevStage ? (
-              <button onClick={() => { setActive(prevStage.id); setTab("overview"); }}
-                style={{ background:"transparent", border:`1px solid ${prevStage.accent}55`, color:prevStage.accent,
-                  borderRadius:8, padding:"4px 12px", cursor:"pointer", fontSize:11, fontWeight:700 }}>
-                ← {prevStage.stage}. {prevStage.label}
-              </button>
-            ) : <span style={{ color:"var(--text-faint)", fontSize:11 }}>◉ Start of Pipeline</span>}
-            <span style={{ color:"var(--text-faint)", fontSize:14 }}>›</span>
-            <span style={{ background:`${stage.accent}22`, color:stage.accent, border:`1px solid ${stage.accent}44`,
-              borderRadius:8, padding:"4px 14px", fontSize:11, fontWeight:800 }}>
-              {stage.icon} Stage {stage.stage}: {stage.label}
-            </span>
-            <span style={{ color:"var(--text-faint)", fontSize:14 }}>›</span>
-            {nextStage ? (
-              <button onClick={() => { setActive(nextStage.id); setTab("overview"); }}
-                style={{ background:"transparent", border:`1px solid ${nextStage.accent}55`, color:nextStage.accent,
-                  borderRadius:8, padding:"4px 12px", cursor:"pointer", fontSize:11, fontWeight:700 }}>
-                {nextStage.stage}. {nextStage.label} →
-              </button>
-            ) : <span style={{ color:"var(--text-faint)", fontSize:11 }}>◉ End of Pipeline</span>}
-          </div>
-
           {/* Tabs */}
-          <div style={{ display:"flex", gap:8, marginBottom:22, flexWrap:"wrap" }}>
-            {[
-              { key:"overview", label:"🔬 Stage Overview", count: null },
-              { key:"topics",   label:"📘 Deep Dive Topics", count: stage.topics?.length },
-              { key:"questions",label:"❓ Exam Questions", count: stage.questions?.length },
-            ].map(t => (
-              <button key={t.key} onClick={() => setTab(t.key)}
+          <div style={{ display:"flex", gap:8, marginBottom:22 }}>
+            {["topics","questions"].map(t => (
+              <button key={t} onClick={() => setTab(t)}
                 style={{
-                  background: tab===t.key ? stage.accent : "var(--bg-surface)",
-                  color: tab===t.key ? "#000" : "var(--text-sec)",
-                  border: tab===t.key ? "none" : "1px solid var(--border)",
-                  borderRadius:8, padding:"9px 20px",
-                  cursor:"pointer", fontWeight:700, fontSize:13,
+                  background: tab===t ? stage.accent : "var(--bg-surface)",
+                  color: tab===t ? "#000" : "var(--text-sec)",
+                  border:"none", borderRadius:8, padding:"8px 20px",
+                  cursor:"pointer", fontWeight:700, fontSize:13, textTransform:"capitalize",
                   transition:"all 0.18s"
                 }}>
-                {t.label}{t.count != null ? ` (${t.count})` : ""}
+                {t} ({t==="topics" ? stage.topics?.length : stage.questions?.length})
               </button>
             ))}
           </div>
 
-          {/* ── OVERVIEW TAB ─────────────────────────────────────── */}
-          {tab==="overview" && overview && (
-            <div style={{ animation:"fadeUp 0.3s ease" }}>
-
-              {/* What is this stage */}
-              <div style={{ marginBottom:24 }}>
-                <h4 style={{ color:stage.accent, margin:"0 0 12px", fontSize:14, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.06em" }}>
-                  🧬 What is this stage?
-                </h4>
-                {overview.what.split("\n\n").map((para, i) => (
-                  <p key={i} style={{ color:"var(--text-body)", margin:"0 0 12px", lineHeight:1.8, fontSize:14.5 }}>{para}</p>
-                ))}
-              </div>
-
-              {/* Before / After connection boxes */}
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:24 }}>
-                <div style={{ background:`${prevStage ? prevStage.accent : "#888"}11`,
-                  border:`1px solid ${prevStage ? prevStage.accent : "#888"}33`,
-                  borderRadius:10, padding:16 }}>
-                  <div style={{ color: prevStage ? prevStage.accent : "var(--text-faint)",
-                    fontSize:11, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:8 }}>
-                    ← INPUTS FROM PREVIOUS STAGE
-                    {prevStage && <span style={{ marginLeft:6, fontWeight:500 }}>({prevStage.stage}. {prevStage.label})</span>}
-                  </div>
-                  <p style={{ color:"var(--text-body)", margin:0, lineHeight:1.7, fontSize:13 }}>{overview.before}</p>
-                </div>
-                <div style={{ background:`${nextStage ? nextStage.accent : "#888"}11`,
-                  border:`1px solid ${nextStage ? nextStage.accent : "#888"}33`,
-                  borderRadius:10, padding:16 }}>
-                  <div style={{ color: nextStage ? nextStage.accent : "var(--text-faint)",
-                    fontSize:11, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:8 }}>
-                    OUTPUTS TO NEXT STAGE →
-                    {nextStage && <span style={{ marginLeft:6, fontWeight:500 }}>({nextStage.stage}. {nextStage.label})</span>}
-                  </div>
-                  <p style={{ color:"var(--text-body)", margin:0, lineHeight:1.7, fontSize:13 }}>{overview.after}</p>
-                </div>
-              </div>
-
-              {/* Step-by-step walkthrough */}
-              <div style={{ marginBottom:24 }}>
-                <h4 style={{ color:stage.accent, margin:"0 0 16px", fontSize:14, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.06em" }}>
-                  ⚙️ What Actually Happens — Step by Step
-                </h4>
-                <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                  {overview.steps.map((step, i) => (
-                    <div key={i} style={{ display:"flex", gap:14, background:"var(--bg-surface)",
-                      borderRadius:10, padding:16, border:"1px solid var(--border)",
-                      borderLeft:`3px solid ${stage.accent}` }}>
-                      <div style={{ flexShrink:0, width:32, height:32, borderRadius:"50%",
-                        background:`${stage.accent}22`, border:`2px solid ${stage.accent}44`,
-                        display:"flex", alignItems:"center", justifyContent:"center",
-                        color:stage.accent, fontWeight:800, fontSize:13 }}>
-                        {step.num}
-                      </div>
-                      <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ color:"var(--text-h)", fontWeight:800, fontSize:14, marginBottom:6 }}>{step.title}</div>
-                        <div style={{ color:"var(--text-body)", fontSize:13.5, lineHeight:1.75 }}>{step.detail}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Timeline, Team, Deliverables */}
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14 }}>
-                <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:16, border:"1px solid var(--border)" }}>
-                  <div style={{ color:"#F59E0B", fontSize:11, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:8 }}>
-                    ⏱️ Typical Duration
-                  </div>
-                  <p style={{ color:"var(--text-body)", margin:0, lineHeight:1.65, fontSize:13 }}>{overview.duration}</p>
-                </div>
-                <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:16, border:"1px solid var(--border)" }}>
-                  <div style={{ color:"#34D399", fontSize:11, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:8 }}>
-                    👥 Team Involved
-                  </div>
-                  <p style={{ color:"var(--text-body)", margin:0, lineHeight:1.65, fontSize:13 }}>{overview.team}</p>
-                </div>
-                <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:16, border:"1px solid var(--border)" }}>
-                  <div style={{ color:"#C084FC", fontSize:11, fontWeight:800, textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:8 }}>
-                    📦 Key Deliverables
-                  </div>
-                  <ul style={{ margin:0, padding:"0 0 0 16px", color:"var(--text-body)", fontSize:12.5, lineHeight:1.8 }}>
-                    {overview.deliverables.map((d, i) => <li key={i}>{d}</li>)}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {tab==="overview" && !overview && (
-            <p style={{ color:"var(--text-muted)", fontStyle:"italic" }}>Overview content coming soon for this stage.</p>
-          )}
-
-          {/* ── TOPICS TAB ───────────────────────────────────────── */}
           {tab==="topics" && stage.topics?.map(tp => (
             <details key={tp.id} style={{ background:"var(--bg-surface)", borderRadius:10, padding:16, marginBottom:10,
               border:"1px solid var(--border)" }}>
@@ -794,7 +662,6 @@ function PipelineView() {
             </details>
           ))}
 
-          {/* ── QUESTIONS TAB ────────────────────────────────────── */}
           {tab==="questions" && (
             <>
               <div style={{ display:"flex", gap:8, marginBottom:16, flexWrap:"wrap" }}>
