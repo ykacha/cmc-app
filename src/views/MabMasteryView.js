@@ -1,7 +1,7 @@
 export default function MabMasteryView() {
   return (
     <iframe
-      src="https://mab.yashkacha.com"
+      src="https://mab-mastery.vercel.app"
       title="mAb Mastery"
       style={{
         width: "100%",

@@ -775,9 +775,8 @@ function CqaRiskMatrixSVG() {
       ))}
 
       {/* CQA dots */}
-      {cqas.map(([label, prob, impact, color], i) => {
+      {cqas.map(([label, prob, impact, color]) => {
         const cx = px(prob), cy = py(impact);
-        const isHigh = impact > 0.7 && prob > 0.5;
         return (
           <g key={label}>
             <circle cx={cx} cy={cy} r={7} fill={hex(color, 0.35)} stroke={color} strokeWidth={1.5} />

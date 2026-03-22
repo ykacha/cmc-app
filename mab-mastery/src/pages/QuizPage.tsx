@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, RotateCcw, ArrowLeft, Filter } from 'lucide-react';
+import { RotateCcw, ArrowLeft, Filter } from 'lucide-react';
 import { useProgressStore } from '../store/progressStore';
 import QuizCard from '../components/ui/QuizCard';
 import { Topbar } from '../components/layout/Topbar';
