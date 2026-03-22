@@ -2861,7 +2861,7 @@ export default function App() {
     ]},
     { id:"career",   icon:"🚀", label:"Career",   color:"#60A5FA", items:[
       { id:"career",    icon:"🚀", label:"Career & Interviews" },
-      { id:"mab-learn", icon:"🧬", label:"mAb Learning", external:true },
+      { id:"mab-learn", icon:"🧬", label:"mAb Learning", external:true, url:"https://mab.yashkacha.com" },
       { id:"pathway",   icon:"🎓", label:"Learning Pathways" },
       { id:"progress",  icon:"📊", label:"My Progress" },
     ]},
@@ -2954,7 +2954,7 @@ export default function App() {
                       <button key={item.id}
                         onClick={() => {
                           if (item.external) {
-                            window.open("http://localhost:5174/", "_blank");
+                            window.open(item.url, "_blank");
                             setOpenGroup(null);
                           } else {
                             navigate(item.id); setOpenGroup(null);
