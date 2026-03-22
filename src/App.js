@@ -2861,7 +2861,6 @@ export default function App() {
     ]},
     { id:"career",   icon:"🚀", label:"Career",   color:"#60A5FA", items:[
       { id:"career",    icon:"🚀", label:"Career & Interviews" },
-      { id:"mab-learn", icon:"🧬", label:"mAb Mastery", external:true, url:"https://mab.yashkacha.com" },
       { id:"pathway",   icon:"🎓", label:"Learning Pathways" },
       { id:"progress",  icon:"📊", label:"My Progress" },
     ]},
@@ -2982,6 +2981,23 @@ export default function App() {
             );
           })}
         </div>
+
+        {/* mAb button */}
+        <button
+          onClick={() => window.open("https://mab.yashkacha.com", "_blank")}
+          style={{
+            background: "linear-gradient(135deg, #1976d2, #00796b)",
+            color: "#fff", border: "none", borderRadius: 8,
+            padding: "7px 14px", cursor: "pointer", fontWeight: 700,
+            fontSize: 13, whiteSpace: "nowrap", flexShrink: 0,
+            letterSpacing: "0.03em", marginRight: 8,
+            boxShadow: "0 2px 10px rgba(25,118,210,0.35)",
+            transition: "opacity 0.15s",
+          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
+          onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
+          🧬 mAb
+        </button>
 
         {/* Theme toggle */}
         <button onClick={toggleTheme} className="theme-toggle"
