@@ -2861,6 +2861,7 @@ export default function App() {
     ]},
     { id:"career",   icon:"🚀", label:"Career",   color:"#60A5FA", items:[
       { id:"career",    icon:"🚀", label:"Career & Interviews" },
+      { id:"mab-learn", icon:"🧬", label:"mAb Learning", external:true },
       { id:"pathway",   icon:"🎓", label:"Learning Pathways" },
       { id:"progress",  icon:"📊", label:"My Progress" },
     ]},
@@ -2951,7 +2952,14 @@ export default function App() {
                     </div>
                     {group.items.map(item => (
                       <button key={item.id}
-                        onClick={() => { navigate(item.id); setOpenGroup(null); }}
+                        onClick={() => {
+                          if (item.external) {
+                            window.open("http://localhost:5174/", "_blank");
+                            setOpenGroup(null);
+                          } else {
+                            navigate(item.id); setOpenGroup(null);
+                          }
+                        }}
                         style={{
                           display:"flex", alignItems:"center", gap:10, width:"100%",
                           background: view === item.id ? `${group.color}15` : "transparent",
@@ -2964,7 +2972,8 @@ export default function App() {
                         onMouseLeave={e => { if (view !== item.id) e.currentTarget.style.background = "transparent"; }}>
                         <span style={{ fontSize:16 }}>{item.icon}</span>
                         <span>{item.label}</span>
-                        {view === item.id && <span style={{ marginLeft:"auto", fontSize:10 }}>✓</span>}
+                        {item.external && <span style={{ marginLeft:"auto", fontSize:9, opacity:0.5, color:"var(--text-muted)" }}>↗</span>}
+                        {!item.external && view === item.id && <span style={{ marginLeft:"auto", fontSize:10 }}>✓</span>}
                       </button>
                     ))}
                   </div>

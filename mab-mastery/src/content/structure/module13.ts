@@ -1,0 +1,165 @@
+import type { ModuleContent } from '../../types/content';
+
+export const module13: ModuleContent = {
+  id: 'structure-m13',
+  sectionId: 'structure',
+  moduleNumber: 13,
+  eyebrow: 'STRUCTURE 14',
+  title: 'Structure \u2192 CQA Mapping',
+  lead: 'The master integration table linking every structural feature to its CQA classification, analytical method, and typical specification.',
+  tags: [
+    { label: 'CQA', color: 'green' },
+    { label: 'Master Table', color: 'blue' },
+    { label: 'Specifications', color: 'amber' },
+  ],
+  stats: [
+    { label: 'Structural Features', value: '20+' },
+    { label: 'Analytical Methods', value: '15+' },
+    { label: 'CQA Categories', value: '5 major' },
+    { label: 'Framework', value: 'ICH Q8/Q9' },
+  ],
+  sections: [
+    {
+      type: 'card',
+      title: 'CQA Framework \u2014 ICH Q8(R2) and Q9 Foundations',
+      color: 'blue',
+      content:
+        'A Critical Quality Attribute (CQA) is defined by ICH Q8(R2) as "a physical, chemical, biological, or microbiological property or characteristic that should be within an appropriate limit, range, or distribution to ensure the desired product quality." For monoclonal antibodies, CQA identification begins with a risk assessment that links each structural feature to its potential impact on safety, efficacy, pharmacokinetics, and immunogenicity. ICH Q9 provides the risk management framework \u2014 severity (S), occurrence (O), and detectability (D) scores are combined into a risk priority number (RPN = S \u00D7 O \u00D7 D). Attributes with high severity and occurrence receive CQA designation regardless of detectability. The CQA assessment is a living document: it is established during early development (IND-enabling), refined through clinical experience, and finalised for the BLA/MAA filing. Five major CQA categories cover the structural landscape of mAbs: glycosylation variants, charge variants, size variants, oxidation/chemical modifications, and sequence/disulfide variants. Each category encompasses multiple individual attributes, each requiring one or more validated analytical methods for monitoring.',
+    },
+    {
+      type: 'card',
+      title: 'CQA Risk Ranking Methodology',
+      color: 'teal',
+      content:
+        'The risk ranking of structural features as CQAs follows a structured assessment integrating prior knowledge, platform data, and molecule-specific data. Severity is scored 1\u20135 based on the attribute\u2019s impact on the primary mechanism of action (MoA): for an ADCC-dependent mAb, afucosylation severity = 5 (directly modulates ADCC potency), while for an anti-inflammatory IgG4, afucosylation severity = 2 (minimal functional impact). Occurrence reflects how frequently the attribute varies outside the desired range during manufacturing: deamidation at labile Asn sites = 4\u20135 (process-dependent and time-dependent), while sequence variants from misincorporation = 1\u20132 (rare, <0.1%). Detectability scores the analytical method capability: an attribute monitored by a validated, quantitative release method (e.g., HILIC for glycans) = 1 (excellent detectability), while an attribute requiring multi-attribute method (MAM) peptide mapping with specialised software = 3 (moderate). Attributes scoring above the RPN threshold (typically RPN \u226527 or severity \u22654 regardless of RPN) are designated CQAs and require specifications, validated methods, and defined control strategies. Attributes below the threshold may be classified as key quality attributes (KQAs) or non-critical, monitored through characterisation or trending.',
+    },
+    {
+      type: 'table',
+      title: 'Master CQA Mapping \u2014 Glycosylation Variants',
+      headers: ['Structural Feature', 'CQA Category', 'Impact on Function', 'Analytical Method', 'Typical Specification', 'Control Tier'],
+      rows: [
+        ['G0F / G1F / G2F ratio', 'Glycosylation', 'CDC potency (G2F > G0F); minor ADCC impact', 'HILIC-FLD (released glycans)', 'G0F: 25\u201355%; G1F: 15\u201340%; G2F: 3\u201320%', 'Tier 1 \u2014 Release specification'],
+        ['Afucosylated species (total)', 'Glycosylation', 'ADCC potency (\u2264 50\u00D7 enhancement per 10% increase)', 'HILIC-FLD or CE-LIF', 'NMT 8\u201312% (ADCC-dep); report (non-ADCC)', 'Tier 1 \u2014 Release specification'],
+        ['High-mannose (Man5\u2013Man9)', 'Glycosylation', 'Faster PK clearance via mannose receptor (CD206)', 'HILIC-FLD', 'NMT 5\u201310%', 'Tier 1 \u2014 Release specification'],
+        ['Sialylated species', 'Glycosylation', 'Anti-inflammatory (DC-SIGN); ASGPR clearance if high', 'HILIC-FLD or WAX', 'Report or NMT 15%', 'Tier 2 \u2014 Characterisation with limits'],
+        ['Non-glycosylated HC (%)', 'Glycosylation', 'Loss of effector function; CH2 destabilisation', 'Intact mass LC-MS', 'NMT 2\u20133%', 'Tier 2 \u2014 Characterisation with limits'],
+        ['Bisecting GlcNAc', 'Glycosylation', 'Blocks fucosylation; enhanced ADCC if engineered', 'HILIC-FLD', 'Report (standard); specification if GlycoMAb', 'Tier 2 \u2014 Characterisation'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'table',
+      title: 'Master CQA Mapping \u2014 Charge Variants',
+      headers: ['Structural Feature', 'CQA Category', 'Impact on Function', 'Analytical Method', 'Typical Specification', 'Control Tier'],
+      rows: [
+        ['Acidic variants (total)', 'Charge', 'Deamidation, sialylation, glycation \u2192 reduced target binding if in CDR', 'icIEF or CEX-HPLC', 'NMT 25\u201340% (molecule-dependent)', 'Tier 1 \u2014 Release specification'],
+        ['Basic variants (total)', 'Charge', 'C-terminal Lys, succinimide intermediates, incomplete pyroglutamate', 'icIEF or CEX-HPLC', 'NMT 15\u201330% (molecule-dependent)', 'Tier 1 \u2014 Release specification'],
+        ['Deamidation (Asn\u2192Asp/isoAsp)', 'Charge', 'CDR deamidation can reduce potency 2\u201310\u00D7; Fc deamidation is non-critical', 'Peptide mapping (LC-MS)', 'Site-specific: NMT 5\u201315% per labile site', 'Tier 1 (CDR sites); Tier 2 (Fc sites)'],
+        ['Isomerisation (Asp\u2192isoAsp)', 'Charge', 'Backbone kink at isoAsp; CDR isomerisation reduces binding', 'Peptide mapping or IEC', 'Site-specific: NMT 5\u201310% per labile site', 'Tier 1 (CDR sites); Tier 2 (Fc sites)'],
+        ['C-terminal Lys clipping', 'Charge', 'No functional impact; affects charge profile interpretation', 'icIEF, CEX, or intact mass', 'Report only (typically >95% clipped)', 'Tier 3 \u2014 Report only'],
+        ['N-terminal pyroglutamate (pyroGlu)', 'Charge', 'No functional impact; quantitative in most mAbs', 'icIEF, peptide mapping', 'Report only (typically >95% conversion)', 'Tier 3 \u2014 Report only'],
+        ['Glycation (Lys glucose adducts)', 'Charge', 'CDR glycation can reduce binding; Fc glycation is benign', 'Boronate affinity or peptide mapping', 'NMT 5\u201310% total glycation', 'Tier 2 \u2014 Characterisation with limits'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'table',
+      title: 'Master CQA Mapping \u2014 Size Variants',
+      headers: ['Structural Feature', 'CQA Category', 'Impact on Function', 'Analytical Method', 'Typical Specification', 'Control Tier'],
+      rows: [
+        ['HMW aggregates (total)', 'Size', 'Immunogenicity risk; reduced potency per mass', 'SE-HPLC', 'NMT 2\u20135% (often NMT 2% for s.c. products)', 'Tier 1 \u2014 Release specification'],
+        ['LMW fragments (total)', 'Size', 'Loss of bivalent binding; altered PK', 'SE-HPLC + non-reducing CE-SDS', 'NMT 2\u20135% (sum of fragments)', 'Tier 1 \u2014 Release specification'],
+        ['Half-antibody (HL species)', 'Size', 'Monovalent binding; potential immunogenicity', 'Non-reducing CE-SDS', 'NMT 5% (included in LMW total)', 'Tier 1 \u2014 Release specification'],
+        ['Subvisible particles (\u226510 \u03BCm)', 'Size', 'Immunogenicity; safety (vascular occlusion risk)', 'MFI or light obscuration (HIAC)', '\u226460,000/container (\u226510 \u03BCm) per USP <787>', 'Tier 1 \u2014 Release specification'],
+        ['Subvisible particles (\u226525 \u03BCm)', 'Size', 'Safety (capillary occlusion)', 'Light obscuration (HIAC)', '\u22646,000/container (\u226525 \u03BCm) per USP <787>', 'Tier 1 \u2014 Release specification'],
+        ['Sub-visible proteinaceous particles (2\u201310 \u03BCm)', 'Size', 'Emerging immunogenicity concern', 'MFI (Micro-Flow Imaging)', 'Report or advisory limit (evolving)', 'Tier 2 \u2014 Characterisation'],
+        ['Non-reducible covalent aggregates', 'Size', 'Cross-linked via non-disulfide bonds (e.g., dityrosine)', 'Non-reducing CE-SDS', 'NMT 2% HMW on nr-CE-SDS', 'Tier 1 \u2014 Release specification'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'table',
+      title: 'Master CQA Mapping \u2014 Oxidation and Chemical Modifications',
+      headers: ['Structural Feature', 'CQA Category', 'Impact on Function', 'Analytical Method', 'Typical Specification', 'Control Tier'],
+      rows: [
+        ['Met252/Met428 oxidation (Fc)', 'Oxidation', 'Reduced FcRn binding \u2192 faster PK clearance', 'Peptide mapping (LC-MS); HIC', 'NMT 3\u20135% per site (or combined NMT 10%)', 'Tier 1 \u2014 Release or stability-indicating'],
+        ['Met oxidation in CDR', 'Oxidation', 'Direct potency loss if Met is in binding interface', 'Peptide mapping (LC-MS)', 'NMT 2\u20135% per CDR Met site', 'Tier 1 \u2014 Release specification'],
+        ['Trp oxidation (Trp\u2192kynurenine/Oia)', 'Oxidation', 'CDR Trp oxidation can ablate binding; colour change (yellow)', 'Peptide mapping; UV absorbance', 'NMT 2\u20135% per labile Trp site', 'Tier 1 (CDR) or Tier 2 (Fc)'],
+        ['His oxidation (His\u21922-oxo-His)', 'Oxidation', 'CDR His oxidation reduces binding; metal-catalysed', 'Peptide mapping (LC-MS)', 'Report or site-specific limit', 'Tier 2 \u2014 Characterisation'],
+        ['Thioether bonds (-C-S-C-)', 'Chemical', 'Non-reducible linkage from \u03B2-elimination; altered flexibility', 'Non-reduced peptide mapping', 'Report only (characterisation)', 'Tier 3 \u2014 Characterisation'],
+        ['Trisulfide bonds (-C-S-S-S-C-)', 'Chemical', 'Altered hinge flexibility; +32 Da per bond', 'Peptide mapping (LC-MS)', 'NMT 5% per inter-chain site', 'Tier 2 \u2014 Characterisation with limits'],
+        ['N-terminal pyroGlu (Gln\u2192pyroGlu)', 'Chemical', 'No functional impact; near-quantitative', 'Peptide mapping; icIEF', 'Report only', 'Tier 3 \u2014 Report only'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'table',
+      title: 'Master CQA Mapping \u2014 Sequence and Disulfide Variants',
+      headers: ['Structural Feature', 'CQA Category', 'Impact on Function', 'Analytical Method', 'Typical Specification', 'Control Tier'],
+      rows: [
+        ['Sequence variants (misincorporation)', 'Sequence', 'Amino acid substitution from codon misreading; potency impact if in CDR', 'Peptide mapping (LC-MS/MS); MAM', 'NMT 0.1\u20130.5% per site (monitoring)', 'Tier 2 \u2014 Characterisation/MAM monitoring'],
+        ['C-terminal amidation', 'Sequence', 'Removal of C-terminal Gly or conversion of Gly\u2192\u03B1-amidated; no functional impact', 'Peptide mapping', 'Report only', 'Tier 3 \u2014 Report only'],
+        ['Signal peptide clipping (N-terminal)', 'Sequence', 'Retained signal peptide = truncated product; immunogenicity concern', 'Peptide mapping; intact mass', 'Not detected (<0.1%)', 'Tier 2 \u2014 Characterisation'],
+        ['Disulfide bond integrity (intact IgG %)', 'Disulfide', 'Fragmentation reduces bivalent binding; immunogenicity', 'Non-reducing CE-SDS', 'Main peak \u226590\u201395%', 'Tier 1 \u2014 Release specification'],
+        ['Free thiol content', 'Disulfide', 'Covalent aggregation risk; cysteinylation/glutathionylation', 'Ellman\u2019s assay (DTNB)', 'NMT 0.5 mol SH/mol IgG', 'Tier 1 \u2014 Release or in-process'],
+        ['Disulfide scrambling', 'Disulfide', 'Non-native Cys pairing; loss of domain fold stability', 'Non-reduced peptide mapping', 'Report only (characterisation)', 'Tier 2 \u2014 Characterisation'],
+        ['Trisulfide bonds (hinge)', 'Disulfide', 'Altered hinge flexibility; +32 Da mass shift', 'Peptide mapping (LC-MS)', 'NMT 5% per site', 'Tier 2 \u2014 Characterisation with limits'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'table',
+      title: 'Master CQA Mapping \u2014 Process-Related Impurities',
+      headers: ['Impurity', 'CQA Category', 'Impact on Safety', 'Analytical Method', 'Typical Specification', 'Control Tier'],
+      rows: [
+        ['Host cell protein (HCP)', 'Process impurity', 'Immunogenicity; enzymatic degradation of product', 'ELISA (CHO HCP)', 'NMT 100 ppm (often NMT 10\u201350 ppm)', 'Tier 1 \u2014 Release specification'],
+        ['Host cell DNA (hcDNA)', 'Process impurity', 'Oncogenicity risk (theoretical); regulatory limit', 'qPCR', 'NMT 10 ng/dose (WHO limit)', 'Tier 1 \u2014 Release specification'],
+        ['Protein A leachate', 'Process impurity', 'Immunogenicity; toxicity at high levels', 'ELISA (Protein A)', 'NMT 5\u201310 ppm (or 10 ng/mg)', 'Tier 1 \u2014 Release specification'],
+        ['Residual cell culture media components', 'Process impurity', 'Generally low risk if cleared by DS purification', 'Process clearance validation', 'Demonstrated clearance', 'Tier 3 \u2014 Process validation'],
+        ['Endotoxin', 'Process impurity', 'Pyrogenicity; safety', 'LAL (kinetic turbidimetric)', 'NMT 5 EU/kg/hr (dose-dependent)', 'Tier 1 \u2014 Release specification'],
+        ['Bioburden / Sterility', 'Microbial', 'Patient safety (infection risk)', 'USP <71> sterility test', 'No growth (DP); NMT 1 CFU/mL (DS)', 'Tier 1 \u2014 Release specification'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'callout',
+      title: 'Control Strategy Tiers \u2014 From Specification to Trending',
+      variant: 'info',
+      content:
+        'The control strategy for structural CQAs is organised into three tiers following the ICH Q8/Q10 framework. Tier 1 (Release Specification): the attribute is tested on every batch with validated methods and has defined acceptance criteria in the drug substance and/or drug product specification. Examples: HMW by SE-HPLC (NMT 2%), main charge isoform by icIEF (50\u201380%), glycan profile by HILIC-FLD. Tier 2 (Characterisation with Limits): the attribute is thoroughly characterised during development and may be monitored by extended characterisation testing or trending, but is not a routine release test. Examples: site-specific deamidation by peptide mapping, trisulfide content, disulfide scrambling. Tier 3 (Report Only / Process Control): the attribute is controlled through the manufacturing process itself (validated process ranges and in-process controls) rather than through end-product testing. Examples: C-terminal Lys clipping (controlled by cell culture duration), N-terminal pyroGlu conversion (near-quantitative and consistent). The tier assignment is molecule-specific and mechanism-of-action dependent: afucosylation is Tier 1 for an ADCC-dependent oncology mAb but may be Tier 2 for an anti-inflammatory IgG4.',
+    },
+    {
+      type: 'bullets',
+      title: 'Building the CQA Risk Assessment \u2014 Step-by-Step',
+      color: 'purple',
+      items: [
+        'Step 1 \u2014 Enumerate all structural features: systematically list every known post-translational modification, degradation product, and process-related impurity applicable to the molecule. Use platform knowledge from prior IgG1 programs as the starting framework.',
+        'Step 2 \u2014 Assign severity scores (1\u20135): score each attribute for its impact on efficacy (potency, binding), safety (immunogenicity, toxicity), and pharmacokinetics (clearance, half-life). Use published literature, platform data, and early-stage functional assays (SPR, cell-based potency).',
+        'Step 3 \u2014 Assign occurrence scores (1\u20135): evaluate how likely the attribute is to vary outside the desired range during manufacturing. Consider process sensitivity (DoE data), stability trends (forced degradation), and platform history. High-occurrence attributes include deamidation at labile Asn-Gly sites and Met oxidation.',
+        'Step 4 \u2014 Assign detectability scores (1\u20135): score the ability of current analytical methods to detect and quantify the attribute. A validated HPLC method with established system suitability = 1; a research-grade MS method requiring manual data interpretation = 4.',
+        'Step 5 \u2014 Calculate RPN and classify: RPN = S \u00D7 O \u00D7 D. Attributes above the threshold (e.g., RPN \u226527 or S \u22654) are designated CQAs. Document the rationale for each classification. Any attribute with severity = 5 (direct impact on primary MoA) is automatically a CQA regardless of occurrence or detectability.',
+        'Step 6 \u2014 Define control strategy per tier: Tier 1 CQAs receive release specifications and validated methods. Tier 2 attributes receive characterisation protocols and trending. Tier 3 attributes are controlled through validated process parameters and in-process controls.',
+        'Step 7 \u2014 Living document: the CQA assessment is updated at each development milestone (Phase I \u2192 Phase III \u2192 BLA) as clinical data, manufacturing experience, and analytical capability evolve. New degradation pathways discovered during stability studies may promote an attribute from Tier 3 to Tier 1.',
+      ],
+    },
+    {
+      type: 'callout',
+      title: 'Biosimilar CQA Considerations \u2014 Totality of Evidence',
+      variant: 'warning',
+      content:
+        'For biosimilar development, the CQA mapping takes on additional complexity because the target quality profile is defined by the innovator product rather than by first-principles risk assessment alone. EMA/CHMP/BMWP/403543/2010 and FDA guidance (2015) require a "totality of evidence" approach where every structural CQA is compared between the proposed biosimilar and the reference product using multiple lots, multiple assays, and statistical similarity criteria. The glycan profile is historically the most challenging attribute for biosimilar comparability: even minor differences in afucosylated species (e.g., 6% vs 3%) can propagate to measurable ADCC differences that require clinical bridging. Charge variant profiles must account for the innovator\u2019s stability-driven drift across shelf life, meaning comparisons should use reference product lots spanning early and late expiry. Size variant comparisons must address both SE-HPLC (native aggregates) and SV-AUC (resolving monomer\u2013dimer\u2013trimer). Each CQA comparison generates a "quality range" for the innovator, and the biosimilar must fall within or near this range, with deviations requiring functional justification or clinical data.',
+    },
+    {
+      type: 'card',
+      title: 'Analytical Method Landscape \u2014 Method-to-CQA Coverage Matrix',
+      color: 'amber',
+      content:
+        'No single analytical method can monitor all structural CQAs. A compliant control strategy requires an orthogonal analytical panel where each CQA is covered by at least one validated release method and ideally confirmed by a second orthogonal technique. The method coverage matrix maps methods (rows) to CQAs (columns) and identifies gaps. Core release methods for IgG1 typically include: SE-HPLC (aggregates, fragments), icIEF or CEX-HPLC (charge variants), non-reducing CE-SDS (disulfide integrity, fragments), reducing CE-SDS (HC/LC purity), HILIC-FLD (glycan profile), potency bioassay (target binding and/or effector function), CHO HCP ELISA, residual DNA by qPCR, Protein A ELISA, and endotoxin (LAL). Extended characterisation methods add: peptide mapping by LC-MS/MS (sequence confirmation, PTM quantitation), intact/subunit mass spectrometry (mass confirmation, glycoform assignment), DSC (thermal stability), DLS (hydrodynamic size, polydispersity), and SV-AUC (sedimentation coefficient distribution). The emerging multi-attribute method (MAM) by peptide mapping LC-MS aims to replace multiple orthogonal methods with a single high-information assay, but regulatory acceptance of MAM as a release method is still evolving (FDA has accepted MAM-based specifications for some recent BLAs).',
+    },
+  ],
+  mentorQuestions: [
+    'You are preparing the CQA risk assessment for a new IgG1 anti-PD-L1 checkpoint inhibitor whose mechanism of action is purely target binding (no ADCC or CDC required). Walk through how you would score the severity of afucosylated glycoforms, Met252 oxidation, and CDR Asn deamidation for this molecule, explaining your rationale for each severity assignment and the resulting control tier.',
+    'During a pre-BLA meeting, the FDA reviewer challenges your decision to place disulfide scrambling as a Tier 2 characterisation attribute rather than a Tier 1 release specification. Construct the scientific defence for your tier assignment, including the forced degradation data, analytical method limitations, and clinical risk assessment you would present.',
+    'A competitor biosimilar filing was rejected by EMA because the glycan profile showed 15% afucosylated species versus the innovator range of 3\u20138%. The applicant argued that the higher afucosylation would only enhance ADCC and therefore improve efficacy. Critique this argument from a regulatory science perspective, addressing both efficacy and safety dimensions of the glycan difference.',
+  ],
+};

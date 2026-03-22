@@ -1,0 +1,185 @@
+import type { ModuleContent } from '../../types/content';
+
+export const module4: ModuleContent = {
+  id: 'structure-m4',
+  sectionId: 'structure',
+  moduleNumber: 4,
+  eyebrow: 'STRUCTURE 05',
+  title: 'Numbering Schemes',
+  lead: 'Kabat, Chothia, IMGT, AHo \u2014 four systems for numbering antibody residues, when to use each, and how to convert between them.',
+  tags: [
+    { label: 'Kabat', color: 'blue' },
+    { label: 'Chothia', color: 'purple' },
+    { label: 'IMGT', color: 'green' },
+    { label: 'EU Index', color: 'amber' },
+  ],
+  stats: [
+    { label: 'Schemes', value: '4 major' },
+    { label: 'Kabat Year', value: '1991' },
+    { label: 'IMGT Year', value: '1997' },
+    { label: 'Industry Standard', value: 'EU + Kabat' },
+  ],
+  sections: [
+    {
+      type: 'card',
+      title: 'Kabat Numbering \u2014 The Sequence Variability Standard',
+      color: 'blue',
+      content:
+        'Kabat numbering is based on the analysis of sequence variability across thousands of antibody sequences, first described by Wu and Kabat in 1970 and comprehensively updated in the "Sequences of Proteins of Immunological Interest" compendium (5th edition, 1991). The system works by aligning all known antibody sequences and assigning fixed position numbers based on the most common sequence length at each region. Insertions relative to the consensus are designated with letter suffixes (e.g., H52A, H52B, H52C in HCDR2; H100A, H100B in HCDR3). CDR boundaries were defined based on peaks of sequence variability: positions where the amino acid identity varies most across the antibody repertoire. This variability-based definition captures the functional CDRs (antigen-contacting residues) well for most loops. Kabat numbering is the universal standard for variable region positions in the pharmaceutical industry \u2014 all CDR mutations, humanisation reports, and CMC documentation use Kabat positions for VH and VL residues. The system handles \u03ba and \u03bb light chains with the same numbering framework, though some insertion positions differ.',
+    },
+    {
+      type: 'card',
+      title: 'Chothia Numbering \u2014 The Structural Standard',
+      color: 'purple',
+      content:
+        'Chothia numbering is based on structural analysis of antibody crystal structures, developed by Chothia and Lesk (Nature 1987, J. Mol. Biol. 1989). Rather than defining CDR boundaries by sequence variability (as Kabat does), Chothia defined CDR boundaries by the residues that form the structurally variable loops \u2014 the residues whose backbone conformation changes between different antibodies. The key difference from Kabat is in CDR definitions: HCDR1 in Chothia begins at H26 and extends to H32 (compared to H31-H35B in Kabat), capturing the N-terminal turn of the CDR1 loop that has a variable conformation but is classified as framework by Kabat. For HCDR2, Chothia defines H52-H56 as the structurally variable segment (much shorter than the Kabat HCDR2 of H50-H65). Insertions are placed differently \u2014 Chothia inserts at H31 in HCDR1 (rather than H35 in Kabat). Chothia numbering is preferred for structural prediction and canonical structure assignment because it directly reflects the structural loop boundaries. Many computational antibody modelling tools (ABodyBuilder, RosettaAntibody) use combined Kabat-Chothia CDR definitions to capture both sequence-variable and structurally-variable residues.',
+    },
+    {
+      type: 'card',
+      title: 'IMGT Numbering \u2014 The Universal Superfamily Standard',
+      color: 'green',
+      content:
+        'The IMGT (International Immunogenetics Information System) numbering scheme was developed by Marie-Paule Lefranc in 1997 to provide a standardised numbering system that works across the entire immunoglobulin superfamily \u2014 not just antibodies but also T-cell receptors, MHC molecules, and other IgSF members. IMGT assigns a fixed 128 positions per variable domain, with gaps inserted at predefined positions to accommodate length variation. CDR definitions: CDR1 = positions 27-38 (12 positions), CDR2 = positions 56-65 (10 positions), CDR3 = positions 105-117 (13 positions). Framework regions: FR1 = 1-26, FR2 = 39-55, FR3 = 66-104, FR4 = 118-128. The gap positions within CDRs follow specific rules: HCDR1 gaps from position 33 outward; HCDR2 gaps from position 60 outward; HCDR3 gaps symmetrically from positions 111/112. IMGT is the standard for germline gene databases (IMGT/V-QUEST, IMGT/DomainGapAlign) and is increasingly used in next-generation sequencing (NGS) analysis of antibody repertoires. Its fixed-length framework makes IMGT particularly well-suited for bioinformatic analysis and machine learning applications.',
+    },
+    {
+      type: 'card',
+      title: 'AHo Numbering \u2014 Enhanced IMGT for Long CDR3s',
+      color: 'teal',
+      content:
+        'The AHo numbering scheme was developed by Honegger and Pl\u00fcckthun (J. Mol. Biol. 2001) as an enhancement to IMGT, specifically addressing the handling of very long HCDR3 loops. AHo assigns 149 positions per variable domain (compared to 128 in IMGT), providing additional positions for long insertions in CDR loops. The key advantage of AHo is its treatment of CDR3: whereas IMGT can become awkward for HCDR3 loops longer than ~15 residues (requiring many insertion letters), AHo pre-allocates positions that accommodate CDR3 lengths up to ~30 residues without needing letter suffixes. AHo also standardises the numbering of framework positions across V\u03baI-IV, V\u03bbI-X, and VH1-7 gene families, making cross-family comparisons more straightforward. In practice, AHo is used primarily in the structural bioinformatics community and in some computational antibody engineering platforms. It has not displaced Kabat or IMGT in pharmaceutical industry practice but is valuable for computational work involving diverse CDR3 lengths, particularly in single-domain antibodies (VHH/nanobodies) and shark V-NAR domains where CDR3 lengths can be extreme.',
+    },
+    {
+      type: 'table',
+      title: 'CDR Boundary Comparison Across All Four Schemes',
+      headers: ['CDR', 'Kabat', 'Chothia', 'IMGT', 'AHo'],
+      rows: [
+        ['LCDR1', 'L24\u2013L34', 'L24\u2013L34', '27\u201338', '24\u201342'],
+        ['LCDR2', 'L50\u2013L56', 'L50\u2013L56', '56\u201365', '58\u201372'],
+        ['LCDR3', 'L89\u2013L97', 'L89\u2013L97', '105\u2013117', '107\u2013138'],
+        ['HCDR1', 'H31\u2013H35B', 'H26\u2013H32', '27\u201338', '24\u201342'],
+        ['HCDR2', 'H50\u2013H65', 'H52\u2013H56', '56\u201365', '58\u201372'],
+        ['HCDR3', 'H95\u2013H102', 'H95\u2013H102', '105\u2013117', '107\u2013138'],
+      ],
+    },
+    {
+      type: 'card',
+      title: 'EU Index for Constant Regions',
+      color: 'amber',
+      content:
+        'The EU index numbering system is based on the amino acid sequence of the human IgG1 myeloma protein "Eu" determined by Edelman and colleagues in 1969 (Nobel Prize, 1972). EU numbering applies exclusively to the constant regions: CH1 (approximately positions 118-215), hinge (216-230), CH2 (231-340), and CH3 (341-447). This system predates all variable region schemes and became entrenched in the literature because the earliest Fc engineering studies (Fc\u03b3R binding, complement activation, FcRn recycling) all used this reference protein. Key properties: (1) Position numbers are identical across all four IgG subclasses, despite sequence differences of up to 5% between subclasses; (2) The system inserts gaps to maintain alignment where subclass-specific insertions occur (particularly in the hinge of IgG3); (3) Every major Fc engineering mutation in published literature, patents, and regulatory filings uses EU numbering \u2014 there is no alternative in common use for constant regions; (4) EU numbering does NOT apply to variable regions (VH, VL) \u2014 for those, Kabat is the standard. The combination of EU (constant) + Kabat (variable) is the de facto industry convention.',
+    },
+    {
+      type: 'callout',
+      title: 'Critical Industry Convention',
+      variant: 'info',
+      content:
+        'Industry convention: Use EU numbering for Fc/constant region positions and Kabat numbering for variable region/CDR positions. IMGT is used for germline gene assignment. Always specify which scheme you are using in CMC documentation. In regulatory submissions, state explicitly: "Fc mutations are described using EU index numbering (Edelman et al., 1969). Variable region positions use Kabat numbering (Kabat et al., 1991)." When reading published papers, check which scheme is used \u2014 academic papers may use any of the four systems, and a "position 95" in Kabat, Chothia, IMGT, and AHo all refer to different physical residues.',
+    },
+    {
+      type: 'table',
+      title: 'Conversion Examples \u2014 Same Physical Residue in Different Schemes',
+      headers: ['Physical Residue', 'Kabat', 'Chothia', 'IMGT', 'Notes'],
+      rows: [
+        ['First residue of HCDR1 (Kabat)', 'H31', 'H26 starts earlier', '27', 'Chothia HCDR1 includes 5 extra N-terminal residues'],
+        ['Last residue of HCDR1 (Kabat)', 'H35/H35B', 'H32', '38', 'Kabat allows insertions at H35; Chothia truncates'],
+        ['Start of HCDR2', 'H50', 'H52', '56', 'Chothia HCDR2 begins 2 residues later'],
+        ['End of HCDR2', 'H65', 'H56', '65', 'Kabat HCDR2 is much longer than Chothia definition'],
+        ['Start of HCDR3', 'H95', 'H95', '105', 'HCDR3 start is consistent between Kabat and Chothia'],
+        ['Conserved VH Cys (sheet 1)', 'H22', 'H22', '23', 'First Cys of intra-domain disulfide'],
+        ['Conserved VH Cys (sheet 2)', 'H92', 'H92', '104', 'Second Cys of intra-domain disulfide'],
+        ['Conserved VH Trp (core)', 'H36', 'H36', '41', 'Absolutely conserved Trp in hydrophobic core'],
+      ],
+    },
+    {
+      type: 'code',
+      title: 'Numbering Scheme Quick Reference',
+      language: 'text',
+      code: [
+        'VARIABLE REGION NUMBERING DECISION TREE',
+        '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550',
+        '',
+        'What are you doing?',
+        '  \u251c\u2500 Writing CMC documentation or patent claims',
+        '  \u2502   \u2514\u2500\u2500 USE KABAT (VH/VL) + EU (Fc)',
+        '  \u2502',
+        '  \u251c\u2500 Assigning germline V-gene families',
+        '  \u2502   \u2514\u2500\u2500 USE IMGT (IMGT/V-QUEST)',
+        '  \u2502',
+        '  \u251c\u2500 Predicting CDR loop structures',
+        '  \u2502   \u2514\u2500\u2500 USE CHOTHIA (canonical structures)',
+        '  \u2502',
+        '  \u251c\u2500 Computational modelling / ML',
+        '  \u2502   \u2514\u2500\u2500 USE IMGT or AHo (fixed-length alignment)',
+        '  \u2502',
+        '  \u251c\u2500 Analysing antibody repertoire sequencing (NGS)',
+        '  \u2502   \u2514\u2500\u2500 USE IMGT (standard for IgBLAST, MiXCR)',
+        '  \u2502',
+        '  \u2514\u2500 Reading an older paper or monograph',
+        '      \u2514\u2500\u2500 CHECK which scheme they used!',
+        '',
+        'CONSTANT REGION NUMBERING',
+        '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550',
+        '  ALWAYS USE EU INDEX',
+        '  No exceptions. No alternatives in common use.',
+        '  All Fc mutations: EU numbering.',
+        '  All published papers: EU numbering.',
+        '  All patent claims: EU numbering.',
+      ].join('\n'),
+    },
+    {
+      type: 'bullets',
+      title: 'Practical Tools for Numbering and Conversion',
+      items: [
+        'ANARCI (Antibody Numbering and Receptor ClassIfication): Open-source Python tool (Dunbar & Deane, 2016). Assigns Kabat, Chothia, IMGT, Martin, or AHo numbering to any antibody sequence. Available as command-line tool or web server (opig.stats.ox.ac.uk/webapps/newsabdab/sabpred/anarci/).',
+        'IgBLAST (NCBI): Aligns antibody sequences against germline databases. Reports CDR boundaries and framework regions. Uses IMGT, Kabat, or Chothia definitions. Standard tool for V(D)J gene assignment.',
+        'IMGT/DomainGapAlign: Official IMGT tool for numbering assignment. Aligns sequences to IMGT reference sequences with standardised gap placement. Essential for regulatory submissions that reference IMGT gene nomenclature.',
+        'AbNum / Abysis (UCL): Web-based antibody numbering tool. Assigns Kabat, Chothia, Contact, and IMGT numbers. Provides cross-reference between schemes for each position. Useful for quick manual conversions.',
+        'ABodyBuilder / ImmuneBuilder: Homology modelling tools that use numbering assignment as a prerequisite step. ABodyBuilder uses combined Kabat-Chothia CDR definitions (North CDR definitions) for loop modelling.',
+        'Martin (enhanced Chothia) numbering: A modified version of Chothia numbering (Martin & Thornton, 2004) that adjusts insertion positions to better align with observed structural data. Used by some academic groups but less common in industry.',
+      ],
+    },
+    {
+      type: 'callout',
+      title: 'Ambiguity Trap \u2014 "Position 297"',
+      variant: 'warning',
+      content:
+        'When a publication or internal document refers to "position 297" without specifying the numbering scheme, you must determine the context. In EU numbering, position 297 is Asn297 in the CH2 domain \u2014 the conserved N-linked glycosylation site. In Kabat numbering applied to the variable region, position 97 would be near the end of CDR-L3 (for light chain) or in FR3 (for heavy chain). In IMGT numbering, position 97 falls in FR3. The ambiguity is dangerous: a mutation described as "N297Q" should always be at the Fc glycosylation site (EU), but without explicit notation, misinterpretation is possible. Best practice: always write "N297Q (EU)" or "L50 (Kabat)" in all internal and regulatory documents. This discipline prevents potentially costly errors in CMC documentation and regulatory submissions.',
+    },
+    {
+      type: 'table',
+      title: 'Comparison of Numbering Scheme Properties',
+      headers: ['Property', 'Kabat', 'Chothia', 'IMGT', 'AHo'],
+      rows: [
+        ['Year introduced', '1970 (updated 1991)', '1987', '1997', '2001'],
+        ['Basis', 'Sequence variability', 'Structural loop conformations', 'Superfamily alignment', 'Enhanced IMGT framework'],
+        ['Positions per V-domain', 'Variable (insertions as letters)', 'Variable (insertions as letters)', 'Fixed 128', 'Fixed 149'],
+        ['CDR definition method', 'Sequence variability peaks', 'Structural loop boundaries', 'Fixed positions', 'Fixed positions'],
+        ['Handles long HCDR3', 'Yes (H100A, B, C...)', 'Yes (same as Kabat)', 'Limited (gaps at 111-112)', 'Better (more pre-allocated positions)'],
+        ['Covers constant regions', 'No (use EU)', 'No (use EU)', 'Yes (but EU preferred for Fc)', 'No (use EU)'],
+        ['Industry use (pharma)', 'Primary for VH/VL', 'Structure prediction', 'Germline assignment, NGS', 'Rare \u2014 computational only'],
+        ['Key advantage', 'Universal industry standard', 'Best for canonical structures', 'Fixed-length alignment for bioinformatics', 'Long CDR3 handling'],
+        ['Key limitation', 'Insertion letters can be confusing', 'CDR boundaries differ from Kabat', 'Less intuitive gap positions', 'Not adopted in pharma'],
+      ],
+      sortable: true,
+    },
+    {
+      type: 'card',
+      title: 'CDR Definitions \u2014 Kabat vs Chothia vs Combined',
+      color: 'blue',
+      content:
+        'In practice, many antibody engineering groups use a "combined" CDR definition that takes the union of Kabat and Chothia boundaries. The rationale: Kabat captures residues that are sequentially variable (which may contact antigen), while Chothia captures residues that are structurally variable (which form the mobile loop). The union provides the most comprehensive definition of CDR residues. For HCDR1, the combined definition is H26-H35B (Chothia start + Kabat end), capturing both the N-terminal structural variability detected by Chothia and the C-terminal sequence variability detected by Kabat. The "North" or "Martin" CDR definitions provide another alternative, defined by clustering observed loop conformations in all available crystal structures. These definitions are used by AbM and ABodyBuilder. For CMC documentation, however, always use standard Kabat boundaries for CDRs \u2014 the combined definition is primarily useful for computational modelling and humanisation design.',
+    },
+    {
+      type: 'card',
+      title: 'IMGT Gene Nomenclature in Regulatory Context',
+      color: 'green',
+      content:
+        'IMGT provides the standard nomenclature for antibody germline genes, which is increasingly required in regulatory submissions. Under WHO/INN guidelines for naming therapeutic antibodies, the V-gene family assignment must be reported using IMGT nomenclature. For example, a therapeutic antibody might be described as: "VH: IGHV1-69*01 (FR) + affinity-matured CDRs; VL: IGKV1-39*01 (\u03baI)." The IMGT gene nomenclature follows a standardised format: IGHV1-69*01 means: IG = immunoglobulin; H = heavy; V = V-region gene; 1 = subgroup; 69 = gene number; *01 = allele. During humanisation, the choice of human acceptor framework is reported using IMGT gene names, and sequence comparison to the acceptor germline (% identity in framework regions) is a key parameter in immunogenicity risk assessment. IMGT/V-QUEST and IMGT/DomainGapAlign are the reference tools for germline gene assignment, accepted by regulatory agencies including FDA, EMA, and PMDA.',
+    },
+  ],
+  mentorQuestions: [
+    'Why does industry use two different numbering schemes (EU + Kabat) rather than a single unified system?',
+    'You are reading a paper that describes a mutation at "position 297". How do you determine which numbering scheme they are using?',
+    'How would you handle a discrepancy in CDR boundary definitions when comparing two biosimilar characterisation reports?',
+  ],
+};
