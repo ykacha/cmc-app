@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import MabMasteryView from "./views/MabMasteryView";
 import StabilityView from "./views/StabilityView";
 import OOSView from "./views/OOSView";
 import CaseStudiesView from "./views/CaseStudiesView";
@@ -2862,7 +2861,7 @@ export default function App() {
     ]},
     { id:"career",   icon:"🚀", label:"Career",   color:"#60A5FA", items:[
       { id:"career",    icon:"🚀", label:"Career & Interviews" },
-      { id:"mab-learn", icon:"🧬", label:"mAb Mastery" },
+      { id:"mab-learn", icon:"🧬", label:"mAb Mastery", external:true, url:"https://mab.yashkacha.com" },
       { id:"pathway",   icon:"🎓", label:"Learning Pathways" },
       { id:"progress",  icon:"📊", label:"My Progress" },
     ]},
@@ -3048,7 +3047,6 @@ export default function App() {
         {view==="excipient" && <ExcipientView />}
         {view==="pathway"   && <PathwayView />}
         {view==="progress"  && <ProgressView />}
-        {view==="mab-learn" && <MabMasteryView />}
       </main>
     </div>
   );
