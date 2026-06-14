@@ -1,0 +1,140 @@
+/* ============================================================
+   Praxis FX — refined, dual-theme effects engine (no libraries)
+   Ink + single indigo signal + teal data accent. All token-driven.
+   ============================================================ */
+
+/* ---------- keyframes ---------- */
+@keyframes lc-shimmer { 0%,100%{background-position:0% 0} 50%{background-position:100% 0} }
+@keyframes lc-sheen   { 0%{transform:translateX(-160%) skewX(-18deg)} 100%{transform:translateX(280%) skewX(-18deg)} }
+@keyframes lc-float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+@keyframes lc-drift   { 0%,100%{transform:translate3d(0,0,0)} 50%{transform:translate3d(30px,-24px,0)} }
+@keyframes lc-drift2  { 0%,100%{transform:translate3d(0,0,0)} 50%{transform:translate3d(-34px,26px,0)} }
+@keyframes lc-pulse   { 0%,100%{opacity:.5} 50%{opacity:.85} }
+@keyframes lc-spin    { to{transform:rotate(360deg)} }
+@keyframes lc-reveal  { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:none} }
+@keyframes lc-pop     { 0%{opacity:0;transform:scale(.94)} 60%{transform:scale(1.02)} 100%{opacity:1;transform:scale(1)} }
+@keyframes lc-dropin  { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:none} }
+@keyframes lc-ticker  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ---------- gradient signal text (ink → accent) ---------- */
+.lc-iri-text{
+  background:linear-gradient(100deg, var(--text-h) 8%, var(--accent) 96%);
+  background-size:200% 100%;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  animation:lc-shimmer 10s ease-in-out infinite;
+}
+
+/* ---------- subtle accent-lit hairline edge (over glass) ---------- */
+.lc-edge{ position:relative; }
+.lc-edge::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
+  background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 55%, transparent), transparent 42%, transparent 62%, color-mix(in srgb, var(--accent-2) 32%, transparent));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none; opacity:.7;
+}
+.lc-edge-soft::before{ opacity:.38; }
+
+/* ---------- frosted glass (theme-aware) ---------- */
+.lc-glass{
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px) saturate(1.25); -webkit-backdrop-filter:blur(18px) saturate(1.25);
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* ---------- glossy top highlight (subtle) ---------- */
+.lc-gloss{ position:relative; overflow:hidden; }
+.lc-gloss::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:42%; border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+/* ---------- sheen sweep on hover ---------- */
+.lc-shine{ position:relative; overflow:hidden; }
+.lc-shine::after{
+  content:""; position:absolute; top:-25%; left:0; width:38%; height:150%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+  transform:translateX(-160%) skewX(-18deg); pointer-events:none; z-index:2;
+}
+.lc-shine:hover::after{ animation:lc-sheen 1s ease; }
+
+/* ---------- solid accent pill ---------- */
+.lc-pill{
+  position:relative; overflow:hidden; border:none; cursor:pointer; border-radius:999px;
+  color:#fff; font-weight:700; letter-spacing:.01em; background:var(--accent);
+  box-shadow:0 10px 26px -12px color-mix(in srgb, var(--accent) 75%, transparent), inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .24s cubic-bezier(.34,1.55,.5,1), box-shadow .24s, background .24s;
+}
+.lc-pill::before{ content:""; position:absolute; inset:0; border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 55%); pointer-events:none; }
+.lc-pill:hover{ transform:translateY(-2px); background:var(--accent-glow);
+  box-shadow:0 16px 34px -12px color-mix(in srgb, var(--accent) 85%, transparent), inset 0 1px 0 rgba(255,255,255,.3); }
+.lc-pill:active{ transform:translateY(0); }
+
+/* ---------- ghost / outline pill (theme-aware) ---------- */
+.lc-ghost{
+  position:relative; overflow:hidden; cursor:pointer; border-radius:999px;
+  color:var(--text-h); font-weight:600; letter-spacing:.01em;
+  background:var(--panel); border:1px solid var(--hairline);
+  transition:transform .24s cubic-bezier(.34,1.55,.5,1), background .24s, border-color .24s;
+}
+.lc-ghost:hover{ background:var(--panel-2); border-color:var(--border-bright); transform:translateY(-2px); }
+
+/* ---------- scroll reveal ---------- */
+.lc-reveal{ opacity:0; }
+.lc-reveal.lc-in{ animation:lc-reveal .7s cubic-bezier(.22,1,.36,1) forwards; }
+
+/* ---------- 3D tilt + glare ---------- */
+.lc-tilt{ transform-style:preserve-3d; transition:transform .3s cubic-bezier(.22,1,.36,1); will-change:transform; }
+.lc-glare{ position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:3;
+  background:radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,.18), transparent 46%);
+  opacity:0; transition:opacity .3s; }
+
+/* ---------- accent wash on hover ---------- */
+.lc-meshlayer{
+  position:absolute; inset:0; border-radius:inherit; opacity:0; pointer-events:none; z-index:0;
+  transition:opacity .4s ease;
+  background:radial-gradient(130% 100% at 50% 0%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 62%);
+}
+.lc-tilt:hover .lc-meshlayer, .lc-meshhost:hover .lc-meshlayer{ opacity:1; }
+
+/* ---------- bento grid ---------- */
+.bento{ display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:16px; }
+.b-12{grid-column:span 12}.b-8{grid-column:span 8}.b-7{grid-column:span 7}
+.b-6{grid-column:span 6}.b-5{grid-column:span 5}.b-4{grid-column:span 4}.b-3{grid-column:span 3}
+@media(max-width:1040px){ .b-8,.b-7{grid-column:span 12} .b-6,.b-5,.b-4,.b-3{grid-column:span 6} }
+@media(max-width:680px){ .bento>*{grid-column:span 12 !important} }
+
+/* ---------- ticker ---------- */
+.ticker{ overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); }
+.ticker-track{ display:inline-flex; white-space:nowrap; animation:lc-ticker 40s linear infinite; }
+.ticker:hover .ticker-track{ animation-play-state:paused; }
+
+/* ---------- token override: cinematic glass surface for themed views ---------- */
+.lc-surface{
+  --bg-base: transparent;
+  --bg-card: var(--panel);
+  --bg-raised: var(--panel-2);
+  --bg-surface: var(--panel);
+  --border: var(--hairline);
+}
+.lc-surface .stat-card,
+.lc-surface .method-card,
+.lc-surface .card-hover{ backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); }
+
+/* ---------- pipeline master–detail layout ---------- */
+.pl-grid{ display:grid; grid-template-columns:320px minmax(0,1fr); gap:20px; align-items:start; }
+.pl-rail{ position:sticky; top:88px; max-height:calc(100vh - 108px); overflow-y:auto; padding-right:4px; }
+.pl-rail::-webkit-scrollbar{ width:6px; }
+.pl-rail::-webkit-scrollbar-thumb{ background:var(--hairline); border-radius:6px; }
+@media(max-width:960px){ .pl-grid{ grid-template-columns:1fr; } .pl-rail{ position:static; max-height:none; overflow:visible; } }
+
+/* ---------- accessibility ---------- */
+@media (prefers-reduced-motion: reduce){
+  .lc-reveal{ opacity:1 !important; animation:none !important; }
+  .lc-iri-text, .ticker-track{ animation:none !important; }
+}
