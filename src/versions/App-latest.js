@@ -144,7 +144,7 @@ function AdminModal({ onLogin, onClose }) {
 // ════════════════════════════════════════════════════════════════
 export default function App() {
   const [view, setView]           = useState("dashboard");
-  const [darkMode, setDarkMode]   = useState(() => localStorage.getItem("cmc-theme") !== "light");
+  const [darkMode, setDarkMode]   = useState(() => localStorage.getItem("cmc-theme") === "dark");
   const [adminMode, setAdminMode] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [openGroup, setOpenGroup] = useState(null);
