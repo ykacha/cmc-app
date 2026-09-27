@@ -39,7 +39,7 @@ export default function ViralClearanceView() {
   return (
     <div style={{ maxWidth:1280, margin:"0 auto", padding:"28px 24px 70px" }}>
       <LiquidHeader eyebrow="ICH Q5A(R2) · VIRAL SAFETY" icon={<Icon name="viral" size={30} />} title="Viral Clearance"
-        subtitle="How a biologics process is proven to remove and inactivate potential viral contaminants — model viruses, orthogonal unit operations, spiking-study design, and a log-reduction calculator." />
+        subtitle="How a biologics process is proven to remove and inactivate potential viral contaminants: model viruses, orthogonal unit operations, spiking-study design, and a log-reduction calculator." />
 
       {/* tabs */}
       <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:24 }}>
@@ -66,7 +66,7 @@ export default function ViralClearanceView() {
               </div>
             ))}
           </div>
-          <GBox color="#A78BFA" label="ICH Q5A(R2) — WHAT CHANGED">{VIRAL_FACTS.q5ar2}</GBox>
+          <GBox color="var(--accent-2)" label="ICH Q5A(R2): WHAT CHANGED">{VIRAL_FACTS.q5ar2}</GBox>
         </div>
       )}
 
@@ -203,7 +203,7 @@ export default function ViralClearanceView() {
                 ))}
               </div>
               <div style={{ marginTop:18, padding:"12px 14px", borderRadius:12, background: robust ? "color-mix(in srgb, var(--accent-2) 14%, transparent)" : "color-mix(in srgb, #F472B6 12%, transparent)", border:`1px solid ${robust ? "color-mix(in srgb, var(--accent-2) 40%, transparent)" : "color-mix(in srgb, #F472B6 35%, transparent)"}` }}>
-                <div style={{ color: robust ? "var(--accent-2)" : "#F472B6", fontWeight:800, fontSize:13 }}>{robust ? "✓ Robust orthogonal clearance" : "⚠ Not yet orthogonal"}</div>
+                <div style={{ color: robust ? "var(--accent-2)" : "#F472B6", fontWeight:800, fontSize:13, display:"flex", alignItems:"center", gap:7 }}><Icon name={robust ? "check" : "alert"} size={14} sw={2} /> {robust ? "Robust orthogonal clearance" : "Not yet orthogonal"}</div>
                 <div style={{ color:SUB, fontSize:11.5, lineHeight:1.5, marginTop:5 }}>
                   {robust ? "Two+ distinct mechanisms covering both enveloped and small non-enveloped viruses." : "Need ≥2 distinct mechanisms covering both enveloped (e.g., low-pH) and non-enveloped (e.g., 20 nm filtration)."}
                 </div>

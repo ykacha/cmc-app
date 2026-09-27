@@ -8,7 +8,7 @@ import { STAGE_OVERVIEWS } from "../pipeline-overview-data";
 const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
 
 const PHASES = [
-  { id:"p1", name:"Cell Line Engineering",        range:[1, 4],   color:"#A78BFA", ic:"cell" },
+  { id:"p1", name:"Cell Line Engineering",        range:[1, 4],   color:"#C0654A", ic:"cell" },
   { id:"p2", name:"Process & Product Development", range:[5, 8],   color:"#22D3EE", ic:"science" },
   { id:"p3", name:"Transfer & Clinical Supply",    range:[9, 10],  color:"#2DD4BF", ic:"transfer" },
   { id:"p4", name:"Characterization & Validation", range:[11, 13], color:"#34D399", ic:"shieldcheck" },
@@ -105,16 +105,16 @@ export default function PipelineView() {
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", gap:16, flexWrap:"wrap", marginBottom:26 }}>
           <div>
             <div style={{ fontFamily:MONO, fontSize:11, fontWeight:700, letterSpacing:".22em", color:"var(--accent)", marginBottom:8 }}>THE JOURNEY · 16 STAGES · 5 PHASES</div>
-            <h1 className="lc-iri-text" style={{ fontSize:42, fontWeight:850, margin:"0 0 8px", letterSpacing:"-.03em", lineHeight:1 }}>Pipeline Explorer</h1>
+            <h1 className="lc-iri-text" style={{ fontSize:46, fontWeight:500, margin:"0 0 8px", letterSpacing:"-.01em", lineHeight:1.05 }}>Pipeline Explorer</h1>
             <p style={{ color:SUB, fontSize:14.5, margin:0, maxWidth:560, lineHeight:1.6 }}>
-              {mode === "overview" ? "Glance the whole lifecycle, then dive into any stage." : "Scroll to travel — the cockpit tracks where you are."}
+              {mode === "overview" ? "Every stage between a gene sequence and a filed BLA, grouped by phase. Open a card to go deep." : "Scroll through it like the process actually runs: one stage feeding the next."}
             </p>
           </div>
-          <div style={{ display:"inline-flex", background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:999, padding:3, flexShrink:0 }}>
-            {[["overview","⊞ Overview"], ["journey","↓ Journey"]].map(([m, label]) => (
+          <div style={{ display:"inline-flex", background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:10, padding:3, flexShrink:0 }}>
+            {[["overview","Overview"], ["journey","Journey"]].map(([m, label]) => (
               <button key={m} onClick={() => setMode(m)} className="lc-shine"
-                style={{ border:"none", cursor:"pointer", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700,
-                  background: mode === m ? "var(--accent)" : "transparent", color: mode === m ? "#fff" : "var(--text-sec)", transition:"all .2s" }}>{label}</button>
+                style={{ border:"none", cursor:"pointer", borderRadius:7, padding:"8px 16px", fontSize:13, fontWeight:700,
+                  background: mode === m ? "var(--accent)" : "transparent", color: mode === m ? "var(--bg-base)" : "var(--text-sec)", transition:"all .2s" }}>{label}</button>
             ))}
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function PipelineView() {
                 <span style={{ display:"flex", color:p.color }}><Icon name={p.ic} size={16} /></span>
                 <span style={{ color:p.color, fontFamily:MONO, fontSize:11, fontWeight:800, letterSpacing:".1em", textTransform:"uppercase" }}>{p.name}</span>
                 <span style={{ color:FAINT, fontFamily:MONO, fontSize:11 }}>STAGES {String(p.range[0]).padStart(2,"0")}–{String(p.range[1]).padStart(2,"0")}</span>
-                <div style={{ flex:1, height:1, background:`linear-gradient(90deg, color-mix(in srgb, ${p.color} 45%, transparent), transparent)` }}/>
+                <div style={{ flex:1, height:1, background:`color-mix(in srgb, ${p.color} 22%, transparent)` }}/>
               </div>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(265px,1fr))", gap:12 }}>
                 {stagesIn(p).map(s => (
@@ -183,12 +183,12 @@ export default function PipelineView() {
               </div>
             </div>
 
-            <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:`color-mix(in srgb, ${ph.color} 14%, transparent)`, border:`1px solid color-mix(in srgb, ${ph.color} 40%, transparent)`, color:ph.color, borderRadius:999, padding:"4px 11px", fontSize:11, fontWeight:700, marginBottom:16 }}>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:`color-mix(in srgb, ${ph.color} 14%, transparent)`, border:`1px solid color-mix(in srgb, ${ph.color} 40%, transparent)`, color:ph.color, borderRadius:8, padding:"4px 11px", fontSize:11, fontWeight:700, marginBottom:16 }}>
               <Icon name={ph.ic} size={13} />{ph.name}
             </div>
 
             <div style={{ height:5, background:"var(--panel-2)", borderRadius:5, overflow:"hidden", marginBottom:16, boxShadow:"inset 0 0 0 1px var(--hairline)" }}>
-              <div style={{ height:"100%", width:`${prog*100}%`, background:"linear-gradient(90deg, var(--accent), var(--accent-2))", borderRadius:5 }} />
+              <div style={{ height:"100%", width:`${prog*100}%`, background:"var(--accent)", borderRadius:5 }} />
             </div>
 
             {/* dots + hover preview */}
@@ -223,7 +223,7 @@ export default function PipelineView() {
                 <button onClick={() => next && jump(next.id)} disabled={!next} className="lc-pill lc-shine" style={{ width:"100%", padding:"9px 10px", fontSize:12, opacity: next ? 1 : 0.4, cursor: next ? "pointer" : "default" }}>Next →</button>
               </Magnetic>
             </div>
-            <button onClick={() => setMode("overview")} className="lc-shine" style={{ width:"100%", marginTop:10, background:"none", border:"none", cursor:"pointer", color:FAINT, fontFamily:MONO, fontSize:11, letterSpacing:".06em", padding:"4px" }}>⊞ back to overview</button>
+            <button onClick={() => setMode("overview")} className="lc-shine" style={{ width:"100%", marginTop:10, background:"none", border:"none", cursor:"pointer", color:FAINT, fontFamily:MONO, fontSize:11, letterSpacing:".06em", padding:"4px" }}>back to overview</button>
           </div>
         </div>
 
@@ -239,7 +239,7 @@ export default function PipelineView() {
 
                 <Reveal>
                   <div style={{ fontFamily:MONO, fontSize:11, fontWeight:700, letterSpacing:".14em", color:sp.color, marginBottom:8 }}>STAGE {s.stage} · {sp.name.toUpperCase()}</div>
-                  <h2 style={{ color:TEXT, margin:"0 0 6px", fontSize:30, fontWeight:850, letterSpacing:"-.025em" }}>{s.label}</h2>
+                  <h2 style={{ color:TEXT, margin:"0 0 6px", fontSize:32, fontWeight:500, fontFamily:"var(--font-serif)", letterSpacing:"-.005em" }}>{s.label}</h2>
                   <p style={{ color:SUB, fontSize:14, margin:0 }}>{s.sub}</p>
                 </Reveal>
 
@@ -275,9 +275,9 @@ export default function PipelineView() {
                     {(ov.duration || ov.team || ov.deliverables) && (
                       <Reveal delay={130}>
                         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:12, marginTop:14 }}>
-                          {ov.duration && <GBox color="#F59E0B" label="⏱ DURATION">{ov.duration}</GBox>}
+                          {ov.duration && <GBox color="#F59E0B" label="DURATION">{ov.duration}</GBox>}
                           {ov.team && <GBox color="#34D399" label="TEAM">{ov.team}</GBox>}
-                          {ov.deliverables && <GBox color="#A78BFA" label="DELIVERABLES"><ul style={{ margin:0, paddingLeft:16, lineHeight:1.8 }}>{ov.deliverables.map((d, i) => <li key={i}>{d}</li>)}</ul></GBox>}
+                          {ov.deliverables && <GBox color="#C99A3B" label="DELIVERABLES"><ul style={{ margin:0, paddingLeft:16, lineHeight:1.8 }}>{ov.deliverables.map((d, i) => <li key={i}>{d}</li>)}</ul></GBox>}
                         </div>
                       </Reveal>
                     )}

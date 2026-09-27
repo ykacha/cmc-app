@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LiquidHeader } from "../lc";
+import { Icon } from "../icons";
 import { CMC_TIMELINE } from "../extra-data";
 
 export default function TimelineView() {
@@ -8,7 +9,7 @@ export default function TimelineView() {
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <LiquidHeader eyebrow="PHASE BY PHASE" icon="📅" title="CMC Development Timeline" subtitle="Phase-by-phase CMC deliverables, from Hit-to-Lead through Post-Approval lifecycle management" />
+      <LiquidHeader eyebrow="PHASE BY PHASE" icon={<Icon name="timeline" size={28} sw={1.6} />} title="CMC Development Timeline" subtitle="Phase-by-phase CMC deliverables, from Hit-to-Lead through Post-Approval lifecycle management." />
 
       <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:28 }}>
         {CMC_TIMELINE.map(p => (
@@ -17,10 +18,10 @@ export default function TimelineView() {
               background: p.phase===activePhase ? `${p.color}22` : "var(--bg-card)",
               color: p.phase===activePhase ? p.color : "var(--text-sec)",
               border:`1.5px solid ${p.phase===activePhase ? p.color : "var(--border)"}`,
-              borderRadius:20, padding:"7px 16px", cursor:"pointer", fontWeight:700, fontSize:12,
-              transition:"all 0.18s"
+              borderRadius:8, padding:"7px 16px", cursor:"pointer", fontWeight:700, fontSize:12,
+              transition:"all 0.18s", display:"flex", alignItems:"center", gap:7,
             }}>
-            {p.icon} {p.shortPhase}
+            <Icon name={p.icon} size={13} sw={1.9} /> {p.shortPhase}
           </button>
         ))}
       </div>
@@ -49,8 +50,8 @@ export default function TimelineView() {
                 onMouseLeave={e => { if(p.phase!==activePhase) e.currentTarget.style.borderColor="var(--border)"; }}
               >
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
-                  <span style={{ color: p.phase===activePhase ? p.color : "var(--text-h)", fontWeight:800, fontSize:14 }}>
-                    {p.icon} {p.shortPhase}
+                  <span style={{ color: p.phase===activePhase ? p.color : "var(--text-h)", fontWeight:800, fontSize:14, display:"flex", alignItems:"center", gap:8 }}>
+                    <Icon name={p.icon} size={14} sw={1.9} /> {p.shortPhase}
                   </span>
                   <span style={{ background:`${p.color}22`, color:p.color, borderRadius:8, padding:"2px 8px", fontSize:10, fontWeight:700 }}>
                     {p.years}
@@ -67,7 +68,7 @@ export default function TimelineView() {
             padding:28, animation:"scaleIn 0.22s ease", position:"sticky", top:80 }}>
             <div style={{ marginBottom:20 }}>
               <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
-                <span style={{ fontSize:32 }}>{phase.icon}</span>
+                <span style={{ display:"flex", color:phase.color }}><Icon name={phase.icon} size={28} sw={1.6} /></span>
                 <div>
                   <h3 style={{ color:"var(--text-h)", margin:0, fontSize:20, fontWeight:900 }}>{phase.phase}</h3>
                   <div style={{ color:phase.color, fontWeight:700, fontSize:13, marginTop:2 }}>{phase.years}</div>
@@ -77,7 +78,7 @@ export default function TimelineView() {
                 <div style={{ color:"var(--text-muted)", fontSize:11, fontWeight:700, marginBottom:4 }}>KEY MILESTONE</div>
                 <div style={{ color:"var(--text-body)", fontSize:13 }}>{phase.keyMilestone}</div>
               </div>
-              <div style={{ background:"#7C3AED11", border:"1px solid #7C3AED33", borderRadius:10, padding:"10px 14px" }}>
+              <div style={{ background:"color-mix(in srgb, var(--accent) 8%, transparent)", border:"1px solid color-mix(in srgb, var(--accent) 25%, transparent)", borderRadius:10, padding:"10px 14px" }}>
                 <div style={{ color:"var(--text-muted)", fontSize:11, fontWeight:700, marginBottom:4 }}>REGULATORY EVENT</div>
                 <div style={{ color:"var(--text-body)", fontSize:13 }}>{phase.regulatoryEvent}</div>
               </div>

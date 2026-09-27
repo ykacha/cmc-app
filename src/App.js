@@ -23,6 +23,8 @@ import PathwayView    from "./views/PathwayView";
 import BatchRecordView from "./views/BatchRecordView";
 import ProgressView   from "./views/ProgressView";
 import ViralClearanceView from "./views/ViralClearanceView";
+import PrivacyView    from "./views/PrivacyView";
+import TermsView      from "./views/TermsView";
 import { DNALogo }    from "./shared";
 
 const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
@@ -30,31 +32,65 @@ const LC_VIEWS = ["dashboard","pipeline","methods","qbd","ctd","timeline","domai
 const SURFACE_VIEWS = ["methods","qbd","ctd","timeline","domains","ich","glossary","viral"];
 
 const NAV_GROUPS = [
-  { id:"learn",    label:"Learn",    color:"#8B79F7", items:[
+  { id:"learn",    label:"Learn",    color:"var(--accent)", items:[
     { id:"pipeline", label:"Pipeline Explorer" }, { id:"timeline", label:"CMC Timeline" },
     { id:"domains", label:"Domain Q-Bank" }, { id:"ich", label:"ICH Guidelines" }, { id:"glossary", label:"CMC Glossary" },
   ]},
-  { id:"science",  label:"Science",  color:"#2DBF9E", items:[
+  { id:"science",  label:"Science",  color:"var(--accent-2)", items:[
     { id:"methods", label:"Analytical Methods" }, { id:"qbd", label:"QbD / CQA / CPP" }, { id:"viral", label:"Viral Clearance" },
     { id:"stability", label:"Stability Studies" }, { id:"compendial", label:"Compendial Reference" }, { id:"excipient", label:"Excipient Compatibility" },
   ]},
-  { id:"tools",    label:"Tools",    color:"#8B79F7", items:[
+  { id:"tools",    label:"Tools",    color:"var(--accent)", items:[
     { id:"ctd", label:"CTD Navigator" }, { id:"oos", label:"OOS/OOT Investigation" },
     { id:"batch", label:"Batch Record Simulator" }, { id:"cases", label:"Case Studies" },
   ]},
-  { id:"practice", label:"Practice", color:"#2DBF9E", items:[
+  { id:"practice", label:"Practice", color:"var(--accent-2)", items:[
     { id:"exam", label:"Exam Mode" }, { id:"notes", label:"My Notes" },
   ]},
-  { id:"career",   label:"Career",   color:"#8B79F7", items:[
+  { id:"career",   label:"Career",   color:"var(--accent)", items:[
     { id:"career", label:"Career & Interviews" }, { id:"pathway", label:"Learning Pathways" }, { id:"progress", label:"My Progress" },
   ]},
 ];
 
-function Magnetic({ children, strength = 12, style }) {
-  const move = (e) => { const el = e.currentTarget, r = el.getBoundingClientRect();
-    el.style.transform = `translate(${((e.clientX-(r.left+r.width/2))/r.width)*strength}px, ${((e.clientY-(r.top+r.height/2))/r.height)*strength}px)`; };
-  const leave = (e) => { e.currentTarget.style.transform = ""; };
-  return <span onMouseMove={move} onMouseLeave={leave} style={{ display:"inline-flex", transition:"transform .3s cubic-bezier(.34,1.55,.5,1)", ...style }}>{children}</span>;
+// ── Fullscreen index (replaces the dropdown mega-menu) ─────────
+function IndexOverlay({ open, onClose, groups, view, onPick }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+  if (!open) return null;
+  return (
+    <div style={{ position:"fixed", inset:0, zIndex:500, background:"var(--bg-base)", overflowY:"auto", animation:"lc-dropin .35s cubic-bezier(.16,.6,.2,1)" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto", padding:"26px 32px 0", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <div style={{ fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:".2em", color:"var(--text-faint)" }}>INDEX</div>
+        <button onClick={onClose} className="lc-link" style={{ fontFamily:"var(--font-mono)", fontSize:12, letterSpacing:".1em" }}>CLOSE ✕</button>
+      </div>
+      <div style={{ maxWidth:1200, margin:"0 auto", padding:"48px 32px 100px", display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:"48px 40px" }}>
+        {groups.map(g => (
+          <div key={g.id}>
+            <div style={{ fontFamily:"var(--font-mono)", fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:"var(--text-faint)", textTransform:"uppercase", marginBottom:18, paddingBottom:12, borderBottom:"1px solid var(--hairline)" }}>{g.label}</div>
+            <div style={{ display:"flex", flexDirection:"column" }}>
+              {g.items.map(item => {
+                const on = view === item.id;
+                return (
+                  <button key={item.id} onClick={() => { onPick(item.id); onClose(); }}
+                    style={{ textAlign:"left", background:"none", border:"none", cursor:"pointer", padding:"9px 0",
+                      fontFamily:"var(--font-serif)", fontSize:23, lineHeight:1.25, letterSpacing:"-.01em",
+                      color: on ? "var(--accent)" : "var(--text-h)", transition:"color .25s ease" }}
+                    onMouseEnter={e => { if (!on) e.currentTarget.style.color = "var(--accent)"; }}
+                    onMouseLeave={e => { if (!on) e.currentTarget.style.color = "var(--text-h)"; }}>
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // ── ⌘K Command Palette ────────────────────────────────────────
@@ -119,9 +155,9 @@ function AdminModal({ onLogin, onClose }) {
   return (
     <div style={{ position:"fixed", inset:0, background:"color-mix(in srgb, var(--bg-base) 55%, transparent)", backdropFilter:"blur(6px)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
       onClick={e => e.target===e.currentTarget && onClose()}>
-      <div className="lc-glass lc-edge" style={{ borderRadius:20, padding:32, width:340, maxWidth:"90vw", animation:"lc-pop .3s cubic-bezier(.22,1,.36,1)" }}>
+      <div className="lc-glass lc-edge" style={{ borderRadius:6, padding:32, width:340, maxWidth:"90vw", animation:"lc-pop .3s ease" }}>
         <div style={{ textAlign:"center", marginBottom:24 }}>
-          <div style={{ fontSize:40, marginBottom:8 }}>🔐</div>
+          <div style={{ display:"flex", justifyContent:"center", color:"var(--accent)", marginBottom:8 }}><Icon name="lock" size={32} sw={1.5} /></div>
           <h3 style={{ color:"var(--text-h)", margin:0, fontSize:18, fontWeight:850 }}>CMC Admin Login</h3>
           <p style={{ color:"var(--text-muted)", margin:"6px 0 0", fontSize:12 }}>Enter credentials to enable admin mode</p>
         </div>
@@ -147,7 +183,7 @@ export default function App() {
   const [darkMode, setDarkMode]   = useState(() => localStorage.getItem("cmc-theme") !== "light");
   const [adminMode, setAdminMode] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
-  const [openGroup, setOpenGroup] = useState(null);
+  const [menuOpen, setMenuOpen]   = useState(false);
   const [palette, setPalette]     = useState(false);
 
   const toggleTheme = () => setDarkMode(d => { const n = !d; localStorage.setItem("cmc-theme", n ? "dark" : "light"); return n; });
@@ -162,7 +198,7 @@ export default function App() {
   useEffect(() => {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPalette(p => !p); }
-      else if (e.key === "Escape") { setPalette(false); setOpenGroup(null); }
+      else if (e.key === "Escape") { setPalette(false); }
       else if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || "") && !document.activeElement?.isContentEditable) { e.preventDefault(); setPalette(true); }
     };
     window.addEventListener("keydown", onKey);
@@ -170,109 +206,57 @@ export default function App() {
   }, []);
 
   const paletteItems = [
-    { key:"__home", icon:"🏠", label:"Go to Dashboard", hint:"HOME", type:"home" },
-    { key:"__theme", icon:"🌓", label:`Switch to ${darkMode ? "light" : "dark"} theme`, hint:"THEME", type:"theme" },
-    { key:"__mab", icon:"🧬", label:"Open mAb Mastery", hint:"EXTERNAL", type:"mab" },
+    { key:"__home", icon:<Icon name="home" size={16} />, label:"Go to Dashboard", hint:"HOME", type:"home" },
+    { key:"__theme", icon:<Icon name={darkMode ? "sun" : "moon"} size={16} />, label:`Switch to ${darkMode ? "light" : "dark"} theme`, hint:"THEME", type:"theme" },
     ...NAV_GROUPS.flatMap(g => g.items.map(it => ({ key:it.id, id:it.id, icon:<Icon name={it.id} size={16} />, label:it.label, hint:g.label.toUpperCase(), type:"nav" }))),
   ];
   const pickPalette = (it) => {
     setPalette(false);
     if (it.type === "theme") toggleTheme();
     else if (it.type === "home") navigate("dashboard");
-    else if (it.type === "mab") window.open("https://mab.yashkacha.com", "_blank");
     else navigate(it.id);
   };
-
-  const circBtn = { width:38, height:38, borderRadius:"50%", cursor:"pointer", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, lineHeight:1, background:"var(--panel)", border:"1px solid var(--hairline)", color:"var(--text-h)", transition:"all .2s" };
 
   return (
     <div data-theme={darkMode ? "dark" : "light"} style={{ minHeight:"100vh", background:"var(--bg-base)", fontFamily:"system-ui,sans-serif", color:"var(--text-body)" }}>
 
       {LC_VIEWS.includes(view) && <LiquidBackdrop />}
-      {openGroup && <div onClick={() => setOpenGroup(null)} style={{ position:"fixed", inset:0, zIndex:198 }} />}
       <CommandPalette open={palette} onClose={() => setPalette(false)} items={paletteItems} onPick={pickPalette} />
+      <IndexOverlay open={menuOpen} onClose={() => setMenuOpen(false)} groups={NAV_GROUPS} view={view} onPick={navigate} />
 
-      {/* ── Floating glass nav ── */}
-      <div style={{ position:"sticky", top:0, zIndex:200, padding:"14px 16px" }}>
-        <nav className="main-nav lc-glass lc-edge-soft" style={{ maxWidth:1280, margin:"0 auto", borderRadius:18, height:58, display:"flex", alignItems:"center", gap:6, padding:"0 12px 0 14px" }}>
+      {/* ── Minimal fixed bar ── */}
+      <div style={{ position:"sticky", top:0, zIndex:200, background:"var(--bg-base)" }}>
+        <nav style={{ maxWidth:1280, margin:"0 auto", height:72, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", borderBottom:"1px solid var(--hairline)" }}>
 
-          <button onClick={() => { navigate("dashboard"); setOpenGroup(null); }} className="logo-btn lc-shine"
-            style={{ display:"flex", alignItems:"center", gap:9, background:"none", border:"none", cursor:"pointer", padding:"4px 14px 4px 0", marginRight:4, flexShrink:0, borderRight:"1px solid var(--hairline)", borderRadius:8 }}>
-            <span style={{ display:"flex", borderRadius:"50%", padding:2, boxShadow:"0 0 0 1px var(--hairline), 0 4px 14px -4px color-mix(in srgb, var(--accent) 60%, transparent)" }}><DNALogo/></span>
-            <div style={{ textAlign:"left" }}>
-              <div className="lc-iri-text" style={{ fontWeight:850, fontSize:14.5, whiteSpace:"nowrap", lineHeight:1.05 }}>Yash Kacha</div>
-              <div style={{ color:"var(--text-muted)", fontSize:8.5, fontWeight:700, letterSpacing:"0.16em", fontFamily:MONO }}>CMC APP</div>
-            </div>
+          <button onClick={() => navigate("dashboard")}
+            style={{ display:"flex", alignItems:"center", gap:11, background:"none", border:"none", cursor:"pointer", padding:0 }}>
+            <span style={{ display:"flex" }}><DNALogo/></span>
+            <span style={{ fontFamily:"var(--font-serif)", fontSize:17, color:"var(--text-h)", letterSpacing:"-.01em" }}>Yash Kacha</span>
+            <span style={{ width:1, height:14, background:"var(--hairline)" }} />
+            <span style={{ color:"var(--text-faint)", fontSize:9.5, fontWeight:700, letterSpacing:"0.2em", fontFamily:MONO }}>CMC APP</span>
           </button>
 
-          <div style={{ display:"flex", gap:4, flex:1 }}>
-            {NAV_GROUPS.map(group => {
-              const isActive = view !== "dashboard" && group.items.some(item => item.id === view);
-              const isOpen   = openGroup === group.id;
-              return (
-                <div key={group.id} style={{ position:"relative" }}>
-                  <button onClick={() => setOpenGroup(isOpen ? null : group.id)} className={isActive ? "lc-pill lc-shine" : "lc-ghost lc-shine"}
-                    style={{ padding:"8px 13px", fontSize:13.5, display:"flex", alignItems:"center", gap:7, whiteSpace:"nowrap",
-                      ...(isOpen && !isActive ? { background:"var(--panel-2)", borderColor:"var(--border-bright)" } : {}) }}>
-                    <Icon name={group.id} size={16} /><span className="hide-mobile">{group.label}</span>
-                    <span style={{ fontSize:8, opacity:.6, transition:"transform .2s", transform: isOpen ? "rotate(180deg)" : "none" }}>▾</span>
-                  </button>
-
-                  {isOpen && (
-                    <div className="lc-edge" style={{ position:"absolute", top:"calc(100% + 10px)", left:0, borderRadius:16, padding:"7px", zIndex:300, minWidth:230, background:"var(--bg-raised)", border:"1px solid var(--border)", boxShadow:"var(--shadow-lg)", animation:"lc-dropin .22s cubic-bezier(.22,1,.36,1)" }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:7, padding:"6px 12px 9px", color:group.color }}>
-                        <Icon name={group.id} size={13} />
-                        <span style={{ fontFamily:MONO, fontSize:10, fontWeight:800, letterSpacing:"0.14em" }}>{group.label.toUpperCase()}</span>
-                      </div>
-                      {group.items.map(item => {
-                        const on = view === item.id;
-                        return (
-                          <button key={item.id} onClick={() => { navigate(item.id); setOpenGroup(null); }} className="lc-shine"
-                            style={{ display:"flex", alignItems:"center", gap:11, width:"100%", borderRadius:11, background: on ? "color-mix(in srgb, var(--accent) 14%, transparent)" : "transparent", border:"none", cursor:"pointer", padding:"10px 12px", fontSize:13, fontWeight: on ? 750 : 500, textAlign:"left", color: on ? "var(--accent)" : "var(--text-body)", transition:"background .15s", borderLeft: on ? "2px solid var(--accent)" : "2px solid transparent" }}
-                            onMouseEnter={e => { if (!on) e.currentTarget.style.background = "var(--panel)"; }}
-                            onMouseLeave={e => { if (!on) e.currentTarget.style.background = "transparent"; }}>
-                            <span style={{ display:"flex", color: on ? "var(--accent)" : "var(--text-muted)" }}><Icon name={item.id} size={17} /></span>
-                            <span>{item.label}</span>
-                            {on && <span style={{ marginLeft:"auto", fontSize:11, color:"var(--accent)" }}>●</span>}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* ⌘K search */}
-          <button onClick={() => setPalette(true)} className="lc-ghost lc-shine" style={{ display:"flex", alignItems:"center", gap:8, padding:"7px 12px", fontSize:12.5, flexShrink:0, color:"var(--text-muted)" }}>
-            <span style={{ fontSize:13 }}>⌕</span><span className="hide-mobile">Search</span>
-            <span style={{ fontFamily:MONO, fontSize:10.5, border:"1px solid var(--hairline)", borderRadius:5, padding:"1px 5px" }}>⌘K</span>
-          </button>
-
-          <Magnetic strength={10}>
-            <button onClick={() => window.open("https://mab.yashkacha.com", "_blank")} className="lc-gloss lc-shine"
-              style={{ position:"relative", overflow:"hidden", border:"none", cursor:"pointer", borderRadius:999, padding:"8px 16px", fontWeight:750, fontSize:13, color:"#fff", whiteSpace:"nowrap", flexShrink:0, marginRight:6, background:"linear-gradient(135deg,#0ea5e9,#14b8a6)", boxShadow:"inset 0 1px 0 rgba(255,255,255,.4), 0 8px 22px -8px rgba(20,184,166,.7)" }}>
-              🧬 mAb
+          <div style={{ display:"flex", gap:28, alignItems:"center" }}>
+            <button onClick={() => setPalette(true)} className="lc-link hide-mobile" style={{ fontSize:12.5, fontFamily:MONO, display:"flex", alignItems:"center", gap:6 }}>
+              <Icon name="search" size={12} sw={2} /> Search <span style={{ color:"var(--text-faint)" }}>⌘K</span>
             </button>
-          </Magnetic>
-
-          <button onClick={toggleTheme} className="theme-toggle lc-shine" style={circBtn}
-            onMouseEnter={e => e.currentTarget.style.background = "var(--panel-2)"} onMouseLeave={e => e.currentTarget.style.background = "var(--panel)"}>
-            {darkMode ? "☀️" : "🌙"}
-          </button>
-
-          <button onClick={() => adminMode ? setAdminMode(false) : setShowAdminModal(true)} title={adminMode ? "Admin Mode Active — Click to logout" : "Admin Login"} className="lc-shine"
-            style={{ ...circBtn, marginLeft:2, background: adminMode ? "color-mix(in srgb, var(--accent-2) 18%, transparent)" : "var(--panel)", border:`1px solid ${adminMode ? "var(--accent-2)" : "var(--hairline)"}`, color: adminMode ? "var(--accent-2)" : "var(--text-muted)" }}>
-            {adminMode ? "🔓" : "🔒"}
-          </button>
+            <button onClick={toggleTheme} className="lc-link" style={{ fontSize:12.5, fontFamily:MONO }}>
+              {darkMode ? "Light" : "Dark"}
+            </button>
+            <button onClick={() => setMenuOpen(true)} className="lc-ghost"
+              style={{ padding:"9px 20px", fontSize:12.5, fontFamily:MONO, letterSpacing:".08em",
+                borderColor:"color-mix(in srgb, var(--accent) 45%, var(--hairline))",
+                background:"color-mix(in srgb, var(--accent) 7%, transparent)" }}>
+              INDEX
+            </button>
+          </div>
         </nav>
       </div>
 
       {adminMode && (
         <div style={{ background:"color-mix(in srgb, var(--accent-2) 12%, transparent)", borderBottom:"1px solid color-mix(in srgb, var(--accent-2) 35%, transparent)", padding:"6px 16px", display:"flex", alignItems:"center", gap:12, fontSize:12, position:"relative", zIndex:5 }}>
-          <span style={{ color:"var(--accent-2)", fontWeight:800 }}>⚡ Admin Mode Active</span>
-          <span style={{ color:"var(--text-muted)" }}>Logged in as ykacha · Notes fully editable · Full access enabled</span>
+          <span style={{ color:"var(--accent-2)", fontWeight:800, display:"flex", alignItems:"center", gap:6 }}><Icon name="unlock" size={13} sw={2} /> Admin mode active</span>
+          <span style={{ color:"var(--text-muted)" }}>Logged in as ykacha. Notes fully editable. Full access enabled.</span>
           <button onClick={() => setAdminMode(false)} className="lc-ghost" style={{ marginLeft:"auto", padding:"2px 12px", fontSize:11 }}>Logout</button>
         </div>
       )}
@@ -301,7 +285,17 @@ export default function App() {
         {view==="pathway"    && <PathwayView />}
         {view==="progress"   && <ProgressView />}
         {view==="viral"      && <ViralClearanceView />}
+        {view==="privacy"    && <PrivacyView />}
+        {view==="terms"      && <TermsView />}
       </main>
+
+      <footer style={{ position:"relative", zIndex:1, borderTop:"1px solid var(--hairline)", marginTop:40, padding:"18px 16px", display:"flex", flexDirection:"column", alignItems:"center", fontSize:12, color:"var(--text-faint)", fontFamily:MONO }}>
+        <div style={{ display:"flex", gap:20, flexWrap:"wrap", justifyContent:"center" }}>
+        <span>CMC App by Yash Kacha</span>
+        <button onClick={() => navigate("privacy")} style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-faint)", fontFamily:MONO, fontSize:12, padding:0 }}>Privacy Policy</button>
+        <button onClick={() => navigate("terms")} style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-faint)", fontFamily:MONO, fontSize:12, padding:0 }}>Terms & Conditions</button>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -1,130 +1,90 @@
-import { useState, useRef, useEffect } from "react";
-import { Reveal, Magnetic, CountUp, TEXT, SUB, FAINT } from "../lc";
-import { Icon } from "../icons";
+import { useState } from "react";
+import { Reveal, CountUp } from "../lc";
 import { PIPELINE, DOMAINS, GLOSSARY } from "../cmc-data";
 import { ANALYTICAL_METHODS, ICH_GUIDELINES } from "../extra-data";
 import { CASE_STUDIES } from "../case-study-data";
 import { COMPENDIAL_METHODS } from "../compendial-data";
 
-const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
-const tile = {
-  background:"linear-gradient(180deg, var(--panel-2), var(--panel))",
-  border:"1px solid var(--hairline)", borderRadius:20, boxShadow:"var(--shadow)",
-};
+const MONO = "var(--font-mono)";
+const SERIF = "var(--font-serif)";
 
-const toRgb = (s) => {
-  s = (s || "").trim();
-  if (s.startsWith("#")) { let h = s.slice(1); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [(n>>16)&255,(n>>8)&255,n&255]; }
-  const m = s.match(/(\d+\.?\d*)/g); return m ? [+m[0], +m[1], +m[2]] : [140,140,140];
-};
+/* ── module index (replaces the old icon-tile grid entirely) ── */
+const SECTIONS = [
+  { id:"pipeline",  label:"Pipeline Explorer",  desc:"Gene construction to commercial lifecycle, in sixteen stages.", group:"core" },
+  { id:"methods",   label:"Analytical Methods", desc:"Twenty-two assays, and the reasoning behind each one.",         group:"core" },
+  { id:"qbd",       label:"QbD / CQA / CPP",    desc:"Design space, FMEA, and the control strategy that follows.",   group:"core" },
+  { id:"viral",     label:"Viral Clearance",    desc:"Model viruses, orthogonal steps, and the LRV math.",           group:"core" },
+  { id:"ctd",       label:"CTD Navigator",      desc:"Where every piece of the dossier actually lives.",             group:"core" },
+  { id:"timeline",  label:"CMC Timeline",       desc:"What's due, and when, from Pre-IND to post-approval.",         group:"core" },
+  { id:"domains",   label:"Domain Q-Bank",      desc:`${DOMAINS.length} domains, built for depth over breadth.`,     group:"core" },
+  { id:"exam",      label:"Exam Mode",          desc:"Spaced repetition, no multiple choice to hide behind.",        group:"core" },
+  { id:"ich",       label:"ICH Guidelines",     desc:"Nine guidelines, decoded into what they mean for CMC.",        group:"core" },
+  { id:"career",    label:"Career & Interviews",desc:"What the ladder pays, and what gets asked at each rung.",      group:"core" },
+  { id:"notes",     label:"My Notes",           desc:"A place to keep what you don't want to relearn.",              group:"core" },
+  { id:"glossary",  label:"CMC Glossary",       desc:`${GLOSSARY.length} terms, defined the way a mentor would.`,    group:"core" },
+  { id:"stability", label:"Stability Studies",  desc:"ICH Q1A(R2) conditions, and the T90 math behind shelf life.",  group:"tools" },
+  { id:"oos",       label:"OOS / OOT",          desc:"The FDA 2006 decision tree, worked as an actual investigation.", group:"tools" },
+  { id:"batch",     label:"Batch Record Sim",   desc:"A sterile mAb batch, deviations included.",                    group:"tools" },
+  { id:"compendial",label:"Compendial Ref",     desc:"USP, EP, and JP, cross-referenced instead of scattered.",      group:"tools" },
+  { id:"excipient", label:"Excipient Compat",   desc:"What can and can't share a vial, and why.",                    group:"tools" },
+  { id:"cases",     label:"Case Studies",       desc:`${CASE_STUDIES.length} failures worth understanding in full.`, group:"tools" },
+  { id:"pathway",   label:"Learning Pathways",  desc:"A 30/60/90-day plan, scaled to where you actually are.",       group:"tools" },
+  { id:"progress",  label:"My Progress",        desc:"What you've covered, and what's still due for review.",       group:"tools" },
+];
 
-/* ── generative flow-field (canvas) — particle currents + cursor vortex ── */
-function FlowField({ themeKey }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const canvas = ref.current; if (!canvas) return;
-    const host = canvas.parentElement;
-    const ctx = canvas.getContext("2d");
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const cs = getComputedStyle(host);
-    const acc = toRgb(cs.getPropertyValue("--accent"));
-    const acc2 = toRgb(cs.getPropertyValue("--accent-2"));
-    const bg = toRgb(cs.getPropertyValue("--bg-base"));
-    let w = 0, h = 0, raf = 0, t = 0, parts = [];
-    const mouse = { x: -9999, y: -9999, on: false };
-    const init = () => {
-      w = host.clientWidth; h = host.clientHeight;
-      canvas.width = w*dpr; canvas.height = h*dpr; canvas.style.width = w+"px"; canvas.style.height = h+"px";
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-      const n = Math.min(900, Math.floor(w*h/760));
-      parts = Array.from({length:n}, () => ({ x:Math.random()*w, y:Math.random()*h, px:0, py:0, c:Math.random() }));
-      ctx.fillStyle = `rgb(${bg[0]},${bg[1]},${bg[2]})`; ctx.fillRect(0,0,w,h);
-    };
-    const onMove = (e) => { const r = host.getBoundingClientRect(); mouse.x = e.clientX-r.left; mouse.y = e.clientY-r.top; mouse.on = true; };
-    const onLeave = () => { mouse.on = false; };
-    const frame = () => {
-      t++;
-      ctx.fillStyle = `rgba(${bg[0]},${bg[1]},${bg[2]},${reduce ? 1 : 0.09})`;
-      ctx.fillRect(0,0,w,h);
-      for (const p of parts) {
-        p.px = p.x; p.py = p.y;
-        const a = (Math.sin(p.x*0.0041 + t*0.0009) + Math.cos(p.y*0.0041 - t*0.0011) + Math.sin((p.x+p.y)*0.0025 + t*0.0007)) * 1.45;
-        let vx = Math.cos(a), vy = Math.sin(a);
-        if (mouse.on) {
-          const dx = p.x-mouse.x, dy = p.y-mouse.y, d = Math.hypot(dx,dy) || 1;
-          if (d < 155) { const f = (1 - d/155); vx += (dx/d)*f*3.4 - (dy/d)*f*1.7; vy += (dy/d)*f*3.4 + (dx/d)*f*1.7; }
-        }
-        const sp = reduce ? 0.18 : 1.15;
-        p.x += vx*sp; p.y += vy*sp;
-        if (p.x < 0) p.x += w; else if (p.x > w) p.x -= w;
-        if (p.y < 0) p.y += h; else if (p.y > h) p.y -= h;
-        const r = Math.round(acc[0]+(acc2[0]-acc[0])*p.c), g = Math.round(acc[1]+(acc2[1]-acc[1])*p.c), b = Math.round(acc[2]+(acc2[2]-acc[2])*p.c);
-        if (Math.abs(p.x-p.px) < 40 && Math.abs(p.y-p.py) < 40) {
-          ctx.strokeStyle = `rgba(${r},${g},${b},0.55)`; ctx.lineWidth = 1.15;
-          ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke();
-        }
-      }
-      raf = requestAnimationFrame(frame);
-    };
-    init(); raf = requestAnimationFrame(frame);
-    const ro = new ResizeObserver(init); ro.observe(host);
-    host.addEventListener("mousemove", onMove); host.addEventListener("mouseleave", onLeave);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); host.removeEventListener("mousemove", onMove); host.removeEventListener("mouseleave", onLeave); };
-  }, [themeKey]);
-  return <canvas ref={ref} style={{ position:"absolute", inset:0, width:"100%", height:"100%" }} />;
-}
-
-/* ── kinetic word cycler ── */
-function WordCycler({ words }) {
-  const [i, setI] = useState(0);
-  useEffect(() => { const id = setInterval(() => setI(v => (v+1) % words.length), 2300); return () => clearInterval(id); }, [words.length]);
+/* ── hero backdrop: oversized corner wordmark + soft ambient light. ── */
+function HeroBackdrop() {
   return (
-    <span style={{ display:"inline-grid", verticalAlign:"bottom" }}>
-      {words.map((wd, idx) => (
-        <span key={wd} style={{ gridArea:"1 / 1", color:"var(--accent)", fontWeight:700, whiteSpace:"nowrap",
-          transition:"opacity .55s ease, transform .55s cubic-bezier(.22,1,.36,1)",
-          opacity: idx===i ? 1 : 0, transform: idx===i ? "translateY(0)" : "translateY(9px)" }}>{wd}</span>
-      ))}
-    </span>
+    <div aria-hidden="true" style={{ position:"absolute", inset:0, overflow:"hidden", pointerEvents:"none" }}>
+      <div style={{
+        position:"absolute", top:"-24%", right:"-8%", width:"64vw", height:"64vw", borderRadius:"50%",
+        background:"radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%)",
+      }} />
+      <div style={{
+        position:"absolute", top:"46%", left:"6%", width:"46vw", height:"46vw", borderRadius:"50%",
+        transform:"translate(-30%,-50%)",
+        background:"radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent), transparent 72%)",
+      }} />
+      <div style={{
+        position:"absolute", top:"4%", right:"-2%", fontFamily:SERIF, fontWeight:600,
+        fontSize:"clamp(240px,32vw,620px)", lineHeight:0.78, letterSpacing:"-.04em",
+        color:"var(--text-h)", opacity:0.05, userSelect:"none", whiteSpace:"nowrap",
+      }}>
+        CMC
+      </div>
+    </div>
   );
 }
 
-/* ── module catalog ── */
-const SECTIONS = [
-  { id:"pipeline",  label:"Pipeline Explorer",  desc:"16-stage biologic lifecycle", group:"core" },
-  { id:"methods",   label:"Analytical Methods", desc:"22 assay deep-dives",         group:"core" },
-  { id:"qbd",       label:"QbD / CQA / CPP",    desc:"FMEA · design space · COA",   group:"core" },
-  { id:"viral",     label:"Viral Clearance",    desc:"ICH Q5A · LRV calculator",    group:"core" },
-  { id:"ctd",       label:"CTD Navigator",      desc:"Module 1–5 dossier map",      group:"core" },
-  { id:"timeline",  label:"CMC Timeline",       desc:"Phase-by-phase deliverables", group:"core" },
-  { id:"domains",   label:"Domain Q-Bank",      desc:"100+ Qs · 10 domains",        group:"core" },
-  { id:"exam",      label:"Exam Mode",          desc:"Adaptive spaced repetition",  group:"core" },
-  { id:"ich",       label:"ICH Guidelines",     desc:"9 quality guidelines",        group:"core" },
-  { id:"career",    label:"Career & Interviews",desc:"Ladder · salaries · Q&As",    group:"core" },
-  { id:"notes",     label:"My Notes",           desc:"Capture & organize",          group:"core" },
-  { id:"glossary",  label:"CMC Glossary",       desc:"50 essential terms",          group:"core" },
-  { id:"stability", label:"Stability Studies",  desc:"ICH Q1A(R2) · T90",           group:"tools" },
-  { id:"oos",       label:"OOS / OOT",          desc:"FDA 2006 decision tree",      group:"tools" },
-  { id:"batch",     label:"Batch Record Sim",   desc:"Sterile mAb BPR",             group:"tools" },
-  { id:"cases",     label:"Case Studies",       desc:`${CASE_STUDIES.length} landmark failures`, group:"tools" },
-  { id:"compendial",label:"Compendial Ref",     desc:"USP / EP / JP",               group:"tools" },
-  { id:"excipient", label:"Excipient Compat",   desc:"18 excipients + matrix",      group:"tools" },
-  { id:"pathway",   label:"Learning Pathways",  desc:"30/60/90-day plans",          group:"tools" },
-  { id:"progress",  label:"My Progress",        desc:"Queue · activity · badges",   group:"tools" },
-];
+function IndexRow({ n, s, setView, delay, tick }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <Reveal delay={delay}>
+      <button onClick={() => setView(s.id)} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+        className="lc-index-row" style={{ width:"100%", background:"none", border:"none", cursor:"pointer", textAlign:"left", display:"grid", gridTemplateColumns:"3px 56px minmax(0,1fr) auto", alignItems:"center", gap:20 }}>
+        <span style={{ alignSelf:"stretch", background: hover ? tick : "transparent", transition:"background .25s ease", borderRadius:1 }} />
+        <span className="lc-index-num">{String(n).padStart(2,"0")}</span>
+        <span>
+          <span style={{ display:"block", fontFamily:SERIF, fontSize:22, color: hover ? "var(--accent)" : "var(--text-h)", letterSpacing:"-.01em", transition:"color .3s ease" }}>{s.label}</span>
+          <span style={{ display:"block", fontFamily:MONO, fontSize:11.5, color:"var(--text-muted)", marginTop:4 }}>{s.desc}</span>
+        </span>
+        <span style={{ fontFamily:MONO, fontSize:13, color: hover ? "var(--accent)" : "var(--text-faint)", transition:"opacity .3s ease, color .3s ease", opacity: hover ? 1 : 0.4 }}>→</span>
+      </button>
+    </Reveal>
+  );
+}
 
-const STANDARDS = ["ICH Q5A(R2)","ICH Q8(R2)","ICH Q9","ICH Q10","ICH Q11","ICH Q6B","ICH Q12","USP ⟨788⟩","USP ⟨1207⟩","Ph.Eur. 2.6.1","21 CFR 211","EU Annex 1"];
+function ChapterHeading({ label, mark }) {
+  return (
+    <div style={{ position:"relative", marginBottom:6, overflow:"hidden" }}>
+      <div aria-hidden style={{ position:"absolute", right:0, top:-46, fontFamily:SERIF, fontSize:120, fontWeight:500, color:"var(--text-faint)", opacity:0.12, lineHeight:1, userSelect:"none" }}>{mark}</div>
+      <div style={{ position:"relative", fontFamily:MONO, fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:"var(--accent)" }}>{label}</div>
+    </div>
+  );
+}
 
-export default function Dashboard({ setView, dark }) {
+export default function Dashboard({ setView }) {
   const allQ = PIPELINE.flatMap(s => s.questions).length + DOMAINS.flatMap(d => d.questions).length;
-  const topics = PIPELINE.flatMap(s => s.topics || []).length;
-
-  const stats = [
-    { n: allQ, label:"Questions" }, { n: ANALYTICAL_METHODS.length, label:"Methods" },
-    { n: PIPELINE.length, label:"Stages" }, { n: topics, label:"Topics" },
-    { n: CASE_STUDIES.length, label:"Cases" }, { n: GLOSSARY.length, label:"Terms" },
-  ];
   const refs = ICH_GUIDELINES.length + COMPENDIAL_METHODS.length;
 
   const pool = [...PIPELINE.flatMap(s => s.questions), ...DOMAINS.flatMap(d => d.questions)];
@@ -132,150 +92,128 @@ export default function Dashboard({ setView, dark }) {
   const [open, setOpen] = useState(false);
   const shuffle = () => { setSpot(pool[Math.floor(Math.random()*pool.length)]); setOpen(false); };
 
-  const [hovPipe, setHovPipe] = useState(null);
   const core = SECTIONS.filter(s => s.group === "core");
   const tools = SECTIONS.filter(s => s.group === "tools");
 
-  const Chip = ({ s }) => (
-    <button onClick={() => setView(s.id)} className="lc-meshhost lc-shine"
-      style={{ position:"relative", overflow:"hidden", display:"flex", gap:11, alignItems:"center", textAlign:"left", cursor:"pointer",
-        background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:13, padding:"11px 13px", transition:"transform .2s, border-color .2s" }}
-      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.borderColor = "color-mix(in srgb, var(--accent) 45%, transparent)"; }}
-      onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.borderColor = "var(--hairline)"; }}>
-      <span className="lc-meshlayer" />
-      <span style={{ position:"relative", zIndex:1, flexShrink:0, width:36, height:36, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid var(--hairline)", background:"var(--panel-2)", color:"var(--accent)" }}>
-        <Icon name={s.id} size={18} />
-      </span>
-      <span style={{ position:"relative", zIndex:1, minWidth:0 }}>
-        <span style={{ display:"block", color:TEXT, fontWeight:700, fontSize:13 }}>{s.label}</span>
-        <span style={{ display:"block", color:FAINT, fontSize:11, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{s.desc}</span>
-      </span>
-    </button>
-  );
+  const SPECS = [
+    { label:"Modules", value:SECTIONS.length },
+    { label:"Pipeline Stages", value:PIPELINE.length },
+    { label:"Analytical Methods", value:ANALYTICAL_METHODS.length },
+    { label:"Practice Questions", value:allQ },
+    { label:"Case Studies", value:CASE_STUDIES.length },
+    { label:"References", value:refs },
+  ];
 
   return (
-    <div style={{ position:"relative", zIndex:1, maxWidth:1280, margin:"0 auto", padding:"28px 24px 72px", color:"var(--text-body)" }}>
-      <div className="bento">
+    <div style={{ position:"relative", zIndex:1 }}>
 
-        {/* ── HERO ── */}
-        <div className="b-8" style={{ ...tile, position:"relative", overflow:"hidden", minHeight:452, display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-          <FlowField themeKey={dark ? "d" : "l"} />
-          <div style={{ position:"absolute", inset:0, background:"linear-gradient(95deg, color-mix(in srgb, var(--bg-base) 82%, transparent), color-mix(in srgb, var(--bg-base) 30%, transparent) 52%, transparent 72%)", pointerEvents:"none" }}/>
-          <div style={{ position:"relative", zIndex:1, padding:"40px 42px" }}>
-            <div style={{ fontFamily:MONO, fontSize:11, fontWeight:700, letterSpacing:".24em", color:"var(--accent)", marginBottom:18 }}>
-              CMC APP — BIOLOGIC DEVELOPMENT PLATFORM
+      {/* ── OPENING ── */}
+      <section style={{ minHeight:"92vh", display:"flex", flexDirection:"column", justifyContent:"center", position:"relative", overflow:"hidden", padding:"48px 32px" }}>
+        <HeroBackdrop />
+        <div style={{ maxWidth:1280, margin:"0 auto", width:"100%", position:"relative" }}>
+          <div style={{ maxWidth:640 }}>
+            <div style={{ fontFamily:MONO, fontSize:11, fontWeight:700, letterSpacing:".24em", color:"var(--accent)", marginBottom:28 }}>
+              CMC APP · BUILT FROM THE BENCH UP
             </div>
-            <h1 style={{ fontSize:"clamp(38px,5vw,62px)", fontWeight:850, letterSpacing:"-.035em", lineHeight:1.02, margin:0, color:"var(--text-h)" }}>
-              The craft of<br/>Biologics CMC<span style={{ color:"var(--accent)" }}>.</span>
+            <h1 style={{ fontFamily:SERIF, fontWeight:500, fontSize:"clamp(38px,6vw,74px)", letterSpacing:"-.02em", lineHeight:1.04, margin:0, color:"var(--text-h)" }}>
+              The CMC reference<br/>nobody handed you<br/>on day one<span style={{ color:"var(--accent)" }}>.</span>
             </h1>
-            <p style={{ color:SUB, fontSize:16, lineHeight:1.6, margin:"18px 0 14px", maxWidth:480 }}>
-              From gene construction to post-approval lifecycle — <b style={{ color:"var(--text-body)" }}>{SECTIONS.length} modules</b>, <b style={{ color:"var(--text-body)" }}>{allQ}</b> questions, and every analytical method, guideline and decision that matters.
+            <p style={{ color:"var(--text-body)", fontSize:17, lineHeight:1.7, margin:"28px 0 0", maxWidth:480 }}>
+              {SECTIONS.length} modules from gene construction to post-approval lifecycle, plus {allQ} practice questions
+              pulled from the kind of thing that actually comes up in a tech transfer meeting.
             </p>
-            <div style={{ fontFamily:MONO, fontSize:13, color:FAINT, marginBottom:26, display:"flex", gap:8 }}>
-              <span>NOW MASTERING —</span>
-              <WordCycler words={["gene construction","cell-line development","upstream & downstream","viral clearance","process validation","BLA filing"]} />
-            </div>
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
-              <Magnetic strength={18}><button onClick={() => setView("pipeline")} className="lc-pill lc-shine" style={{ padding:"13px 26px", fontSize:14.5 }}>Explore the Pipeline →</button></Magnetic>
-              <Magnetic strength={12}><button onClick={() => setView("exam")} className="lc-ghost lc-shine" style={{ padding:"13px 24px", fontSize:14 }}>Practice Exam</button></Magnetic>
+            <div style={{ marginTop:36, display:"flex", gap:32, alignItems:"center" }}>
+              <button onClick={() => setView("pipeline")} className="lc-link" style={{ fontSize:15, fontFamily:SERIF }}>
+                Begin with the Pipeline →
+              </button>
+              <button onClick={() => setView("exam")} className="lc-link" style={{ fontSize:15, fontFamily:SERIF, color:"var(--text-body)" }}>
+                Or test yourself first
+              </button>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* ── RIGHT COLUMN ── */}
-        <div className="b-4" style={{ display:"flex", flexDirection:"column", gap:16 }}>
-          <div style={{ ...tile, flex:1, padding:"22px 24px" }}>
-            <div style={{ fontFamily:MONO, fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:FAINT, marginBottom:16 }}>BY THE NUMBERS</div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"18px 10px" }}>
-              {stats.map(s => (
-                <div key={s.label}>
-                  <div style={{ fontSize:26, fontWeight:800, color:"var(--text-h)", lineHeight:1, letterSpacing:"-.02em" }}><CountUp to={s.n} /></div>
-                  <div style={{ color:FAINT, fontSize:10.5, marginTop:5, fontFamily:MONO, letterSpacing:".04em" }}>{s.label.toUpperCase()}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <button onClick={() => setView("pipeline")} className="lc-meshhost" style={{ ...tile, flex:1, padding:"22px 24px", position:"relative", overflow:"hidden", cursor:"pointer", textAlign:"left" }}>
-            <span className="lc-meshlayer" />
-            <div style={{ position:"relative", zIndex:1 }}>
-              <div style={{ fontFamily:MONO, fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:"var(--accent)", marginBottom:12 }}>THE JOURNEY</div>
-              <div style={{ display:"flex", alignItems:"center", gap:0, marginBottom:14 }}>
-                {PIPELINE.map((s,i) => (
-                  <div key={s.id} style={{ display:"flex", alignItems:"center", flex: i < PIPELINE.length-1 ? 1 : "0 0 auto" }}>
-                    <span style={{ width:9, height:9, borderRadius:"50%", flexShrink:0,
-                      background: hovPipe===null ? "var(--accent)" : (i<=hovPipe ? "var(--accent)" : "var(--hairline)") }}
-                      onMouseEnter={() => setHovPipe(i)} />
-                    {i < PIPELINE.length-1 && <span style={{ flex:1, height:2, background:"var(--hairline)" }}/>}
-                  </div>
-                ))}
-              </div>
-              <div style={{ color:"var(--text-h)", fontWeight:750, fontSize:15 }}>16 stages · 5 phases</div>
-              <div style={{ color:FAINT, fontSize:12.5, marginTop:3 }}>Gene construction → commercial lifecycle</div>
-            </div>
-          </button>
-        </div>
-
-        {/* ── STANDARDS TICKER ── */}
-        <div className="b-12 ticker" style={{ ...tile, padding:"13px 0", borderRadius:14 }}>
-          <div className="ticker-track">
-            {[...STANDARDS, ...STANDARDS].map((g,i) => (
-              <span key={i} style={{ display:"inline-flex", alignItems:"center", color:FAINT, fontFamily:MONO, fontSize:12.5, letterSpacing:".02em", padding:"0 26px" }}>
-                <span style={{ width:5, height:5, borderRadius:"50%", background:"var(--accent-2)", marginRight:14 }}/>{g}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* ── MODULES ── */}
-        <Reveal style={{ gridColumn:"span 12" }}>
-          <div style={{ ...tile, padding:"24px 24px 26px" }}>
-            <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:18 }}>
-              <h2 style={{ color:"var(--text-h)", fontSize:19, fontWeight:800, letterSpacing:"-.02em", margin:0 }}>All Modules</h2>
-              <span style={{ fontFamily:MONO, fontSize:11, color:FAINT }}>{SECTIONS.length} TOTAL</span>
-            </div>
-            <div style={{ fontFamily:MONO, fontSize:10, fontWeight:700, letterSpacing:".2em", color:"var(--accent)", marginBottom:12 }}>CORE CURRICULUM</div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:10, marginBottom:22 }}>
-              {core.map(s => <Chip key={s.id} s={s} />)}
-            </div>
-            <div style={{ fontFamily:MONO, fontSize:10, fontWeight:700, letterSpacing:".2em", color:"var(--accent-2)", marginBottom:12 }}>ADVANCED TOOLS</div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:10 }}>
-              {tools.map(s => <Chip key={s.id} s={s} />)}
+      {/* ── MANIFESTO ── */}
+      <section className="lc-manifesto-grid" style={{ maxWidth:1280, margin:"0 auto", padding:"64px 32px", borderTop:"1px solid var(--hairline)" }}>
+        <Reveal>
+          <p style={{ fontFamily:SERIF, fontSize:"clamp(22px,3vw,34px)", lineHeight:1.4, color:"var(--text-h)", maxWidth:760, letterSpacing:"-.01em" }}>
+            Most of CMC is learned the hard way: after a deviation, in a tech transfer meeting, or the week before
+            a filing is due. This is what it would have looked like written down first.
+          </p>
+        </Reveal>
+        <Reveal delay={80}>
+          <div style={{ borderLeft:"2px solid var(--accent)", paddingLeft:18 }}>
+            <div style={{ fontFamily:MONO, fontSize:10, letterSpacing:".16em", color:"var(--text-faint)", marginBottom:6 }}>GOVERNED BY</div>
+            <div style={{ fontFamily:MONO, fontSize:12, color:"var(--text-sec)", lineHeight:1.9 }}>
+              ICH Q5A · Q6B · Q8(R2)<br/>ICH Q9 · Q10 · Q11<br/>21 CFR 211 · EU Annex 1
             </div>
           </div>
         </Reveal>
+      </section>
 
-        {/* ── CONCEPT SPOTLIGHT ── */}
-        <Reveal style={{ gridColumn:"span 12" }}>
-          <div style={{ ...tile, padding:"26px 28px", position:"relative", overflow:"hidden" }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:16, flexWrap:"wrap", marginBottom: open ? 18 : 0 }}>
-              <div style={{ flex:1, minWidth:260 }}>
-                <div style={{ fontFamily:MONO, fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:"var(--accent)", marginBottom:10 }}>CONCEPT SPOTLIGHT · {spot.level?.toUpperCase()}</div>
-                <p style={{ color:"var(--text-h)", margin:0, fontSize:19, fontWeight:700, lineHeight:1.5, maxWidth:820, letterSpacing:"-.01em" }}>{spot.q}</p>
+      {/* ── SPECIFICATIONS ── */}
+      <section style={{ maxWidth:1280, margin:"0 auto", padding:"0 32px 64px" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))", gap:0, borderTop:"1px solid var(--hairline)", borderBottom:"1px solid var(--hairline)" }}>
+          {SPECS.map((s, i) => (
+            <Reveal key={s.label} delay={i*40}>
+              <div className="lc-spec" style={{ borderTop:"none", borderLeft: i>0 ? "1px solid var(--hairline)" : "none", padding:"22px 20px" }}>
+                <dt>{s.label}</dt>
+                <dd style={{ fontSize:28 }}><CountUp to={s.value} /></dd>
               </div>
-              <Magnetic><button onClick={shuffle} className="lc-ghost lc-shine" style={{ padding:"10px 18px", fontSize:13 }}>↺ Shuffle</button></Magnetic>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ── MODULE INDEX ── */}
+      <section style={{ maxWidth:1280, margin:"0 auto", padding:"0 32px 80px" }}>
+        <div className="lc-index-grid">
+          <div>
+            <Reveal><ChapterHeading label="CORE CURRICULUM" mark="01–12" /></Reveal>
+            <div>
+              {core.map((s, i) => <IndexRow key={s.id} n={i+1} s={s} setView={setView} delay={i*30} tick="var(--accent)" />)}
+            </div>
+          </div>
+
+          <div>
+            <Reveal><ChapterHeading label="ADVANCED TOOLS" mark="13–20" /></Reveal>
+            <div>
+              {tools.map((s, i) => <IndexRow key={s.id} n={core.length+i+1} s={s} setView={setView} delay={i*30} tick="var(--accent-2)" />)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONCEPT SPOTLIGHT ── */}
+      <section style={{ maxWidth:1280, margin:"0 auto", padding:"0 32px 100px" }}>
+        <Reveal>
+          <div style={{ border:"1px solid var(--hairline)", borderRadius:2, padding:"40px 40px 36px", background:"var(--panel)" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:16, flexWrap:"wrap" }}>
+              <div style={{ flex:1, minWidth:280 }}>
+                <div style={{ fontFamily:MONO, fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:"var(--text-faint)", marginBottom:16 }}>
+                  TODAY'S QUESTION · {spot.level?.toUpperCase()}
+                </div>
+                <p style={{ fontFamily:SERIF, color:"var(--text-h)", margin:0, fontSize:24, lineHeight:1.5, maxWidth:820 }}>{spot.q}</p>
+              </div>
+              <button onClick={shuffle} className="lc-link" style={{ fontSize:13, fontFamily:MONO, flexShrink:0 }}>Another one →</button>
             </div>
             {!open ? (
-              <button onClick={() => setOpen(true)} className="lc-pill lc-shine" style={{ marginTop:18, padding:"10px 20px", fontSize:13 }}>Reveal rationale</button>
+              <button onClick={() => setOpen(true)} className="lc-pill" style={{ marginTop:24, padding:"10px 22px", fontSize:13 }}>Reveal rationale</button>
             ) : (
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, animation:"lc-dropin .3s ease" }}>
-                {[["WHY IT MATTERS", spot.why, "var(--accent)"], ["HOW TO APPROACH", spot.how, "var(--accent-2)"]].map(([l,txt,c]) => (
-                  <div key={l} style={{ background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:14, padding:"14px 16px" }}>
-                    <div style={{ color:c, fontFamily:MONO, fontSize:10, fontWeight:700, letterSpacing:".1em", marginBottom:7 }}>{l}</div>
-                    <p style={{ color:SUB, margin:0, fontSize:13, lineHeight:1.6 }}>{txt}</p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:32, marginTop:28, animation:"lc-dropin .4s ease" }}>
+                {[["Why it matters", spot.why], ["How to approach it", spot.how]].map(([l,txt]) => (
+                  <div key={l} style={{ borderTop:"1px solid var(--hairline)", paddingTop:16 }}>
+                    <div style={{ color:"var(--accent)", fontFamily:MONO, fontSize:10.5, fontWeight:700, letterSpacing:".1em", marginBottom:8, textTransform:"uppercase" }}>{l}</div>
+                    <p style={{ color:"var(--text-sec)", margin:0, fontSize:14, lineHeight:1.7 }}>{txt}</p>
                   </div>
                 ))}
-                <p style={{ gridColumn:"span 2", color:FAINT, fontSize:11, margin:0, fontStyle:"italic" }}>Ref · {spot.ref}</p>
+                <p style={{ gridColumn:"span 2", color:"var(--text-faint)", fontSize:11.5, margin:0, fontStyle:"italic" }}>Ref: {spot.ref}</p>
               </div>
             )}
           </div>
         </Reveal>
-      </div>
-
-      <div style={{ marginTop:36, display:"flex", alignItems:"center", gap:14, justifyContent:"center", color:FAINT, fontFamily:MONO, fontSize:11, letterSpacing:".06em" }}>
-        <span style={{ flex:1, height:1, background:"var(--hairline)", maxWidth:120 }}/>
-        CMC APP · YASH KACHA · {refs} GUIDELINES & REFS
-        <span style={{ flex:1, height:1, background:"var(--hairline)", maxWidth:120 }}/>
-      </div>
+      </section>
     </div>
   );
 }

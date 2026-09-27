@@ -1,22 +1,23 @@
 import { useState, useMemo } from "react";
+import { Icon } from "../icons";
 import { EXCIPIENTS, INCOMPATIBILITIES, FUNCTION_MAP } from "../excipient-data";
 
 // ── Class badge color map ──────────────────────────────────────
 const CLASS_COLORS = {
   "Surfactant": "#38BDF8",
   "Lyoprotectant / Cryoprotectant": "#F472B6",
-  "Bulking Agent / Tonicity Agent": "#A78BFA",
+  "Bulking Agent / Tonicity Agent": "#C99A3B",
   "Buffer": "#F59E0B",
   "Tonicity Agent": "#94A3B8",
   "Chelating Agent / Antioxidant": "#34D399",
   "Antimicrobial Preservative": "#F472B6",
   "Polymeric Excipient / Laxative": "#60A5FA",
-  "Polymer / Viscosity Modifier / Film Coat": "#A78BFA",
+  "Polymer / Viscosity Modifier / Film Coat": "#C99A3B",
   "Superdisintegrant": "#FB923C",
   "Lubricant": "#94A3B8",
   "Filler / Binder / Disintegrant": "#34D399",
   "Filler / Diluent": "#F59E0B",
-  "Stabilizer / Viscosity Reducer": "#C084FC",
+  "Stabilizer / Viscosity Reducer": "#C0654A",
 };
 const classColor = (cls) => CLASS_COLORS[cls] || "#94A3B8";
 
@@ -70,7 +71,7 @@ const ExcipientCard = ({ ex }) => {
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
-            <span style={{ fontSize: 18 }}>{ex.icon}</span>
+            <span style={{ display: "flex", color: col }}><Icon name={ex.icon} size={16} sw={1.8} /></span>
             <span style={{ color: "var(--text-h)", fontWeight: 800, fontSize: 14 }}>{ex.name}</span>
             {ex.abbrev && ex.abbrev !== ex.name && (
               <span style={{
@@ -193,7 +194,7 @@ const IncompatibilityRow = ({ inc }) => {
         overflow: "hidden",
       }}
     >
-      {/* Summary row — always visible */}
+      {/* Summary row: always visible */}
       <div
         onClick={() => setOpen((o) => !o)}
         style={{
@@ -292,7 +293,7 @@ const IncompatibilityRow = ({ inc }) => {
 
 // ── Sub-component: FunctionCard ──────────────────────────────
 const FunctionCard = ({ fnName, fnData }) => {
-  const col = classColor(fnName) || "#A78BFA";
+  const col = classColor(fnName) || "#C99A3B";
   const exampleExcipients = (fnData.examples || []).map((id) => {
     const ex = EXCIPIENTS.find((e) => e.id === id);
     return ex ? ex : { id, name: id, color: "#94A3B8", abbrev: id };
@@ -342,9 +343,9 @@ export default function ExcipientView() {
   const [classFilter, setClassFilter] = useState("All");
 
   const TABS = [
-    { id: "library",  label: "Excipient Library",    icon: "🧪" },
-    { id: "compat",   label: "Compatibility Matrix",  icon: "⚠️" },
-    { id: "functions",label: "Functions",             icon: "⚗️" },
+    { id: "library",  label: "Excipient Library",    icon: "flask" },
+    { id: "compat",   label: "Compatibility Matrix",  icon: "alert" },
+    { id: "functions",label: "Functions",             icon: "gear" },
   ];
 
   // ── Library tab state ─────────────────────────────────────
@@ -371,7 +372,7 @@ export default function ExcipientView() {
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-          <span style={{ fontSize: 36 }}>🧴</span>
+          <span style={{ color: "var(--accent)" }}><Icon name="excipient" size={32} sw={1.6} /></span>
           <div>
             <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 26, fontWeight: 900 }}>
               Excipient Reference
@@ -421,7 +422,7 @@ export default function ExcipientView() {
               transition: "all 0.18s ease",
             }}
           >
-            <span style={{ marginRight: 6 }}>{t.icon}</span>
+            <Icon name={t.icon} size={14} sw={1.9} style={{ marginRight: 7, verticalAlign: "-2px" }} />
             {t.label}
           </button>
         ))}
@@ -443,7 +444,7 @@ export default function ExcipientView() {
                     background: active ? `${col}22` : "var(--bg-raised)",
                     color: active ? col : "var(--text-sec)",
                     border: `1px solid ${active ? col + "66" : "var(--border)"}`,
-                    borderRadius: 20, padding: "5px 14px",
+                    borderRadius: 8, padding: "5px 14px",
                     cursor: "pointer", fontSize: 11, fontWeight: 700,
                     transition: "all 0.16s ease",
                   }}
@@ -459,7 +460,7 @@ export default function ExcipientView() {
             Showing {filteredExcipients.length} of {EXCIPIENTS.length} excipients
             {classFilter !== "All" && (
               <span style={{ color: classColor(classFilter), marginLeft: 8, fontWeight: 700 }}>
-                — {classFilter}
+                in {classFilter}
               </span>
             )}
           </div>
@@ -486,7 +487,7 @@ export default function ExcipientView() {
             borderRadius: 8, padding: "10px 14px", marginBottom: 20,
             display: "flex", alignItems: "center", gap: 10,
           }}>
-            <span style={{ fontSize: 18 }}>📚</span>
+            <span style={{ display: "flex", color: "#F59E0B" }}><Icon name="book" size={17} sw={1.7} /></span>
             <p style={{ color: "var(--text-sec)", margin: 0, fontSize: 13, lineHeight: 1.5 }}>
               Showing known incompatibilities from literature. Entries are grouped by severity:
               <strong style={{ color: "#F87171" }}> AVOID</strong> (serious incompatibility),
@@ -511,7 +512,7 @@ export default function ExcipientView() {
                   {cfg.label}
                 </span>
                 <span style={{ color: "var(--text-muted)", fontSize: 11 }}>
-                  — {INCOMPATIBILITIES.filter((i) => i.severity === key).length} pairs
+                  {INCOMPATIBILITIES.filter((i) => i.severity === key).length} pairs
                 </span>
               </div>
             ))}

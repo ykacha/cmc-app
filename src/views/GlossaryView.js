@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FilterBtn } from "../shared";
 import { LiquidHeader } from "../lc";
+import { Icon } from "../icons";
 import { GLOSSARY } from "../cmc-data";
 
 export default function GlossaryView() {
@@ -10,8 +11,8 @@ export default function GlossaryView() {
   const cats = ["All", ...new Set(GLOSSARY.map(g => g.cat))];
   const catColors = {
     Regulatory:"#F59E0B", QbD:"#34D399", "Cell Science":"#22D3EE",
-    Manufacturing:"#A78BFA", Analytical:"#F472B6", Quality:"#FB923C",
-    Validation:"#38BDF8", "Novel Modalities":"#C084FC"
+    Manufacturing:"#C99A3B", Analytical:"#F472B6", Quality:"#FB923C",
+    Validation:"#38BDF8", "Novel Modalities":"#C0654A"
   };
 
   const filtered = GLOSSARY.filter(g =>
@@ -22,7 +23,7 @@ export default function GlossaryView() {
 
   return (
     <div style={{ maxWidth:1200, margin:"0 auto", padding:"28px 24px" }}>
-      <LiquidHeader eyebrow="A–Z REFERENCE" icon="📖" title="CMC Glossary" subtitle={`${GLOSSARY.length} essential terms and definitions — search or filter by category`} />
+      <LiquidHeader eyebrow="A-Z REFERENCE" icon={<Icon name="glossary" size={28} sw={1.6} />} title="CMC Glossary" subtitle={`${GLOSSARY.length} essential terms and definitions. Search or filter by category.`} />
 
       <div style={{ display:"flex", gap:10, marginBottom:20, flexWrap:"wrap", alignItems:"center" }}>
         <input value={search} onChange={e => setSearch(e.target.value)}
@@ -55,7 +56,7 @@ export default function GlossaryView() {
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
                 <span style={{ color:"var(--text-h)", fontWeight:900, fontSize:16 }}>{g.term}</span>
                 <span style={{ background:`${cc}22`, color:cc, border:`1px solid ${cc}44`,
-                  padding:"2px 10px", borderRadius:12, fontSize:10, fontWeight:700 }}>{g.cat}</span>
+                  padding:"2px 10px", borderRadius:6, fontSize:10, fontWeight:700 }}>{g.cat}</span>
               </div>
               <p style={{ color:"var(--text-body)", margin:0, fontSize:14, lineHeight:1.72 }}>{g.def}</p>
             </div>

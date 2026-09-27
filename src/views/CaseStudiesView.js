@@ -1,20 +1,21 @@
 import { useState } from "react";
+import { Icon } from "../icons";
 import { CASE_STUDIES, CASE_CATEGORIES } from "../case-study-data";
 
 const SEV_COLOR = { critical: "#F472B6", high: "#F59E0B", moderate: "#34D399" };
 const SEV_LABEL = { critical: "CRITICAL", high: "HIGH", moderate: "MODERATE" };
-const SEV_ICON  = { critical: "🔴", high: "🟠", moderate: "🟢" };
 
 // ── Severity bar (color strip) ────────────────────────────────
 function SevBar({ severity }) {
-  const c = SEV_COLOR[severity] || "#A78BFA";
+  const c = SEV_COLOR[severity] || "var(--accent)";
   return (
     <span style={{
       background: `${c}22`, color: c, border: `1px solid ${c}50`,
       borderRadius: 5, padding: "2px 7px", fontSize: 9, fontWeight: 900,
       letterSpacing: "0.08em", textTransform: "uppercase",
+      display: "inline-flex", alignItems: "center", gap: 5,
     }}>
-      {SEV_ICON[severity]} {SEV_LABEL[severity] || severity}
+      <span style={{ width: 6, height: 6, borderRadius: "50%", background: c, flexShrink: 0 }} /> {SEV_LABEL[severity] || severity}
     </span>
   );
 }
@@ -22,17 +23,18 @@ function SevBar({ severity }) {
 // ── Category badge ─────────────────────────────────────────────
 function CatBadge({ category, small }) {
   const cat = CASE_CATEGORIES.find(c => c.id === category);
-  const color = cat?.color || "#A78BFA";
+  const color = cat?.color || "var(--accent)";
   return (
     <span style={{
       background: `${color}18`, color,
       border: `1px solid ${color}40`,
       padding: small ? "2px 7px" : "3px 10px",
-      borderRadius: 10,
+      borderRadius: 8,
       fontSize: small ? 9 : 11,
       fontWeight: 700,
+      display: "inline-flex", alignItems: "center", gap: 6,
     }}>
-      {cat?.icon} {cat?.label || category}
+      {cat && <Icon name={cat.icon} size={small ? 11 : 13} sw={2} />} {cat?.label || category}
     </span>
   );
 }
@@ -40,9 +42,7 @@ function CatBadge({ category, small }) {
 // ── Graphical Case Card ────────────────────────────────────────
 function CaseCard({ cs, onSelect }) {
   const [hovered, setHovered] = useState(false);
-  const sevColor = SEV_COLOR[cs.severity] || "#A78BFA";
-  const cat = CASE_CATEGORIES.find(c => c.id === cs.category);
-  const catColor = cat?.color || "#A78BFA";
+  const sevColor = SEV_COLOR[cs.severity] || "var(--accent)";
 
   return (
     <div
@@ -64,13 +64,13 @@ function CaseCard({ cs, onSelect }) {
     >
       {/* Colored icon header */}
       <div style={{
-        background: `linear-gradient(135deg, ${sevColor}18 0%, ${catColor}0E 100%)`,
+        background: `${sevColor}14`,
         borderBottom: `3px solid ${sevColor}`,
         padding: "24px 16px 18px",
         textAlign: "center",
         position: "relative",
       }}>
-        {/* Year pill — top left */}
+        {/* Year pill: top left */}
         <span style={{
           position: "absolute", top: 10, left: 10,
           background: "rgba(0,0,0,0.35)", color: "rgba(255,255,255,0.9)",
@@ -80,7 +80,7 @@ function CaseCard({ cs, onSelect }) {
           {cs.year}
         </span>
 
-        {/* Severity — top right */}
+        {/* Severity: top right */}
         <span style={{
           position: "absolute", top: 10, right: 10,
           background: `${sevColor}28`, color: sevColor,
@@ -97,10 +97,10 @@ function CaseCard({ cs, onSelect }) {
           background: `${sevColor}1E`,
           border: `2px solid ${sevColor}45`,
           display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 30, margin: "0 auto",
+          color: sevColor, margin: "0 auto",
           boxShadow: `0 0 20px ${sevColor}18`,
         }}>
-          {cs.icon}
+          <Icon name={cs.icon} size={28} sw={1.6} />
         </div>
       </div>
 
@@ -130,7 +130,7 @@ function CaseCard({ cs, onSelect }) {
                 border: "1px solid var(--border)", borderRadius: 4,
                 padding: "2px 6px", fontSize: 9, fontWeight: 600,
               }}>
-                {t.split(" (")[0].split(" —")[0].split("/")[0]}
+                {t.split(" (")[0].split(" :")[0].split("/")[0]}
               </span>
             ))}
             {cs.analytical_techniques.length > 3 && (
@@ -201,7 +201,7 @@ function DetailSection({ label, color, children }) {
 
 // ── Detail Panel ───────────────────────────────────────────────
 function CaseDetailPanel({ cs, onBack }) {
-  const sevColor = SEV_COLOR[cs.severity] || "#A78BFA";
+  const sevColor = SEV_COLOR[cs.severity] || "var(--accent)";
 
   return (
     <div className="panel-enter" style={{
@@ -212,7 +212,7 @@ function CaseDetailPanel({ cs, onBack }) {
       <div style={{
         padding: "28px 32px 24px",
         borderBottom: "1px solid var(--border)",
-        background: `linear-gradient(135deg, ${sevColor}0A 0%, transparent 60%)`,
+        background: `${sevColor}0A`,
       }}>
         <button
           onClick={onBack}
@@ -243,9 +243,9 @@ function CaseDetailPanel({ cs, onBack }) {
             width: 56, height: 56, borderRadius: "50%",
             background: `${sevColor}1E`, border: `2px solid ${sevColor}45`,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 28, flexShrink: 0,
+            color: sevColor, flexShrink: 0,
           }}>
-            {cs.icon}
+            <Icon name={cs.icon} size={26} sw={1.6} />
           </div>
           <div>
             <h2 style={{ color: "var(--text-h)", fontSize: 22, fontWeight: 900, margin: 0, lineHeight: 1.3 }}>
@@ -253,7 +253,7 @@ function CaseDetailPanel({ cs, onBack }) {
             </h2>
             <p style={{ color: "var(--text-sec)", margin: "6px 0 0", fontSize: 13 }}>
               <strong style={{ color: "var(--text-body)" }}>{cs.product}</strong>
-              {" — "}
+              {" – "}
               {cs.company}
             </p>
           </div>
@@ -284,12 +284,12 @@ function CaseDetailPanel({ cs, onBack }) {
 
         {/* Analytical Techniques */}
         {cs.analytical_techniques?.length > 0 && (
-          <DetailSection label="Analytical Techniques" color="#C084FC">
+          <DetailSection label="Analytical Techniques" color="var(--accent-2)">
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {cs.analytical_techniques.map((t, i) => (
                 <span key={i} style={{
-                  background: "#C084FC12", color: "#C084FC",
-                  border: "1px solid #C084FC35", borderRadius: 8,
+                  background: "color-mix(in srgb, var(--accent-2) 10%, transparent)", color: "var(--accent-2)",
+                  border: "1px solid color-mix(in srgb, var(--accent-2) 30%, transparent)", borderRadius: 8,
                   padding: "5px 12px", fontSize: 12, fontWeight: 700,
                 }}>
                   {t}
@@ -299,8 +299,8 @@ function CaseDetailPanel({ cs, onBack }) {
           </DetailSection>
         )}
 
-        <DetailSection label="Regulatory Outcome" color="#A78BFA">
-          <div style={{ background: "#A78BFA0E", border: "1px solid #A78BFA28", borderRadius: 10, padding: "14px 16px" }}>
+        <DetailSection label="Regulatory Outcome" color="var(--accent)">
+          <div style={{ background: "color-mix(in srgb, var(--accent) 6%, transparent)", border: "1px solid color-mix(in srgb, var(--accent) 25%, transparent)", borderRadius: 10, padding: "14px 16px" }}>
             <p style={{ color: "var(--text-body)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>
               {cs.regulatory_outcome}
             </p>
@@ -368,30 +368,23 @@ export default function CaseStudiesView() {
       {/* ── Header ── */}
       <div style={{
         borderRadius: 16, padding: "28px 32px",
-        background: "linear-gradient(135deg, #1e1040 0%, #2d1b4e 50%, #1a1240 100%)",
-        border: "1px solid #6d28d944",
+        background: "var(--panel)", border: "1px solid var(--hairline)",
         marginBottom: 24, position: "relative", overflow: "hidden",
       }}>
-        {/* subtle bg rings */}
-        <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160,
-          borderRadius: "50%", border: "1px solid #A78BFA14", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: -60, right: -60, width: 240, height: 240,
-          borderRadius: "50%", border: "1px solid #A78BFA0A", pointerEvents: "none" }} />
-
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 20, position: "relative" }}>
           <div>
-            <h2 style={{ color: "#fff", margin: 0, fontSize: 24, fontWeight: 900, letterSpacing: "-0.01em" }}>
-              📋 CMC Case Studies
+            <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 24, fontWeight: 900, letterSpacing: "-0.01em", display: "flex", alignItems: "center", gap: 11 }}>
+              <Icon name="cases" size={22} sw={1.6} /> CMC Case Studies
             </h2>
-            <p style={{ color: "#C4B5FD", margin: "6px 0 0", fontSize: 14, lineHeight: 1.5 }}>
-              Historical failures &amp; regulatory events — learn from what went wrong
+            <p style={{ color: "var(--text-sec)", margin: "6px 0 0", fontSize: 14, lineHeight: 1.5 }}>
+              Historical failures and regulatory events. Learn from what went wrong.
             </p>
           </div>
 
           {/* Stat chips */}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {[
-              { label: "Cases", value: counts.total, color: "#A78BFA" },
+              { label: "Cases", value: counts.total, color: "var(--accent)" },
               { label: "Critical", value: counts.critical, color: "#F472B6" },
               { label: "High", value: counts.high, color: "#F59E0B" },
               { label: "Moderate", value: counts.moderate, color: "#34D399" },
@@ -429,12 +422,13 @@ export default function CaseStudiesView() {
                   background: active ? cat.color : "var(--bg-raised)",
                   color: active ? "#000" : "var(--text-sec)",
                   border: `1px solid ${active ? cat.color : "var(--border)"}`,
-                  borderRadius: 18, padding: "4px 12px", fontSize: 11, fontWeight: 700,
+                  borderRadius: 8, padding: "4px 12px", fontSize: 11, fontWeight: 700,
                   cursor: "pointer", transition: "all 0.15s ease",
                   letterSpacing: "0.01em",
+                  display: "inline-flex", alignItems: "center", gap: 6,
                 }}
               >
-                {cat.icon} {cat.label}
+                <Icon name={cat.icon} size={12} sw={2} /> {cat.label}
                 {cat.id !== "all" && (
                   <span style={{ opacity: 0.7, marginLeft: 4, fontSize: 10 }}>
                     ({CASE_STUDIES.filter(c => c.category === cat.id).length})
@@ -449,7 +443,7 @@ export default function CaseStudiesView() {
         <div style={{ display: "flex", gap: 5, borderLeft: "1px solid var(--border)", paddingLeft: 12 }}>
           {["all", "critical", "high", "moderate"].map(s => {
             const active = activeSev === s;
-            const color = SEV_COLOR[s] || "#A78BFA";
+            const color = SEV_COLOR[s] || "var(--accent)";
             return (
               <button
                 key={s}
@@ -462,7 +456,7 @@ export default function CaseStudiesView() {
                   cursor: "pointer", textTransform: "capitalize",
                 }}
               >
-                {s === "all" ? "All Severity" : SEV_ICON[s] + " " + s}
+                {s === "all" ? "All Severity" : s}
               </button>
             );
           })}
@@ -476,7 +470,7 @@ export default function CaseStudiesView() {
       {/* ── Grid ── */}
       {filtered.length === 0 ? (
         <div className="empty-hint">
-          <div className="eh-icon">📋</div>
+          <div className="eh-icon" style={{ display:"flex", justifyContent:"center", color:"var(--text-muted)" }}><Icon name="cases" size={26} sw={1.5} /></div>
           <p>No cases match these filters.</p>
         </div>
       ) : (

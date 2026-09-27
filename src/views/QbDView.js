@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { InfoBox, FilterBtn } from "../shared";
 import { LiquidHeader } from "../lc";
+import { Icon } from "../icons";
 import { QTPP, CQA_LIST, CPP_LIST, FMEA_TABLE, DOE_STUDIES, DESIGN_SPACE, CONTROL_STRATEGY, COA_ELEMENTS } from "../qbd-data";
 import { ANALYTICAL_METHODS } from "../extra-data";
 
@@ -15,25 +16,25 @@ export default function QbDView({ navigate }) {
   const [csTab, setCsTab] = useState(0);
 
   const TABS = [
-    { id:"qtpp", label:"QTPP", icon:"🎯" },
-    { id:"cqa", label:"CQAs", icon:"🔴" },
-    { id:"fmea", label:"Risk (FMEA)", icon:"⚠️" },
-    { id:"cpp", label:"CPPs", icon:"⚙️" },
-    { id:"doe", label:"Design Space", icon:"📐" },
-    { id:"strategy", label:"Control Strategy", icon:"🛡️" },
-    { id:"coa", label:"COA", icon:"📋" },
+    { id:"qtpp", label:"QTPP", icon:"target" },
+    { id:"cqa", label:"CQAs", icon:"alert" },
+    { id:"fmea", label:"Risk (FMEA)", icon:"shieldalert" },
+    { id:"cpp", label:"CPPs", icon:"gear" },
+    { id:"doe", label:"Design Space", icon:"gauge" },
+    { id:"strategy", label:"Control Strategy", icon:"shieldcheck" },
+    { id:"coa", label:"COA", icon:"ctd" },
   ];
 
   const cqaCats = ["All", ...new Set(CQA_LIST.map(c => c.category))];
-  const cppSteps = ["All", ...new Set(CPP_LIST.map(c => c.processStep.split(" — ")[0]))];
+  const cppSteps = ["All", ...new Set(CPP_LIST.map(c => c.processStep.split(": ")[0]))];
   const filteredCQA = CQA_LIST.filter(c => cqaFilter==="All" || c.category===cqaFilter);
   const filteredCPP = CPP_LIST.filter(c => cppFilter==="All" || c.processStep.startsWith(cppFilter));
   const sortedFMEA = [...FMEA_TABLE].sort((a,b) => fmeaSort==="rpn" ? b.rpn-a.rpn : b.severity-a.severity);
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <LiquidHeader icon="🔬" title="QbD / CQA / CPP / COA"
-        subtitle="Quality by Design framework — QTPP, Critical Quality Attributes, Critical Process Parameters, FMEA, Design Space, Control Strategy, and Certificate of Analysis" />
+      <LiquidHeader icon={<Icon name="qbd" size={28} sw={1.6} />} title="QbD / CQA / CPP / COA"
+        subtitle="Quality by Design framework: QTPP, Critical Quality Attributes, Critical Process Parameters, FMEA, Design Space, Control Strategy, and Certificate of Analysis." />
 
       <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:24, background:"var(--bg-card)",
         border:"1px solid var(--border)", borderRadius:12, padding:8 }}>
@@ -43,7 +44,7 @@ export default function QbDView({ navigate }) {
               color: tab===t.id ? "#fff" : "var(--text-sec)", border:"none",
               borderRadius:8, padding:"8px 10px", cursor:"pointer", fontWeight:700, fontSize:11,
               letterSpacing:"0.03em", transition:"all 0.18s", whiteSpace:"nowrap" }}>
-            {t.icon} {t.label}
+            <Icon name={t.icon} size={13} sw={1.9} style={{ verticalAlign: "-2px", marginRight: 6 }} /> {t.label}
           </button>
         ))}
       </div>
@@ -52,10 +53,10 @@ export default function QbDView({ navigate }) {
         <div>
           <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:24, marginBottom:20 }}>
             <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:18 }}>
-              <span style={{ fontSize:32 }}>🎯</span>
+              <span style={{ display:"flex", color:"var(--accent)" }}><Icon name="target" size={28} sw={1.6} /></span>
               <div>
                 <h3 style={{ color:"var(--text-h)", margin:0, fontSize:18, fontWeight:900 }}>Quality Target Product Profile (QTPP)</h3>
-                <p style={{ color:"var(--text-sec)", margin:"4px 0 0", fontSize:13 }}>Defines what the drug product must achieve from a patient/clinical perspective — the starting point for all QbD activities per ICH Q8(R2)</p>
+                <p style={{ color:"var(--text-sec)", margin:"4px 0 0", fontSize:13 }}>Defines what the drug product must achieve from a patient/clinical perspective: the starting point for all QbD activities per ICH Q8(R2).</p>
               </div>
             </div>
             <div style={{ overflowX:"auto" }}>
@@ -79,7 +80,7 @@ export default function QbDView({ navigate }) {
               </table>
             </div>
           </div>
-          <InfoBox color="#A78BFA" label="ICH Q8(R2) FRAMEWORK"
+          <InfoBox color="var(--accent)" label="ICH Q8(R2) FRAMEWORK"
             text="QTPP → CQA Identification → Risk Assessment → Design of Experiments (DoE) → Design Space → Control Strategy. Working within the design space does not require regulatory notification. The QTPP is documented in CTD Section 3.2.P.2 (DP development) and 3.2.S.2 (DS development)."/>
           <InfoBox color="#22D3EE" label="LINK TO CTD & SUBMISSIONS"
             text="QTPP elements directly map to BLA/IND CTD Module 3.2 content: potency → 3.2.S.4.4 (bioassay method); purity → 3.2.S.4.1 (specification); container closure → 3.2.P.3; shelf life → 3.2.P.8 (stability). QTPP is not a submission section itself but drives all CMC content."/>
@@ -124,8 +125,8 @@ export default function QbDView({ navigate }) {
                         return m ? (
                           <button key={mId} onClick={e => { e.stopPropagation(); navigate && navigate("methods"); }}
                             style={{ background:`${m.color}22`, color:m.color, border:`1px solid ${m.color}33`,
-                              borderRadius:10, padding:"2px 8px", fontSize:9, fontWeight:800, cursor:"pointer" }}>
-                            🔬 {m.abbreviation}
+                              borderRadius:8, padding:"2px 8px", fontSize:9, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", gap:5 }}>
+                            <Icon name="methods" size={10} sw={2} /> {m.abbreviation}
                           </button>
                         ) : null;
                       })}
@@ -149,18 +150,18 @@ export default function QbDView({ navigate }) {
                   <InfoBox color="#34D399" label="SPECIFICATION" text={cqa.spec}/>
                   <InfoBox color="#F59E0B" label="PATIENT RISK (if OOS)" text={cqa.patientRisk}/>
                   <InfoBox color="#22D3EE" label="CONTROL TIER" text={cqa.controlTier}/>
-                  <InfoBox color="#A78BFA" label="MITIGATION STRATEGY" text={cqa.mitigation}/>
+                  <InfoBox color="var(--accent)" label="MITIGATION STRATEGY" text={cqa.mitigation}/>
                   <div style={{ marginTop:12 }}>
                     <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>CTD SECTION & ICH REF</div>
                     <div style={{ display:"flex", gap:8 }}>
                       <button onClick={() => navigate && navigate("ctd")}
-                        style={{ background:"var(--bg-surface)", border:"1px solid var(--border)", borderRadius:8, padding:"6px 12px", cursor:"pointer", fontSize:11, color:"var(--text-sec)" }}>
-                        📂 {cqa.ctdSection}
+                        style={{ background:"var(--bg-surface)", border:"1px solid var(--border)", borderRadius:8, padding:"6px 12px", cursor:"pointer", fontSize:11, color:"var(--text-sec)", display:"inline-flex", alignItems:"center", gap:6 }}>
+                        <Icon name="ctd" size={12} sw={1.9} /> {cqa.ctdSection}
                       </button>
                       {cqa.linkedICH?.map(ich => (
                         <button key={ich} onClick={() => navigate && navigate("ich")}
-                          style={{ background:"var(--bg-surface)", border:"1px solid var(--border)", borderRadius:8, padding:"6px 12px", cursor:"pointer", fontSize:11, color:"var(--accent-light)" }}>
-                          📜 ICH {ich.toUpperCase()}
+                          style={{ background:"var(--bg-surface)", border:"1px solid var(--border)", borderRadius:8, padding:"6px 12px", cursor:"pointer", fontSize:11, color:"var(--accent-light)", display:"inline-flex", alignItems:"center", gap:6 }}>
+                          <Icon name="ich" size={12} sw={1.9} /> ICH {ich.toUpperCase()}
                         </button>
                       ))}
                     </div>
@@ -278,11 +279,11 @@ export default function QbDView({ navigate }) {
                     <h3 style={{ color:"var(--text-h)", margin:0, fontSize:16, fontWeight:900 }}>{cpp.name}</h3>
                     <button onClick={() => setActiveCPP(null)} style={{ background:"none", border:"none", color:"var(--text-muted)", cursor:"pointer", fontSize:18 }}>✕</button>
                   </div>
-                  <div style={{ color:cpp.stepColor, fontSize:11, fontWeight:700, marginBottom:14 }}>⚙️ {cpp.processStep}</div>
+                  <div style={{ color:cpp.stepColor, fontSize:11, fontWeight:700, marginBottom:14, display:"flex", alignItems:"center", gap:7 }}><Icon name="gear" size={12} sw={1.9} /> {cpp.processStep}</div>
                   <InfoBox color={cpp.stepColor} label="NORMAL OPERATING RANGE (NOR)" text={cpp.normalRange}/>
                   {cpp.criticalLow && <InfoBox color="#F59E0B" label="CRITICAL LOW LIMIT" text={cpp.criticalLow}/>}
                   {cpp.criticalHigh && <InfoBox color="#F472B6" label="CRITICAL HIGH LIMIT" text={cpp.criticalHigh}/>}
-                  <InfoBox color="#A78BFA" label="MECHANISM OF EFFECT ON CQAs" text={cpp.mechanismOfEffect}/>
+                  <InfoBox color="var(--accent)" label="MECHANISM OF EFFECT ON CQAs" text={cpp.mechanismOfEffect}/>
                   <InfoBox color="#22D3EE" label="MONITORING STRATEGY" text={cpp.monitoringStrategy}/>
                   <InfoBox color="#34D399" label="CONTROL METHOD" text={cpp.controlMethod}/>
                   <div style={{ marginTop:10 }}>
@@ -293,8 +294,8 @@ export default function QbDView({ navigate }) {
                         return cqa ? (
                           <button key={cqaId} onClick={() => { setTab("cqa"); setActiveCQA(cqaId); setActiveCPP(null); }}
                             style={{ background:`${cqa.color}22`, color:cqa.color, border:`1px solid ${cqa.color}44`,
-                              borderRadius:12, padding:"4px 12px", fontSize:11, fontWeight:700, cursor:"pointer" }}>
-                            🔴 {cqa.name.split(" ")[0]}
+                              borderRadius:8, padding:"4px 12px", fontSize:11, fontWeight:700, cursor:"pointer", display:"inline-flex", alignItems:"center", gap:6 }}>
+                            <Icon name="target" size={11} sw={2} /> {cqa.name.split(" ")[0]}
                           </button>
                         ) : null;
                       })}
@@ -309,7 +310,7 @@ export default function QbDView({ navigate }) {
 
       {tab==="doe" && (
         <div>
-          <InfoBox color="#A78BFA" label="ICH Q8 DESIGN SPACE"
+          <InfoBox color="var(--accent)" label="ICH Q8 DESIGN SPACE"
             text="Design space is the multidimensional combination and interaction of input variables (material attributes and process parameters) that have been demonstrated to provide assurance of quality. Working within the approved design space is not considered a change. PAR = Proven Acceptable Range (univariate); Design Space = multivariate (proven by DoE)."/>
           <div style={{ display:"grid", gap:20, marginTop:16 }}>
             {DESIGN_SPACE.map(ds => (
@@ -335,7 +336,7 @@ export default function QbDView({ navigate }) {
                           <td style={{ padding:"8px 12px" }}>
                             <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
                               {(p.linkedCQAs||[]).map(c => (
-                                <span key={c} style={{ background:"#A78BFA22", color:"#A78BFA", borderRadius:8, padding:"1px 7px", fontSize:9, fontWeight:700 }}>{c}</span>
+                                <span key={c} style={{ background:"color-mix(in srgb, var(--accent) 13%, transparent)", color:"var(--accent)", borderRadius:8, padding:"1px 7px", fontSize:9, fontWeight:700 }}>{c}</span>
                               ))}
                             </div>
                           </td>
@@ -349,14 +350,14 @@ export default function QbDView({ navigate }) {
             ))}
 
             <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:22 }}>
-              <h3 style={{ color:"var(--text-h)", margin:"0 0 16px", fontSize:16, fontWeight:900 }}>🧪 DoE Study Examples</h3>
+              <h3 style={{ color:"var(--text-h)", margin:"0 0 16px", fontSize:16, fontWeight:900, display:"flex", alignItems:"center", gap:9 }}><Icon name="flask" size={17} sw={1.8} /> DoE Study Examples</h3>
               {DOE_STUDIES.map(doe => (
                 <details key={doe.id} style={{ background:"var(--bg-surface)", borderRadius:10, padding:16, marginBottom:12, border:"1px solid var(--border)" }}>
-                  <summary style={{ color:"var(--text-h)", fontWeight:700, fontSize:14, cursor:"pointer" }}>
-                    📐 {doe.title}
+                  <summary style={{ color:"var(--text-h)", fontWeight:700, fontSize:14, cursor:"pointer", display:"flex", alignItems:"center", gap:8 }}>
+                    <Icon name="gauge" size={14} sw={1.9} /> {doe.title}
                   </summary>
                   <div style={{ marginTop:14, borderTop:"1px solid var(--border)", paddingTop:14 }}>
-                    <InfoBox color="#A78BFA" label="OBJECTIVE" text={doe.objective}/>
+                    <InfoBox color="var(--accent)" label="OBJECTIVE" text={doe.objective}/>
                     <InfoBox color="#22D3EE" label="DESIGN" text={`${doe.design} (${doe.runs} runs) · Software: ${doe.software}`}/>
                     <div style={{ marginBottom:10 }}>
                       <div style={{ color:"#F59E0B", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>FACTORS</div>
@@ -419,11 +420,11 @@ export default function QbDView({ navigate }) {
                               {linkedCQA && (
                                 <button onClick={() => { setTab("cqa"); setActiveCQA(linkedCQA.id); }}
                                   style={{ background:`${linkedCQA.color}22`, color:linkedCQA.color, border:`1px solid ${linkedCQA.color}33`,
-                                    borderRadius:10, padding:"2px 8px", fontSize:9, fontWeight:800, cursor:"pointer" }}>
-                                  🔴 {linkedCQA.abbreviation}
+                                    borderRadius:8, padding:"2px 8px", fontSize:9, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", gap:5 }}>
+                                  <Icon name="target" size={10} sw={2} /> {linkedCQA.abbreviation}
                                 </button>
                               )}
-                              {!linkedCQA && <span style={{ color:"var(--text-muted)", fontSize:10 }}>{el.linkedCPP || el.linkedCQA || "—"}</span>}
+                              {!linkedCQA && <span style={{ color:"var(--text-muted)", fontSize:10 }}>{el.linkedCPP || el.linkedCQA || "–"}</span>}
                             </td>
                           </tr>
                         );
@@ -441,13 +442,13 @@ export default function QbDView({ navigate }) {
         <div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:20 }}>
             <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:20 }}>
-              <h3 style={{ color:"var(--text-h)", margin:"0 0 12px", fontSize:14, fontWeight:900 }}>📋 Required COA Elements</h3>
+              <h3 style={{ color:"var(--text-h)", margin:"0 0 12px", fontSize:14, fontWeight:900, display:"flex", alignItems:"center", gap:8 }}><Icon name="ctd" size={15} sw={1.9} /> Required COA Elements</h3>
               <ol style={{ paddingLeft:18, margin:0, color:"var(--text-body)", fontSize:12, lineHeight:1.9 }}>
                 {COA_ELEMENTS.required.map((r, i) => <li key={i}>{r}</li>)}
               </ol>
             </div>
             <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:20 }}>
-              <h3 style={{ color:"var(--text-h)", margin:"0 0 12px", fontSize:14, fontWeight:900 }}>⚖️ Regulatory Basis</h3>
+              <h3 style={{ color:"var(--text-h)", margin:"0 0 12px", fontSize:14, fontWeight:900, display:"flex", alignItems:"center", gap:8 }}><Icon name="scale" size={15} sw={1.9} /> Regulatory Basis</h3>
               <ul style={{ paddingLeft:16, margin:0, color:"var(--text-body)", fontSize:12, lineHeight:1.9 }}>
                 {COA_ELEMENTS.regulatoryBasis.map((r, i) => <li key={i}>{r}</li>)}
               </ul>
@@ -456,20 +457,22 @@ export default function QbDView({ navigate }) {
 
           <div style={{ display:"flex", gap:8, marginBottom:16 }}>
             <button onClick={() => setCoaTab("ds")}
-              style={{ background: coaTab==="ds" ? "#A78BFA" : "var(--bg-card)", color: coaTab==="ds" ? "#fff" : "var(--text-sec)",
-                border:"none", borderRadius:10, padding:"9px 20px", cursor:"pointer", fontWeight:700, fontSize:13, transition:"all 0.18s" }}>
-              📦 Drug Substance COA
+              style={{ background: coaTab==="ds" ? "var(--accent)" : "var(--bg-card)", color: coaTab==="ds" ? "#fff" : "var(--text-sec)",
+                border:"none", borderRadius:10, padding:"9px 20px", cursor:"pointer", fontWeight:700, fontSize:13, transition:"all 0.18s",
+                display:"inline-flex", alignItems:"center", gap:8 }}>
+              <Icon name="box" size={14} sw={1.9} /> Drug Substance COA
             </button>
             <button onClick={() => setCoaTab("dp")}
               style={{ background: coaTab==="dp" ? "#34D399" : "var(--bg-card)", color: coaTab==="dp" ? "#000" : "var(--text-sec)",
-                border:"none", borderRadius:10, padding:"9px 20px", cursor:"pointer", fontWeight:700, fontSize:13, transition:"all 0.18s" }}>
-              💉 Drug Product COA
+                border:"none", borderRadius:10, padding:"9px 20px", cursor:"pointer", fontWeight:700, fontSize:13, transition:"all 0.18s",
+                display:"inline-flex", alignItems:"center", gap:8 }}>
+              <Icon name="syringe" size={14} sw={1.9} /> Drug Product COA
             </button>
           </div>
 
           {(() => {
             const ex = coaTab==="ds" ? COA_ELEMENTS.dsExample : COA_ELEMENTS.dpExample;
-            const accentColor = coaTab==="ds" ? "#A78BFA" : "#34D399";
+            const accentColor = coaTab==="ds" ? "var(--accent)" : "#34D399";
             return (
               <div style={{ background:"var(--bg-card)", border:`1.5px solid ${accentColor}44`, borderRadius:14, overflow:"hidden" }}>
                 <div style={{ background:`${accentColor}18`, padding:"16px 22px", borderBottom:`1px solid ${accentColor}33` }}>

@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
+import { Icon } from "../icons";
 import { COMPENDIAL_METHODS, COMPENDIAL_CATEGORIES, COMPENDIAL_PRODUCT_TYPES } from "../compendial-data";
 
 // ── Ref chip ──────────────────────────────────────────────────
 function RefChip({ label, value, color }) {
-  if (!value || value === "—") return null;
+  if (!value || value === "–") return null;
   return (
     <div style={{
       display: "flex",
@@ -72,8 +73,9 @@ function CatBadge({ category }) {
       fontWeight: 700,
       letterSpacing: "0.04em",
       textTransform: "uppercase",
+      display: "inline-flex", alignItems: "center", gap: 5,
     }}>
-      {cat?.icon} {cat?.label || category}
+      {cat && <Icon name={cat.icon} size={11} sw={2} />} {cat?.label || category}
     </span>
   );
 }
@@ -98,14 +100,14 @@ function MethodDetail({ method, onClose }) {
       <div style={{
         padding: "20px 24px 16px",
         borderBottom: "1px solid var(--border)",
-        background: `linear-gradient(135deg, ${c}0A 0%, transparent 70%)`,
+        background: `${c}0A`,
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "space-between",
         gap: 12,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 22 }}>{method.icon}</span>
+          <span style={{ display: "flex", color: c }}><Icon name={method.icon} size={20} sw={1.6} /></span>
           <div>
             <h3 style={{
               color: "var(--text-h)",
@@ -168,7 +170,7 @@ function MethodDetail({ method, onClose }) {
             <RefChip label="USP" value={method.usp} color={c} />
             <RefChip label="EP" value={method.ep} color={c} />
             <RefChip label="JP" value={method.jp} color={c} />
-            <RefChip label="ICH" value={method.ich} color="#A78BFA" />
+            <RefChip label="ICH" value={method.ich} color="var(--accent)" />
           </div>
         </div>
 
@@ -316,8 +318,8 @@ function MethodRow({ method, isExpanded, onToggle }) {
         }}
       >
         {/* Icon */}
-        <span style={{ fontSize: 18, flexShrink: 0, width: 28, textAlign: "center" }}>
-          {method.icon}
+        <span style={{ display: "flex", justifyContent: "center", color: c, flexShrink: 0, width: 28 }}>
+          <Icon name={method.icon} size={17} sw={1.7} />
         </span>
 
         {/* Name + category */}
@@ -366,11 +368,11 @@ function MethodRow({ method, isExpanded, onToggle }) {
                 {ref.label}
               </span>
               <span style={{
-                color: ref.val && ref.val !== "—" ? c : "var(--text-faint)",
+                color: ref.val && ref.val !== "–" ? c : "var(--text-faint)",
                 fontSize: 11,
                 fontWeight: 700,
               }}>
-                {ref.val || "—"}
+                {ref.val || "–"}
               </span>
             </div>
           ))}
@@ -395,11 +397,11 @@ function MethodRow({ method, isExpanded, onToggle }) {
             ICH
           </span>
           <span style={{
-            color: method.ich && method.ich !== "—" ? "#A78BFA" : "var(--text-faint)",
+            color: method.ich && method.ich !== "–" ? "var(--accent)" : "var(--text-faint)",
             fontSize: 11,
             fontWeight: 700,
           }}>
-            {method.ich || "—"}
+            {method.ich || "–"}
           </span>
         </div>
 
@@ -487,7 +489,7 @@ export default function CompendialView() {
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-          <span style={{ fontSize: 36 }}>📗</span>
+          <span style={{ color: "var(--accent)" }}><Icon name="book" size={30} sw={1.5} /></span>
           <div>
             <h2 style={{
               color: "var(--text-h)",
@@ -504,7 +506,7 @@ export default function CompendialView() {
               fontSize: 15,
               lineHeight: 1.5,
             }}>
-              USP / EP / JP cross-reference with ICH guidelines — {COMPENDIAL_METHODS.length} pharmacopeial tests
+              USP, EP, and JP cross-referenced with ICH guidelines: {COMPENDIAL_METHODS.length} pharmacopeial tests.
             </p>
           </div>
         </div>
@@ -528,7 +530,7 @@ export default function CompendialView() {
                 alignItems: "center",
                 gap: 6,
               }}>
-                <span style={{ fontSize: 14 }}>{cat.icon}</span>
+                <span style={{ display: "flex", color: "var(--text-muted)" }}><Icon name={cat.icon} size={13} sw={1.8} /></span>
                 <span style={{ color: "var(--text-body)", fontSize: 12, fontWeight: 700 }}>{cnt}</span>
                 <span style={{ color: "var(--text-muted)", fontSize: 11 }}>{cat.label}</span>
               </div>
@@ -559,8 +561,9 @@ export default function CompendialView() {
             color: "var(--text-muted)",
             fontSize: 14,
             pointerEvents: "none",
+            display: "flex",
           }}>
-            🔍
+            <Icon name="search" size={14} sw={1.9} />
           </span>
           <input
             type="text"
@@ -658,7 +661,7 @@ export default function CompendialView() {
                 background: active ? "var(--accent)" : "var(--bg-raised)",
                 color: active ? "#fff" : "var(--text-sec)",
                 border: `1px solid ${active ? "var(--accent)" : "var(--border)"}`,
-                borderRadius: 20,
+                borderRadius: 8,
                 padding: "5px 14px",
                 fontSize: 12,
                 fontWeight: 700,
@@ -668,7 +671,7 @@ export default function CompendialView() {
                 gap: 5,
               }}
             >
-              <span>{cat.icon}</span>
+              <Icon name={cat.icon} size={13} sw={1.9} />
               <span>{cat.label}</span>
               <span style={{
                 background: active ? "rgba(255,255,255,0.25)" : "var(--bg-surface)",
@@ -751,7 +754,7 @@ export default function CompendialView() {
       {/* Method list */}
       {filtered.length === 0 ? (
         <div className="empty-hint">
-          <div className="eh-icon">📗</div>
+          <div className="eh-icon" style={{ display: "flex", justifyContent: "center", color: "var(--text-muted)" }}><Icon name="book" size={26} sw={1.5} /></div>
           <p>No methods match your filters. Try adjusting the search or category.</p>
         </div>
       ) : (

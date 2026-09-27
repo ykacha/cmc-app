@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SectionHeader, InfoBox, FilterBtn, LC } from "../shared";
+import { Icon } from "../icons";
 import { CAREER_PATHS, INTERVIEW_QUESTIONS, SKILLS_MATRIX } from "../career-data";
 import { ANALYTICAL_METHODS } from "../extra-data";
 
@@ -20,11 +21,11 @@ export default function CareerView({ navigate }) {
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <SectionHeader icon="🚀" title="Career & Interviews"
-        subtitle="CMC career ladder, salary benchmarks, skills matrix, and 18 expert interview Q&As with model answers" />
+      <SectionHeader icon={<Icon name="career" size={28} sw={1.6} />} title="Career & Interviews"
+        subtitle="What RA I to VP actually pays, what they actually ask you, and what a good answer sounds like. 18 interview questions with model answers." />
 
       <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:20, marginBottom:24 }}>
-        <h3 style={{ color:"var(--text-h)", margin:"0 0 16px", fontSize:15, fontWeight:800 }}>📈 CMC Career Progression Ladder</h3>
+        <h3 style={{ color:"var(--text-h)", margin:"0 0 16px", fontSize:15, fontWeight:800, display:"flex", alignItems:"center", gap:9 }}><Icon name="trendup" size={17} sw={1.9} /> CMC Career Progression Ladder</h3>
         <div style={{ display:"flex", alignItems:"center", gap:4, overflowX:"auto", paddingBottom:8 }}>
           {CAREER_PATHS.map((p, i) => (
             <div key={p.id} style={{ display:"flex", alignItems:"center", flexShrink:0, gap:4 }}>
@@ -36,7 +37,7 @@ export default function CareerView({ navigate }) {
                   borderRadius:12, padding:"12px 14px", cursor:"pointer", textAlign:"center", minWidth:120,
                   boxShadow: activeLevel===p.id ? `0 0 16px ${p.color}33` : "none",
                 }}>
-                <div style={{ fontSize:22 }}>{p.icon}</div>
+                <div style={{ display:"flex", justifyContent:"center", color: activeLevel===p.id ? p.color : "var(--text-muted)" }}><Icon name={p.icon} size={20} sw={1.7} /></div>
                 <div style={{ color: activeLevel===p.id ? p.color : "var(--text-h)", fontSize:10, fontWeight:800, marginTop:4, lineHeight:1.3 }}>
                   {p.title.split(" / ")[0]}
                 </div>
@@ -51,7 +52,7 @@ export default function CareerView({ navigate }) {
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20, marginBottom:28 }}>
         <div style={{ background:"var(--bg-card)", border:`2px solid ${cp.color}44`, borderRadius:14, padding:22, borderTop:`3px solid ${cp.color}` }}>
           <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:16 }}>
-            <span style={{ fontSize:36, background:`${cp.color}22`, borderRadius:12, width:56, height:56, display:"flex", alignItems:"center", justifyContent:"center" }}>{cp.icon}</span>
+            <span style={{ background:`${cp.color}22`, borderRadius:12, width:56, height:56, display:"flex", alignItems:"center", justifyContent:"center", color:cp.color }}><Icon name={cp.icon} size={28} sw={1.6} /></span>
             <div>
               <h3 style={{ color:"var(--text-h)", margin:0, fontSize:16, fontWeight:900 }}>{cp.title}</h3>
               <div style={{ color:cp.color, fontSize:11, fontWeight:700, marginTop:2 }}>{cp.level} · {cp.years}</div>
@@ -76,7 +77,7 @@ export default function CareerView({ navigate }) {
                   {cp.responsibilities.slice(0,5).map((r,i) => <li key={i}>{r}</li>)}
                 </ul>
               </div>
-              <InfoBox color="#A78BFA" label="INTERVIEW TIP" text={cp.interviewTip}/>
+              <InfoBox color="var(--accent)" label="INTERVIEW TIP" text={cp.interviewTip}/>
             </>
           )}
 
@@ -87,7 +88,7 @@ export default function CareerView({ navigate }) {
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                   {cp.technicalSkills.map((s,i) => (
                     <span key={i} style={{ background:`${cp.color}18`, color:"var(--text-body)", border:`1px solid ${cp.color}33`,
-                      borderRadius:20, padding:"3px 10px", fontSize:11 }}>{s}</span>
+                      borderRadius:8, padding:"3px 10px", fontSize:11 }}>{s}</span>
                   ))}
                 </div>
               </div>
@@ -96,7 +97,7 @@ export default function CareerView({ navigate }) {
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                   {cp.softSkills.map((s,i) => (
                     <span key={i} style={{ background:"#F59E0B18", color:"var(--text-body)", border:"1px solid #F59E0B33",
-                      borderRadius:20, padding:"3px 10px", fontSize:11 }}>{s}</span>
+                      borderRadius:8, padding:"3px 10px", fontSize:11 }}>{s}</span>
                   ))}
                 </div>
               </div>
@@ -107,9 +108,9 @@ export default function CareerView({ navigate }) {
             <div>
               <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:10, letterSpacing:"0.06em" }}>SALARY BENCHMARKS (USD, 2024)</div>
               {[
-                { label:"🇺🇸 National Average", val:cp.salary.us },
-                { label:"🌉 Bay Area / Boston Premium", val:cp.salary.bay },
-                { label:"🏠 Remote / Mid-Market", val:cp.salary.remote },
+                { label:"National Average", val:cp.salary.us },
+                { label:"Bay Area / Boston Premium", val:cp.salary.bay },
+                { label:"Remote / Mid-Market", val:cp.salary.remote },
               ].map(s => (
                 <div key={s.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
                   background:"var(--bg-surface)", borderRadius:8, padding:"10px 14px", marginBottom:8, border:"1px solid var(--border)" }}>
@@ -128,7 +129,7 @@ export default function CareerView({ navigate }) {
         </div>
 
         <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:22 }}>
-          <h4 style={{ color:"var(--text-h)", margin:"0 0 14px", fontSize:14, fontWeight:800 }}>🎯 Skills Proficiency Matrix (0–5 scale)</h4>
+          <h4 style={{ color:"var(--text-h)", margin:"0 0 14px", fontSize:14, fontWeight:800, display:"flex", alignItems:"center", gap:8 }}><Icon name="target" size={15} sw={1.9} /> Skills Proficiency Matrix (0-5 scale)</h4>
           <div style={{ overflow:"auto" }}>
             <table style={{ width:"100%", borderCollapse:"collapse", fontSize:11 }}>
               <thead>
@@ -138,7 +139,7 @@ export default function CareerView({ navigate }) {
                     <th key={p.id} style={{ color: p.id===activeLevel ? p.color : "var(--text-muted)", padding:"6px 6px", textAlign:"center",
                       fontSize:9, fontWeight:800, letterSpacing:"0.04em", cursor:"pointer" }}
                       onClick={() => setActiveLevel(p.id)}>
-                      {p.icon}
+                      <span style={{ display:"flex", justifyContent:"center" }}><Icon name={p.icon} size={14} sw={1.8} /></span>
                     </th>
                   ))}
                 </tr>
@@ -171,7 +172,7 @@ export default function CareerView({ navigate }) {
       </div>
 
       <div style={{ background:"var(--bg-card)", border:"1px solid var(--border)", borderRadius:14, padding:24 }}>
-        <h3 style={{ color:"var(--text-h)", margin:"0 0 16px", fontSize:15, fontWeight:800 }}>💬 Interview Q&A Bank ({INTERVIEW_QUESTIONS.length} expert questions with model answers)</h3>
+        <h3 style={{ color:"var(--text-h)", margin:"0 0 16px", fontSize:15, fontWeight:800, display:"flex", alignItems:"center", gap:9 }}><Icon name="exam" size={16} sw={1.8} /> Interview Q&A Bank ({INTERVIEW_QUESTIONS.length} expert questions with model answers)</h3>
 
         <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:12 }}>
           <FilterBtn label="All Categories" active={catFilter==="All"} onClick={() => setCatFilter("All")}/>
@@ -184,7 +185,7 @@ export default function CareerView({ navigate }) {
         <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:18 }}>
           {lvls.map(l => (
             <FilterBtn key={l} label={l} active={lvlFilter===l}
-              color={l==="All" ? null : LC[l] || "#A78BFA"}
+              color={l==="All" ? null : LC[l] || "var(--accent)"}
               onClick={() => setLvlFilter(l)}/>
           ))}
         </div>
@@ -198,11 +199,11 @@ export default function CareerView({ navigate }) {
               <button onClick={() => setOpenQ(openQ===q.id ? null : q.id)}
                 style={{ width:"100%", background:"none", border:"none", padding:"14px 18px", cursor:"pointer", textAlign:"left",
                   display:"flex", gap:12, alignItems:"flex-start" }}>
-                <span style={{ fontSize:18, flexShrink:0 }}>{q.icon}</span>
+                <span style={{ flexShrink:0, display:"flex", color:q.color }}><Icon name={q.icon} size={17} sw={1.7} /></span>
                 <div style={{ flex:1, minWidth:0 }}>
                   <div style={{ display:"flex", gap:8, marginBottom:6, flexWrap:"wrap" }}>
-                    <span style={{ background:`${q.color}22`, color:q.color, borderRadius:12, padding:"1px 8px", fontSize:9, fontWeight:800 }}>{q.category}</span>
-                    <span style={{ background:"var(--bg-card)", color:"var(--text-muted)", borderRadius:12, padding:"1px 8px", fontSize:9, fontWeight:700, border:"1px solid var(--border)" }}>{q.level}</span>
+                    <span style={{ background:`${q.color}22`, color:q.color, borderRadius:6, padding:"1px 8px", fontSize:9, fontWeight:800 }}>{q.category}</span>
+                    <span style={{ background:"var(--bg-card)", color:"var(--text-muted)", borderRadius:6, padding:"1px 8px", fontSize:9, fontWeight:700, border:"1px solid var(--border)" }}>{q.level}</span>
                   </div>
                   <p style={{ color:"var(--text-h)", margin:0, fontWeight:700, fontSize:14, lineHeight:1.5 }}>{q.question}</p>
                 </div>
@@ -235,8 +236,8 @@ export default function CareerView({ navigate }) {
                         return m ? (
                           <button key={mId} onClick={() => navigate && navigate("methods")}
                             style={{ background:`${m.color}22`, color:m.color, border:`1px solid ${m.color}44`,
-                              borderRadius:12, padding:"2px 10px", fontSize:10, fontWeight:700, cursor:"pointer" }}>
-                            🔬 {m.abbreviation}
+                              borderRadius:8, padding:"2px 10px", fontSize:10, fontWeight:700, cursor:"pointer", display:"inline-flex", alignItems:"center", gap:5 }}>
+                            <Icon name="methods" size={11} sw={1.9} /> {m.abbreviation}
                           </button>
                         ) : null;
                       })}

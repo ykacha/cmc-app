@@ -1,5 +1,5 @@
 // ── Shared constants and components used across all views ────────
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export const LC = {
   Foundational: "#22D3EE",
@@ -34,7 +34,7 @@ export const METHOD_STEPS = {
 
 export const Badge = ({ level }) => (
   <span style={{ background:LC[level]+"22", color:LC[level], border:`1px solid ${LC[level]}44`,
-    padding:"2px 8px", borderRadius:12, fontSize:11, fontWeight:700, whiteSpace:"nowrap" }}>
+    padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700, whiteSpace:"nowrap" }}>
     {level}
   </span>
 );
@@ -63,7 +63,7 @@ export const PhasePill = ({ phase, active }) => (
     background: active ? "#34D39933" : "var(--bg-raised)",
     color: active ? "#34D399" : "var(--text-faint)",
     border: `1px solid ${active ? "#34D39944" : "var(--border)"}`,
-    padding:"2px 7px", borderRadius:10, fontSize:10, fontWeight:700,
+    padding:"2px 7px", borderRadius:6, fontSize:10, fontWeight:700,
     transition:"all 0.2s ease",
   }}>{phase}</span>
 );
@@ -74,7 +74,7 @@ export const FilterBtn = ({ label, active, color, onClick }) => (
       background: active ? (color||"var(--accent)") : "var(--bg-raised)",
       color: active ? (color ? "#000" : "#fff") : "var(--text-sec)",
       border:`1px solid ${active ? (color||"var(--accent)") : "var(--border)"}`,
-      borderRadius:20, padding:"5px 14px", cursor:"pointer", fontSize:12, fontWeight:600,
+      borderRadius:8, padding:"5px 14px", cursor:"pointer", fontSize:12, fontWeight:600,
     }}>
     {label}
   </button>
@@ -82,25 +82,17 @@ export const FilterBtn = ({ label, active, color, onClick }) => (
 
 export const DNALogo = () => (
   <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="yk-grad" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#4F46E5"/>
-        <stop offset="100%" stopColor="#7C3AED"/>
-      </linearGradient>
-      <linearGradient id="yk-grad2" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#A78BFA"/>
-        <stop offset="100%" stopColor="#38BDF8"/>
-      </linearGradient>
-    </defs>
-    <circle cx="17" cy="17" r="17" fill="url(#yk-grad)"/>
-    <circle cx="17" cy="17" r="13.5" stroke="url(#yk-grad2)" strokeWidth="1" strokeOpacity="0.4" fill="none"/>
+    <circle cx="17" cy="17" r="17" style={{ fill:"var(--accent)" }}/>
+    <circle cx="17" cy="17" r="13.5" stroke="#fff" strokeWidth="1" strokeOpacity="0.35" fill="none"/>
+    <g className="lc-orbit-spin" style={{ transformOrigin:"17px 17px" }}>
+      <circle cx="17" cy="7" r="2" fill="white" fillOpacity="0.85"/>
+      <circle cx="26.3" cy="22.5" r="2" fill="white" fillOpacity="0.85"/>
+      <circle cx="7.7" cy="22.5" r="2" fill="white" fillOpacity="0.85"/>
+      <line x1="17" y1="13.5" x2="17" y2="9" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
+      <line x1="19.8" y1="19.6" x2="24.7" y2="21.3" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
+      <line x1="14.2" y1="19.6" x2="9.3" y2="21.3" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
+    </g>
     <circle cx="17" cy="17" r="3.5" fill="white" fillOpacity="0.95"/>
-    <circle cx="17" cy="7" r="2" fill="white" fillOpacity="0.85"/>
-    <circle cx="26.3" cy="22.5" r="2" fill="white" fillOpacity="0.85"/>
-    <circle cx="7.7" cy="22.5" r="2" fill="white" fillOpacity="0.85"/>
-    <line x1="17" y1="13.5" x2="17" y2="9" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
-    <line x1="19.8" y1="19.6" x2="24.7" y2="21.3" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
-    <line x1="14.2" y1="19.6" x2="9.3" y2="21.3" stroke="white" strokeWidth="1.8" strokeOpacity="0.7" strokeLinecap="round"/>
   </svg>
 );
 
@@ -201,6 +193,31 @@ export function sm2Update(card, quality) {
   ef = Math.max(1.3, ef + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
   const nextDue = new Date(Date.now() + interval * 86400000).toISOString().slice(0, 10);
   return { n, ef: parseFloat(ef.toFixed(2)), interval, nextDue };
+}
+
+/* ── QC release stamp: the app's "you earned this" moment ──
+   Evokes a batch-release / CoA approval stamp. Used at genuine
+   completion states (perfect exam, all badges earned). */
+export function ReleaseStamp({ label = "QC RELEASED · VERIFIED", sublabel = "PASS", size = 128, color = "var(--accent-2)" }) {
+  const idRef = useRef(`stamp-${Math.random().toString(36).slice(2, 9)}`);
+  const id = idRef.current;
+  const r = size / 2 - 11, cx = size / 2, cy = size / 2;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="lc-stamp" aria-hidden="true">
+      <defs>
+        <path id={id} fill="none" d={`M ${cx - r},${cy} a ${r},${r} 0 1,1 ${r * 2},0 a ${r},${r} 0 1,1 -${r * 2},0`} />
+      </defs>
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="2.5" opacity="0.9" />
+      <circle cx={cx} cy={cy} r={r - 9} fill="none" stroke={color} strokeWidth="1" opacity="0.55" />
+      <text fontSize={size * 0.078} fontWeight="800" letterSpacing="1.5" fill={color} style={{ fontFamily: "ui-monospace, Menlo, monospace" }}>
+        <textPath href={`#${id}`} startOffset="1%">{label}</textPath>
+      </text>
+      <path d={`M ${cx - r * 0.32} ${cy} l ${r * 0.2} ${r * 0.22} l ${r * 0.42} -${r * 0.46}`}
+        fill="none" stroke={color} strokeWidth={size * 0.042} strokeLinecap="round" strokeLinejoin="round" />
+      <text x={cx} y={cy + r * 0.56} textAnchor="middle" fontSize={size * 0.1} fontWeight="900" letterSpacing="1" fill={color}
+        style={{ fontFamily: "ui-monospace, Menlo, monospace" }}>{sublabel}</text>
+    </svg>
+  );
 }
 
 // unused but kept to satisfy react import

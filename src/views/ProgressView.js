@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
+import { Icon } from "../icons";
 import { PATHWAY_MILESTONES } from "../pathway-data";
 
 function StatCard({ icon, label, value, color }) {
   return (
     <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)",
       borderTop: `3px solid ${color}`, padding: "20px 16px", textAlign: "center" }}>
-      <div style={{ fontSize: 28, marginBottom: 6 }}>{icon}</div>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 6, color }}><Icon name={icon} size={24} sw={1.6} /></div>
       <div style={{ fontSize: 32, fontWeight: 900, color, lineHeight: 1 }}>{value}</div>
       <div style={{ color: "var(--text-sec)", fontSize: 12, marginTop: 6 }}>{label}</div>
     </div>
@@ -62,7 +63,7 @@ export default function ProgressView() {
   }, [stats.allHistory]);
 
   const copyReport = () => {
-    const text = `CMC Progress Report — ${today}\nQuestions Attempted: ${stats.attempted}\nCorrect Rate: ${stats.correctRate}%\nViews Explored: ${visitedViews.length}\nNotes Created: ${notes.length}\nBadges Earned: ${pathwayProgress.length}/${PATHWAY_MILESTONES.length}`;
+    const text = `CMC Progress Report: ${today}\nQuestions Attempted: ${stats.attempted}\nCorrect Rate: ${stats.correctRate}%\nViews Explored: ${visitedViews.length}\nNotes Created: ${notes.length}\nBadges Earned: ${pathwayProgress.length}/${PATHWAY_MILESTONES.length}`;
     navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
   };
 
@@ -72,19 +73,20 @@ export default function ProgressView() {
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "28px 24px" }}>
       <div style={{ marginBottom: 28, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
         <div>
-          <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 26, fontWeight: 900 }}>📊 My Progress</h2>
-          <p style={{ color: "var(--text-sec)", margin: "6px 0 0", fontSize: 14 }}>Your CMC learning journey — quiz performance, activity, and milestones</p>
+          <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 26, fontWeight: 900, display: "flex", alignItems: "center", gap: 11 }}><Icon name="progress" size={24} sw={1.6} /> My Progress</h2>
+          <p style={{ color: "var(--text-sec)", margin: "6px 0 0", fontSize: 14 }}>Your CMC learning journey: quiz performance, activity, and milestones.</p>
         </div>
         <button onClick={copyReport}
           style={{ background: copied ? "#34D399" : "var(--accent)", color: "#fff", border: "none",
-            borderRadius: 8, padding: "9px 18px", cursor: "pointer", fontWeight: 700, fontSize: 13, transition: "background 0.2s" }}>
-          {copied ? "✓ Copied!" : "📋 Copy Report"}
+            borderRadius: 8, padding: "9px 18px", cursor: "pointer", fontWeight: 700, fontSize: 13, transition: "background 0.2s",
+            display: "flex", alignItems: "center", gap: 8 }}>
+          <Icon name={copied ? "check" : "ctd"} size={14} sw={2} /> {copied ? "Copied!" : "Copy Report"}
         </button>
       </div>
 
       {isEmpty && (
         <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)", padding: 40, textAlign: "center", marginBottom: 28 }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>🌱</div>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 12, color: "var(--text-muted)" }}><Icon name="leaf" size={40} sw={1.4} /></div>
           <h3 style={{ color: "var(--text-h)", margin: "0 0 8px" }}>No progress data yet</h3>
           <p style={{ color: "var(--text-sec)", margin: 0, fontSize: 14 }}>Take some quizzes in Exam Mode to start tracking your progress. Use Spaced Rep Mode for SM-2 adaptive learning.</p>
         </div>
@@ -92,16 +94,16 @@ export default function ProgressView() {
 
       {/* Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 14, marginBottom: 28 }}>
-        <StatCard icon="❓" label="Questions Attempted" value={stats.attempted} color="#38BDF8" />
-        <StatCard icon="✅" label="Correct Rate" value={`${stats.correctRate}%`} color="#34D399" />
-        <StatCard icon="👁️" label="Views Explored" value={visitedViews.length} color="#A78BFA" />
-        <StatCard icon="📝" label="Notes Created" value={notes.length} color="#FB923C" />
+        <StatCard icon="exam" label="Questions Attempted" value={stats.attempted} color="#38BDF8" />
+        <StatCard icon="check" label="Correct Rate" value={`${stats.correctRate}%`} color="#34D399" />
+        <StatCard icon="eye" label="Views Explored" value={visitedViews.length} color="#C99A3B" />
+        <StatCard icon="notes" label="Notes Created" value={notes.length} color="#FB923C" />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 28 }}>
         {/* SM-2 Queue */}
         <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)", padding: 20 }}>
-          <h3 style={{ margin: "0 0 16px", color: "var(--text-h)", fontWeight: 800, fontSize: 15 }}>🧠 Spaced Repetition Queue</h3>
+          <h3 style={{ margin: "0 0 16px", color: "var(--text-h)", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}><Icon name="lightbulb" size={16} sw={1.9} /> Spaced Repetition Queue</h3>
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
             <div style={{ background: "#F4722822", border: "1px solid #F4722844", borderRadius: 8, padding: "10px 14px", flex: 1, textAlign: "center" }}>
               <div style={{ color: "#F47228", fontWeight: 900, fontSize: 22 }}>{dueToday.length}</div>
@@ -125,20 +127,20 @@ export default function ProgressView() {
             </div>
           ) : (
             <div style={{ color: "var(--text-muted)", fontSize: 13, textAlign: "center", padding: 12 }}>
-              {stats.attempted > 0 ? "🎉 All caught up!" : "Answer questions in Exam → Spaced Rep Mode to populate queue"}
+              {stats.attempted > 0 ? "All caught up!" : "Turn on Spaced Rep Mode in Exam Mode to populate this queue."}
             </div>
           )}
         </div>
 
         {/* Activity heatmap */}
         <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)", padding: 20 }}>
-          <h3 style={{ margin: "0 0 16px", color: "var(--text-h)", fontWeight: 800, fontSize: 15 }}>📅 Last 7 Days Activity</h3>
+          <h3 style={{ margin: "0 0 16px", color: "var(--text-h)", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}><Icon name="calendar" size={16} sw={1.9} /> Last 7 Days Activity</h3>
           <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 100 }}>
             {activity.map(d => {
               const maxH = 80;
               const maxCount = Math.max(...activity.map(a => a.count), 1);
               const h = d.count > 0 ? Math.max(16, (d.count / maxCount) * maxH) : 8;
-              const color = d.count === 0 ? "var(--border)" : d.count >= 5 ? "#34D399" : d.count >= 2 ? "#60A5FA" : "#A78BFA";
+              const color = d.count === 0 ? "var(--border)" : d.count >= 5 ? "#34D399" : d.count >= 2 ? "#60A5FA" : "#7A8FA6";
               return (
                 <div key={d.date} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
                   <div style={{ color: "var(--text-muted)", fontSize: 10 }}>{d.count || ""}</div>
@@ -154,11 +156,11 @@ export default function ProgressView() {
       {/* Views visited */}
       {visitedViews.length > 0 && (
         <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)", padding: 20, marginBottom: 28 }}>
-          <h3 style={{ margin: "0 0 14px", color: "var(--text-h)", fontWeight: 800, fontSize: 15 }}>👁️ Views Explored</h3>
+          <h3 style={{ margin: "0 0 14px", color: "var(--text-h)", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}><Icon name="eye" size={16} sw={1.9} /> Views Explored</h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {visitedViews.map(v => (
-              <span key={v} style={{ background: "#A78BFA22", color: "#A78BFA", borderRadius: 20,
-                padding: "4px 12px", fontSize: 12, fontWeight: 700, border: "1px solid #A78BFA44" }}>{v}</span>
+              <span key={v} style={{ background: "#C99A3B22", color: "#C99A3B", borderRadius: 8,
+                padding: "4px 12px", fontSize: 12, fontWeight: 700, border: "1px solid #C99A3B44" }}>{v}</span>
             ))}
           </div>
         </div>
@@ -167,7 +169,7 @@ export default function ProgressView() {
       {/* Badges */}
       <div style={{ background: "var(--bg-card)", borderRadius: 12, border: "1px solid var(--border)", padding: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <h3 style={{ margin: 0, color: "var(--text-h)", fontWeight: 800, fontSize: 15 }}>🏆 Milestone Badges</h3>
+          <h3 style={{ margin: 0, color: "var(--text-h)", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}><Icon name="trophy" size={16} sw={1.9} /> Milestone Badges</h3>
           <span style={{ color: "var(--text-sec)", fontSize: 13 }}>{pathwayProgress.length} / {PATHWAY_MILESTONES.length} earned</span>
         </div>
         <div style={{ background: "var(--bg-surface)", borderRadius: 8, height: 6, marginBottom: 20 }}>
@@ -182,7 +184,7 @@ export default function ProgressView() {
                 border: `1px solid ${earned ? m.color + "55" : "var(--border)"}`,
                 borderRadius: 10, padding: "12px 10px", textAlign: "center",
                 opacity: earned ? 1 : 0.45, transition: "all 0.2s" }}>
-                <div style={{ fontSize: 24, marginBottom: 6 }}>{m.icon}</div>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 6, color: earned ? m.color : "var(--text-muted)" }}><Icon name={m.icon} size={21} sw={1.6} /></div>
                 <div style={{ color: earned ? m.color : "var(--text-muted)", fontWeight: 700, fontSize: 11, lineHeight: 1.3 }}>{m.label}</div>
               </div>
             );

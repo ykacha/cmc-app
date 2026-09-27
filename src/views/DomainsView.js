@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FilterBtn, Badge, InfoBox, LC } from "../shared";
 import { LiquidHeader } from "../lc";
+import { Icon } from "../icons";
 import { DOMAINS } from "../cmc-data";
 
 export default function DomainsView() {
@@ -15,7 +16,7 @@ export default function DomainsView() {
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <LiquidHeader eyebrow="10 DOMAINS" icon="📚" title="Domain Question Bank" subtitle="100 questions across 10 CMC domains — filter by difficulty and search by keyword" />
+      <LiquidHeader eyebrow="10 DOMAINS" icon={<Icon name="domains" size={30} sw={1.6} />} title="Domain Question Bank" subtitle="100 questions across 10 CMC domains. Filter by difficulty and search by keyword." />
 
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(165px,1fr))", gap:12, marginBottom:28 }}>
         {DOMAINS.map(d => (
@@ -27,7 +28,7 @@ export default function DomainsView() {
               borderRadius:12, padding:14, cursor:"pointer", textAlign:"left",
               borderTop:`2px solid ${d.id===activeDomain ? d.accent : d.accent+"55"}`,
             }}>
-            <div style={{ fontSize:24 }}>{d.icon}</div>
+            <div style={{ color: d.accent }}><Icon name={d.icon} size={22} sw={1.7} /></div>
             <div style={{ color:"var(--text-h)", fontSize:12, fontWeight:800, marginTop:6, lineHeight:1.4 }}>{d.label}</div>
             <div style={{ color:d.accent, fontSize:11, marginTop:4, fontWeight:700 }}>{d.questions.length} questions</div>
             <div style={{ color:"var(--text-faint)", fontSize:10, marginTop:2 }}>{d.desc}</div>
@@ -38,7 +39,7 @@ export default function DomainsView() {
       {!domain && (
         <div style={{ background:"var(--bg-card)", borderRadius:14, border:"1px solid var(--border)" }}>
           <div className="empty-hint">
-            <span className="eh-icon">📚</span>
+            <span className="eh-icon" style={{ display:"inline-flex", color:"var(--text-muted)" }}><Icon name="domains" size={26} sw={1.5} /></span>
             <p>Select a domain above to browse questions and filter by difficulty level.</p>
           </div>
         </div>
@@ -46,7 +47,7 @@ export default function DomainsView() {
       {domain && (
         <div style={{ background:"var(--bg-card)", borderRadius:14, border:`1px solid ${domain.accent}44`, padding:26, animation:"scaleIn 0.22s ease" }}>
           <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
-            <span style={{ fontSize:32, background:`${domain.accent}22`, borderRadius:12, padding:10 }}>{domain.icon}</span>
+            <span style={{ display:"flex", background:`${domain.accent}22`, borderRadius:12, padding:10, color:domain.accent }}><Icon name={domain.icon} size={22} sw={1.7} /></span>
             <div>
               <h3 style={{ color:"var(--text-h)", margin:0, fontSize:20, fontWeight:900 }}>{domain.label}</h3>
               <p style={{ color:"var(--text-sec)", margin:"4px 0 0", fontSize:13 }}>{domain.desc}</p>
@@ -74,7 +75,7 @@ export default function DomainsView() {
               <div style={{ marginTop:12, paddingTop:12, borderTop:"1px solid var(--border)" }}>
                 <InfoBox color="#22D3EE" label="WHY IT MATTERS" text={q.why} />
                 <InfoBox color="#34D399" label="HOW TO FIND THE ANSWER" text={q.how} />
-                <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>📎 {q.ref}</p>
+                <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>Ref: {q.ref}</p>
               </div>
             </details>
           ))}

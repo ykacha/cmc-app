@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Icon } from "../icons";
 import {
   STABILITY_CONDITIONS,
   ICH_Q1_ZONES,
@@ -77,9 +78,9 @@ function ConditionsTab({ selectedCondition, onSelectCondition }) {
   return (
     <div>
       <SectionHeader
-        icon="🌡️"
+        icon={<Icon name="thermometer" size={20} sw={1.7} />}
         title="Stability Conditions"
-        subtitle="ICH Q1A(R2) — required storage conditions for drug substance and drug product stability studies"
+        subtitle="ICH Q1A(R2): required storage conditions for drug substance and drug product stability studies."
       />
 
       <div style={{
@@ -113,7 +114,7 @@ function ConditionsTab({ selectedCondition, onSelectCondition }) {
             >
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 18 }}>{cond.icon}</span>
+                  <span style={{ display: "flex", color: cond.color }}><Icon name={cond.icon} size={16} sw={1.8} /></span>
                   <span style={{
                     fontWeight: 700,
                     fontSize: 14,
@@ -187,9 +188,9 @@ function ConditionsTab({ selectedCondition, onSelectCondition }) {
           animation: "slideDown 0.22s ease",
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <span style={{ fontSize: 16 }}>{selectedCondition.icon}</span>
+            <span style={{ display: "flex", color: selectedCondition.color }}><Icon name={selectedCondition.icon} size={15} sw={1.9} /></span>
             <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "var(--text-h)" }}>
-              {selectedCondition.label} — Required Timepoints
+              {selectedCondition.label}: Required Timepoints
             </h3>
           </div>
           <p style={{ margin: "0 0 16px", fontSize: 12, color: "var(--text-sec)" }}>
@@ -227,9 +228,9 @@ function ICHZonesTab() {
   return (
     <div>
       <SectionHeader
-        icon="🌍"
+        icon={<Icon name="ich" size={20} sw={1.7} />}
         title="ICH Q1 Climatic Zones"
-        subtitle="WHO and ICH Q1A(R2) climatic zone classification — determines required long-term storage conditions by market"
+        subtitle="WHO and ICH Q1A(R2) climatic zone classification. Determines required long-term storage conditions by market."
       />
 
       {/* Info box */}
@@ -392,9 +393,9 @@ function StudyMatrixTab() {
   return (
     <div>
       <SectionHeader
-        icon="📋"
+        icon={<Icon name="ctd" size={20} sw={1.7} />}
         title="Stability Study Matrix"
-        subtitle="Required stability-indicating tests by product type — ICH Q1A(R2), Q6A, Q6B"
+        subtitle="Required stability-indicating tests by product type: ICH Q1A(R2), Q6A, Q6B."
       />
 
       {/* Product type selector */}
@@ -428,7 +429,7 @@ function StudyMatrixTab() {
                   transform: hovered === p.id ? "translateY(-1px)" : "none",
                 }}
               >
-                <span>{p.icon}</span>
+                <Icon name={p.icon} size={14} sw={1.9} />
                 <span>{p.label}</span>
               </button>
             );
@@ -454,7 +455,7 @@ function StudyMatrixTab() {
             alignItems: "center",
             gap: 10,
           }}>
-            <span style={{ fontSize: 18 }}>{product.icon}</span>
+            <span style={{ display: "flex", color: product.color }}><Icon name={product.icon} size={17} sw={1.7} /></span>
             <div>
               <span style={{ fontWeight: 700, fontSize: 14, color: "var(--text-h)" }}>{product.label}</span>
               <span style={{ marginLeft: 10, fontSize: 12, color: "var(--text-sec)" }}>{product.tests.length} stability tests required</span>
@@ -505,16 +506,16 @@ function StudyMatrixTab() {
                     <td style={{ padding: "11px 14px", fontSize: 12, color: "var(--text-body)" }}>{t.method}</td>
                     <td style={{ padding: "11px 14px", fontSize: 12, color: "var(--text-sec)", maxWidth: 240 }}>{t.spec}</td>
                     <td style={{ padding: "11px 14px" }}>
-                      {t.ich !== "—" ? (
+                      {t.ich !== "–" ? (
                         <Badge color={product.color} bg={product.color + "18"}>
                           {t.ich}
                         </Badge>
                       ) : (
-                        <span style={{ fontSize: 12, color: "var(--text-muted)" }}>—</span>
+                        <span style={{ fontSize: 12, color: "var(--text-muted)" }}>–</span>
                       )}
                     </td>
                     <td style={{ padding: "11px 14px", fontSize: 12, color: "var(--text-sec)", fontFamily: "monospace" }}>
-                      {t.usp !== "—" ? t.usp : <span style={{ color: "var(--text-muted)" }}>—</span>}
+                      {t.usp !== "–" ? t.usp : <span style={{ color: "var(--text-muted)" }}>–</span>}
                     </td>
                   </tr>
                 ))}
@@ -553,9 +554,9 @@ function ShelfLifeTab() {
   return (
     <div>
       <SectionHeader
-        icon="⏳"
+        icon={<Icon name="clock" size={20} sw={1.7} />}
         title="Shelf Life Statistics"
-        subtitle="Typical approved shelf-life durations by product type and ICH Q1E statistical extrapolation guidance"
+        subtitle="Typical approved shelf-life durations by product type and ICH Q1E statistical extrapolation guidance."
       />
 
       {/* Stats table */}
@@ -633,7 +634,7 @@ function ShelfLifeTab() {
         padding: 28,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-          <span style={{ fontSize: 20 }}>🧮</span>
+          <span style={{ display: "flex", color: "var(--accent)" }}><Icon name="gauge" size={19} sw={1.6} /></span>
           <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "var(--text-h)" }}>T90 Shelf-Life Calculator</h3>
         </div>
         <p style={{ margin: "0 0 22px", fontSize: 13, color: "var(--text-sec)", lineHeight: 1.6 }}>
@@ -718,7 +719,7 @@ function ShelfLifeTab() {
               {[
                 { label: "T90 (months)", value: calcResult.T90_months + " mo", color: "#34D399" },
                 { label: "T90 (years)", value: calcResult.T90_years + " yr", color: "#38BDF8" },
-                { label: "Projected Expiry", value: calcResult.expiry, color: "#A78BFA" },
+                { label: "Projected Expiry", value: calcResult.expiry, color: "#C99A3B" },
               ].map(stat => (
                 <div key={stat.label} style={{
                   padding: "16px 18px",
@@ -761,7 +762,7 @@ function ShelfLifeTab() {
                         <div style={{
                           width: `${pct}%`,
                           height: "100%",
-                          background: `linear-gradient(90deg, ${color}, ${color}aa)`,
+                          background: color,
                           borderRadius: 6,
                           transition: "width 0.4s ease",
                         }} />
@@ -808,18 +809,18 @@ export default function StabilityView() {
           <div style={{
             width: 50, height: 50,
             borderRadius: 14,
-            background: "linear-gradient(135deg, #34D399, #38BDF8)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 24, boxShadow: "0 4px 16px rgba(52,211,153,0.35)",
+            background: "#34D399",
+            display: "flex", alignItems: "center", justifyContent: "center", color: "#06281c",
+            boxShadow: "0 4px 16px rgba(52,211,153,0.35)",
           }}>
-            🌡️
+            <Icon name="thermometer" size={24} sw={1.6} />
           </div>
           <div>
             <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "var(--text-h)", letterSpacing: "-0.5px" }}>
               Stability Studies
             </h1>
             <p style={{ margin: 0, fontSize: 13, color: "var(--text-sec)" }}>
-              ICH Q1A(R2) · Q1B · Q1C · Q1D · Q1E — Storage conditions, climatic zones, study design &amp; shelf life
+              ICH Q1A(R2), Q1B, Q1C, Q1D, Q1E: storage conditions, climatic zones, study design, and shelf life.
             </p>
           </div>
         </div>
@@ -829,7 +830,7 @@ export default function StabilityView() {
           {[
             { label: "Conditions", value: STABILITY_CONDITIONS.length, color: "#34D399" },
             { label: "ICH Zones", value: ICH_Q1_ZONES.length, color: "#38BDF8" },
-            { label: "Product Types", value: STABILITY_TESTS.length, color: "#A78BFA" },
+            { label: "Product Types", value: STABILITY_TESTS.length, color: "#C0654A" },
             { label: "Shelf Life Profiles", value: SHELF_LIFE_STATS.length, color: "#F59E0B" },
           ].map(s => (
             <div key={s.label} style={{

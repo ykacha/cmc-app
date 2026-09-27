@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { METHOD_STEPS } from "../shared";
-import { LiquidHeader } from "../lc";
+import { LiquidHeader, TraceGlyph } from "../lc";
 import { Icon } from "../icons";
 import { ANALYTICAL_METHODS } from "../extra-data";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../analytical-data";
 
 /* ══════════════════════════════════════════════════════════════
-   Analytical Methods — the analytical workbench.
+   Analytical Methods: the analytical workbench.
    4 modes: Atlas · CQA × Method matrix · ICH Q2 validation · Control strategy.
    ══════════════════════════════════════════════════════════════ */
 
@@ -18,7 +18,7 @@ const CAT = {
   Identity:             { color:"#5C9EAD", icon:"glossary",   q:"Is it the right molecule?" },
   Purity:               { color:"#2DBF9E", icon:"filter",     q:"How pure is it?" },
   Potency:              { color:"#E0707A", icon:"qbd",        q:"Does it actually work?" },
-  Glycosylation:        { color:"#9B7DD4", icon:"excipient",  q:"What are the glycans?" },
+  Glycosylation:        { color:"#7A8FA6", icon:"excipient",  q:"What are the glycans?" },
   "Physical/Chemical":  { color:"#57B8C9", icon:"wave",       q:"What are its physical traits?" },
   Safety:               { color:"#D0895E", icon:"shieldcheck",q:"Is it safe to dose?" },
   Structural:           { color:"#7FB069", icon:"infinity",   q:"How is it folded?" },
@@ -36,31 +36,6 @@ const methodCqas = (mid) => QUALITY_ATTRIBUTES
   .map(c => { const hit = CQA_METHODS[c.id]?.methods.find(x => x.m === mid); return hit ? { cqa:c, role:hit.role } : null; })
   .filter(Boolean);
 
-// ── deterministic mini-chromatogram from a string seed ──
-function seeded(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-}
-function TraceGlyph({ seed, color, w = 300, h = 44, opacity = 0.55, sw = 1.5 }) {
-  const rnd = seeded(seed);
-  const peaks = 3 + Math.floor(rnd() * 4);
-  const centers = Array.from({ length: peaks }, () => ({ mu: 0.05 + rnd() * 0.9, amp: 0.3 + rnd() * 0.7, sd: 0.016 + rnd() * 0.05 }));
-  const N = 130; let d = "";
-  for (let i = 0; i <= N; i++) {
-    const x = i / N; let y = 0;
-    centers.forEach(c => { y += c.amp * Math.exp(-((x - c.mu) ** 2) / (2 * c.sd * c.sd)); });
-    y = Math.min(1, y);
-    const px = (x * w).toFixed(1), py = (h - 3 - y * (h - 7)).toFixed(1);
-    d += (i === 0 ? `M${px} ${py}` : ` L${px} ${py}`);
-  }
-  return (
-    <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" style={{ display:"block" }} aria-hidden="true">
-      <line x1="0" y1={h-3} x2={w} y2={h-3} stroke={color} strokeWidth="0.75" opacity="0.25" />
-      <path d={d} fill="none" stroke={color} strokeWidth={sw} strokeLinejoin="round" strokeLinecap="round" opacity={opacity} />
-    </svg>
-  );
-}
 function PhaseStrip({ phases, color }) {
   return (
     <div style={{ display:"flex", gap:3 }} title="Phase applicability: Pre-IND → BLA">
@@ -122,7 +97,7 @@ export default function MethodsView({ navigate }) {
     <div style={{ maxWidth:1360, margin:"0 auto", padding:"28px 24px 56px" }}>
       <LiquidHeader eyebrow="ANALYTICAL WORKBENCH · 22 ASSAYS · 17 CQAs" icon={<Icon name="wave" size={30} sw={1.6} />}
         title="Analytical Methods"
-        subtitle="Not just a catalogue of assays — the reasoning that connects them: which method answers which question, why orthogonality matters, how each is validated, and when it's run." />
+        subtitle="The reasoning that connects the assays: which method answers which question, why orthogonality matters, how each is validated, and when it's run." />
 
       {/* mode bar */}
       <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:26 }}>
@@ -181,7 +156,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
                 display:"flex", alignItems:"center", gap:7, cursor:"pointer", fontFamily:"inherit",
                 background: on ? `color-mix(in srgb, ${col} 13%, transparent)` : "var(--panel)",
                 border:`1px solid ${on ? col : "var(--hairline)"}`, color: on ? col : "var(--text-sec)",
-                borderRadius:999, padding:"6px 13px 6px 11px", fontSize:12, fontWeight:600, transition:"all .16s",
+                borderRadius:9, padding:"6px 13px 6px 11px", fontSize:12, fontWeight:600, transition:"all .16s",
               }}>
                 {m ? <span style={{ color:col, display:"flex" }}><Icon name={m.icon} size={14} sw={1.7} /></span>
                    : <span style={{ width:7, height:7, borderRadius:"50%", background: on ? col : "var(--text-faint)" }} />}
@@ -194,7 +169,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
         <div style={{ position:"relative", minWidth:230 }}>
           <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color:"var(--text-faint)", display:"flex" }}><Icon name="glossary" size={14} sw={1.6} /></span>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search assay, abbreviation, attribute…"
-            style={{ width:"100%", background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:999, padding:"8px 14px 8px 32px", color:"var(--text-body)", fontSize:13, outline:"none" }} />
+            style={{ width:"100%", background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:9, padding:"8px 14px 8px 32px", color:"var(--text-body)", fontSize:13, outline:"none" }} />
         </div>
       </div>
 
@@ -251,7 +226,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
             {filtered.length === 0 && (
               <div style={{ gridColumn:"1/-1", textAlign:"center", padding:"48px 0", color:"var(--text-muted)" }}>
                 <div style={{ display:"inline-flex", color:"var(--text-faint)", marginBottom:10 }}><Icon name="glossary" size={30} sw={1.4} /></div>
-                <p style={{ margin:0, fontSize:14 }}>No assays match — try a different lens or search.</p>
+                <p style={{ margin:0, fontSize:14 }}>No assays match. Try a different category or search term.</p>
               </div>
             )}
           </div>
@@ -263,7 +238,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
             overflow:"hidden", position:"sticky", top:70, maxHeight:"calc(100vh - 90px)", overflowY:"auto",
             boxShadow:`0 18px 50px color-mix(in srgb, ${mc.color} 12%, transparent)`,
           }}>
-            <div style={{ position:"relative", padding:"20px 22px 0", background:`linear-gradient(160deg, color-mix(in srgb, ${mc.color} 12%, transparent), transparent 70%)`, borderBottom:"1px solid var(--hairline)" }}>
+            <div style={{ position:"relative", padding:"20px 22px 0", background:`color-mix(in srgb, ${mc.color} 6%, transparent)`, borderBottom:"1px solid var(--hairline)" }}>
               <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:12 }}>
                 <span style={{ display:"flex", alignItems:"center", gap:8, color:mc.color, fontSize:11, fontWeight:700, letterSpacing:".1em", textTransform:"uppercase", fontFamily:"ui-monospace, Menlo, monospace" }}>
                   <Icon name={mc.icon} size={15} sw={1.7} />{method.category}
@@ -364,7 +339,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
 
               {detailTab === "orthogonality" && (<>
                 <Label>Critical attributes this assay interrogates</Label>
-                <p style={{ color:"var(--text-muted)", fontSize:11.5, margin:"-4px 0 14px", lineHeight:1.55 }}>No single method owns a CQA outright — here's where this one sits, and the assays that confirm it independently.</p>
+                <p style={{ color:"var(--text-muted)", fontSize:11.5, margin:"-4px 0 14px", lineHeight:1.55 }}>No single method owns a CQA outright. Here is where this one sits, and the assays that confirm it independently.</p>
                 {methodCqas(method.id).length === 0 && <p style={{ color:"var(--text-muted)", fontSize:12.5 }}>Not mapped to a primary CQA.</p>}
                 {methodCqas(method.id).map(({ cqa, role }) => {
                   const g = ATTR_GROUPS[cqa.group];
@@ -446,7 +421,7 @@ function CqaMatrix({ activeCqa, setActiveCqa, openMethod }) {
             <tr>
               <th style={{ position:"sticky", left:0, zIndex:3, background:"var(--panel)", borderBottom:"1px solid var(--hairline)", borderRight:"1px solid var(--hairline)", minWidth:172, textAlign:"left", padding:"8px 12px", color:"var(--text-faint)", fontSize:9, fontWeight:800, letterSpacing:".1em", textTransform:"uppercase", fontFamily:"ui-monospace, Menlo, monospace" }}>Attribute ↓ / Method →</th>
               {ANALYTICAL_METHODS.map(m => (
-                <th key={m.id} onClick={() => openMethod(m.id)} title={`${m.name} — open`} style={{ borderBottom:"1px solid var(--hairline)", cursor:"pointer", height:104, width:28, padding:0, verticalAlign:"bottom" }}>
+                <th key={m.id} onClick={() => openMethod(m.id)} title={`Open ${m.name}`} style={{ borderBottom:"1px solid var(--hairline)", cursor:"pointer", height:104, width:28, padding:0, verticalAlign:"bottom" }}>
                   <div style={{ writingMode:"vertical-rl", transform:"rotate(180deg)", margin:"0 auto 8px", color:"var(--text-sec)", fontSize:10.5, fontWeight:700, fontFamily:"ui-monospace, Menlo, monospace", whiteSpace:"nowrap", maxHeight:90, overflow:"hidden" }}>{m.abbreviation}</div>
                 </th>
               ))}
@@ -481,7 +456,7 @@ function CqaMatrix({ activeCqa, setActiveCqa, openMethod }) {
       {/* selected CQA detail */}
       <div ref={detailRef} style={{ display:"grid", gridTemplateColumns:"minmax(0, 360px) 1fr", gap:22, alignItems:"start" }}>
         <div style={{ background:"var(--panel)", border:`1px solid color-mix(in srgb, ${g.color} 38%, var(--hairline))`, borderRadius:18, overflow:"hidden", position:"sticky", top:70 }}>
-          <div style={{ padding:"18px 20px", background:`linear-gradient(160deg, color-mix(in srgb, ${g.color} 12%, transparent), transparent 70%)`, borderBottom:"1px solid var(--hairline)" }}>
+          <div style={{ padding:"18px 20px", background:`color-mix(in srgb, ${g.color} 6%, transparent)`, borderBottom:"1px solid var(--hairline)" }}>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
               <span style={{ display:"flex", alignItems:"center", gap:8, color:g.color, fontSize:11, fontWeight:700, letterSpacing:".1em", textTransform:"uppercase", fontFamily:"ui-monospace, Menlo, monospace" }}><Icon name={g.icon} size={15} sw={1.7} />{cqa.group}</span>
               <span style={{ fontSize:9.5, fontWeight:800, letterSpacing:".06em", padding:"3px 9px", borderRadius:7, fontFamily:"ui-monospace, Menlo, monospace", background:`color-mix(in srgb, ${riskColor(cqa.risk)} 15%, transparent)`, color:riskColor(cqa.risk), border:`1px solid color-mix(in srgb, ${riskColor(cqa.risk)} 38%, transparent)` }}>{cqa.risk} RISK</span>
@@ -502,7 +477,7 @@ function CqaMatrix({ activeCqa, setActiveCqa, openMethod }) {
               <p style={{ color:"var(--text-body)", margin:0, fontSize:12.5, lineHeight:1.65 }}>{entries.ortho}</p></div>
           </div>
 
-          {[["primary","Primary — the spec-defining assay"],["orthogonal","Orthogonal — independent confirmation"],["supporting","Supporting — screen & context"]].map(([role, title]) => grouped[role].length > 0 && (
+          {[["primary","Primary: the spec-defining assay"],["orthogonal","Orthogonal: independent confirmation"],["supporting","Supporting: screen and context"]].map(([role, title]) => grouped[role].length > 0 && (
             <div key={role} style={{ marginBottom:18 }}>
               <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}><Dot role={role} /><span style={{ color:"var(--text-sec)", fontSize:11, fontWeight:700, letterSpacing:".05em", textTransform:"uppercase", fontFamily:"ui-monospace, Menlo, monospace" }}>{title}</span></div>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))", gap:10 }}>
@@ -560,7 +535,7 @@ function Validation({ activeChar, setActiveChar, openMethod }) {
                       <td key={cat.id} style={{ textAlign:"center", padding:"10px 8px", borderBottom:"1px solid var(--hairline)" }}>
                         {c.applies[cat.id]
                           ? <span style={{ color:"var(--accent-2)", display:"inline-flex" }}><Icon name="exam" size={16} sw={2} /></span>
-                          : <span style={{ color:"var(--text-faint)", opacity:.5 }}>—</span>}
+                          : <span style={{ color:"var(--text-faint)", opacity:.5 }}>–</span>}
                       </td>
                     ))}
                   </tr>
@@ -615,7 +590,7 @@ function Strategy({ openMethod }) {
     <>
       <Label>Phase-appropriate analytical package</Label>
       <p style={{ color:"var(--text-muted)", fontSize:12.5, margin:"-4px 0 18px", lineHeight:1.6, maxWidth:760 }}>
-        The analytical control strategy is not static — it deepens as the program advances from a fit-for-purpose toolkit at Pre-IND to a fully validated, orthogonality-demonstrated package at the BLA.
+        The analytical control strategy deepens as the program advances: a fit-for-purpose toolkit at Pre-IND grows into a fully validated, orthogonality-demonstrated package by the BLA.
       </p>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(220px, 1fr))", gap:14, marginBottom:34 }}>
         {PHASE_STRATEGY.map((p, i) => (

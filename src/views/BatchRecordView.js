@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Icon } from "../icons";
 import { BPR_STEPS, DEVIATION_SCENARIOS, YIELD_STAGES } from "../batch-data";
 
 // ── Phase colors ───────────────────────────────────────────────
@@ -18,7 +19,7 @@ const SEV_COLORS = {
 
 // ── Phase Badge ────────────────────────────────────────────────
 function PhaseBadge({ phase }) {
-  const c = PHASE_COLORS[phase] || "#A78BFA";
+  const c = PHASE_COLORS[phase] || "#3D6FE0";
   return (
     <span style={{
       background: `${c}22`,
@@ -39,7 +40,7 @@ function PhaseBadge({ phase }) {
 
 // ── Severity Badge ─────────────────────────────────────────────
 function SeverityBadge({ severity }) {
-  const c = SEV_COLORS[severity] || "#A78BFA";
+  const c = SEV_COLORS[severity] || "#3D6FE0";
   return (
     <span style={{
       background: `${c}22`,
@@ -175,13 +176,13 @@ export default function BatchRecordView() {
       {/* ── Page Header ──────────────────────────────────────── */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-          <span style={{ fontSize: 32 }}>📋</span>
+          <span style={{ display: "flex", color: "var(--accent)" }}><Icon name="batch" size={28} sw={1.6} /></span>
           <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 26, fontWeight: 900 }}>
             Batch Production Record
           </h2>
         </div>
         <p style={{ color: "var(--text-sec)", margin: "0 0 0 44px", fontSize: 14 }}>
-          Sterile mAb manufacturing simulator — 10-step BPR with IPC, deviation management, and yield tracking
+          Sterile mAb manufacturing simulator: 10-step BPR with IPC, deviation management, and yield tracking.
         </p>
       </div>
 
@@ -219,7 +220,7 @@ export default function BatchRecordView() {
             {BPR_STEPS.map((s, idx) => {
               const isActive = idx === currentStep;
               const complete = isStepComplete(s);
-              const phaseColor = PHASE_COLORS[s.phase] || "#A78BFA";
+              const phaseColor = PHASE_COLORS[s.phase] || "#3D6FE0";
               return (
                 <button
                   key={s.id}
@@ -244,8 +245,8 @@ export default function BatchRecordView() {
                   }}
                 >
                   {/* Step icon */}
-                  <span style={{ fontSize: 16, lineHeight: 1, flexShrink: 0 }}>
-                    {s.icon}
+                  <span style={{ display: "flex", flexShrink: 0, color: isActive ? s.color : "var(--text-muted)" }}>
+                    <Icon name={s.icon} size={15} sw={1.8} />
                   </span>
 
                   {/* Step info */}
@@ -321,7 +322,7 @@ export default function BatchRecordView() {
               gap: 8,
             }}
           >
-            <span>📊</span>
+            <Icon name="chartbar" size={13} sw={1.9} />
             <span>Yield Calculator</span>
             <span style={{ marginLeft: "auto", opacity: 0.6 }}>
               {showYield ? "▲" : "▼"}
@@ -464,7 +465,7 @@ export default function BatchRecordView() {
             }} />
 
             <div style={{ display: "flex", alignItems: "flex-start", gap: 14, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 36, lineHeight: 1 }}>{step.icon}</span>
+              <span style={{ display: "flex", color: step.color }}><Icon name={step.icon} size={32} sw={1.5} /></span>
               <div style={{ flex: 1, minWidth: 200 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 8 }}>
                   <span style={{
@@ -484,8 +485,9 @@ export default function BatchRecordView() {
                     borderRadius: 8,
                     padding: "2px 8px",
                     fontWeight: 600,
+                    display: "inline-flex", alignItems: "center", gap: 6,
                   }}>
-                    ⏱ {step.duration}
+                    <Icon name="clock" size={12} sw={1.9} /> {step.duration}
                   </span>
                 </div>
                 <h3 style={{
@@ -656,14 +658,15 @@ export default function BatchRecordView() {
                                   fontWeight: 800,
                                   whiteSpace: "nowrap",
                                   animation: "scaleIn 0.15s ease",
+                                  display: "inline-flex", alignItems: "center", gap: 5,
                                 }}>
-                                  ⚠️ DEVIATION
+                                  <Icon name="alert" size={11} sw={2.2} /> DEVIATION
                                 </span>
                               )}
                             </div>
                           );
                         })() : (
-                          <span style={{ fontSize: 11, color: "var(--text-faint)" }}>—</span>
+                          <span style={{ fontSize: 11, color: "var(--text-faint)" }}>–</span>
                         )}
                       </td>
                     </tr>
@@ -835,7 +838,7 @@ export default function BatchRecordView() {
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {stepDeviations.map(dev => {
                   const expanded = !!expandedDeviations[dev.id];
-                  const c = SEV_COLORS[dev.severity] || "#A78BFA";
+                  const c = SEV_COLORS[dev.severity] || "#3D6FE0";
                   return (
                     <div key={dev.id} style={{
                       border: `1px solid ${c}44`,
@@ -858,7 +861,7 @@ export default function BatchRecordView() {
                           transition: "background 0.15s",
                         }}
                       >
-                        <span style={{ fontSize: 18, flexShrink: 0 }}>{dev.icon}</span>
+                        <span style={{ display: "flex", flexShrink: 0, color: c }}><Icon name={dev.icon} size={16} sw={1.8} /></span>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-body)", marginBottom: 2 }}>
                             {dev.trigger}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LiquidHeader } from "../lc";
+import { Icon } from "../icons";
 import { CTD_MODULES } from "../extra-data";
 
 export default function CTDView() {
@@ -10,7 +11,7 @@ export default function CTDView() {
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <LiquidHeader eyebrow="REGULATORY DOSSIER" icon="📂" title="CTD Navigator" subtitle="Common Technical Document — complete Module 1–5 reference with CMC deep-dive on Module 3" />
+      <LiquidHeader eyebrow="REGULATORY DOSSIER" icon={<Icon name="ctd" size={28} sw={1.6} />} title="CTD Navigator" subtitle="Common Technical Document: complete Module 1-5 reference with a CMC deep-dive on Module 3." />
 
       <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:24 }}>
         {CTD_MODULES.map(m => (
@@ -20,8 +21,9 @@ export default function CTDView() {
               color: activeModule===m.id ? m.color : "var(--text-sec)",
               border:`1.5px solid ${activeModule===m.id ? m.color : "var(--border)"}`,
               borderRadius:10, padding:"10px 16px", cursor:"pointer", fontWeight:700, fontSize:13,
+              display:"flex", alignItems:"center", gap:8,
             }}>
-            {m.icon} Module {m.module}
+            <Icon name={m.icon} size={14} sw={1.9} /> Module {m.module}
           </button>
         ))}
       </div>
@@ -32,7 +34,7 @@ export default function CTDView() {
             <div style={{ background:"var(--bg-card)", border:`1px solid ${mod.color}44`, borderRadius:14, padding:22, marginBottom:16,
               borderTop:`3px solid ${mod.color}` }}>
               <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:12 }}>
-                <span style={{ fontSize:28 }}>{mod.icon}</span>
+                <span style={{ display:"flex", color:mod.color }}><Icon name={mod.icon} size={24} sw={1.6} /></span>
                 <div>
                   <div style={{ color:"var(--text-h)", fontWeight:900, fontSize:16 }}>{mod.label}</div>
                   <div style={{ color:mod.color, fontSize:11, fontWeight:700, marginTop:2 }}>ICH CTD Structure</div>
@@ -76,8 +78,8 @@ export default function CTDView() {
               </div>
 
               {sec.tips && (
-                <div style={{ background:"#7C3AED11", border:"1px solid #7C3AED33", borderRadius:10, padding:"12px 16px" }}>
-                  <strong style={{ color:"var(--accent-light)", fontSize:11, letterSpacing:"0.05em" }}>💡 REVIEWER TIPS & BEST PRACTICES</strong>
+                <div style={{ background:"color-mix(in srgb, var(--accent) 8%, transparent)", border:"1px solid color-mix(in srgb, var(--accent) 25%, transparent)", borderRadius:10, padding:"12px 16px" }}>
+                  <strong style={{ color:"var(--accent-light)", fontSize:11, letterSpacing:"0.05em", display:"flex", alignItems:"center", gap:7 }}><Icon name="lightbulb" size={13} sw={1.9} /> REVIEWER TIPS & BEST PRACTICES</strong>
                   <p style={{ color:"var(--text-body)", margin:"8px 0 0", fontSize:13, lineHeight:1.65 }}>{sec.tips}</p>
                 </div>
               )}

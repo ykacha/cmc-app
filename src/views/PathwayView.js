@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Icon } from "../icons";
+import { ReleaseStamp } from "../shared";
 import { PATHWAY_LEVELS, LEARNING_PATHWAYS, PATHWAY_MILESTONES } from "../pathway-data";
 
 const LS_KEY = "cmc-pathway-progress";
@@ -69,7 +71,7 @@ const MilestoneBanner = ({ text, color }) => (
     borderRadius: 8, padding: "10px 14px", marginTop: 8,
     display: "flex", gap: 8, alignItems: "flex-start",
   }}>
-    <span style={{ fontSize: 16, flexShrink: 0 }}>🏁</span>
+    <span style={{ display: "flex", flexShrink: 0, color }}><Icon name="flag" size={15} sw={1.9} /></span>
     <div>
       <div style={{ color: color, fontSize: 10, fontWeight: 800, marginBottom: 3 }}>MILESTONE</div>
       <p style={{ color: "var(--text-body)", margin: 0, fontSize: 12, lineHeight: 1.55 }}>{text}</p>
@@ -119,10 +121,11 @@ const BadgeCard = ({ badge, earned, onToggle }) => {
 
       {/* Icon */}
       <div style={{
-        fontSize: 30, marginBottom: 8, lineHeight: 1,
+        display: "flex", justifyContent: "center", marginBottom: 8,
+        color: earned ? badge.color : "var(--text-muted)",
         filter: earned ? `drop-shadow(0 0 8px ${badge.color}99)` : "none",
       }}>
-        {badge.icon}
+        <Icon name={badge.icon} size={26} sw={1.6} />
       </div>
 
       {/* Label */}
@@ -146,7 +149,7 @@ const BadgeCard = ({ badge, earned, onToggle }) => {
         color: earned ? "#34D399" : "var(--text-faint)",
         fontSize: 9, fontWeight: 700, letterSpacing: "0.05em",
       }}>
-        {earned ? "EARNED — click to undo" : "click to mark earned"}
+        {earned ? "Earned. Click to undo." : "Click to mark earned."}
       </div>
     </div>
   );
@@ -169,7 +172,7 @@ const ProgressBar = ({ value, max, color = "#34D399" }) => {
       }}>
         <div style={{
           width: `${pct}%`, height: "100%",
-          background: `linear-gradient(90deg, ${color}, ${color}bb)`,
+          background: color,
           borderRadius: 8,
           transition: "width 0.4s ease",
           boxShadow: pct > 0 ? `0 0 8px ${color}66` : "none",
@@ -227,7 +230,7 @@ export default function PathwayView() {
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontSize: 36 }}>🗺️</span>
+          <span style={{ color: "var(--accent)" }}><Icon name="pathway" size={32} sw={1.6} /></span>
           <div>
             <h2 style={{ color: "var(--text-h)", margin: 0, fontSize: 26, fontWeight: 900 }}>
               Learning Pathways
@@ -238,7 +241,7 @@ export default function PathwayView() {
           </div>
         </div>
 
-        {/* Overall badge progress — always visible */}
+        {/* Overall badge progress: always visible */}
         <div style={{
           background: "var(--bg-card)", border: "1px solid var(--border)",
           borderRadius: 10, padding: "14px 18px", marginTop: 16, maxWidth: 480,
@@ -249,12 +252,15 @@ export default function PathwayView() {
           <ProgressBar
             value={earnedBadges.length}
             max={PATHWAY_MILESTONES.length}
-            color="#A78BFA"
+            color="var(--accent)"
           />
           {earnedBadges.length === PATHWAY_MILESTONES.length && (
-            <p style={{ color: "#A78BFA", fontSize: 12, margin: "8px 0 0", fontWeight: 700 }}>
-              All badges earned — CMC Master status achieved!
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 12 }}>
+              <ReleaseStamp label="CMC MASTER · ALL BADGES EARNED" sublabel="DONE" size={72} color="var(--accent-2)" />
+              <p style={{ color: "var(--accent)", fontSize: 12, margin: 0, fontWeight: 700 }}>
+                All badges earned. CMC Master status achieved.
+              </p>
+            </div>
           )}
         </div>
       </div>
@@ -283,7 +289,7 @@ export default function PathwayView() {
                   boxShadow: active ? `0 4px 16px ${lv.color}33` : "none",
                 }}
               >
-                <div style={{ fontSize: 22, marginBottom: 4 }}>{lv.icon}</div>
+                <div style={{ marginBottom: 4, color: active ? lv.color : "var(--text-muted)" }}><Icon name={lv.icon} size={20} sw={1.7} /></div>
                 <div style={{
                   color: active ? lv.color : "var(--text-h)",
                   fontSize: 12, fontWeight: 800, lineHeight: 1.3, marginBottom: 3,
@@ -308,7 +314,7 @@ export default function PathwayView() {
             borderRadius: 10, padding: "12px 16px", marginBottom: 24,
             display: "flex", alignItems: "center", gap: 12,
           }}>
-            <span style={{ fontSize: 24 }}>{level.icon}</span>
+            <span style={{ display: "flex", color: level.color }}><Icon name={level.icon} size={22} sw={1.7} /></span>
             <div>
               <div style={{ color: level.color, fontSize: 13, fontWeight: 800 }}>{level.label}</div>
               <p style={{ color: "var(--text-sec)", margin: "3px 0 0", fontSize: 13, lineHeight: 1.5 }}>
@@ -448,10 +454,11 @@ export default function PathwayView() {
                       <span key={b.id} style={{
                         background: `${b.color}22`, color: b.color,
                         border: `1px solid ${b.color}44`,
-                        padding: "3px 10px", borderRadius: 12,
+                        padding: "3px 10px", borderRadius: 8,
                         fontSize: 10, fontWeight: 700,
+                        display: "inline-flex", alignItems: "center", gap: 5,
                       }}>
-                        {b.icon} {b.label}
+                        <Icon name={b.icon} size={11} sw={2} /> {b.label}
                       </span>
                     ))}
                   </div>
@@ -462,7 +469,7 @@ export default function PathwayView() {
         </div>
       )}
 
-      {/* ── NO LEVEL SELECTED — full badge grid ─────────────── */}
+      {/* ── NO LEVEL SELECTED: full badge grid ─────────────── */}
       {!selectedLevel && (
         <div>
           <div style={{
@@ -488,7 +495,7 @@ export default function PathwayView() {
             </div>
             <p style={{ color: "var(--text-faint)", fontSize: 10, marginTop: 14, lineHeight: 1.5 }}>
               Select a career level above to view your personalized 90-day study plan.
-              Badges can be toggled at any time — progress is saved locally.
+              Badges can be toggled at any time. Progress is saved locally.
             </p>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SectionHeader } from "../shared";
+import { Icon } from "../icons";
 
 export default function NotesView({ adminMode }) {
   const [notes, setNotes] = useState(() => {
@@ -15,8 +16,8 @@ export default function NotesView({ adminMode }) {
   const [catFilter, setCatFilter] = useState("All");
 
   const NOTE_CATS = ["General","Analytical","Regulatory","Formulation","Process","QbD","Career","Study Tips"];
-  const catColors = { General:"#A78BFA", Analytical:"#22D3EE", Regulatory:"#F472B6", Formulation:"#34D399",
-    Process:"#F59E0B", QbD:"#C084FC", Career:"#60A5FA", "Study Tips":"#FB923C" };
+  const catColors = { General:"#C99A3B", Analytical:"#22D3EE", Regulatory:"#F472B6", Formulation:"#34D399",
+    Process:"#F59E0B", QbD:"#C0654A", Career:"#60A5FA", "Study Tips":"#FB923C" };
 
   const save = (ns) => { setNotes(ns); localStorage.setItem("cmc-notes", JSON.stringify(ns)); };
 
@@ -43,7 +44,7 @@ export default function NotesView({ adminMode }) {
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <SectionHeader icon="📝" title="My CMC Notes" subtitle="Capture study notes, key concepts, and personal annotations — all saved locally in your browser"/>
+      <SectionHeader icon={<Icon name="notes" size={28} sw={1.6} />} title="My CMC Notes" subtitle="Capture study notes, key concepts, and personal annotations. Saved locally in your browser."/>
 
       <div style={{ display:"flex", gap:12, marginBottom:16, flexWrap:"wrap", alignItems:"center" }}>
         <button onClick={() => { setShowForm(!showForm); setEditId(null); setTitle(""); setText(""); setCategory("General"); setPinned(false); }}
@@ -51,7 +52,7 @@ export default function NotesView({ adminMode }) {
             cursor:"pointer", fontWeight:700, fontSize:13, transition:"opacity 0.18s" }}
           onMouseEnter={e => e.currentTarget.style.opacity="0.85"}
           onMouseLeave={e => e.currentTarget.style.opacity="1"}>
-          {showForm ? "✕ Cancel" : "+ Add Note"}
+          {showForm ? "Cancel" : "+ Add Note"}
         </button>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search notes…"
           style={{ flex:1, minWidth:200, background:"var(--bg-card)", border:"1px solid var(--border)",
@@ -65,7 +66,7 @@ export default function NotesView({ adminMode }) {
 
       {showForm && (
         <div style={{ background:"var(--bg-card)", border:"1px solid var(--accent)44", borderRadius:14, padding:22, marginBottom:20, animation:"slideDown 0.22s ease" }}>
-          <h4 style={{ color:"var(--text-h)", margin:"0 0 14px", fontSize:14, fontWeight:800 }}>{editId ? "✏️ Edit Note" : "📝 New Note"}</h4>
+          <h4 style={{ color:"var(--text-h)", margin:"0 0 14px", fontSize:14, fontWeight:800, display:"flex", alignItems:"center", gap:8 }}><Icon name={editId ? "edit" : "notes"} size={15} sw={1.9} /> {editId ? "Edit Note" : "New Note"}</h4>
           <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Note title (optional)…"
             style={{ width:"100%", background:"var(--bg-surface)", border:"1px solid var(--border)", borderRadius:8,
               padding:"8px 12px", color:"var(--text-body)", fontSize:14, marginBottom:10, boxSizing:"border-box" }}/>
@@ -79,7 +80,7 @@ export default function NotesView({ adminMode }) {
               {NOTE_CATS.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <label style={{ display:"flex", alignItems:"center", gap:6, cursor:"pointer", color:"var(--text-sec)", fontSize:12 }}>
-              <input type="checkbox" checked={pinned} onChange={e => setPinned(e.target.checked)} style={{ cursor:"pointer" }}/> 📌 Pin to top
+              <input type="checkbox" checked={pinned} onChange={e => setPinned(e.target.checked)} style={{ cursor:"pointer" }}/> Pin to top
             </label>
             <button onClick={addNote}
               style={{ background:"var(--accent)", color:"#fff", border:"none", borderRadius:8, padding:"8px 20px",
@@ -92,24 +93,24 @@ export default function NotesView({ adminMode }) {
 
       {filtered.length === 0 && (
         <div style={{ textAlign:"center", padding:"60px 20px", color:"var(--text-muted)" }}>
-          <div style={{ fontSize:48, marginBottom:12 }}>📓</div>
+          <div style={{ display:"flex", justifyContent:"center", marginBottom:12 }}><Icon name="notes" size={40} sw={1.4} /></div>
           <p style={{ fontSize:15, marginBottom:6 }}>No notes yet.</p>
           <p style={{ fontSize:13 }}>Click "Add Note" above to capture your first CMC note.</p>
         </div>
       )}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(290px,1fr))", gap:14 }}>
         {filtered.map(n => {
-          const cc = catColors[n.category] || "#A78BFA";
+          const cc = catColors[n.category] || "#C99A3B";
           return (
             <div key={n.id} className="card-hover"
               style={{ background:"var(--bg-card)", borderRadius:14, border:`1px solid ${cc}22`,
                 borderTop:`3px solid ${cc}`, padding:18, display:"flex", flexDirection:"column", gap:10 }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8 }}>
                 <div style={{ flex:1, minWidth:0 }}>
-                  {n.pinned && <span style={{ fontSize:11, marginRight:4 }}>📌</span>}
+                  {n.pinned && <span style={{ display:"inline-flex", marginRight:4, color:cc, verticalAlign:"middle" }}><Icon name="pin" size={11} sw={2} /></span>}
                   <span style={{ color:"var(--text-h)", fontWeight:800, fontSize:14 }}>{n.title}</span>
                 </div>
-                <span style={{ background:`${cc}22`, color:cc, borderRadius:12, padding:"2px 8px", fontSize:9, fontWeight:800, whiteSpace:"nowrap", flexShrink:0 }}>{n.category}</span>
+                <span style={{ background:`${cc}22`, color:cc, borderRadius:6, padding:"2px 8px", fontSize:9, fontWeight:800, whiteSpace:"nowrap", flexShrink:0 }}>{n.category}</span>
               </div>
               <p style={{ color:"var(--text-body)", fontSize:13, lineHeight:1.65, margin:0,
                 display:"-webkit-box", WebkitLineClamp:5, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{n.text}</p>
@@ -117,11 +118,11 @@ export default function NotesView({ adminMode }) {
                 <span style={{ color:"var(--text-faint)", fontSize:10 }}>{n.created}</span>
                 <div style={{ display:"flex", gap:6 }}>
                   <button onClick={() => togglePin(n.id)} title={n.pinned?"Unpin":"Pin"}
-                    style={{ background:"none", border:"none", cursor:"pointer", fontSize:13, opacity:n.pinned?1:0.4 }}>📌</button>
-                  <button onClick={() => editNote(n)}
-                    style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-muted)", fontSize:12 }}>✏️</button>
-                  <button onClick={() => deleteNote(n.id)}
-                    style={{ background:"none", border:"none", cursor:"pointer", color:"#F472B6", fontSize:12 }}>🗑</button>
+                    style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"var(--text-muted)", opacity:n.pinned?1:0.4 }}><Icon name="pin" size={13} sw={1.9} /></button>
+                  <button onClick={() => editNote(n)} title="Edit"
+                    style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"var(--text-muted)" }}><Icon name="edit" size={13} sw={1.9} /></button>
+                  <button onClick={() => deleteNote(n.id)} title="Delete"
+                    style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"#F472B6" }}><Icon name="trash" size={13} sw={1.9} /></button>
                 </div>
               </div>
             </div>

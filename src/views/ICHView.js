@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LiquidHeader } from "../lc";
+import { Icon } from "../icons";
 import { ICH_GUIDELINES } from "../extra-data";
 
 export default function ICHView() {
@@ -8,7 +9,7 @@ export default function ICHView() {
 
   return (
     <div style={{ maxWidth:1400, margin:"0 auto", padding:"28px 24px" }}>
-      <LiquidHeader eyebrow="GLOBAL HARMONIZATION" icon="📜" title="ICH Quality Guidelines" subtitle="9 core guidelines every CMC professional must know — decoded with practical CMC context" />
+      <LiquidHeader eyebrow="GLOBAL HARMONIZATION" icon={<Icon name="ich" size={28} sw={1.6} />} title="ICH Quality Guidelines" subtitle="9 core guidelines every CMC professional must know, decoded with practical CMC context." />
 
       <div style={{ display:"grid", gridTemplateColumns: gl ? "1fr 2fr" : "repeat(auto-fill,minmax(260px,1fr))", gap:16, alignItems:"start" }}>
         <div style={{ display:"grid", gridTemplateColumns: gl ? "1fr" : "repeat(auto-fill,minmax(260px,1fr))", gap:12 }}>
@@ -41,7 +42,7 @@ export default function ICHView() {
         {!gl && (
           <div style={{ background:"var(--bg-card)", borderRadius:14, border:"1px solid var(--border)", position:"sticky", top:80 }}>
             <div className="empty-hint">
-              <span className="eh-icon">📜</span>
+              <span className="eh-icon" style={{ display:"inline-flex", color:"var(--text-muted)" }}><Icon name="ich" size={26} sw={1.5} /></span>
               <p>Select a guideline on the left to see key requirements and CMC practical context.</p>
             </div>
           </div>
@@ -67,7 +68,7 @@ export default function ICHView() {
               </ul>
             </div>
 
-            <div style={{ background:"#7C3AED11", border:"1px solid #7C3AED33", borderRadius:10, padding:"12px 16px" }}>
+            <div style={{ background:"color-mix(in srgb, var(--accent) 8%, transparent)", border:"1px solid color-mix(in srgb, var(--accent) 25%, transparent)", borderRadius:10, padding:"12px 16px" }}>
               <strong style={{ color:"var(--accent-light)", fontSize:11, letterSpacing:"0.05em" }}>CMC PRACTICAL CONTEXT</strong>
               <p style={{ color:"var(--text-body)", margin:"8px 0 0", fontSize:13, lineHeight:1.65 }}>{gl.cmc}</p>
             </div>

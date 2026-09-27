@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════ */
-/*  CMC Master — QbD / CQA / CPP / COA Master Data            */
+/*  CMC Master: QbD / CQA / CPP / COA Master Data            */
 /* ════════════════════════════════════════════════════════════ */
 
 // ─ Quality Target Product Profile (QTPP) ─────────────────────
@@ -20,7 +20,7 @@ export const CQA_LIST = [
   {
     id:"cqa-aggregation", name:"Aggregation (HMW Species)", abbreviation:"HMW",
     category:"Purity", risk:"Critical", color:"#F472B6",
-    rationale:"HMW aggregates are linked to immunogenicity risk — pre-formed aggregates can trigger anti-drug antibody (ADA) responses. Aggregates ≥0.1 µm are most immunogenic. Upward HMW trend is the primary stability-indicating signal for protein biologics.",
+    rationale:"HMW aggregates are linked to immunogenicity risk: pre-formed aggregates can trigger anti-drug antibody (ADA) responses. Aggregates ≥0.1 µm are most immunogenic. Upward HMW trend is the primary stability-indicating signal for protein biologics.",
     spec:"≤2% by SEC-HPLC at release; ≤5% end-of-shelf-life",
     testMethods:["am-sec","am-dls","am-mfi","am-sec-mals"],
     linkedICH:["q6b","q8r2","q5c"],
@@ -55,7 +55,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-glycosylation", name:"Glycosylation Profile (Afucosylation %)", abbreviation:"Glycan",
-    category:"Function", risk:"Critical", color:"#A78BFA",
+    category:"Function", risk:"Critical", color:"#C99A3B",
     rationale:"For ADCC-dependent mAbs, afucosylation % directly governs FcγRIIIa binding affinity and NK-cell cytotoxicity. G0F/G1F/G2F/Man5 distribution impacts efficacy, FcRn recycling (PK), and immunogenicity. ICH Q6B §3.4 requires glycosylation characterization for all biologics.",
     spec:"Afucosylation 5–15%; G0+G1+G2 ≥60%; each high-mannose species <5%",
     testMethods:["am-glycan","am-peptide-map"],
@@ -139,7 +139,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-cci", name:"Container Closure Integrity (CCI)", abbreviation:"CCI",
-    category:"Safety", risk:"Critical", color:"#A78BFA",
+    category:"Safety", risk:"Critical", color:"#C0654A",
     rationale:"CCI ensures the sterile barrier is maintained throughout shelf life. A breached container exposes the product to microbial contamination and O₂ ingress. USP <1207> provides the framework; deterministic methods (vacuum decay, HVLD) are preferred over probabilistic methods.",
     spec:"No leak detected; vacuum decay ≤10⁻⁶ mbar·L/sec or equivalent",
     testMethods:[],
@@ -155,7 +155,7 @@ export const CQA_LIST = [
 export const CPP_LIST = [
   // UPSTREAM
   {
-    id:"cpp-do", name:"Dissolved Oxygen (DO) Setpoint", processStep:"Upstream — Bioreactor", stepColor:"#22D3EE",
+    id:"cpp-do", name:"Dissolved Oxygen (DO) Setpoint", processStep:"Upstream: Bioreactor", stepColor:"#22D3EE",
     normalRange:"20–60% air saturation", criticalLow:"<15%", criticalHigh:">80%",
     mechanismOfEffect:"DO regulates oxidative glycosylation pathways. Low DO → reduced UDP-glucose transfer → altered glycoform distribution (↑ high-mannose). High DO → oxidative stress → Met/Trp oxidation (charge variants, potency impact). Cascade: DO deviation → glycosylation CQA and charge variant CQA.",
     linkedCQAs:["cqa-glycosylation","cqa-charge-variants","cqa-aggregation"],
@@ -165,9 +165,9 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-ph-bioreactor", name:"Bioreactor pH Setpoint", processStep:"Upstream — Bioreactor", stepColor:"#22D3EE",
+    id:"cpp-ph-bioreactor", name:"Bioreactor pH Setpoint", processStep:"Upstream: Bioreactor", stepColor:"#22D3EE",
     normalRange:"pH 6.95–7.10 (setpoint 7.02)", criticalLow:"<6.80", criticalHigh:">7.30",
-    mechanismOfEffect:"pH directly affects glycosyltransferase enzyme activity (optimal pH 6.0–7.0) and cellular protein secretion. Low pH → increased acidic glycoforms; affects product deamidation rate. CO₂ accumulation at large scale lowers pH — active control critical.",
+    mechanismOfEffect:"pH directly affects glycosyltransferase enzyme activity (optimal pH 6.0–7.0) and cellular protein secretion. Low pH → increased acidic glycoforms; affects product deamidation rate. CO₂ accumulation at large scale lowers pH: active control critical.",
     linkedCQAs:["cqa-glycosylation","cqa-charge-variants","cqa-aggregation"],
     linkedICH:["q8r2","q11"],
     monitoringStrategy:"Inline pH probe (calibrated daily); CO₂ sparging + NaHCO₃/CO₂ overlay for adjustment. Scale-specific CO₂ management strategy.",
@@ -175,7 +175,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-temp-bioreactor", name:"Bioreactor Temperature", processStep:"Upstream — Bioreactor", stepColor:"#22D3EE",
+    id:"cpp-temp-bioreactor", name:"Bioreactor Temperature", processStep:"Upstream: Bioreactor", stepColor:"#22D3EE",
     normalRange:"37°C growth → 33–35°C production phase (temperature shift)", criticalLow:"<36°C (growth phase)", criticalHigh:">37.5°C",
     mechanismOfEffect:"Temperature shift is the most common upstream process strategy. Lower production temp: reduces high-mannose glycoforms, decreases aggregation by slowing folding kinetics, extends run duration, increases productivity. Deviations → altered glycosylation, aggregation, potency.",
     linkedCQAs:["cqa-glycosylation","cqa-aggregation","cqa-potency"],
@@ -185,7 +185,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-glucose-feed", name:"Glucose/Galactose Feed Strategy", processStep:"Upstream — Fed-Batch Feeding", stepColor:"#22D3EE",
+    id:"cpp-glucose-feed", name:"Glucose/Galactose Feed Strategy", processStep:"Upstream: Fed-Batch Feeding", stepColor:"#22D3EE",
     normalRange:"Glucose 2–8 mM; Galactose feed timed per PD protocol", criticalLow:"Glucose <1 mM", criticalHigh:"Glucose >20 mM (hyperosmolality)",
     mechanismOfEffect:"Galactose supplementation specifically increases G1F and G2F galactosylation. G2F glycoforms important for FcRn binding and complement. Nutrient depletion → cell stress → altered glycosylation, increased HCP secretion.",
     linkedCQAs:["cqa-glycosylation","cqa-hcp","cqa-potency"],
@@ -195,7 +195,7 @@ export const CPP_LIST = [
     riskLevel:"Medium-High",
   },
   {
-    id:"cpp-harvest-vcd", name:"Viable Cell Density (VCD) at Harvest", processStep:"Upstream — Harvest", stepColor:"#22D3EE",
+    id:"cpp-harvest-vcd", name:"Viable Cell Density (VCD) at Harvest", processStep:"Upstream: Harvest", stepColor:"#22D3EE",
     normalRange:"10–30 × 10⁶ cells/mL; viability ≥80%", criticalHigh:"Viability <75% or culture day >14",
     mechanismOfEffect:"High VCD + apoptosis at end of culture increases HCP release. Very high density causes nutrient depletion, lactate/ammonium accumulation, and product quality changes. Harvest timing balances yield vs. quality.",
     linkedCQAs:["cqa-hcp","cqa-aggregation"],
@@ -206,9 +206,9 @@ export const CPP_LIST = [
   },
   // DOWNSTREAM
   {
-    id:"cpp-pra-load", name:"Protein A Load Density", processStep:"Downstream — Protein A Capture (Step 1)", stepColor:"#34D399",
+    id:"cpp-pra-load", name:"Protein A Load Density", processStep:"Downstream: Protein A Capture (Step 1)", stepColor:"#34D399",
     normalRange:"≤30 g protein/L resin (dynamic binding capacity, DBC)", criticalHigh:">40 g/L (breakthrough)",
-    mechanismOfEffect:"Overloading above DBC leads to product breakthrough — yield loss and HCP carryover. DBC determined in process validation (10% breakthrough curve). Load density also affects HCP clearance and resin lifetime.",
+    mechanismOfEffect:"Overloading above DBC leads to product breakthrough: yield loss and HCP carryover. DBC determined in process validation (10% breakthrough curve). Load density also affects HCP clearance and resin lifetime.",
     linkedCQAs:["cqa-hcp","cqa-aggregation"],
     linkedICH:["q11"],
     monitoringStrategy:"UV280 load and flow-through monitoring; IPC: batch load calculation per batch record; UV breakthrough alarm",
@@ -216,17 +216,17 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-low-ph-hold", name:"Low pH Viral Inactivation (pH, Temp, Hold Time)", processStep:"Downstream — Viral Inactivation (Step 2)", stepColor:"#34D399",
+    id:"cpp-low-ph-hold", name:"Low pH Viral Inactivation (pH, Temp, Hold Time)", processStep:"Downstream: Viral Inactivation (Step 2)", stepColor:"#34D399",
     normalRange:"pH 3.50 ± 0.05; ≥37°C; ≥60 min hold", criticalLow:"pH >3.70 = insufficient; hold <55 min",
     mechanismOfEffect:"Low pH denatures enveloped virus capsids by disrupting lipid bilayer. Must achieve ≥4-log LRV for retroviruses. pH <3.4 risks mAb aggregation. All three parameters are critical: pH ≤3.7, time ≥60 min, temperature ≥15°C (per ICH Q5A framework).",
     linkedCQAs:["cqa-aggregation","cqa-potency","cqa-sterility"],
     linkedICH:["q5a","q11"],
     monitoringStrategy:"In-process pH measurement before/during hold; validated timer; post-inactivation SEC IPC",
     controlMethod:"Validated acidification procedure; batch record timers; post-hold neutralization; SEC IPC to confirm product quality",
-    riskLevel:"Critical (viral safety — not a quality attribute but process safety control)",
+    riskLevel:"Critical (viral safety: not a quality attribute but process safety control)",
   },
   {
-    id:"cpp-cex-gradient", name:"CEX Chromatography pH and Salt Gradient", processStep:"Downstream — CEX Polishing (Step 3)", stepColor:"#34D399",
+    id:"cpp-cex-gradient", name:"CEX Chromatography pH and Salt Gradient", processStep:"Downstream: CEX Polishing (Step 3)", stepColor:"#34D399",
     normalRange:"Load pH 5.0; elution 0–500 mM NaCl gradient over 20 CV; collection by UV + IPC",
     criticalLow:"Load pH >5.3 (poor binding); gradient <15 CV (poor resolution)",
     mechanismOfEffect:"CEX separates charge variants by isoelectric point. Gradient slope controls charge variant profile of the elution pool (acidic species removal vs. main peak recovery). Also clears HCP, DNA, and leached Protein A.",
@@ -237,9 +237,9 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-ufdf-tmp", name:"UF/DF Transmembrane Pressure (TMP)", processStep:"Downstream — UF/DF (Final Step)", stepColor:"#34D399",
+    id:"cpp-ufdf-tmp", name:"UF/DF Transmembrane Pressure (TMP)", processStep:"Downstream: UF/DF (Final Step)", stepColor:"#34D399",
     normalRange:"TMP ≤2.0 bar; flux ≤30 LMH", criticalHigh:"TMP >3.0 bar",
-    mechanismOfEffect:"Excessive TMP causes protein fouling of the TFF membrane, flux decline, and — critically — surface-induced aggregation. High-concentration mAbs (>50 mg/mL) especially susceptible. Final concentration set by UF/DF volume target.",
+    mechanismOfEffect:"Excessive TMP causes protein fouling of the TFF membrane, flux decline, and: critically: surface-induced aggregation. High-concentration mAbs (>50 mg/mL) especially susceptible. Final concentration set by UF/DF volume target.",
     linkedCQAs:["cqa-aggregation","cqa-particulates","cqa-concentration"],
     linkedICH:["q8r2","q11"],
     monitoringStrategy:"Online TMP sensors; daily permeate protein monitoring; IPC: concentration by A280 and SEC after UF/DF",
@@ -248,7 +248,7 @@ export const CPP_LIST = [
   },
   // DRUG PRODUCT
   {
-    id:"cpp-formulation-ph", name:"Formulation pH", processStep:"Drug Product — Formulation", stepColor:"#A78BFA",
+    id:"cpp-formulation-ph", name:"Formulation pH", processStep:"Drug Product: Formulation", stepColor:"#7A8FA6",
     normalRange:"pH 5.5 ± 0.2 (histidine buffer)", criticalLow:"<5.0 (acid hydrolysis)", criticalHigh:">6.5 (deamidation acceleration)",
     mechanismOfEffect:"Formulation pH is the single most impactful parameter on chemical degradation rate. Deamidation (Asn→Asp) is fastest at neutral/alkaline pH; slowest at pH 4–5. Also affects electrostatic repulsion and aggregation propensity (physical stability). pH 5.5 optimal for most mAbs.",
     linkedCQAs:["cqa-aggregation","cqa-charge-variants","cqa-potency"],
@@ -454,7 +454,7 @@ export const CONTROL_STRATEGY = {
       ],
     },
     {
-      tier:4, name:"Raw Material Controls", color:"#A78BFA",
+      tier:4, name:"Raw Material Controls", color:"#C99A3B",
       description:"Control of critical raw materials (CRM) that directly impact product quality or safety. Enhanced testing or Certificate of Analysis (CoA) verification required.",
       elements:[
         { control:"Cell culture media components", target:"Vendor CoA + identity testing on each lot received", frequency:"Each lot received", linkedCPP:"Multiple CPPs" },
@@ -485,48 +485,48 @@ export const COA_ELEMENTS = {
     "Certificate of Analysis version number and superseded version(s)",
   ],
   regulatoryBasis:[
-    "21 CFR 211.184 — FDA requires laboratory records including specifications and test results",
-    "21 CFR 601.12 — BLA holder must submit COA data supporting each lot disposition",
-    "ICH Q6B §3 — Specifications must include test procedures, acceptance criteria, and justified limits",
-    "ICH Q10 §3.2.3 — Quality system requires documented release procedures and COA generation",
-    "EU GMP Annex 16 — Qualified Person (QP) responsible for certifying batch for release in EU",
+    "21 CFR 211.184: FDA requires laboratory records including specifications and test results",
+    "21 CFR 601.12: BLA holder must submit COA data supporting each lot disposition",
+    "ICH Q6B §3: Specifications must include test procedures, acceptance criteria, and justified limits",
+    "ICH Q10 §3.2.3: Quality system requires documented release procedures and COA generation",
+    "EU GMP Annex 16: Qualified Person (QP) responsible for certifying batch for release in EU",
     "USP <1> Visual Inspection; USP <85> Bacterial Endotoxins; USP <71> Sterility",
   ],
   dsExample:{
-    title:"Example Drug Substance COA — mAb [Product Name] DS, 10 mg/mL in histidine buffer, Lot ABC-2024-001",
+    title:"Example Drug Substance COA: mAb [Product Name] DS, 10 mg/mL in histidine buffer, Lot ABC-2024-001",
     tests:[
-      { test:"Appearance", method:"Visual inspection (Ph. Eur. 2.9.20)", spec:"Clear to slightly opalescent; colorless to pale yellow; essentially free of visible particles", result:"Clear, colorless, no visible particles — PASS" },
-      { test:"Protein Concentration (A280)", method:"UV spectrophotometry (ε = 1.42 mL/mg·cm)", spec:"9.5–10.5 mg/mL", result:"10.1 mg/mL — PASS" },
-      { test:"Identity (CE-SDS NR)", method:"CE-SDS non-reduced (Beckman PA 800)", spec:"HC+LC ≈ 148 kDa; band pattern consistent with reference", result:"148.2 kDa; consistent — PASS" },
-      { test:"Purity — Monomer % (SEC-HPLC)", method:"SEC-HPLC (TSKgel G3000SWxL, PBS pH 7.4)", spec:"Monomer ≥97.0%", result:"98.4% monomer, 1.6% HMW — PASS" },
-      { test:"Purity — CE-SDS NR Main Peak %", method:"CE-SDS non-reduced", spec:"Main peak ≥95.0%", result:"97.1% — PASS" },
-      { test:"Charge Variant Profile (icIEF)", method:"icIEF (Protein Simple iCE3)", spec:"Main ≥75.0%; Acidic ≤15.0%; Basic ≤10.0%", result:"Main 82.1%, Acidic 11.3%, Basic 6.6% — PASS" },
-      { test:"Potency (ADCC Reporter Gene Assay)", method:"FcγRIIIa ADCC RGA (validated per ICH Q2(R1))", spec:"70.0–130.0% relative activity vs. RS", result:"96.2% — PASS" },
-      { test:"Glycosylation — Afucosylation %", method:"HILIC-UPLC RapiFluor-MS labeled", spec:"5.0–15.0% afucosylated glycoforms", result:"9.4% — PASS" },
-      { test:"Host Cell Protein (HCP ELISA)", method:"Generic CHO HCP ELISA (Cygnus Technologies F550)", spec:"≤100 ppm (ng HCP/mg protein)", result:"18 ppm — PASS" },
-      { test:"Residual Protein A (ELISA)", method:"Protein A sandwich ELISA (Cygnus)", spec:"≤2.0 ppm", result:"<0.1 ppm (below quantitation limit) — PASS" },
-      { test:"Endotoxin (LAL KCA)", method:"KCA-LAL (Charles River Endosafe)", spec:"≤0.5 EU/mg protein", result:"<0.05 EU/mg — PASS" },
-      { test:"Bioburden (pre-sterile filtration)", method:"Membrane filtration, USP <61>/<62>", spec:"≤10 CFU/100 mL", result:"<1 CFU/100 mL — PASS" },
+      { test:"Appearance", method:"Visual inspection (Ph. Eur. 2.9.20)", spec:"Clear to slightly opalescent; colorless to pale yellow; essentially free of visible particles", result:"Clear, colorless, no visible particles: PASS" },
+      { test:"Protein Concentration (A280)", method:"UV spectrophotometry (ε = 1.42 mL/mg·cm)", spec:"9.5–10.5 mg/mL", result:"10.1 mg/mL: PASS" },
+      { test:"Identity (CE-SDS NR)", method:"CE-SDS non-reduced (Beckman PA 800)", spec:"HC+LC ≈ 148 kDa; band pattern consistent with reference", result:"148.2 kDa; consistent: PASS" },
+      { test:"Purity: Monomer % (SEC-HPLC)", method:"SEC-HPLC (TSKgel G3000SWxL, PBS pH 7.4)", spec:"Monomer ≥97.0%", result:"98.4% monomer, 1.6% HMW: PASS" },
+      { test:"Purity: CE-SDS NR Main Peak %", method:"CE-SDS non-reduced", spec:"Main peak ≥95.0%", result:"97.1%: PASS" },
+      { test:"Charge Variant Profile (icIEF)", method:"icIEF (Protein Simple iCE3)", spec:"Main ≥75.0%; Acidic ≤15.0%; Basic ≤10.0%", result:"Main 82.1%, Acidic 11.3%, Basic 6.6%: PASS" },
+      { test:"Potency (ADCC Reporter Gene Assay)", method:"FcγRIIIa ADCC RGA (validated per ICH Q2(R1))", spec:"70.0–130.0% relative activity vs. RS", result:"96.2%: PASS" },
+      { test:"Glycosylation: Afucosylation %", method:"HILIC-UPLC RapiFluor-MS labeled", spec:"5.0–15.0% afucosylated glycoforms", result:"9.4%: PASS" },
+      { test:"Host Cell Protein (HCP ELISA)", method:"Generic CHO HCP ELISA (Cygnus Technologies F550)", spec:"≤100 ppm (ng HCP/mg protein)", result:"18 ppm: PASS" },
+      { test:"Residual Protein A (ELISA)", method:"Protein A sandwich ELISA (Cygnus)", spec:"≤2.0 ppm", result:"<0.1 ppm (below quantitation limit): PASS" },
+      { test:"Endotoxin (LAL KCA)", method:"KCA-LAL (Charles River Endosafe)", spec:"≤0.5 EU/mg protein", result:"<0.05 EU/mg: PASS" },
+      { test:"Bioburden (pre-sterile filtration)", method:"Membrane filtration, USP <61>/<62>", spec:"≤10 CFU/100 mL", result:"<1 CFU/100 mL: PASS" },
     ],
-    disposition:"RELEASED — All specifications met. Lot ABC-2024-001 is approved for use in clinical drug product manufacturing.",
+    disposition:"RELEASED: All specifications met. Lot ABC-2024-001 is approved for use in clinical drug product manufacturing.",
   },
   dpExample:{
-    title:"Example Drug Product COA — mAb [Product Name] DP, 10 mg/mL, 10 mL Vial, Lot DPL-2024-007",
+    title:"Example Drug Product COA: mAb [Product Name] DP, 10 mg/mL, 10 mL Vial, Lot DPL-2024-007",
     tests:[
-      { test:"Appearance (100% visual inspection)", method:"Automated inspection line + manual AQL (USP <1>)", spec:"Clear, colorless solution, essentially free of visible particles", result:"All units pass — PASS" },
-      { test:"Identity (CE-SDS NR)", method:"CE-SDS non-reduced pattern vs. reference", spec:"Band pattern consistent with reference standard", result:"Consistent — PASS" },
-      { test:"Protein Concentration (A280)", method:"UV spectrophotometry", spec:"9.0–11.0 mg/mL", result:"10.3 mg/mL — PASS" },
-      { test:"pH", method:"Calibrated pH meter", spec:"5.3–5.7", result:"5.5 — PASS" },
-      { test:"Osmolality", method:"Vapor pressure osmometry (Wescor Vapro)", spec:"260–330 mOsm/kg", result:"295 mOsm/kg — PASS" },
-      { test:"Purity — SEC-HPLC Monomer %", method:"SEC-HPLC", spec:"Monomer ≥97.0%", result:"98.1% — PASS" },
-      { test:"Purity — CE-SDS NR Main Peak %", method:"CE-SDS non-reduced", spec:"Main peak ≥95.0%", result:"96.8% — PASS" },
-      { test:"Potency (ADCC RGA)", method:"FcγRIIIa ADCC Reporter Gene Assay", spec:"70.0–130.0%", result:"103.4% — PASS" },
-      { test:"Sub-visible Particulates (MFI)", method:"Micro-Flow Imaging MFI-5200", spec:"≤6,000/container ≥10 µm; ≤600/container ≥25 µm", result:"2,340 ≥10 µm; 185 ≥25 µm — PASS" },
-      { test:"Endotoxin (LAL KCA)", method:"KCA-LAL kinetic chromogenic", spec:"≤0.2 EU/mL", result:"<0.05 EU/mL — PASS" },
-      { test:"Sterility (USP <71>)", method:"Membrane filtration, 14-day incubation", spec:"No growth", result:"No growth at day 14 — PASS" },
-      { test:"Fill Volume / Weight", method:"Gravimetric (100% IPC during filling)", spec:"9.7–10.3 mL (10.0 ± 0.3 mL)", result:"Mean 10.1 mL, CV 0.4% — PASS" },
-      { test:"Container Closure Integrity (CCI)", method:"Vacuum decay (Uson), USP <1207>", spec:"No leak detected (≤10⁻⁶ mbar·L/sec)", result:"0/100 units leaking — PASS" },
+      { test:"Appearance (100% visual inspection)", method:"Automated inspection line + manual AQL (USP <1>)", spec:"Clear, colorless solution, essentially free of visible particles", result:"All units pass: PASS" },
+      { test:"Identity (CE-SDS NR)", method:"CE-SDS non-reduced pattern vs. reference", spec:"Band pattern consistent with reference standard", result:"Consistent: PASS" },
+      { test:"Protein Concentration (A280)", method:"UV spectrophotometry", spec:"9.0–11.0 mg/mL", result:"10.3 mg/mL: PASS" },
+      { test:"pH", method:"Calibrated pH meter", spec:"5.3–5.7", result:"5.5: PASS" },
+      { test:"Osmolality", method:"Vapor pressure osmometry (Wescor Vapro)", spec:"260–330 mOsm/kg", result:"295 mOsm/kg: PASS" },
+      { test:"Purity: SEC-HPLC Monomer %", method:"SEC-HPLC", spec:"Monomer ≥97.0%", result:"98.1%: PASS" },
+      { test:"Purity: CE-SDS NR Main Peak %", method:"CE-SDS non-reduced", spec:"Main peak ≥95.0%", result:"96.8%: PASS" },
+      { test:"Potency (ADCC RGA)", method:"FcγRIIIa ADCC Reporter Gene Assay", spec:"70.0–130.0%", result:"103.4%: PASS" },
+      { test:"Sub-visible Particulates (MFI)", method:"Micro-Flow Imaging MFI-5200", spec:"≤6,000/container ≥10 µm; ≤600/container ≥25 µm", result:"2,340 ≥10 µm; 185 ≥25 µm: PASS" },
+      { test:"Endotoxin (LAL KCA)", method:"KCA-LAL kinetic chromogenic", spec:"≤0.2 EU/mL", result:"<0.05 EU/mL: PASS" },
+      { test:"Sterility (USP <71>)", method:"Membrane filtration, 14-day incubation", spec:"No growth", result:"No growth at day 14: PASS" },
+      { test:"Fill Volume / Weight", method:"Gravimetric (100% IPC during filling)", spec:"9.7–10.3 mL (10.0 ± 0.3 mL)", result:"Mean 10.1 mL, CV 0.4%: PASS" },
+      { test:"Container Closure Integrity (CCI)", method:"Vacuum decay (Uson), USP <1207>", spec:"No leak detected (≤10⁻⁶ mbar·L/sec)", result:"0/100 units leaking: PASS" },
     ],
-    disposition:"RELEASED — All specifications met. Lot DPL-2024-007 is approved for patient administration.",
+    disposition:"RELEASED: All specifications met. Lot DPL-2024-007 is approved for patient administration.",
   },
 };

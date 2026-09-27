@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { SectionHeader, InfoBox, FilterBtn, Badge, LC, sm2Update } from "../shared";
+import { Icon } from "../icons";
 import { PIPELINE, DOMAINS } from "../cmc-data";
 
 export default function ExamView() {
@@ -59,12 +60,12 @@ export default function ExamView() {
 
   if (!started) return (
     <div style={{ maxWidth:960, margin:"0 auto", padding:"32px 24px" }}>
-      <SectionHeader icon="🎯" title="Exam Mode" subtitle="Answers are hidden — reveal them one at a time as you work through each question" />
+      <SectionHeader icon={<Icon name="exam" size={28} sw={1.6} />} title="Exam Mode" subtitle="No multiple choice, no guessing your way through it. Answers stay hidden until you commit to one." />
 
       {dueToday > 0 && (
         <div style={{ background:"#F59E0B18", border:"1px solid #F59E0B44", borderRadius:10, padding:"10px 16px",
           marginBottom:16, display:"flex", alignItems:"center", gap:10 }}>
-          <span style={{ color:"#F59E0B", fontWeight:800 }}>🧠 {dueToday} SM-2 questions due today</span>
+          <span style={{ color:"#F59E0B", fontWeight:800, display:"flex", alignItems:"center", gap:7 }}><Icon name="lightbulb" size={15} sw={1.9} /> {dueToday} SM-2 questions due today</span>
           <button onClick={() => setSrMode(true)}
             style={{ background:"#F59E0B", color:"#000", border:"none", borderRadius:6, padding:"4px 12px",
               cursor:"pointer", fontWeight:700, fontSize:12 }}>Enable Spaced Rep Mode</button>
@@ -77,8 +78,8 @@ export default function ExamView() {
           <button onClick={() => setSrMode(m => !m)}
             style={{ background: srMode ? "#F59E0B" : "var(--bg-surface)", color: srMode ? "#000" : "var(--text-sec)",
               border:`1px solid ${srMode ? "#F59E0B" : "var(--border)"}`, borderRadius:8, padding:"6px 14px",
-              cursor:"pointer", fontWeight:700, fontSize:12, transition:"all 0.18s" }}>
-            🧠 Spaced Rep {srMode ? "ON" : "OFF"}
+              cursor:"pointer", fontWeight:700, fontSize:12, transition:"all 0.18s", display:"flex", alignItems:"center", gap:7 }}>
+            <Icon name="lightbulb" size={13} sw={1.9} /> Spaced Rep {srMode ? "ON" : "OFF"}
           </button>
         </div>
 
@@ -114,12 +115,12 @@ export default function ExamView() {
             style={{ background:"var(--select-bg)", border:"1px solid var(--border)", borderRadius:8, padding:"9px 12px",
               color:"var(--text-body)", fontSize:13 }}>
             <option value="All">All Domains</option>
-            {DOMAINS.map(d => <option key={d.id} value={d.id}>{d.icon} {d.label}</option>)}
+            {DOMAINS.map(d => <option key={d.id} value={d.id}>{d.label}</option>)}
           </select>
         </div>
 
         <div style={{ color:"var(--text-muted)", fontSize:13, marginBottom:20 }}>
-          <strong style={{ color:"var(--text-body)" }}>{allQ.length}</strong> questions available — exam draws up to 20 randomly
+          <strong style={{ color:"var(--text-body)" }}>{allQ.length}</strong> questions available. Each exam draws up to 20 at random.
         </div>
 
         <button onClick={start} disabled={allQ.length===0}
@@ -139,7 +140,7 @@ export default function ExamView() {
     <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 24px" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:22, flexWrap:"wrap", gap:12 }}>
         <div>
-          <h2 style={{ color:"var(--text-h)", margin:0, fontSize:24, fontWeight:900 }}>🎯 Exam Mode</h2>
+          <h2 style={{ color:"var(--text-h)", margin:0, fontSize:24, fontWeight:900, display:"flex", alignItems:"center", gap:10 }}><Icon name="exam" size={22} sw={1.7} /> Exam Mode</h2>
           <p style={{ color:"var(--text-sec)", margin:"4px 0 0", fontSize:13 }}>{score} of {questions.length} revealed</p>
         </div>
         <div style={{ display:"flex", gap:10 }}>
@@ -163,11 +164,11 @@ export default function ExamView() {
           </span>
           <span style={{ background:`${score===questions.length?"#34D39922":"var(--bg-surface)"}`, color:score===questions.length?"#34D399":"var(--accent-light)",
             borderRadius:8, padding:"3px 10px", fontSize:11, fontWeight:800 }}>
-            {score===questions.length ? "✓ Complete" : `${Math.round(score/questions.length*100)}%`}
+            {score===questions.length ? "Complete" : `${Math.round(score/questions.length*100)}%`}
           </span>
         </div>
         <div style={{ background:"var(--bg-surface)", borderRadius:4, height:7, overflow:"hidden" }}>
-          <div className="progress-bar" style={{ background:"linear-gradient(90deg, var(--accent), #22D3EE)", borderRadius:4, height:7,
+          <div className="progress-bar" style={{ background:"var(--accent)", borderRadius:4, height:7,
             width:`${score/questions.length*100}%` }} />
         </div>
       </div>
@@ -191,17 +192,17 @@ export default function ExamView() {
                 cursor:"pointer", fontWeight:700, fontSize:13, transition:"all 0.18s" }}
               onMouseEnter={e => { e.currentTarget.style.background="var(--accent)"; e.currentTarget.style.color="#fff"; }}
               onMouseLeave={e => { e.currentTarget.style.background="var(--bg-surface)"; e.currentTarget.style.color="var(--accent-light)"; }}>
-              👁 Reveal Answer
+              <span style={{ display:"inline-flex", alignItems:"center", gap:7 }}><Icon name="eye" size={14} sw={1.8} /> Reveal Answer</span>
             </button>
           ) : (
             <div style={{ borderTop:"1px solid var(--border)", paddingTop:16, animation:"slideDown 0.2s ease" }}>
               <InfoBox color="#22D3EE" label="WHY IT MATTERS" text={q.why} />
               <InfoBox color="#34D399" label="HOW TO FIND THE ANSWER" text={q.how} />
-              <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>📎 {q.ref}</p>
+              <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>Ref: {q.ref}</p>
               {srMode && (
                 <div style={{ marginTop:14, padding:"12px", background:"var(--bg-surface)", borderRadius:8 }}>
-                  <div style={{ color:"var(--text-faint)", fontSize:11, fontWeight:700, marginBottom:8 }}>
-                    🧠 HOW WELL DID YOU KNOW THIS? {srRated[q.id] !== undefined && <span style={{ color:"#34D399" }}>✓ Rated</span>}
+                  <div style={{ color:"var(--text-faint)", fontSize:11, fontWeight:700, marginBottom:8, display:"flex", alignItems:"center", gap:7 }}>
+                    <Icon name="lightbulb" size={13} sw={1.9} /> HOW WELL DID YOU KNOW THIS? {srRated[q.id] !== undefined && <span style={{ color:"#34D399", display:"inline-flex", alignItems:"center", gap:4 }}><Icon name="check" size={12} sw={2.2} /> Rated</span>}
                   </div>
                   <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
                     {[{q:0,label:"Again",c:"#F87171"},{q:1,label:"Hard",c:"#F59E0B"},{q:3,label:"Good",c:"#34D399"},{q:5,label:"Easy",c:"#22D3EE"}].map(r => (
