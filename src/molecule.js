@@ -123,6 +123,10 @@ export const STRESSES = [
     what:"Met252 and Met428 oxidise at the CH2/CH3 interface, weakening FcRn binding; Trp in the CDRs oxidises too.",
     how:[["Peptide map", "am-peptide-map", "% Met-ox"], ["SPR (FcRn)", "am-spr", "KD shift"]],
     hit:(b) => b.metox || b.cdr },
+  { id:"agit",  label:"Agitation", cond:"Shaking, pumping, air-liquid interface",
+    what:"Interfacial stress partly unfolds the molecule at the air-liquid interface; exposed hydrophobic patches seed aggregates and subvisible particles.",
+    how:[["Micro-flow imaging", "am-mfi", "particles/mL"], ["SEC-HPLC", "am-sec", "%HMW"]],
+    hit:(b) => (b.group === "fc" && b.p[1] > -5.4) || b.cdr },
   { id:"base",  label:"High pH",   cond:"pH 8, long storage",
     what:"Asn deamidation at NG motifs in the CDRs adds negative charge and can cut binding.",
     how:[["cIEF", "am-cief", "% acidic"], ["CEX-HPLC", "am-iex", "% acidic"]],
@@ -261,7 +265,7 @@ export default function Molecule({ dark, stress, onHover, onPick, labels = true,
           const sideX = g === "glycan" ? 1 : g === "hinge" ? -1 : Math.sign(dx) || 1;
           const lx = g === "hinge" || g === "glycan" ? q[0] + sideX * reach : q[0] + (dx / l) * reach;
           let ly = g === "hinge" || g === "glycan" ? q[1] : q[1] + (dy / l) * reach;
-          ly = Math.max(30, Math.min(H - 30, ly));
+          ly = Math.max(30, Math.min(H - (W < 600 ? 70 : 30), ly));
           ctx.globalAlpha = hg && hg !== g ? 0.25 : 0.8;
           ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(lx, ly); ctx.stroke();
           ctx.beginPath(); ctx.arc(q[0], q[1], 2.2, 0, Math.PI * 2); ctx.fillStyle = ink; ctx.fill();
@@ -307,7 +311,12 @@ export default function Molecule({ dark, stress, onHover, onPick, labels = true,
       if (!S.drag) return;
       const clicked = S.drag.moved < 6;
       S.drag = null;
-      if (clicked) { const r = rect(); const g = pick(ev.clientX - r.left, ev.clientY - r.top); if (g) cb.current.onPick?.(g); }
+      if (clicked) {
+        const r = rect(); const g = pick(ev.clientX - r.left, ev.clientY - r.top);
+        // touch: first tap inspects a domain, a second tap on it opens its assay
+        if (ev.pointerType === "touch" && g !== S.hover) { S.hover = g; setHoverGroup(g); cb.current.onHover?.(g); }
+        else if (g) cb.current.onPick?.(g);
+      }
     };
     const leave = () => { if (S.hover) { S.hover = null; setHoverGroup(null); cb.current.onHover?.(null); } };
     canvas.addEventListener("pointerdown", down);

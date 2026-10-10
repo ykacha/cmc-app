@@ -52,8 +52,6 @@ function Badge({ children, color, bg }) {
 
 /* ─── Tab 1: Conditions ───────────────────────────────────── */
 function ConditionsTab({ selectedCondition, onSelectCondition }) {
-  const [hovered, setHovered] = useState(null);
-
   return (
     <div>
       <SectionHeader
@@ -62,99 +60,32 @@ function ConditionsTab({ selectedCondition, onSelectCondition }) {
         subtitle="ICH Q1A(R2): required storage conditions for drug substance and drug product stability studies."
       />
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: 16,
-        marginBottom: 32,
-      }}>
-        {STABILITY_CONDITIONS.map((cond) => {
-          const isSelected = selectedCondition?.id === cond.id;
-          const isHovered = hovered === cond.id;
-          return (
-            <div
-              key={cond.id}
-              onClick={() => onSelectCondition(isSelected ? null : cond)}
-              onMouseEnter={() => setHovered(cond.id)}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                background: "var(--bg-card)",
-                border: `1.5px solid ${isSelected ? cond.color : "var(--border)"}`,
-                borderRadius: 12,
-                borderTop: `4px solid ${cond.color}`,
-                padding: 20,
-                cursor: "pointer",
-                transition: "all 0.18s ease",
-                boxShadow: isHovered || isSelected
-                  ? `0 6px 24px rgba(0,0,0,0.45), 0 0 0 1px ${cond.color}44`
-                  : "0 2px 8px rgba(0,0,0,0.25)",
-                transform: isHovered ? "translateY(-2px)" : "translateY(0)",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ display: "flex", color: cond.color }}><Icon name={cond.icon} size={16} sw={1.8} /></span>
-                  <span style={{
-                    fontWeight: 700,
-                    fontSize: 14,
-                    color: "var(--text-h)",
-                  }}>{cond.label}</span>
-                </div>
-                <Badge color={cond.color} bg={cond.color + "22"}>Zone {cond.zone}</Badge>
-              </div>
-
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "6px 12px",
-                marginBottom: 10,
-                padding: "10px 12px",
-                background: "var(--bg-surface)",
-                borderRadius: 8,
-                border: "1px solid var(--border)",
-              }}>
-                <div>
-                  <div style={{ fontSize: 10, color: "var(--text-muted)", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.6px" }}>Temp</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: cond.color }}>{cond.temp}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 10, color: "var(--text-muted)", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.6px" }}>RH</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text-body)" }}>{cond.rh}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 10, color: "var(--text-muted)", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.6px" }}>Duration</div>
-                  <div style={{ fontSize: 12, color: "var(--text-body)" }}>{cond.duration}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 10, color: "var(--text-muted)", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.6px" }}>Timepoints</div>
-                  <div style={{ fontSize: 12, color: "var(--text-body)" }}>{cond.freq_notes.split(",").length} pulls</div>
-                </div>
-              </div>
-
-              <p style={{ margin: 0, fontSize: 12, color: "var(--text-sec)", lineHeight: 1.5 }}>
-                {cond.description}
-              </p>
-
-              {isSelected && (
-                <div style={{
-                  marginTop: 12,
-                  padding: "8px 10px",
-                  background: cond.color + "18",
-                  borderRadius: 6,
-                  border: `1px solid ${cond.color}44`,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                }}>
-                  <span style={{ fontSize: 11, color: cond.color, fontWeight: 600 }}>
-                    ↓ See timepoints below
-                  </span>
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <div className="sv-tablewrap">
+        <table className="sv-table">
+          <thead>
+            <tr><th>Condition</th><th>Temperature</th><th>Humidity</th><th>Duration</th><th>Pulls</th><th>Zone</th><th>What it supports</th></tr>
+          </thead>
+          <tbody>
+            {STABILITY_CONDITIONS.map((cond) => {
+              const isSelected = selectedCondition?.id === cond.id;
+              const pick = () => onSelectCondition(isSelected ? null : cond);
+              return (
+                <tr key={cond.id} className={isSelected ? "is-on" : ""} style={{ "--row": cond.color }} tabIndex={0}
+                  aria-selected={isSelected} onClick={pick} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } }}>
+                  <td><span className="sv-rowname"><span style={{ display: "flex", color: cond.color }}><Icon name={cond.icon} size={15} sw={1.8} /></span>{cond.label}</span></td>
+                  <td className="sv-mono">{cond.temp}</td>
+                  <td className="sv-mono">{cond.rh}</td>
+                  <td>{cond.duration}</td>
+                  <td className="sv-mono">{cond.freq_notes.split(",").length}</td>
+                  <td className="sv-mono">{cond.zone}</td>
+                  <td className="sv-desc">{cond.description}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+      <p style={{ margin: "10px 0 28px", fontSize: 13, color: "var(--text-muted)" }}>Select a condition to see its required pull schedule.</p>
 
       {/* Timepoints panel */}
       {selectedCondition && (
@@ -785,7 +716,6 @@ export default function StabilityView() {
       <PageHead
         title="Stability Studies"
         subtitle="ICH Q1A(R2), Q1B, Q1C, Q1D and Q1E: storage conditions, climatic zones, study design, and the statistics behind shelf life."
-        facts={[[STABILITY_CONDITIONS.length, "Storage conditions"], [ICH_Q1_ZONES.length, "ICH climatic zones"], [STABILITY_TESTS.length, "Product types"], [SHELF_LIFE_STATS.length, "Shelf-life profiles"]]}
         tabs={tabs} active={activeTab} onTab={setActiveTab}
       />
 

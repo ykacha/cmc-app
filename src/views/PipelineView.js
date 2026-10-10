@@ -132,31 +132,25 @@ export default function PipelineView() {
       {mode === "overview" && (
         <div style={{ animation:"lc-dropin .3s ease" }}>
           {PHASES.map(p => (
-            <div key={p.id} style={{ marginBottom:26 }}>
-              <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:13 }}>
+            <div key={p.id} style={{ marginBottom:52 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:18 }}>
                 <span style={{ display:"flex", color:p.color }}><Icon name={p.ic} size={16} /></span>
                 <span style={{ color:TEXT, fontSize:15, fontWeight:700 }}>{p.name}</span>
                 <span className="sv-mono" style={{ color:FAINT, fontSize:12 }}>{String(p.range[0]).padStart(2,"0")}–{String(p.range[1]).padStart(2,"0")}</span>
                 <div style={{ flex:1, height:1, background:`color-mix(in srgb, ${p.color} 22%, transparent)` }}/>
               </div>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(265px,1fr))", gap:12 }}>
+              <div className="pl-cells" style={{ "--seg": p.color }}>
                 {stagesIn(p).map(s => (
-                  <button key={s.id} onClick={() => enterStage(s.id)} className="lc-meshhost lc-shine"
-                    style={{ ...glassPanel, borderTop:`3px solid ${p.color}`, padding:"15px 17px", textAlign:"left", cursor:"pointer", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", transition:"transform .2s, border-color .2s" }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = "none"; }}>
-                    <span className="lc-meshlayer" />
-                    <div style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", height:"100%" }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:9 }}>
-                        <span style={{ fontFamily:MONO, fontSize:12, color:FAINT, fontWeight:700 }}>{s.stage}</span>
-                        <span style={{ display:"flex", color:p.color }}><Icon name={stageIcon(s.id)} size={18} /></span>
-                        <span style={{ marginLeft:"auto", fontFamily:MONO, fontSize:10, color:FAINT }}>{s.topics?.length || 0}T · {s.questions?.length || 0}Q</span>
-                      </div>
-                      <div style={{ color:TEXT, fontWeight:800, fontSize:15, letterSpacing:"-.01em" }}>{s.label}</div>
-                      <div style={{ color:FAINT, fontSize:12, fontWeight:600, marginBottom:7 }}>{s.sub}</div>
-                      <div style={{ color:SUB, fontSize:12, lineHeight:1.55, flex:1, display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{preview(s)}</div>
-                      <div style={{ color:"var(--accent)", fontSize:13, fontWeight:700, marginTop:11 }}>Open stage</div>
-                    </div>
+                  <button key={s.id} onClick={() => enterStage(s.id)} className="pl-cell">
+                    <i />
+                    <span className="pl-cell-top">
+                      <span className="sv-mono">{s.stage}</span>
+                      <span style={{ display:"flex", color:p.color }}><Icon name={stageIcon(s.id)} size={17} /></span>
+                    </span>
+                    <strong>{s.label}</strong>
+                    <span className="pl-cell-sub">{s.sub}</span>
+                    <span className="pl-cell-prev">{preview(s)}</span>
+                    <span className="pl-cell-meta">{s.topics?.length || 0} topics, {s.questions?.length || 0} questions</span>
                   </button>
                 ))}
               </div>
@@ -216,9 +210,9 @@ export default function PipelineView() {
             </div>
 
             <div style={{ display:"flex", gap:8 }}>
-              <button onClick={() => prev && jump(prev.id)} disabled={!prev} className="lc-ghost lc-shine" style={{ flex:1, padding:"9px 10px", fontSize:12, opacity: prev ? 1 : 0.4, cursor: prev ? "pointer" : "default" }}>← Prev</button>
+              <button onClick={() => prev && jump(prev.id)} disabled={!prev} className="lc-ghost lc-shine" style={{ flex:1, padding:"9px 10px", fontSize:12, opacity: prev ? 1 : 0.4, cursor: prev ? "pointer" : "default" }}>Previous</button>
               <Magnetic strength={8} style={{ flex:1 }}>
-                <button onClick={() => next && jump(next.id)} disabled={!next} className="lc-pill lc-shine" style={{ width:"100%", padding:"9px 10px", fontSize:12, opacity: next ? 1 : 0.4, cursor: next ? "pointer" : "default" }}>Next →</button>
+                <button onClick={() => next && jump(next.id)} disabled={!next} className="lc-pill lc-shine" style={{ width:"100%", padding:"9px 10px", fontSize:12, opacity: next ? 1 : 0.4, cursor: next ? "pointer" : "default" }}>Next stage</button>
               </Magnetic>
             </div>
             <button onClick={() => setMode("overview")} className="lc-shine" style={{ width:"100%", marginTop:10, background:"none", border:"none", cursor:"pointer", color:FAINT, fontFamily:MONO, fontSize:11, letterSpacing:".06em", padding:"4px" }}>back to overview</button>

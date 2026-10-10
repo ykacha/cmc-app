@@ -166,7 +166,7 @@ export function InstrumentTrace() {
         <div style={{ marginTop:10, paddingTop:8, borderTop:"1px dashed var(--hairline)", display:"flex", justifyContent:"space-between", fontSize:11,
           opacity: done ? 1 : 0, transition:"opacity .6s ease" }}>
           <span style={{ color:"var(--text-faint)" }}>Spec: monomer ≥ 95.0%</span>
-          <span style={{ color:"var(--accent-2)", fontWeight:700 }}>Conforms</span>
+          <span style={{ color:"var(--ok)", fontWeight:700 }}>Conforms</span>
         </div>
       </div>
     </div>

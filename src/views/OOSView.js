@@ -101,7 +101,7 @@ function DecisionTreeTab() {
                 background: "transparent", color: "var(--text-sec)", fontSize: 13, fontWeight: 600, cursor: "pointer",
               }}
             >
-              ← Back
+              Back
             </button>
           )}
           <button
@@ -111,7 +111,7 @@ function DecisionTreeTab() {
               background: "#E0393E18", color: "#E0393E", fontSize: 13, fontWeight: 700, cursor: "pointer",
             }}
           >
-            ↺ Restart
+            Restart
           </button>
         </div>
       </div>
@@ -204,7 +204,7 @@ function DecisionTreeTab() {
                     {num}
                   </div>
                   {wasVisited && !isActive && (
-                    <div style={{ fontSize: 10, color: pc, fontWeight: 700, marginTop: 2 }}>✓</div>
+                    <div style={{ display: "flex", color: pc, marginTop: 2 }}><Icon name="check" size={11} sw={2.4} /></div>
                   )}
                   {isActive && (
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: pc, marginTop: 2 }} />
@@ -326,7 +326,7 @@ function DecisionTreeTab() {
                               onMouseEnter={e => e.currentTarget.style.background = "#1F9D6335"}
                               onMouseLeave={e => e.currentTarget.style.background = "#1F9D631A"}
                             >
-                              <span style={{ fontSize: 14 }}>✓</span><br />
+                              <span style={{ display: "inline-flex" }}><Icon name="check" size={15} sw={2.2} /></span><br />
                               <span style={{ fontSize: 12 }}>{n.yesLabel || "Yes"}</span>
                             </button>
                           )}
@@ -343,7 +343,7 @@ function DecisionTreeTab() {
                               onMouseEnter={e => e.currentTarget.style.background = "#D9731A28"}
                               onMouseLeave={e => e.currentTarget.style.background = "#D9731A14"}
                             >
-                              <span style={{ fontSize: 14 }}>✗</span><br />
+                              <span style={{ display: "inline-flex" }}><Icon name="cross" size={15} sw={2.2} /></span><br />
                               <span style={{ fontSize: 12 }}>{n.noLabel || "No"}</span>
                             </button>
                           )}
@@ -365,8 +365,8 @@ function DecisionTreeTab() {
                             </div>
                             <div style={{ fontSize: 12, color: "var(--text-sec)" }}>
                               {n.outcome === "pass"
-                                ? "Document all findings. Apply CAPA if systemic issue. Close deviation. ↺ Click Restart to investigate a new path."
-                                : "Mandatory CAPA required. Regulatory notification assessment. Complete documentation. ↺ Click Restart to investigate a new path."}
+                                ? "Document all findings. Apply CAPA if systemic issue. Close deviation. Click Restart to investigate a new path."
+                                : "Mandatory CAPA required. Regulatory notification assessment. Complete documentation. Click Restart to investigate a new path."}
                             </div>
                           </div>
                         </div>
@@ -664,7 +664,7 @@ function SimulatorTab() {
               color: "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer",
             }}
           >
-            ← Try Another Case
+            Try another case
           </button>
           <button
             onClick={() => startScenario(selected)}
@@ -674,7 +674,7 @@ function SimulatorTab() {
               color: "var(--text-sec)", fontWeight: 700, fontSize: 14, cursor: "pointer",
             }}
           >
-            ↺ Replay This Case
+            Replay this case
           </button>
         </div>
       </div>
@@ -697,7 +697,7 @@ function SimulatorTab() {
             background: "transparent", color: "var(--text-muted)", fontSize: 12, cursor: "pointer",
           }}
         >
-          ← Cases
+          All cases
         </button>
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 800, fontSize: 16, color: "var(--text-h)" }}>{selected.title}</div>
@@ -831,7 +831,7 @@ function SimulatorTab() {
           onMouseEnter={e => e.currentTarget.style.color = "var(--text-sec)"}
           onMouseLeave={e => e.currentTarget.style.color = "var(--text-muted)"}
         >
-          Reveal all findings →
+          Reveal all findings
         </button>
       )}
 
@@ -1113,8 +1113,6 @@ function OOTCriteriaTab() {
 export default function OOSView() {
   const [activeTab, setActiveTab] = useState("Decision Tree");
   const tabs = ["Decision Tree", "Case Simulator", "Root Causes", "OOT Criteria"];
-  const totalNodes = Object.keys(OOS_TREE).length;
-  const resultNodes = Object.values(OOS_TREE).filter(n => n.type === "result").length;
 
   return (
     <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
@@ -1122,7 +1120,6 @@ export default function OOSView() {
       <PageHead
         title="OOS / OOT Investigation"
         subtitle="The FDA 2006 OOS guidance, 21 CFR 211.192, the Barr Laboratories ruling and Westgard rules, worked as an investigation you can step through."
-        facts={[[totalNodes - resultNodes, "Decision nodes"], [resultNodes, "Outcomes"], [ROOT_CAUSES.length, "Root-cause categories"], [OOT_CRITERIA.length, "OOT rules"], [OOS_SCENARIOS.length, "Case simulations"]]}
         tabs={tabs} active={activeTab} onTab={setActiveTab}
       />
 

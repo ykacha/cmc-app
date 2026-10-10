@@ -130,7 +130,7 @@ export default function ExamView() {
             transition:"transform 0.15s, opacity 0.2s" }}
           onMouseEnter={e => { if(allQ.length>0) e.currentTarget.style.transform="scale(1.03)"; }}
           onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}>
-          Start Exam →
+          Start the exam
         </button>
       </div>
     </div>

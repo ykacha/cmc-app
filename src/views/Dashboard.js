@@ -69,7 +69,7 @@ export default function Dashboard({ setView, dark }) {
                 <button className="hm-link" onClick={() => go("methods", info.method)}>Open {methodName(info.method)}</button>
               </>
             ) : (
-              <span className="hm-hint">Drag to turn the molecule. Hover a domain to see what lives there.</span>
+              <span className="hm-hint">Drag to turn the molecule. Hover or tap a domain to see what lives there.</span>
             )}
           </div>
         </div>
@@ -158,14 +158,13 @@ export default function Dashboard({ setView, dark }) {
       <section className="hm-section">
         <Reveal>
           <div className="hm-q">
-            <div className="hm-q-top">
-              <span className="sv-chip" style={{ "--chip": "var(--chain-h)" }}>Today's question, {spot.level}</span>
+            <p className="hm-q-text">{spot.q}</p>
+            <div className="hm-q-row">
+              {!open && <button className="hm-secondary" onClick={() => setOpen(true)}>Show the reasoning</button>}
+              <span className="hm-q-level">{spot.level} level</span>
               <button className="hm-link" onClick={shuffle}>Another question</button>
             </div>
-            <p className="hm-q-text">{spot.q}</p>
-            {!open ? (
-              <button className="hm-secondary" onClick={() => setOpen(true)}>Show the reasoning</button>
-            ) : (
+            {open && (
               <div className="hm-q-ans">
                 <div><strong>Why it matters</strong><p>{spot.why}</p></div>
                 <div><strong>How to approach it</strong><p>{spot.how}</p></div>

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { METHOD_STEPS } from "../shared";
-import { LiquidHeader, TraceGlyph } from "../lc";
+import { LiquidHeader } from "../lc";
 import { Icon } from "../icons";
 import { ANALYTICAL_METHODS } from "../extra-data";
 import {
@@ -115,7 +115,7 @@ export default function MethodsView({ navigate, focus }) {
               <span style={{ color: on ? "var(--accent)" : "var(--text-muted)", display:"flex" }}><Icon name={m.icon} size={18} sw={1.7} /></span>
               <span>
                 <span style={{ display:"block", color: on ? "var(--text-h)" : "var(--text-sec)", fontWeight:700, fontSize:13.5, lineHeight:1.1 }}>{m.label}</span>
-                <span style={{ color:"var(--text-faint)", fontSize:10, fontFamily:"ui-monospace, Menlo, monospace" }}>{m.sub}</span>
+                <span style={{ color:"var(--text-muted)", fontSize:11.5 }}>{m.sub}</span>
               </span>
             </button>
           );
@@ -150,7 +150,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
   return (
     <>
       <div style={{ display:"flex", gap:10, flexWrap:"wrap", alignItems:"center", marginBottom:22 }}>
-        <div style={{ display:"flex", gap:7, flexWrap:"wrap", flex:1, minWidth:0 }}>
+        <div style={{ display:"flex", gap:7, flexWrap:"wrap", flex:"1 1 520px", minWidth:0 }}>
           {categories.map(c => {
             const on = catFilter === c, m = c === "All" ? null : meta(c), col = m ? m.color : "var(--accent)";
             return (
@@ -168,7 +168,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
             );
           })}
         </div>
-        <div style={{ position:"relative", minWidth:230 }}>
+        <div style={{ position:"relative", flex:"1 1 240px", maxWidth:360 }}>
           <span style={{ position:"absolute", left:11, top:"50%", transform:"translateY(-50%)", color:"var(--text-faint)", display:"flex" }}><Icon name="glossary" size={14} sw={1.6} /></span>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search assay, abbreviation, attribute…"
             style={{ width:"100%", background:"var(--panel)", border:"1px solid var(--hairline)", borderRadius:9, padding:"8px 14px 8px 32px", color:"var(--text-body)", fontSize:13, outline:"none" }} />
@@ -184,7 +184,7 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
                 <button key={m.id} onClick={() => select(m.id)} style={{
                   display:"flex", alignItems:"center", gap:11, textAlign:"left", cursor:"pointer", fontFamily:"inherit",
                   background: on ? `color-mix(in srgb, ${mm.color} 11%, transparent)` : "transparent",
-                  border:`1px solid ${on ? mm.color : "transparent"}`, borderLeft:`3px solid ${on ? mm.color : "transparent"}`,
+                  border:`1px solid ${on ? mm.color : "transparent"}`,
                   borderRadius:10, padding:"9px 12px", transition:"all .14s",
                 }}
                 onMouseEnter={e => { if (!on) e.currentTarget.style.background = "var(--panel)"; }}
@@ -199,29 +199,22 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
             })}
           </div>
         ) : (
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(290px, 1fr))", gap:14 }}>
+          <div className="mt-cells">
             {filtered.map(m => {
               const mm = meta(m.category), ex2 = METHOD_EXTRAS[m.id];
               return (
-                <button key={m.id} className="card-hover" onClick={() => select(m.id)} style={{
-                  display:"flex", flexDirection:"column", textAlign:"left", cursor:"pointer", overflow:"hidden", fontFamily:"inherit",
-                  background:"var(--panel)", border:"1px solid var(--hairline)", borderLeft:`3px solid ${mm.color}`, borderRadius:14, transition:"all .18s",
-                }}>
-                  <div style={{ padding:"14px 16px 0", flex:1 }}>
-                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:11 }}>
-                      <span style={{ display:"flex", alignItems:"center", gap:7, color:mm.color, fontSize:10, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", fontFamily:"ui-monospace, Menlo, monospace" }}>
-                        <Icon name={mm.icon} size={14} sw={1.7} />{m.category}
-                      </span>
-                      <PhaseStrip phases={m.phases} color={mm.color} />
-                    </div>
-                    <div style={{ color:mm.color, fontSize:18, fontWeight:800, lineHeight:1.1, fontFamily:"ui-monospace, Menlo, monospace", letterSpacing:"-.01em", marginBottom:4 }}>{m.abbreviation}</div>
-                    <div style={{ color:"var(--text-h)", fontWeight:700, fontSize:14, lineHeight:1.25, marginBottom:6 }}>{m.name}</div>
-                    <p style={{ color:"var(--text-sec)", fontSize:12, lineHeight:1.55, margin:"0 0 10px", display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{m.purpose}</p>
-                    {ex2 && <div style={{ display:"flex", gap:5, flexWrap:"wrap", marginBottom:10 }}>
-                      {ex2.role.slice(0,2).map(r => <span key={r} style={{ fontSize:9.5, fontWeight:700, padding:"2px 7px", borderRadius:6, fontFamily:"ui-monospace, Menlo, monospace", background:`color-mix(in srgb, ${roleColor(r)} 13%, transparent)`, color:roleColor(r) }}>{r}</span>)}
-                    </div>}
-                  </div>
-                  <div style={{ opacity:0.7, padding:"0 4px" }}><TraceGlyph seed={m.id} color={mm.color} h={36} opacity={0.5} /></div>
+                <button key={m.id} className="mt-cell" onClick={() => select(m.id)} style={{ "--seg": mm.color }}>
+                  <i />
+                  <span className="mt-cell-top">
+                    <strong>{m.abbreviation}</strong>
+                    <PhaseStrip phases={m.phases} color={mm.color} />
+                  </span>
+                  <span className="mt-cell-name">{m.name}</span>
+                  <span className="mt-cell-purpose">{m.purpose}</span>
+                  <span className="mt-cell-tags">
+                    <span className="sv-chip" style={{ "--chip": mm.color }}>{m.category}</span>
+                    {ex2 && ex2.role.slice(0, 2).map(r => <span key={r} className="sv-chip" style={{ "--chip": roleColor(r) }}>{r}</span>)}
+                  </span>
                 </button>
               );
             })}
@@ -251,7 +244,6 @@ function Atlas({ catFilter, setCatFilter, activeMethod, setActiveMethod, search,
               <h3 style={{ color:"var(--text-h)", margin:"0 0 4px", fontSize:21, fontWeight:850, lineHeight:1.15 }}>{method.name}</h3>
               <div style={{ color:"var(--text-sec)", fontSize:12, lineHeight:1.4, marginBottom:8 }}>{method.fullName}</div>
               <div style={{ color:"var(--text-muted)", fontSize:11, fontStyle:"italic", marginBottom:4 }}>{mc.q}</div>
-              <div style={{ margin:"6px -22px 0", opacity:0.9 }}><TraceGlyph seed={method.id} color={mc.color} h={40} opacity={0.6} sw={1.6} /></div>
             </div>
 
             {/* logistics facts */}
@@ -486,7 +478,7 @@ function CqaMatrix({ activeCqa, setActiveCqa, openMethod }) {
                 {grouped[role].map(e => {
                   const m = byId[e.m], mm = meta(m.category);
                   return (
-                    <button key={e.m} onClick={() => openMethod(e.m)} className="card-hover" style={{ textAlign:"left", cursor:"pointer", fontFamily:"inherit", background:"var(--panel)", border:"1px solid var(--hairline)", borderLeft:`3px solid ${mm.color}`, borderRadius:12, padding:"12px 14px", transition:"all .16s" }}>
+                    <button key={e.m} onClick={() => openMethod(e.m)} className="card-hover" style={{ textAlign:"left", cursor:"pointer", fontFamily:"inherit", background:"var(--panel)", border:"1px solid var(--hairline)", borderLeft:`1px solid ${mm.color}`, borderRadius:12, padding:"12px 14px", transition:"all .16s" }}>
                       <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
                         <span style={{ color:mm.color, fontFamily:"ui-monospace, Menlo, monospace", fontWeight:800, fontSize:13 }}>{m.abbreviation}</span>
                         <span style={{ color:"var(--text-faint)", fontSize:11 }}>{m.name}</span>

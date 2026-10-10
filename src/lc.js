@@ -163,7 +163,6 @@ export function LiquidHeader({ title, subtitle }) {
     <header className="sv-title">
       <h1>{title}</h1>
       {subtitle && <p>{subtitle}</p>}
-      <div className="sv-chainrule" aria-hidden="true"><i /><i /><i /><i /></div>
     </header>
   );
 }

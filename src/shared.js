@@ -36,26 +36,18 @@ export const Badge = ({ level }) => (
   <span className="sv-chip" style={{ "--chip": LC[level] }}>{level}</span>
 );
 
-/* Page title block: the structure-figure title. Wide display, one-line
-   subtitle, and a chain rule (heavy/light/bridge segments) beneath. */
+/* Page title block: wide display title and a one-paragraph subtitle. */
 export const SectionHeader = ({ title, subtitle }) => (
   <header className="sv-title">
     <h1>{title}</h1>
     {subtitle && <p>{subtitle}</p>}
-    <div className="sv-chainrule" aria-hidden="true"><i /><i /><i /><i /></div>
   </header>
 );
 
-/* Page head for tool pages: title block, a quiet line of facts, and the
-   page's mode tabs, all in the shared state vocabulary. */
-export const PageHead = ({ title, subtitle, facts = [], tabs = [], active, onTab }) => (
+/* Page head for tool pages: title block and the page's mode tabs. */
+export const PageHead = ({ title, subtitle, tabs = [], active, onTab }) => (
   <div className="sv-pagehead">
     <SectionHeader title={title} subtitle={subtitle} />
-    {facts.length > 0 && (
-      <dl className="sv-facts">
-        {facts.map(([v, l]) => <div key={l}><dt>{l}</dt><dd>{v}</dd></div>)}
-      </dl>
-    )}
     {tabs.length > 0 && (
       <div className="sv-modebar" role="tablist">
         {tabs.map(t => (
