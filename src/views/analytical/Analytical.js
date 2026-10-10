@@ -1,41 +1,43 @@
 import "./analytical.css";
-import { useEffect, useRef, useState } from "react";
-import { reducedMotion } from "../../motion";
 import { SepTheatre } from "./theatre";
 import { THEATRES } from "./theatre-configs";
 import { ANALYTICAL_METHODS } from "../../extra-data";
 import { QUALITY_ATTRIBUTES } from "../../analytical-data";
 import Atlas from "./Atlas";
-import AttributeMap from "./AttributeMap";
+import Journey from "./Journey";
+import CqaMethod from "./CqaMethod";
+import Strategy from "./Strategy";
 import ValidationLab from "./ValidationLab";
 import SystemSuitability from "./SystemSuitability";
 import Specifications from "./Specifications";
 import Comparability from "./Comparability";
 import ForcedDegradation from "./ForcedDegradation";
-import Lifecycle from "./Lifecycle";
 import ReferenceStandards from "./ReferenceStandards";
 
 /* The analytical sub-site. Routes: #/analytical/<page>/<item> */
 export const AN_PAGES = [
   { id: "overview",      label: "Overview",           line: "How the analytical package fits together." },
-  { id: "atlas",         label: "Assay atlas",        line: `${ANALYTICAL_METHODS.length} assays, each shown running on its instrument.` },
-  { id: "map",           label: "Attribute map",      line: `${QUALITY_ATTRIBUTES.length} quality attributes located on the molecule, with the assays that measure them.` },
+  { id: "journey",       label: "Start here",         line: "The questions every lot must answer, in the order a QC scientist asks them, and the assays that answer each one." },
+  { id: "atlas",         label: "Assays",             line: `All ${ANALYTICAL_METHODS.length} assays, each shown running on its instrument.` },
+  { id: "cqa",           label: "CQA × Method",       line: `${QUALITY_ATTRIBUTES.length} critical quality attributes against ${ANALYTICAL_METHODS.length} assays: which method answers which question, and what confirms it.` },
+  { id: "strategy",      label: "Strategy & phases",  line: "What is expected of the analytical package at each stage, from toxicology lots to post-approval change." },
   { id: "validation",    label: "Validation lab",     line: "ICH Q2(R2) linearity, accuracy, precision and LOQ, computed from data you control." },
   { id: "sst",           label: "System suitability", line: "Drag peaks and watch resolution, plates and tailing move against their limits." },
   { id: "specs",         label: "Specifications",     line: "Set acceptance criteria from batch data with tolerance intervals and stability." },
   { id: "comparability", label: "Comparability",      line: "ICH Q5E tiered statistics: equivalence test, quality range, visual." },
   { id: "degradation",   label: "Forced degradation", line: "Stress the molecule and see which assay is stability-indicating for what." },
-  { id: "lifecycle",     label: "Method lifecycle",   line: "ICH Q14 from analytical target profile to post-approval change." },
   { id: "standards",     label: "Reference standards", line: "Primary and working standards, qualification and bridging." },
 ];
+const LEGACY = { map: "cqa", lifecycle: "strategy" };
 
 const PAGE_VIEWS = {
-  atlas: Atlas, map: AttributeMap, validation: ValidationLab, sst: SystemSuitability, specs: Specifications,
-  comparability: Comparability, degradation: ForcedDegradation, lifecycle: Lifecycle, standards: ReferenceStandards,
+  journey: Journey, atlas: Atlas, cqa: CqaMethod, strategy: Strategy, validation: ValidationLab, sst: SystemSuitability,
+  specs: Specifications, comparability: Comparability, degradation: ForcedDegradation, standards: ReferenceStandards,
 };
 
 export default function Analytical({ navigate, focus, dark }) {
-  const [page = "overview", item] = (focus || "overview").split("/");
+  const [raw = "overview", item] = (focus || "overview").split("/");
+  const page = LEGACY[raw] || raw;
   const go = (path) => navigate("analytical", path);
   const View = PAGE_VIEWS[page];
   const meta = AN_PAGES.find(p => p.id === page) || AN_PAGES[0];
@@ -76,7 +78,7 @@ export default function Analytical({ navigate, focus, dark }) {
 
 const BAY = ["am-sec", "am-iex", "am-ce-sds", "am-cief"];
 const FLOW = [
-  { id: "map", label: "Attribute", sub: "what could go wrong" },
+  { id: "cqa", label: "Attribute", sub: "what could go wrong" },
   { id: "atlas", label: "Assay", sub: "how it is measured" },
   { id: "validation", label: "Validation", sub: "proof the method works" },
   { id: "specs", label: "Specification", sub: "what counts as good" },
@@ -96,8 +98,8 @@ function Overview({ go }) {
             result into a specification.
           </p>
           <div className="hm-actions">
-            <button className="hm-primary" onClick={() => go("atlas")}>Open the assay atlas</button>
-            <button className="hm-secondary" onClick={() => go("validation")}>Run the validation lab</button>
+            <button className="hm-primary" onClick={() => go("journey")}>Start here</button>
+            <button className="hm-secondary" onClick={() => go("cqa")}>See the CQA × Method map</button>
           </div>
         </div>
         <div className="ov-bay" aria-label="Four release assays acquiring at once">
@@ -115,7 +117,7 @@ function Overview({ go }) {
 
       <section className="ov-flow-sec">
         <h2 className="hm-h2">From a risk to a release decision.</h2>
-        <p className="hm-sub sv-measure">Each step hands evidence to the next. Follow the signal, or open any step.</p>
+        <p className="hm-sub sv-measure">Each step hands evidence to the next. Open any step.</p>
         <SignalFlow go={go} />
       </section>
 
@@ -134,30 +136,14 @@ function Overview({ go }) {
   );
 }
 
-// A pulse travels the chain of evidence; each node lights as it passes.
+// The chain of evidence, left to right. Static: the order is the message.
 function SignalFlow({ go }) {
-  const [t, setT] = useState(reducedMotion() ? 1 : 0);
-  const host = useRef(null);
-  useEffect(() => {
-    if (reducedMotion()) return;
-    let raf = 0, start = performance.now(), vis = true;
-    const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; });
-    if (host.current) io.observe(host.current);
-    const f = (now) => { if (vis) setT(((now - start) / 6000) % 1.25); raf = requestAnimationFrame(f); };
-    raf = requestAnimationFrame(f);
-    return () => { cancelAnimationFrame(raf); io.disconnect(); };
-  }, []);
-  const n = FLOW.length, pos = Math.min(t, 1) * (n - 1);
   return (
-    <div className="ov-flow" ref={host}>
-      <svg className="ov-flow-line" viewBox="0 0 1000 20" preserveAspectRatio="none" aria-hidden="true">
-        <line x1={500 / n} x2={1000 - 500 / n} y1="10" y2="10" stroke="var(--hairline)" strokeWidth="2" />
-        <line x1={500 / n} x2={((pos + 0.5) / n) * 1000} y1="10" y2="10" stroke="var(--chain-h)" strokeWidth="2" />
-        <circle cx={((pos + 0.5) / n) * 1000} cy="10" r="5" fill="var(--chain-h)" />
-      </svg>
+    <div className="ov-flow">
+      <div className="ov-flow-rule" aria-hidden="true" />
       <ol className="ov-flow-nodes">
-        {FLOW.map((s, i) => (
-          <li key={s.id} className={pos >= i - 0.02 ? "is-lit" : ""}>
+        {FLOW.map(s => (
+          <li key={s.id}>
             <button onClick={() => go(s.id)}>
               <span className="ov-node" />
               <strong>{s.label}</strong>

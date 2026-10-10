@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { reducedMotion } from "../../motion";
-import { PHASE_STRATEGY } from "../../analytical-data";
+import { useState } from "react";
 
-/* ICH Q14 analytical procedure lifecycle as a loop. A signal travels the
-   loop; select a stage to read what it produces. */
+/* ICH Q14 analytical procedure lifecycle as a loop; select a stage to read
+   what it produces. Static by design: the loop is the information. */
 
 const STAGES = [
   { id: "atp", n: "Analytical target profile", what: "States what the procedure must measure and how well, before any method is chosen.",
@@ -27,38 +25,22 @@ const STAGES = [
 
 export default function Lifecycle() {
   const [sel, setSel] = useState("atp");
-  const [a, setA] = useState(0);
-  const host = useRef(null);
-  useEffect(() => {
-    if (reducedMotion()) return;
-    let raf = 0, t0 = performance.now(), vis = true;
-    const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; });
-    if (host.current) io.observe(host.current);
-    const f = (now) => { if (vis) setA(((now - t0) / 12000) % 1); raf = requestAnimationFrame(f); };
-    raf = requestAnimationFrame(f);
-    return () => { cancelAnimationFrame(raf); io.disconnect(); };
-  }, []);
-
   const n = STAGES.length, C = 260, Rr = 190;
   const pos = (i) => { const th = -Math.PI / 2 + (i / n) * Math.PI * 2; return [C + Rr * Math.cos(th), C + Rr * Math.sin(th)]; };
-  const th = -Math.PI / 2 + a * Math.PI * 2;
   const st = STAGES.find(s => s.id === sel);
-  const lit = Math.floor(a * n);
 
   return (
     <div className="lc">
-      <div className="lc-grid" ref={host}>
+      <div className="lc-grid">
         <svg viewBox="-170 -20 860 560" className="lc-loop" role="img" aria-label="Analytical procedure lifecycle loop">
           <circle cx={C} cy={C} r={Rr} fill="none" stroke="var(--hairline)" strokeWidth="2" />
-          <path d={`M${C},${C - Rr} A${Rr},${Rr} 0 ${a > 0.5 ? 1 : 0} 1 ${C + Rr * Math.cos(th)},${C + Rr * Math.sin(th)}`} fill="none" stroke="var(--chain-h)" strokeWidth="2" />
-          <circle cx={C + Rr * Math.cos(th)} cy={C + Rr * Math.sin(th)} r="6" fill="var(--chain-h)" />
           <text x={C} y={C - 6} textAnchor="middle" fontSize="14" fontWeight="800" fill="var(--text-h)" style={{ fontStretch: "115%" }}>ICH Q14</text>
           <text x={C} y={C + 14} textAnchor="middle" fontSize="11" fill="var(--text-muted)">procedure lifecycle</text>
-          {STAGES.map((s, i) => { const [x, y] = pos(i), on = sel === s.id, glow = i === lit;
+          {STAGES.map((s, i) => { const [x, y] = pos(i), on = sel === s.id;
             return (
               <g key={s.id} className="lc-node" tabIndex={0} role="button" aria-pressed={on} onClick={() => setSel(s.id)}
                 onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSel(s.id); } }}>
-                <circle cx={x} cy={y} r={on ? 13 : 10} fill={on ? "var(--chain-h)" : "var(--bg-base)"} stroke={glow || on ? "var(--chain-h)" : "var(--border-bright)"} strokeWidth="2" />
+                <circle cx={x} cy={y} r={on ? 13 : 10} fill={on ? "var(--chain-h)" : "var(--bg-base)"} stroke={on ? "var(--chain-h)" : "var(--border-bright)"} strokeWidth="2" />
                 <text x={x} y={y + 4} textAnchor="middle" fontSize="10" fontWeight="700" fill={on ? "#fff" : "var(--text-muted)"} className="sv-mono">{i + 1}</text>
                 <text x={x + (x > C + 5 ? 20 : x < C - 5 ? -20 : 0)} y={y + (Math.abs(x - C) < 5 ? (y < C ? -20 : 28) : 4)} textAnchor={x > C + 5 ? "start" : x < C - 5 ? "end" : "middle"}
                   fontSize="12.5" fontWeight={on ? 800 : 600} fill={on ? "var(--text-h)" : "var(--text-sec)"}>{s.n}</text>
@@ -75,17 +57,6 @@ export default function Lifecycle() {
         </div>
       </div>
 
-      <h2 className="hm-h2 lc-sub">Phase-appropriate, not all at once.</h2>
-      <ol className="lc-phases">
-        {PHASE_STRATEGY.map(p => (
-          <li key={p.phase}>
-            <i />
-            <strong>{p.phase}</strong>
-            <p>{p.focus}</p>
-            <span className="an-chiprow">{p.emphasis.map(e => <span key={e} className="sv-chip">{e}</span>)}</span>
-          </li>
-        ))}
-      </ol>
     </div>
   );
 }
