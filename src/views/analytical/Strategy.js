@@ -3,7 +3,6 @@ import { ANALYTICAL_METHODS } from "../../extra-data";
 import { METHOD_EXTRAS, ROLE_DEFS, METHOD_ROLE_BASE } from "../../analytical-data";
 import { PHASES, DS_SPEC } from "./strategy-data";
 import { CHAPTERS } from "./journey-data";
-import Lifecycle from "./Lifecycle";
 
 const byId = Object.fromEntries(ANALYTICAL_METHODS.map(m => [m.id, m]));
 const PHASE_KEYS = ["Pre-IND", "IND", "Ph1", "Ph2", "Ph3", "BLA"];
@@ -124,12 +123,6 @@ export default function Strategy({ go }) {
         <p className="vl-explain">Drug product adds sterility, container closure integrity, visible and subvisible particles, extractable volume and, for some products, polysorbate content.</p>
       </section>
 
-      {/* ── lifecycle ── */}
-      <section className="st-sec">
-        <h2 className="hm-h2">A method has a lifecycle too.</h2>
-        <p className="hm-sub sv-measure">ICH Q14 treats each analytical procedure like the process it controls: designed against a target, validated, monitored and changed under control.</p>
-        <Lifecycle />
-      </section>
     </div>
   );
 }

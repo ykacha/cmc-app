@@ -9,7 +9,7 @@ import { CHAPTERS, CHAPTER_OF } from "./journey-data";
 // Category colours follow the CPK roles: structure-type assays in chain colours,
 // safety in oxygen red, function in phosphorus orange.
 const CAT = {
-  Identity: "--chain-h", Purity: "--chain-h", Potency: "--chain-l", Glycosylation: "--bridge",
+  Identity: "--chain-h", Purity: "--chain-h", Potency: "--chain-l", Glycosylation: "--bridge", General: "--text-muted", "Drug Product": "--bridge",
   "Physical/Chemical": "--cpk-cl", Safety: "--glycan", Structural: "--cpk-cl", "Process Impurities": "--glycan", "Binding/Kinetics": "--chain-l",
 };
 const cat = (c) => `var(${CAT[c] || "--accent"})`;

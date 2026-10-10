@@ -27,11 +27,12 @@ export const CHAPTERS = [
     links: "Peptide mapping is also the tool that finds the oxidation and deamidation sites in chapter 4.",
   },
   {
-    id: "quantity", q: "How much is there?",
-    plain: "Protein concentration is measured by UV absorbance at 280 nm, where tryptophan and tyrosine absorb light. It sets the dose a patient receives and is the denominator of almost every other result.",
-    patient: "A concentration error is a dosing error.",
+    id: "quantity", q: "How much is there, and is the solution right?",
+    plain: "Protein concentration is measured by UV absorbance at 280 nm, where tryptophan and tyrosine absorb light. It sets the dose a patient receives and is the denominator of almost every other result. Alongside it, simple compendial tests confirm the solution itself: colour, clarity, pH and osmolality.",
+    patient: "A concentration error is a dosing error, and a wrong pH or osmolality makes an injection painful.",
     assays: [
       { id: "am-a280", says: "Absorbance at 280 nm divided by the extinction coefficient gives mg/mL. Fast, precise, done on every lot." },
+      { id: "am-general", says: "Colour, clarity, pH and osmolality: quick checks that the formulation is what it should be." },
     ],
     links: "Every later result expressed per milligram (HCP in ppm, DNA in pg/mg, endotoxin in EU/mg) divides by this number.",
   },
@@ -44,7 +45,8 @@ export const CHAPTERS = [
       { id: "am-ce-sds", says: "Denatures the protein and separates chains by size, finding fragments and clips SEC cannot resolve." },
       { id: "am-sec-mals", says: "Adds light scattering to SEC so each peak's mass is measured, not assumed." },
       { id: "am-dls", says: "Senses larger, submicron aggregates quickly; useful for formulation screening." },
-      { id: "am-mfi", says: "Photographs and counts the visible-to-subvisible particles that SEC filters out." },
+      { id: "am-auc", says: "Spins the sample with no column at all, the independent check that SEC is telling the truth." },
+      { id: "am-mfi", says: "Photographs and counts subvisible particles, about 2 to 100 µm, far too large for SEC to see." },
     ],
     links: "SEC and CE-SDS are the core of the stability programme: they are the first to move when the product degrades.",
     ruler: true,
@@ -58,6 +60,7 @@ export const CHAPTERS = [
       { id: "am-cief", says: "Focuses the same variants by isoelectric point with high resolution." },
       { id: "am-peptide-map", says: "Locates each modification to a single residue and measures its level." },
       { id: "am-glycan", says: "Releases and profiles the N-glycans: fucosylation, galactosylation, high mannose, sialylation." },
+      { id: "am-mam", says: "The modern QC version of peptide mapping: many modifications measured site by site in one run." },
     ],
     links: "Charge-variant methods report the sum of many modifications; peptide mapping tells you which ones they are.",
   },
@@ -89,12 +92,26 @@ export const CHAPTERS = [
     patient: "Endotoxin causes fever at very low levels, and some host-cell proteins can trigger immune responses or degrade the formulation.",
     assays: [
       { id: "am-hcp-elisa", says: "Measures total host-cell protein, reported in ng per mg product (ppm)." },
+      { id: "am-hcp-ms", says: "Names the individual host-cell proteins that survive purification." },
       { id: "am-qpcr", says: "Amplifies CHO DNA to measure picogram residues." },
       { id: "am-pra-elisa", says: "Measures Protein A that leached off the capture column." },
       { id: "am-endotoxin", says: "Uses a horseshoe crab clotting cascade to detect bacterial endotoxin." },
-      { id: "am-bioburden", says: "Counts living microbes before the final sterile filtration." },
+      { id: "am-bioburden", says: "Counts living microbes before the final sterile filtration; sterility is tested on the filled product." },
+      { id: "am-myco", says: "Tests every unprocessed harvest for mycoplasma and adventitious viruses." },
     ],
-    links: "These levels fall step by step through the purification train you saw at the start; viral safety is covered in the Viral Clearance section.",
+    links: "These levels fall step by step through the purification train you saw at the start; viral clearance validation is covered in the Viral Clearance section.",
+  },
+  {
+    id: "product", q: "Is the filled vial fit to inject?",
+    plain: "Drug product adds risks the bulk never had: particles from the container, a stopper that might leak, a surfactant that slowly degrades, and the need for sterility in every single unit. These tests run on the filled product, and several of them on every unit.",
+    patient: "A patient sees only the vial. Particles, leaks and sterility failures are the defects most likely to reach them.",
+    assays: [
+      { id: "am-visual", says: "Every filled unit is inspected for visible particles and container defects." },
+      { id: "am-lo", says: "The compendial count of subvisible particles at 10 and 25 µm." },
+      { id: "am-cci", says: "Proves vial, stopper and seal keep microbes out for the whole shelf life." },
+      { id: "am-ps80", says: "Measures the surfactant that protects the antibody at interfaces, and tracks its breakdown." },
+    ],
+    links: "Particle counts here and aggregates in chapter 3 are two ends of the same size range; polysorbate loss often traces back to host-cell lipases from chapter 7.",
   },
   {
     id: "decision", q: "Can this lot be released?",
@@ -115,9 +132,9 @@ CHAPTERS.forEach((c, i) => c.assays.forEach(a => { if (!(a.id in CHAPTER_OF)) CH
 
 // size ranges each technique can see (log scale, metres)
 export const SIZE_RANGES = [
-  { n: "CE-SDS", lo: 2e-9, hi: 3e-8, note: "chains and fragments, denatured" },
   { n: "SEC / SEC-MALS", lo: 3e-9, hi: 8e-8, note: "monomer to small soluble aggregates" },
+  { n: "SV-AUC", lo: 3e-9, hi: 1e-7, note: "same range, no column" },
   { n: "DLS", lo: 1e-9, hi: 1e-6, note: "submicron aggregates" },
-  { n: "Micro-flow imaging", lo: 2e-6, hi: 1e-4, note: "subvisible particles" },
+  { n: "Flow imaging / LO", lo: 2e-6, hi: 1e-4, note: "subvisible particles" },
   { n: "Visual inspection", lo: 1e-4, hi: 1e-3, note: "visible particles" },
 ];

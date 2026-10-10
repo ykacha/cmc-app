@@ -107,7 +107,7 @@ function SizeRuler() {
   const W = 900, L = 150, R = 20, lo = Math.log10(1e-9), hi = Math.log10(1e-3);
   const X = (m) => L + ((Math.log10(m) - lo) / (hi - lo)) * (W - L - R);
   const ticks = [[1e-9, "1 nm"], [1e-8, "10 nm"], [1e-7, "100 nm"], [1e-6, "1 µm"], [1e-5, "10 µm"], [1e-4, "100 µm"], [1e-3, "1 mm"]];
-  const marks = [[1.1e-8, "IgG monomer, ~11 nm"], [1e-6, "smallest particle a light obscuration counter reports"]];
+  const marks = [[1.1e-8, "IgG monomer, ~11 nm"]];
   return (
     <figure className="jn-ruler">
       <svg viewBox={`0 0 ${W} 250`} role="img" aria-label="Size range covered by each technique, from 1 nanometre to 1 millimetre">

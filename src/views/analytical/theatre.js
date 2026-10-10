@@ -373,8 +373,8 @@ const CURVES = {
         {all.map(a => { const pts = []; for (let c = 0; c <= cNow; c += 0.25) pts.push([sx(c, ...xr), sy(s(c, a.ct), ...yr)]);
           return <path key={a.n} d={poly(pts)} fill="none" stroke={`var(${a.c})`} strokeWidth={a.n === "Sample" ? 2.2 : 1.4} opacity={a.n === "Sample" ? 1 : 0.75} />; })}
       </>,
-      legend: [["--chain-h", "Standards (10-fold)"], ["--glycan", "Sample"]],
-      readout: [["Sample Ct", sampleCt.toFixed(1)], ["Efficiency", "98%"], ["Result", `${cfg.result || "3.1"} ${unit}`]],
+      legend: [["--chain-h", cfg.stdLabel || "Standards (10-fold)"], ["--glycan", "Sample"]],
+      readout: cfg.readout || [["Sample Ct", sampleCt.toFixed(1)], ["Efficiency", "98%"], ["Result", `${cfg.result || "3.1"} ${unit}`]],
       done: p >= 1, label: `${xl} ${Math.round(cNow)}`,
     };
   },
@@ -442,7 +442,7 @@ const CURVES = {
   },
   // Agar plate: colonies appear over incubation days
   plate: (cfg, p) => {
-    const R = rng(9), cols = []; for (let i = 0; i < 37; i++) cols.push({ x: 0.5 + (R.u() - 0.5) * 0.8, y: 0.5 + (R.u() - 0.5) * 0.8, t: R.u() * 0.85, r: 2 + R.u() * 4 });
+    const R = rng(9), cols = []; for (let i = 0; i < 7; i++) cols.push({ x: 0.5 + (R.u() - 0.5) * 0.6, y: 0.5 + (R.u() - 0.5) * 0.6, t: R.u() * 0.85, r: 3 + R.u() * 4 });
     const seen = cols.filter(c => Math.hypot(c.x - 0.5, c.y - 0.5) < 0.42 && c.t < p);
     return {
       svg: <>
@@ -450,7 +450,7 @@ const CURVES = {
         {seen.map((c, i) => <circle key={i} className="th-pop" cx={PW / 2 + (c.x - 0.5) * (PH - 28) * 2.2} cy={PH / 2 + (c.y - 0.5) * (PH - 28) * 1.05} r={c.r * Math.min(1, (p - c.t) * 6)} fill="var(--bridge)" opacity="0.85" />)}
         <text x={PW - PR} y={PH - 8} textAnchor="end" fontSize="10" fill="var(--text-faint)" fontFamily={MONO}>day {Math.min(5, Math.ceil(p * 5))} of 5, 30–35 °C</text>
       </>,
-      readout: [["Colonies", `${seen.length}`], ["Countable range", "25–250 CFU"], ["Result", `${seen.length} CFU / 10 mL`]], done: p >= 1, label: `incubating day ${Math.min(5, Math.ceil(p * 5))}`,
+      readout: [["Colonies", `${seen.length}`], ["Sample filtered", "100 mL"], ["Result", `${seen.length} CFU / 100 mL (limit ≤ 10)`]], done: p >= 1, label: `incubating day ${Math.min(5, Math.ceil(p * 5))}`,
     };
   },
 };

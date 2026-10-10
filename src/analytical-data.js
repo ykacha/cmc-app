@@ -88,6 +88,22 @@ export const QUALITY_ATTRIBUTES = [
     what:"Protein A ligand leached from the capture resin.",
     why:"Immunogenicity risk and an indicator of resin/column health.",
     drivers:"Low-pH elution, resin age & cycle number, alkaline cleaning." },
+  { id:"general",   name:"Appearance, pH & Osmolality", group:"General", risk:"Medium",
+    what:"Colour, clarity/opalescence, pH and osmolality of the solution.",
+    why:"Confirms the formulation is correct and the product is comfortable and safe to inject; colour change can flag oxidation.",
+    drivers:"Formulation errors, buffer exchange, oxidation and glycation, concentration-dependent self-association." },
+  { id:"excip",     name:"Excipient Content (Polysorbate)", group:"General", risk:"Medium",
+    what:"Level and integrity of the surfactant and other functional excipients.",
+    why:"Polysorbate protects the antibody at air and container interfaces; its loss leads to aggregates and particles.",
+    drivers:"Residual HCP lipases, oxidation, light, raw material quality." },
+  { id:"ccit",      name:"Container Closure Integrity", group:"Safety", risk:"High",
+    what:"The ability of vial, stopper and seal to keep microbes out over the shelf life.",
+    why:"A leaking container makes a sterile product non-sterile without any change visible in the liquid.",
+    drivers:"Component dimensions, capping force, freezing, shipping stress." },
+  { id:"advent",    name:"Adventitious Agents", group:"Safety", risk:"High",
+    what:"Viruses and mycoplasma that could enter from cells, raw materials or the environment.",
+    why:"A viral contamination is a patient-safety event; testing, cell bank control and clearance together provide assurance.",
+    drivers:"Cell bank, animal-derived or complex raw materials, open processing, facility controls." },
   { id:"endo",      name:"Endotoxin & Bioburden",  group:"Safety",    risk:"High",
     what:"Bacterial endotoxin (pyrogen) and microbial load / sterility.",
     why:"Patient-safety critical for a parenteral; non-negotiable release tests.",
@@ -103,6 +119,7 @@ export const CQA_METHODS = {
       { m:"am-sec-mals",    role:"orthogonal", note:"Absolute molar mass: separates true aggregate from a column-interaction artifact." },
       { m:"am-ce-sds",      role:"orthogonal", note:"Non-reduced CE-SDS distinguishes covalent (disulfide-linked) HMW from non-covalent." },
       { m:"am-intact-mass", role:"orthogonal", note:"Native MS detects non-covalent dimers and half-antibody at the intact level." },
+      { m:"am-auc",         role:"orthogonal", note:"Matrix-free sedimentation: confirms SEC is neither creating nor hiding aggregate." },
       { m:"am-dls",         role:"supporting", note:"Fast submicron-aggregate / PDI screen; intensity-weighted, not quantitative." },
       { m:"am-mfi",         role:"supporting", note:"Counts subvisible particles (2–100 µm) that SEC cannot detect." },
     ],
@@ -119,6 +136,7 @@ export const CQA_METHODS = {
       { m:"am-cief",       role:"primary",    note:"icIEF resolves acidic/main/basic isoforms by pI: the charge release assay." },
       { m:"am-iex",        role:"orthogonal", note:"CEX/AEX separates the same isoforms by a different mechanism (ionic interaction)." },
       { m:"am-peptide-map",role:"supporting", note:"Assigns the molecular cause (deamidation, C-term Lys, sialylation) of each peak." },
+      { m:"am-mam",        role:"supporting", note:"Monitors the individual charge-changing modifications site by site." },
     ],
     ortho:"A charge peak is not an identity: fraction-collect and confirm by peptide map. cIEF and IEX disagreeing is itself diagnostic." },
   glycan: {
@@ -132,6 +150,7 @@ export const CQA_METHODS = {
     methods:[
       { m:"am-peptide-map",role:"primary",    note:"Site-specific %oxidation at each Met/Trp via LC-MS/MS." },
       { m:"am-intact-mass",role:"orthogonal", note:"+16 Da mass shift confirms bulk oxidation at the intact level." },
+      { m:"am-mam",        role:"orthogonal", note:"QC-ready LC-MS quantifies oxidation at named sites on every lot." },
       { m:"am-spr",        role:"supporting", note:"FcRn binding by SPR shows the functional consequence of Fc Met oxidation." },
     ],
     ortho:"Oxidation is largely charge-neutral, so cIEF/IEX miss it: peptide mapping is the definitive readout, ideally with a forced-oxidation control." },
@@ -140,15 +159,17 @@ export const CQA_METHODS = {
       { m:"am-peptide-map",role:"primary",    note:"Quantitates Asn→Asp/isoAsp at each motif; isoAsp distinguishable by MS/MS." },
       { m:"am-cief",       role:"orthogonal", note:"Deamidation adds negative charge → acidic-peak increase." },
       { m:"am-iex",        role:"orthogonal", note:"Confirms the acidic shift by an independent separation." },
+      { m:"am-mam",        role:"orthogonal", note:"Site-specific deamidation in a validated QC format." },
       { m:"am-cell-bioassay",role:"supporting", note:"Detects potency loss when deamidation lands in a CDR." },
     ],
     ortho:"Keep digests cold, low-pH and short: sample-prep deamidation is the classic artifact that inflates the result." },
   seq: {
     methods:[
-      { m:"am-peptide-map",role:"primary",    note:"≥95% sequence coverage with b/y-ion confirmation (ICH Q6B)." },
+      { m:"am-peptide-map",role:"primary",    note:"Near-complete sequence coverage with MS/MS (b/y-ion) confirmation." },
       { m:"am-intact-mass",role:"orthogonal", note:"Whole-molecule mass independently confirms the expected sequence + PTMs." },
+      { m:"am-mam",        role:"supporting", note:"Confirms sequence on every lot and flags new peaks against the reference." },
     ],
-    ortho:"Intact mass catches gross errors fast; peptide mapping localizes single-residue variants down to ~0.05% abundance." },
+    ortho:"Intact mass catches gross errors fast; peptide mapping localizes single-residue variants down to about 0.1% abundance." },
   hos: {
     methods:[
       { m:"am-cd",         role:"primary",    note:"Far-UV CD = secondary structure; near-UV CD = tertiary fingerprint." },
@@ -186,25 +207,50 @@ export const CQA_METHODS = {
     ortho:"Subtract scatter at 320–340 nm and verify ε; for turbid or conjugated products, orthogonal colorimetric assays apply." },
   particles: {
     methods:[
-      { m:"am-mfi",        role:"primary",    note:"Micro-flow imaging counts and images 2–100 µm subvisible particles." },
+      { m:"am-lo",         role:"primary",    note:"Compendial light obscuration count at ≥10 and ≥25 µm: the release test." },
+      { m:"am-visual",     role:"primary",    note:"100% inspection for visible particles on every filled unit." },
+      { m:"am-mfi",        role:"orthogonal", note:"Flow imaging counts and images 2–100 µm particles and tells protein from silicone oil." },
       { m:"am-dls",        role:"supporting", note:"Probes the submicron regime below the particle-count window." },
     ],
-    ortho:"MFI bridges the gap HIAC light-obscuration (USP <788>) under-counts for translucent protein particles; morphology separates protein from silicone oil and air." },
+    ortho:"Light obscuration under-counts translucent protein particles; flow imaging fills that gap and identifies particle type. Visible particles need their own 100% inspection." },
   hcp: {
     methods:[
       { m:"am-hcp-elisa",  role:"primary",    note:"Process-specific anti-HCP ELISA gives total residual HCP (ppm)." },
+      { m:"am-hcp-ms",     role:"orthogonal", note:"Identifies the individual HCPs that persist, including polysorbate-degrading lipases." },
     ],
     ortho:"A polyclonal reagent only sees what it was raised against: antibody-coverage analysis (2D-DIGE/Western) and orthogonal LC-MS/MS address blind spots." },
   resdna: {
     methods:[
       { m:"am-qpcr",       role:"primary",    note:"qPCR against the host genome quantifies residual DNA (pg/dose)." },
     ],
-    ortho:"Spike-recovery and inhibition controls separate genuinely low DNA from a failed extraction; threshold-PCR confirms fragment size." },
+    ortho:"Spike-recovery and inhibition controls separate genuinely low DNA from a failed extraction; fragment-size analysis is added where a nuclease or high-risk cell line is involved." },
   resproa: {
     methods:[
       { m:"am-pra-elisa",  role:"primary",    note:"Sandwich ELISA quantifies leached Protein A ligand (ppm/ng-per-mg)." },
     ],
     ortho:"Trend against resin cycle number, not just per lot: leaching climbs with resin age and after low-pH elution." },
+  general: {
+    methods:[
+      { m:"am-general",    role:"primary",    note:"Compendial colour, clarity, pH and osmolality on every lot." },
+    ],
+    ortho:"Simple tests, but colour and opalescence trends often point to chemistry that LC-MS then explains." },
+  excip: {
+    methods:[
+      { m:"am-ps80",       role:"primary",    note:"Polysorbate content at release and on stability." },
+      { m:"am-hcp-ms",     role:"supporting", note:"Finds the residual lipases that usually explain polysorbate loss." },
+    ],
+    ortho:"Measure the surfactant and the enzymes that degrade it: content alone does not tell you why it is falling." },
+  ccit: {
+    methods:[
+      { m:"am-cci",        role:"primary",    note:"Deterministic leak testing (helium, vacuum decay, HVLD, headspace)." },
+      { m:"am-bioburden",  role:"supporting", note:"Sterility testing is the probabilistic backstop; CCI can replace it on stability." },
+    ],
+    ortho:"A sterility test samples a few units once; integrity testing shows every design and condition keeps microbes out." },
+  advent: {
+    methods:[
+      { m:"am-myco",       role:"primary",    note:"Mycoplasma, in vitro virus and specific virus tests on every unprocessed bulk." },
+    ],
+    ortho:"Testing alone cannot prove absence; ICH Q5A pairs it with cell bank characterisation and validated viral clearance (see Viral Clearance)." },
   endo: {
     methods:[
       { m:"am-endotoxin",  role:"primary",    note:"LAL / BET (kinetic chromogenic) quantifies endotoxin (EU/mL)." },
@@ -255,7 +301,7 @@ export const METHOD_EXTRAS = {
   "am-dsc": { role:["Characterization"], q2:"Characterization", throughput:"Low", sample:"~0.5 mg",
     env:"Biophysics lab",
     pearl:"Tm ranks candidate/formulation stability but isn't a shelf-life predictor: pair with accelerated SEC/charge data; the CH2 domain unfolds first in IgG1." },
-  "am-mfi": { role:["Release","Stability-indicating"], q2:"Impurities (limit)", throughput:"Medium", sample:"~1 mL",
+  "am-mfi": { role:["Characterization","Stability-indicating"], q2:"Characterization", throughput:"Medium", sample:"~1 mL",
     env:"QC-friendly",
     pearl:"Morphology is the payoff: it separates translucent protein particles from silicone-oil droplets and air bubbles that light obscuration miscounts." },
   "am-endotoxin": { role:["Release","In-process"], q2:"Impurities (limit)", throughput:"High", sample:"Low",
@@ -279,6 +325,33 @@ export const METHOD_EXTRAS = {
   "am-qpcr": { role:["Release","Characterization"], q2:"Impurities (limit)", throughput:"Medium", sample:"Low",
     env:"QC molecular",
     pearl:"Validate against the actual host genome with a defined amplicon; spike-recovery and inhibition controls separate 'low DNA' from a failed extraction." },
+  "am-general": { role:["Release"], q2:"Assay / limit (compendial)", throughput:"High", sample:"~1–5 mL",
+    env:"QC-friendly",
+    pearl:"Most 'surprising' pH and osmolality OOS results trace back to a buffer-prep or dilution error upstream: check the batch record before the meter." },
+  "am-auc": { role:["Characterization"], q2:"Characterization", throughput:"Low", sample:"~0.5 mg",
+    env:"Biophysics lab",
+    pearl:"When SEC and AUC disagree on %HMW, believe neither blindly: AUC sees reversible associations SEC dilutes away, SEC resolves small differences AUC cannot." },
+  "am-mam": { role:["Characterization","Release (emerging)"], q2:"Identification / impurities", throughput:"Medium", sample:"~100 µg",
+    env:"QC MS lab",
+    pearl:"Validate new peak detection with spiked samples at the threshold you claim; it is the part reviewers probe hardest." },
+  "am-hcp-ms": { role:["Characterization"], q2:"Characterization", throughput:"Low", sample:"~1 mg",
+    env:"MS lab",
+    pearl:"Suppress the antibody first (native or limited digestion): otherwise its peptides swamp the ppm-level HCPs you are looking for." },
+  "am-myco": { role:["Release","In-process"], q2:"Impurities (limit)", throughput:"Low · weeks", sample:"Unprocessed bulk",
+    env:"Virology / microbiology (often CRO)",
+    pearl:"Sample the unprocessed bulk before any filtration step; a sample taken after a 0.2 µm filter can miss mycoplasma that pass smaller pores only partially." },
+  "am-lo": { role:["Release","Stability-indicating"], q2:"Impurities (limit)", throughput:"Medium", sample:"~1–5 mL (pooled)",
+    env:"QC-friendly",
+    pearl:"A sudden rise at 2–10 µm on stability usually appears before the ≥10 µm compendial counts move: trend the small sizes." },
+  "am-visual": { role:["Release"], q2:"Limit test (inspection)", throughput:"100% of units", sample:"Every unit",
+    env:"Fill-finish / QC",
+    pearl:"Build the defect kit from your own product's real particles; a kit of glass beads in buffer overstates how well inspectors find protein particles." },
+  "am-cci": { role:["Characterization","Stability-indicating"], q2:"Limit test", throughput:"Medium", sample:"Filled units",
+    env:"Packaging / QC",
+    pearl:"Test at the storage temperature: stoppers that seal at room temperature can open at −70 °C." },
+  "am-ps80": { role:["Release","Stability-indicating"], q2:"Assay (content)", throughput:"Medium", sample:"~1 mL",
+    env:"QC-friendly",
+    pearl:"If polysorbate falls on stability while the antibody looks fine, look for lipase activity before reformulating." },
   "am-octet": { role:["Characterization","In-process (screen)"], q2:"Characterization", throughput:"High", sample:"Low",
     env:"Biophysics / screening",
     pearl:"Fluidics-free and plate-based (great throughput) but more prone to nonspecific binding than SPR: match your reference surfaces carefully." },

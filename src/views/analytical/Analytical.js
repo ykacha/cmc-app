@@ -3,70 +3,111 @@ import { SepTheatre } from "./theatre";
 import { THEATRES } from "./theatre-configs";
 import { ANALYTICAL_METHODS } from "../../extra-data";
 import { QUALITY_ATTRIBUTES } from "../../analytical-data";
-import Atlas from "./Atlas";
 import Journey from "./Journey";
+import Atlas from "./Atlas";
 import CqaMethod from "./CqaMethod";
-import Strategy from "./Strategy";
+import MethodLifecycle from "./MethodLifecycle";
 import ValidationLab from "./ValidationLab";
 import SystemSuitability from "./SystemSuitability";
-import Specifications from "./Specifications";
-import Comparability from "./Comparability";
-import ForcedDegradation from "./ForcedDegradation";
 import ReferenceStandards from "./ReferenceStandards";
+import Specifications from "./Specifications";
+import StabilityTesting from "./StabilityTesting";
+import OosIntegrity from "./OosIntegrity";
+import Comparability from "./Comparability";
+import Strategy from "./Strategy";
+import RegulatoryReview from "./RegulatoryReview";
 
-/* The analytical sub-site. Routes: #/analytical/<page>/<item> */
-export const AN_PAGES = [
-  { id: "overview",      label: "Overview",           line: "How the analytical package fits together." },
-  { id: "journey",       label: "Start here",         line: "The questions every lot must answer, in the order a QC scientist asks them, and the assays that answer each one." },
-  { id: "atlas",         label: "Assays",             line: `All ${ANALYTICAL_METHODS.length} assays, each shown running on its instrument.` },
-  { id: "cqa",           label: "CQA × Method",       line: `${QUALITY_ATTRIBUTES.length} critical quality attributes against ${ANALYTICAL_METHODS.length} assays: which method answers which question, and what confirms it.` },
-  { id: "strategy",      label: "Strategy & phases",  line: "What is expected of the analytical package at each stage, from toxicology lots to post-approval change." },
-  { id: "validation",    label: "Validation lab",     line: "ICH Q2(R2) linearity, accuracy, precision and LOQ, computed from data you control." },
-  { id: "sst",           label: "System suitability", line: "Drag peaks and watch resolution, plates and tailing move against their limits." },
-  { id: "specs",         label: "Specifications",     line: "Set acceptance criteria from batch data with tolerance intervals and stability." },
-  { id: "comparability", label: "Comparability",      line: "ICH Q5E tiered statistics: equivalence test, quality range, visual." },
-  { id: "degradation",   label: "Forced degradation", line: "Stress the molecule and see which assay is stability-indicating for what." },
-  { id: "standards",     label: "Reference standards", line: "Primary and working standards, qualification and bridging." },
+/* The analytical series: four parts, thirteen chapters, read in order.
+   Routes: #/analytical/<chapter>/<item> */
+
+const N_METHODS = ANALYTICAL_METHODS.length, N_CQA = QUALITY_ATTRIBUTES.length;
+
+export const PARTS = [
+  { id: "I", title: "Foundations", line: "What is tested, and why.", chapters: [
+    { id: "journey", label: "The questions every lot answers", short: "Start here", line: "Where the sample comes from, then the questions every lot must answer, in the order a QC scientist asks them.", View: Journey },
+    { id: "atlas", label: "The assays", short: "Assays", line: `All ${N_METHODS} assays, grouped by the question they answer. Most can be watched running on their instrument.`, View: Atlas },
+    { id: "cqa", label: "CQA × Method", short: "CQA × Method", line: `${N_CQA} quality attributes against ${N_METHODS} assays: which method answers which question, and what confirms it.`, View: CqaMethod },
+  ]},
+  { id: "II", title: "Methods you can trust", line: "Proving a method works, and keeping it working.", chapters: [
+    { id: "lifecycle", label: "Method lifecycle and transfer", short: "Lifecycle", line: "ICH Q14 from analytical target profile to post-approval change, and how a method moves between labs.", View: MethodLifecycle },
+    { id: "validation", label: "Validation lab", short: "Validation", line: "ICH Q2(R2) linearity, accuracy, precision and quantitation limit, computed from data you control.", View: ValidationLab },
+    { id: "sst", label: "System suitability", short: "SST", line: "The checks that protect every run. Drag the peaks and watch resolution, plates and tailing move against their limits.", View: SystemSuitability },
+    { id: "standards", label: "Reference standards", short: "Standards", line: "Primary and working standards: how they are made, qualified and replaced.", View: ReferenceStandards },
+  ]},
+  { id: "III", title: "From result to decision", line: "Turning numbers into release, shelf life and change.", chapters: [
+    { id: "specs", label: "Setting specifications", short: "Specifications", line: "Acceptance criteria from batch data, tolerance intervals, stability and assay variability.", View: Specifications },
+    { id: "stability", label: "Stability-indicating testing", short: "Stability", line: "Forced degradation, the real-time programme, and how a shelf life is assigned.", View: StabilityTesting },
+    { id: "oos", label: "OOS, OOT and data integrity", short: "OOS & integrity", line: "What happens when a result fails, how drift is caught early, and why every number must be trustworthy.", View: OosIntegrity },
+    { id: "comparability", label: "Comparability", short: "Comparability", line: "ICH Q5E tiered statistics for a process change: equivalence test, quality range, visual comparison.", View: Comparability },
+  ]},
+  { id: "IV", title: "Programme and filing", line: "What is expected when, and how it is reviewed.", chapters: [
+    { id: "strategy", label: "Strategy across phases", short: "Phases", line: "What the analytical package must deliver at each stage, from toxicology lots to post-approval change.", View: Strategy },
+    { id: "review", label: "Characterisation and regulatory review", short: "Review", line: "The characterisation package, where it sits in Module 3, and the questions reviewers send back.", View: RegulatoryReview },
+  ]},
 ];
-const LEGACY = { map: "cqa", lifecycle: "strategy" };
-
-const PAGE_VIEWS = {
-  journey: Journey, atlas: Atlas, cqa: CqaMethod, strategy: Strategy, validation: ValidationLab, sst: SystemSuitability,
-  specs: Specifications, comparability: Comparability, degradation: ForcedDegradation, standards: ReferenceStandards,
-};
+const CHAPTERS = PARTS.flatMap(p => p.chapters.map(c => ({ ...c, part: p })));
+CHAPTERS.forEach((c, i) => { c.n = i + 1; });
+const NUM_OF = Object.fromEntries(CHAPTERS.map(c => [c.id, c.n]));
+const LEGACY = { map: "cqa", degradation: "stability" };
+const num = (n) => String(n).padStart(2, "0");
 
 export default function Analytical({ navigate, focus, dark }) {
   const [raw = "overview", item] = (focus || "overview").split("/");
-  const page = LEGACY[raw] || raw;
+  const id = LEGACY[raw] || raw;
   const go = (path) => navigate("analytical", path);
-  const View = PAGE_VIEWS[page];
-  const meta = AN_PAGES.find(p => p.id === page) || AN_PAGES[0];
+  const ch = CHAPTERS.find(c => c.id === id);
+  const i = ch ? CHAPTERS.indexOf(ch) : -1;
+  const prev = CHAPTERS[i - 1], next = CHAPTERS[i + 1];
+  const View = ch?.View;
 
   return (
-    <div className="an">
-      <div className="an-bar" role="navigation" aria-label="Analytical sections">
+    <div className="an an-series">
+      <aside className="an-rail" aria-label="Analytical series contents">
+        <button className={`an-rail-home${!ch ? " is-on" : ""}`} onClick={() => go("overview")}>Analytical</button>
+        {PARTS.map(p => (
+          <div key={p.id} className="an-rail-part">
+            <span className="an-rail-ptitle">{p.title}</span>
+            <ol>
+              {p.chapters.map(c => (
+                <li key={c.id} className={id === c.id ? "is-on" : ""}>
+                  <button onClick={() => go(c.id)} aria-current={id === c.id ? "page" : undefined}>
+                    <span className="sv-mono">{num(NUM_OF[c.id])}</span>{c.label}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </aside>
+
+      {/* compact chapter bar for narrow screens */}
+      <div className="an-bar an-bar-mobile" role="navigation" aria-label="Analytical chapters">
         <div className="an-bar-in">
           <button className="an-bar-home" onClick={() => go("overview")}>Analytical</button>
           <div className="an-bar-tabs">
-            {AN_PAGES.slice(1).map(p => (
-              <button key={p.id} className={`an-bar-tab${page === p.id ? " is-on" : ""}`} aria-current={page === p.id ? "page" : undefined} onClick={() => go(p.id)}>
-                {p.label}
-              </button>
+            {CHAPTERS.map(c => (
+              <button key={c.id} className={`an-bar-tab${id === c.id ? " is-on" : ""}`} onClick={() => go(c.id)}>{num(c.n)} {c.short}</button>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="an-page" key={page}>
-        {page === "overview" || !View ? <Overview go={go} /> : (
+      <div className="an-main" key={id}>
+        {!ch ? <Cover go={go} /> : (
           <>
-            {!(page === "atlas" && item) && (
-              <header className="sv-title an-title">
-                <h1>{meta.label}</h1>
-                <p>{meta.line}</p>
+            {!(id === "atlas" && item) && (
+              <header className="ch-head">
+                <h1><span className="ch-num sv-mono">{num(ch.n)}</span>{ch.label}</h1>
+                <p>{ch.line}</p>
               </header>
             )}
-            <View item={item} go={go} dark={dark} />
+            <View item={item} go={go} dark={dark} nav={navigate} />
+            <nav className="ch-pager" aria-label="Series navigation">
+              {prev
+                ? <button onClick={() => go(prev.id)}><span>Previous chapter</span><strong><em className="sv-mono">{num(prev.n)}</em>{prev.label}</strong></button>
+                : <button onClick={() => go("overview")}><span>Back to</span><strong>The series</strong></button>}
+              {next ? <button className="is-next" onClick={() => go(next.id)}><span>Next chapter</span><strong><em className="sv-mono">{num(next.n)}</em>{next.label}</strong></button> : <span />}
+            </nav>
           </>
         )}
       </div>
@@ -74,84 +115,62 @@ export default function Analytical({ navigate, focus, dark }) {
   );
 }
 
-/* ─────────── Overview ─────────── */
+/* ─────────── Series cover ─────────── */
 
 const BAY = ["am-sec", "am-iex", "am-ce-sds", "am-cief"];
-const FLOW = [
-  { id: "cqa", label: "Attribute", sub: "what could go wrong" },
-  { id: "atlas", label: "Assay", sub: "how it is measured" },
-  { id: "validation", label: "Validation", sub: "proof the method works" },
-  { id: "specs", label: "Specification", sub: "what counts as good" },
-  { id: "degradation", label: "Stability", sub: "how it changes over time" },
-  { id: "comparability", label: "Comparability", sub: "same product after a change" },
-];
 
-function Overview({ go }) {
+function Cover({ go }) {
   return (
     <>
       <section className="ov-hero">
         <div className="ov-copy">
           <h1 className="ov-h1">Every attribute, measured two ways.</h1>
           <p className="ov-lede">
-            A biologic is released on numbers. This is how those numbers are produced and defended: which assay
-            answers which quality question, the orthogonal method that confirms it, and the statistics that turn a
-            result into a specification.
+            A biologic is released on numbers. This series follows how those numbers are produced and defended: which assay
+            answers which quality question, the orthogonal method that confirms it, the statistics that turn a result into a
+            specification, and how it is all reviewed.
           </p>
           <div className="hm-actions">
-            <button className="hm-primary" onClick={() => go("journey")}>Start here</button>
-            <button className="hm-secondary" onClick={() => go("cqa")}>See the CQA × Method map</button>
+            <button className="hm-primary" onClick={() => go("journey")}>Begin with chapter 1</button>
+            <button className="hm-secondary" onClick={() => go("cqa")}>Jump to CQA × Method</button>
           </div>
         </div>
         <div className="ov-bay" aria-label="Four release assays acquiring at once">
-          {BAY.map(id => {
-            const m = ANALYTICAL_METHODS.find(x => x.id === id);
+          {BAY.map(bid => {
+            const m = ANALYTICAL_METHODS.find(x => x.id === bid);
             return (
-              <button key={id} className="ov-channel" onClick={() => go("atlas/" + id)}>
+              <button key={bid} className="ov-channel" onClick={() => go("atlas/" + bid)}>
                 <span className="ov-ch-label"><strong>{m.abbreviation}</strong>{m.name !== m.abbreviation && <span>{m.name}</span>}<span className="ov-ch-go">Open</span></span>
-                <SepTheatre cfg={THEATRES[id]} compact />
+                <SepTheatre cfg={THEATRES[bid]} compact />
               </button>
             );
           })}
         </div>
       </section>
 
-      <section className="ov-flow-sec">
-        <h2 className="hm-h2">From a risk to a release decision.</h2>
-        <p className="hm-sub sv-measure">Each step hands evidence to the next. Open any step.</p>
-        <SignalFlow go={go} />
-      </section>
-
-      <section className="ov-index">
-        <div className="mt-cells">
-          {AN_PAGES.slice(1).map((p, i) => (
-            <button key={p.id} className="mt-cell" style={{ "--seg": ["var(--chain-h)", "var(--chain-l)", "var(--bridge)", "var(--cpk-cl)", "var(--glycan)"][i % 5] }} onClick={() => go(p.id)}>
-              <i />
-              <span className="mt-cell-top"><strong>{p.label}</strong></span>
-              <span className="mt-cell-purpose">{p.line}</span>
-            </button>
+      <section className="ov-series">
+        <h2 className="hm-h2">The series, in four parts.</h2>
+        <p className="hm-sub sv-measure">Read it in order the first time; afterwards, every chapter stands on its own.</p>
+        <div className="ov-parts">
+          {PARTS.map(p => (
+            <div key={p.id} className="ov-part">
+              <span className="ov-part-id sv-mono">Part {p.id}</span>
+              <strong className="ov-part-title">{p.title}</strong>
+              <p className="ov-part-line">{p.line}</p>
+              <ol>
+                {p.chapters.map(c => (
+                  <li key={c.id}>
+                    <button onClick={() => go(c.id)}>
+                      <span className="sv-mono">{num(NUM_OF[c.id])}</span>
+                      <span><strong>{c.label}</strong><em>{c.line}</em></span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
           ))}
         </div>
       </section>
     </>
-  );
-}
-
-// The chain of evidence, left to right. Static: the order is the message.
-function SignalFlow({ go }) {
-  return (
-    <div className="ov-flow">
-      <div className="ov-flow-rule" aria-hidden="true" />
-      <ol className="ov-flow-nodes">
-        {FLOW.map(s => (
-          <li key={s.id}>
-            <button onClick={() => go(s.id)}>
-              <span className="ov-node" />
-              <strong>{s.label}</strong>
-              <span>{s.sub}</span>
-            </button>
-          </li>
-        ))}
-      </ol>
-    </div>
   );
 }

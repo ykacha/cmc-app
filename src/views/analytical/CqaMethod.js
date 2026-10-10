@@ -1,11 +1,14 @@
 import { useRef, useState } from "react";
 import { ANALYTICAL_METHODS } from "../../extra-data";
 import { QUALITY_ATTRIBUTES, CQA_METHODS, ATTR_GROUPS } from "../../analytical-data";
+import { CHAPTERS } from "./journey-data";
 
 /* The CQA × Method orthogonality map: 17 attributes against 22 assays.
    Rows select an attribute; column headers open the assay. */
 
 const byId = Object.fromEntries(ANALYTICAL_METHODS.map(m => [m.id, m]));
+// columns follow the series' question order so related assays sit together
+const COLS = [...new Set([...CHAPTERS.flatMap(c => c.assays.map(a => a.id)), ...ANALYTICAL_METHODS.map(m => m.id)])].map(id => byId[id]).filter(Boolean);
 const ROLE_LINE = {
   primary: "Primary: the assay the specification is written on",
   orthogonal: "Orthogonal: a different physical principle that confirms it",
@@ -37,7 +40,7 @@ export default function CqaMethod({ item, go }) {
           <thead>
             <tr>
               <th className="cm-corner">Quality attribute</th>
-              {ANALYTICAL_METHODS.map(m => (
+              {COLS.map(m => (
                 <th key={m.id} className={`cm-col${hoverCol === m.id ? " is-hover" : ""}`} onMouseEnter={() => setHoverCol(m.id)} onMouseLeave={() => setHoverCol(null)}>
                   <button onClick={() => go("atlas/" + m.id)} title={`Open ${m.name}`}><span>{m.abbreviation}</span></button>
                 </th>
@@ -54,7 +57,7 @@ export default function CqaMethod({ item, go }) {
                       <i />{c.name}<span className="sv-mono">{count(c.id)}</span>
                     </button>
                   </th>
-                  {ANALYTICAL_METHODS.map(m => {
+                  {COLS.map(m => {
                     const r = roleAt(c.id, m.id);
                     return (
                       <td key={m.id} className={hoverCol === m.id ? "is-hover" : ""} onClick={() => pick(c.id)}
