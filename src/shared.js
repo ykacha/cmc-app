@@ -2,10 +2,10 @@
 import { useState, useRef } from "react";
 
 export const LC = {
-  Foundational: "#22D3EE",
-  Intermediate:  "#34D399",
-  Advanced:      "#F59E0B",
-  Expert:        "#F472B6",
+  Foundational: "#1F9D63",
+  Intermediate:  "#3D63DD",
+  Advanced:      "#D9731A",
+  Expert:        "#E0393E",
 };
 
 export const METHOD_STEPS = {
@@ -33,21 +33,36 @@ export const METHOD_STEPS = {
 };
 
 export const Badge = ({ level }) => (
-  <span style={{ background:LC[level]+"22", color:LC[level], border:`1px solid ${LC[level]}44`,
-    padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700, whiteSpace:"nowrap" }}>
-    {level}
-  </span>
+  <span className="sv-chip" style={{ "--chip": LC[level] }}>{level}</span>
 );
 
-export const SectionHeader = ({ icon, title, subtitle }) => (
-  <div style={{ marginBottom:32 }}>
-    <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-      <span style={{ fontSize:36 }}>{icon}</span>
-      <div>
-        <h2 style={{ color:"var(--text-h)", margin:0, fontSize:26, fontWeight:900 }}>{title}</h2>
-        {subtitle && <p style={{ color:"var(--text-sec)", margin:"4px 0 0", fontSize:15 }}>{subtitle}</p>}
+/* Page title block: the structure-figure title. Wide display, one-line
+   subtitle, and a chain rule (heavy/light/bridge segments) beneath. */
+export const SectionHeader = ({ title, subtitle }) => (
+  <header className="sv-title">
+    <h1>{title}</h1>
+    {subtitle && <p>{subtitle}</p>}
+    <div className="sv-chainrule" aria-hidden="true"><i /><i /><i /><i /></div>
+  </header>
+);
+
+/* Page head for tool pages: title block, a quiet line of facts, and the
+   page's mode tabs, all in the shared state vocabulary. */
+export const PageHead = ({ title, subtitle, facts = [], tabs = [], active, onTab }) => (
+  <div className="sv-pagehead">
+    <SectionHeader title={title} subtitle={subtitle} />
+    {facts.length > 0 && (
+      <dl className="sv-facts">
+        {facts.map(([v, l]) => <div key={l}><dt>{l}</dt><dd>{v}</dd></div>)}
+      </dl>
+    )}
+    {tabs.length > 0 && (
+      <div className="sv-modebar" role="tablist">
+        {tabs.map(t => (
+          <button key={t} role="tab" aria-selected={active === t} className={`sv-tab${active === t ? " is-on" : ""}`} onClick={() => onTab(t)}>{t}</button>
+        ))}
       </div>
-    </div>
+    )}
   </div>
 );
 
@@ -60,22 +75,17 @@ export const InfoBox = ({ color, label, text }) => (
 
 export const PhasePill = ({ phase, active }) => (
   <span style={{
-    background: active ? "#34D39933" : "var(--bg-raised)",
-    color: active ? "#34D399" : "var(--text-faint)",
-    border: `1px solid ${active ? "#34D39944" : "var(--border)"}`,
+    background: active ? "#1F9D6333" : "var(--bg-raised)",
+    color: active ? "#1F9D63" : "var(--text-faint)",
+    border: `1px solid ${active ? "#1F9D6344" : "var(--border)"}`,
     padding:"2px 7px", borderRadius:6, fontSize:10, fontWeight:700,
     transition:"all 0.2s ease",
   }}>{phase}</span>
 );
 
 export const FilterBtn = ({ label, active, color, onClick }) => (
-  <button onClick={onClick} className="cat-tab"
-    style={{
-      background: active ? (color||"var(--accent)") : "var(--bg-raised)",
-      color: active ? (color ? "#000" : "#fff") : "var(--text-sec)",
-      border:`1px solid ${active ? (color||"var(--accent)") : "var(--border)"}`,
-      borderRadius:8, padding:"5px 14px", cursor:"pointer", fontSize:12, fontWeight:600,
-    }}>
+  <button onClick={onClick} className={`sv-tab${active ? " is-on" : ""}`} aria-pressed={!!active}
+    style={color ? { "--tab": color } : undefined}>
     {label}
   </button>
 );
@@ -114,25 +124,25 @@ export const HeroBiologic = () => (
       <svg width="170" height="170" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="hb-fc" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F59E0B"/><stop offset="100%" stopColor="#92400E"/>
+            <stop offset="0%" stopColor="#D9731A"/><stop offset="100%" stopColor="#92400E"/>
           </linearGradient>
           <linearGradient id="hb-fab" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#FDE68A"/><stop offset="100%" stopColor="#B45309"/>
           </linearGradient>
           <radialGradient id="hb-glow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#D97706" stopOpacity="0.8"/>
-            <stop offset="100%" stopColor="#34D399" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#1F9D63" stopOpacity="0"/>
           </radialGradient>
         </defs>
         <circle cx="85" cy="92" r="46" fill="url(#hb-glow)" style={{animation:"cmc-glow-pulse 2.8s ease-in-out infinite"}}/>
         <g style={{transformOrigin:"85px 85px", animation:"cmc-ring-cw 11s linear infinite"}}>
-          <ellipse cx="85" cy="85" rx="70" ry="22" stroke="#F59E0B" strokeWidth="0.8" strokeOpacity="0.45" strokeDasharray="6 5" fill="none" transform="rotate(-18,85,85)"/>
+          <ellipse cx="85" cy="85" rx="70" ry="22" stroke="#D9731A" strokeWidth="0.8" strokeOpacity="0.45" strokeDasharray="6 5" fill="none" transform="rotate(-18,85,85)"/>
         </g>
         <g style={{transformOrigin:"85px 85px", animation:"cmc-ring-ccw 15s linear infinite"}}>
-          <ellipse cx="85" cy="85" rx="60" ry="19" stroke="#34D399" strokeWidth="0.8" strokeOpacity="0.4" strokeDasharray="4 7" fill="none" transform="rotate(25,85,85)"/>
+          <ellipse cx="85" cy="85" rx="60" ry="19" stroke="#1F9D63" strokeWidth="0.8" strokeOpacity="0.4" strokeDasharray="4 7" fill="none" transform="rotate(25,85,85)"/>
         </g>
         <g style={{transformOrigin:"85px 85px", animation:"cmc-ring-tilt 20s linear infinite"}}>
-          <ellipse cx="85" cy="85" rx="76" ry="24" stroke="#FBBF24" strokeWidth="0.6" strokeOpacity="0.28" strokeDasharray="5 9" fill="none" transform="rotate(50,85,85)"/>
+          <ellipse cx="85" cy="85" rx="76" ry="24" stroke="#D9731A" strokeWidth="0.6" strokeOpacity="0.28" strokeDasharray="5 9" fill="none" transform="rotate(50,85,85)"/>
         </g>
         <g style={{transformOrigin:"85px 95px", animation:"cmc-mab-float 3.4s ease-in-out infinite"}}>
           <path d="M79 92 Q79 108 79 122 Q79 130 85 132 Q91 130 91 122 Q91 108 91 92" fill="url(#hb-fc)" opacity="0.92"/>
@@ -142,15 +152,15 @@ export const HeroBiologic = () => (
           <path d="M80 80 Q68 68 50 52 Q43 45 38 40 Q33 34 38 28 Q43 22 51 26 Q56 29 60 35 Q72 54 83 72" fill="url(#hb-fab)" opacity="0.9" style={{animation:"cmc-fab-glow 3.4s ease-in-out infinite"}}/>
           <ellipse cx="38" cy="26" rx="10" ry="8" fill="#FCD34D"/>
           <path d="M31 22 Q38 13 45 22" stroke="white" strokeWidth="1.6" fill="none" strokeOpacity="0.9" strokeLinecap="round"/>
-          <ellipse cx="56" cy="38" rx="8" ry="7" fill="#F59E0B" opacity="0.6"/>
+          <ellipse cx="56" cy="38" rx="8" ry="7" fill="#D9731A" opacity="0.6"/>
           <path d="M90 80 Q102 68 120 52 Q127 45 132 40 Q137 34 132 28 Q127 22 119 26 Q114 29 110 35 Q98 54 87 72" fill="url(#hb-fab)" opacity="0.9" style={{animation:"cmc-fab-glow 3.4s ease-in-out infinite"}}/>
           <ellipse cx="132" cy="26" rx="10" ry="8" fill="#FCD34D"/>
           <path d="M125 22 Q132 13 139 22" stroke="white" strokeWidth="1.6" fill="none" strokeOpacity="0.9" strokeLinecap="round"/>
-          <ellipse cx="114" cy="38" rx="8" ry="7" fill="#F59E0B" opacity="0.6"/>
-          <path d="M81 112 Q73 120 69 130" stroke="#34D399" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
-          <path d="M89 112 Q97 120 101 130" stroke="#34D399" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
-          <circle cx="69" cy="131" r="4" fill="#34D399" opacity="0.9"/>
-          <circle cx="101" cy="131" r="4" fill="#34D399" opacity="0.9"/>
+          <ellipse cx="114" cy="38" rx="8" ry="7" fill="#D9731A" opacity="0.6"/>
+          <path d="M81 112 Q73 120 69 130" stroke="#1F9D63" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
+          <path d="M89 112 Q97 120 101 130" stroke="#1F9D63" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
+          <circle cx="69" cy="131" r="4" fill="#1F9D63" opacity="0.9"/>
+          <circle cx="101" cy="131" r="4" fill="#1F9D63" opacity="0.9"/>
           <path d="M69 131 Q61 138 59 145" stroke="#6EE7B7" strokeWidth="1.6" strokeLinecap="round" fill="none"/>
           <path d="M69 131 Q66 140 70 146" stroke="#6EE7B7" strokeWidth="1.6" strokeLinecap="round" fill="none"/>
           <path d="M101 131 Q109 138 111 145" stroke="#6EE7B7" strokeWidth="1.6" strokeLinecap="round" fill="none"/>
@@ -162,16 +172,16 @@ export const HeroBiologic = () => (
         </g>
         <g transform="translate(85,85)">
           <g style={{transformOrigin:"0px 0px", animation:"cmc-orbit-a 4.5s linear infinite"}}>
-            <circle cx="0" cy="-68" r="12" fill="#031A0F" stroke="#34D399" strokeWidth="1.8"/>
-            <circle cx="0" cy="-68" r="4" fill="#34D399" style={{animation:"cmc-dot-pulse 2.2s ease-in-out infinite"}}/>
+            <circle cx="0" cy="-68" r="12" fill="#031A0F" stroke="#1F9D63" strokeWidth="1.8"/>
+            <circle cx="0" cy="-68" r="4" fill="#1F9D63" style={{animation:"cmc-dot-pulse 2.2s ease-in-out infinite"}}/>
           </g>
           <g style={{transformOrigin:"0px 0px", animation:"cmc-orbit-b 6.5s linear infinite"}}>
-            <circle cx="0" cy="-62" r="12" fill="#1C1000" stroke="#F59E0B" strokeWidth="1.8"/>
-            <circle cx="0" cy="-62" r="4" fill="#F59E0B" style={{animation:"cmc-dot-pulse 2.8s ease-in-out infinite"}}/>
+            <circle cx="0" cy="-62" r="12" fill="#1C1000" stroke="#D9731A" strokeWidth="1.8"/>
+            <circle cx="0" cy="-62" r="4" fill="#D9731A" style={{animation:"cmc-dot-pulse 2.8s ease-in-out infinite"}}/>
           </g>
           <g style={{transformOrigin:"0px 0px", animation:"cmc-orbit-c 9s linear infinite"}}>
-            <circle cx="0" cy="-73" r="12" fill="#031A0F" stroke="#34D399" strokeWidth="1.8"/>
-            <circle cx="0" cy="-73" r="4" fill="#34D399" style={{animation:"cmc-dot-pulse 3.4s ease-in-out infinite"}}/>
+            <circle cx="0" cy="-73" r="12" fill="#031A0F" stroke="#1F9D63" strokeWidth="1.8"/>
+            <circle cx="0" cy="-73" r="4" fill="#1F9D63" style={{animation:"cmc-dot-pulse 3.4s ease-in-out infinite"}}/>
           </g>
         </g>
       </svg>

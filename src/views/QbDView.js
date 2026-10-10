@@ -82,7 +82,7 @@ export default function QbDView({ navigate }) {
           </div>
           <InfoBox color="var(--accent)" label="ICH Q8(R2) FRAMEWORK"
             text="QTPP → CQA Identification → Risk Assessment → Design of Experiments (DoE) → Design Space → Control Strategy. Working within the design space does not require regulatory notification. The QTPP is documented in CTD Section 3.2.P.2 (DP development) and 3.2.S.2 (DS development)."/>
-          <InfoBox color="#22D3EE" label="LINK TO CTD & SUBMISSIONS"
+          <InfoBox color="#3D63DD" label="LINK TO CTD & SUBMISSIONS"
             text="QTPP elements directly map to BLA/IND CTD Module 3.2 content: potency → 3.2.S.4.4 (bioassay method); purity → 3.2.S.4.1 (specification); container closure → 3.2.P.3; shelf life → 3.2.P.8 (stability). QTPP is not a submission section itself but drives all CMC content."/>
         </div>
       )}
@@ -147,9 +147,9 @@ export default function QbDView({ navigate }) {
                   </div>
                   <span style={{ background:`${cqa.color}22`, color:cqa.color, borderRadius:12, padding:"3px 10px", fontSize:10, fontWeight:800 }}>{cqa.risk}</span>
                   <InfoBox color={cqa.color} label="SCIENTIFIC RATIONALE" text={cqa.rationale}/>
-                  <InfoBox color="#34D399" label="SPECIFICATION" text={cqa.spec}/>
-                  <InfoBox color="#F59E0B" label="PATIENT RISK (if OOS)" text={cqa.patientRisk}/>
-                  <InfoBox color="#22D3EE" label="CONTROL TIER" text={cqa.controlTier}/>
+                  <InfoBox color="#1F9D63" label="SPECIFICATION" text={cqa.spec}/>
+                  <InfoBox color="#D9731A" label="PATIENT RISK (if OOS)" text={cqa.patientRisk}/>
+                  <InfoBox color="#3D63DD" label="CONTROL TIER" text={cqa.controlTier}/>
                   <InfoBox color="var(--accent)" label="MITIGATION STRATEGY" text={cqa.mitigation}/>
                   <div style={{ marginTop:12 }}>
                     <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>CTD SECTION & ICH REF</div>
@@ -176,7 +176,7 @@ export default function QbDView({ navigate }) {
       {tab==="fmea" && (
         <div>
           <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:16, flexWrap:"wrap" }}>
-            <InfoBox color="#F59E0B" label="FMEA METHODOLOGY"
+            <InfoBox color="#D9731A" label="FMEA METHODOLOGY"
               text="Failure Mode and Effects Analysis (FMEA) per ICH Q9 Risk Management. RPN = Severity × Occurrence × Detectability (each scored 1–10; Detectability: 10=hardest to detect). RPN ≥72 = High priority for control strategy enhancement." />
           </div>
           <div style={{ display:"flex", gap:8, marginBottom:16 }}>
@@ -195,7 +195,7 @@ export default function QbDView({ navigate }) {
               </thead>
               <tbody>
                 {sortedFMEA.map((row, i) => {
-                  const rpnColor = row.rpn >= 80 ? "#F472B6" : row.rpn >= 50 ? "#F59E0B" : "#34D399";
+                  const rpnColor = row.rpn >= 80 ? "#C99A06" : row.rpn >= 50 ? "#D9731A" : "#1F9D63";
                   const cqa = CQA_LIST.find(c => c.id===row.cqaId);
                   return (
                     <tr key={row.cqaId} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"transparent":"var(--bg-surface)" }}>
@@ -206,8 +206,8 @@ export default function QbDView({ navigate }) {
                       {[row.severity, row.occurrence, row.detectability].map((v, vi) => (
                         <td key={vi} style={{ padding:"10px 12px", textAlign:"center" }}>
                           <span style={{
-                            background: v>=8 ? "#F472B622" : v>=5 ? "#F59E0B22" : "#34D39922",
-                            color: v>=8 ? "#F472B6" : v>=5 ? "#F59E0B" : "#34D399",
+                            background: v>=8 ? "#C99A0622" : v>=5 ? "#D9731A22" : "#1F9D6322",
+                            color: v>=8 ? "#C99A06" : v>=5 ? "#D9731A" : "#1F9D63",
                             borderRadius:8, padding:"3px 8px", fontWeight:900, fontSize:12
                           }}>{v}</span>
                         </td>
@@ -216,7 +216,7 @@ export default function QbDView({ navigate }) {
                         <span style={{ background:`${rpnColor}22`, color:rpnColor, borderRadius:8, padding:"4px 10px", fontWeight:900, fontSize:13 }}>{row.rpn}</span>
                       </td>
                       <td style={{ padding:"10px 12px", textAlign:"center" }}>
-                        <span style={{ background:"#34D39922", color:"#34D399", borderRadius:8, padding:"3px 8px", fontWeight:700, fontSize:11 }}>{row.residualRpn}</span>
+                        <span style={{ background:"#1F9D6322", color:"#1F9D63", borderRadius:8, padding:"3px 8px", fontWeight:700, fontSize:11 }}>{row.residualRpn}</span>
                       </td>
                       <td style={{ padding:"10px 12px" }}>
                         <ul style={{ margin:0, paddingLeft:14, color:"var(--text-sec)", fontSize:10, lineHeight:1.6 }}>
@@ -254,7 +254,7 @@ export default function QbDView({ navigate }) {
                   <div style={{ color:cpp.stepColor, fontSize:9, fontWeight:800, marginBottom:4, letterSpacing:"0.06em" }}>{cpp.processStep}</div>
                   <div style={{ color:"var(--text-h)", fontWeight:900, fontSize:13, marginBottom:4 }}>{cpp.name}</div>
                   <div style={{ display:"flex", gap:10, marginBottom:6 }}>
-                    <span style={{ color:"#34D399", fontSize:10, fontWeight:700 }}>NOR: {cpp.normalRange}</span>
+                    <span style={{ color:"#1F9D63", fontSize:10, fontWeight:700 }}>NOR: {cpp.normalRange}</span>
                   </div>
                   <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
                     {cpp.linkedCQAs?.map(cqaId => {
@@ -281,11 +281,11 @@ export default function QbDView({ navigate }) {
                   </div>
                   <div style={{ color:cpp.stepColor, fontSize:11, fontWeight:700, marginBottom:14, display:"flex", alignItems:"center", gap:7 }}><Icon name="gear" size={12} sw={1.9} /> {cpp.processStep}</div>
                   <InfoBox color={cpp.stepColor} label="NORMAL OPERATING RANGE (NOR)" text={cpp.normalRange}/>
-                  {cpp.criticalLow && <InfoBox color="#F59E0B" label="CRITICAL LOW LIMIT" text={cpp.criticalLow}/>}
-                  {cpp.criticalHigh && <InfoBox color="#F472B6" label="CRITICAL HIGH LIMIT" text={cpp.criticalHigh}/>}
+                  {cpp.criticalLow && <InfoBox color="#D9731A" label="CRITICAL LOW LIMIT" text={cpp.criticalLow}/>}
+                  {cpp.criticalHigh && <InfoBox color="#C99A06" label="CRITICAL HIGH LIMIT" text={cpp.criticalHigh}/>}
                   <InfoBox color="var(--accent)" label="MECHANISM OF EFFECT ON CQAs" text={cpp.mechanismOfEffect}/>
-                  <InfoBox color="#22D3EE" label="MONITORING STRATEGY" text={cpp.monitoringStrategy}/>
-                  <InfoBox color="#34D399" label="CONTROL METHOD" text={cpp.controlMethod}/>
+                  <InfoBox color="#3D63DD" label="MONITORING STRATEGY" text={cpp.monitoringStrategy}/>
+                  <InfoBox color="#1F9D63" label="CONTROL METHOD" text={cpp.controlMethod}/>
                   <div style={{ marginTop:10 }}>
                     <div style={{ color:"var(--text-muted)", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>LINKED CQAs</div>
                     <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
@@ -330,9 +330,9 @@ export default function QbDView({ navigate }) {
                       {ds.parameters.map((p, i) => (
                         <tr key={p.name} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"transparent":"var(--bg-surface)" }}>
                           <td style={{ color:"var(--accent-light)", padding:"8px 12px", fontWeight:700, fontSize:11 }}>{p.name}</td>
-                          <td style={{ color:"#F59E0B", padding:"8px 12px", fontFamily:"monospace", fontSize:11 }}>{p.par}</td>
-                          <td style={{ color:"#34D399", padding:"8px 12px", fontFamily:"monospace", fontSize:11 }}>{p.nor}</td>
-                          <td style={{ color:"#22D3EE", padding:"8px 12px", fontFamily:"monospace", fontSize:11 }}>{p.setpoint}</td>
+                          <td style={{ color:"#D9731A", padding:"8px 12px", fontFamily:"monospace", fontSize:11 }}>{p.par}</td>
+                          <td style={{ color:"#1F9D63", padding:"8px 12px", fontFamily:"monospace", fontSize:11 }}>{p.nor}</td>
+                          <td style={{ color:"#3D63DD", padding:"8px 12px", fontFamily:"monospace", fontSize:11 }}>{p.setpoint}</td>
                           <td style={{ padding:"8px 12px" }}>
                             <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
                               {(p.linkedCQAs||[]).map(c => (
@@ -345,7 +345,7 @@ export default function QbDView({ navigate }) {
                     </tbody>
                   </table>
                 </div>
-                <InfoBox color="#22D3EE" label="REGULATORY STATUS" text={ds.regulatoryStatus}/>
+                <InfoBox color="#3D63DD" label="REGULATORY STATUS" text={ds.regulatoryStatus}/>
               </div>
             ))}
 
@@ -358,9 +358,9 @@ export default function QbDView({ navigate }) {
                   </summary>
                   <div style={{ marginTop:14, borderTop:"1px solid var(--border)", paddingTop:14 }}>
                     <InfoBox color="var(--accent)" label="OBJECTIVE" text={doe.objective}/>
-                    <InfoBox color="#22D3EE" label="DESIGN" text={`${doe.design} (${doe.runs} runs) · Software: ${doe.software}`}/>
+                    <InfoBox color="#3D63DD" label="DESIGN" text={`${doe.design} (${doe.runs} runs) · Software: ${doe.software}`}/>
                     <div style={{ marginBottom:10 }}>
-                      <div style={{ color:"#F59E0B", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>FACTORS</div>
+                      <div style={{ color:"#D9731A", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>FACTORS</div>
                       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:8 }}>
                         {doe.factors.map(f => (
                           <div key={f.name} style={{ background:"var(--bg-card)", borderRadius:8, padding:"8px 12px", border:"1px solid var(--border)", fontSize:11 }}>
@@ -370,7 +370,7 @@ export default function QbDView({ navigate }) {
                         ))}
                       </div>
                     </div>
-                    <InfoBox color="#34D399" label="KEY FINDINGS" text={doe.keyFindings}/>
+                    <InfoBox color="#1F9D63" label="KEY FINDINGS" text={doe.keyFindings}/>
                   </div>
                 </details>
               ))}
@@ -381,7 +381,7 @@ export default function QbDView({ navigate }) {
 
       {tab==="strategy" && (
         <div>
-          <InfoBox color="#34D399" label="MULTI-TIERED CONTROL STRATEGY (ICH Q10 + Q8)" text={CONTROL_STRATEGY.overview}/>
+          <InfoBox color="#1F9D63" label="MULTI-TIERED CONTROL STRATEGY (ICH Q10 + Q8)" text={CONTROL_STRATEGY.overview}/>
           <div style={{ marginTop:16, display:"flex", gap:8, marginBottom:16, flexWrap:"wrap" }}>
             {CONTROL_STRATEGY.tiers.map((t, i) => (
               <button key={i} onClick={() => setCsTab(i)}
@@ -414,7 +414,7 @@ export default function QbDView({ navigate }) {
                         return (
                           <tr key={i} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"transparent":"var(--bg-surface)" }}>
                             <td style={{ color:"var(--text-h)", padding:"8px 12px", fontWeight:700, fontSize:11 }}>{el.control}</td>
-                            <td style={{ color:"#34D399", padding:"8px 12px", fontFamily:"monospace", fontSize:10 }}>{el.target}</td>
+                            <td style={{ color:"#1F9D63", padding:"8px 12px", fontFamily:"monospace", fontSize:10 }}>{el.target}</td>
                             <td style={{ color:"var(--text-muted)", padding:"8px 12px", fontSize:10 }}>{el.frequency}</td>
                             <td style={{ padding:"8px 12px" }}>
                               {linkedCQA && (
@@ -463,7 +463,7 @@ export default function QbDView({ navigate }) {
               <Icon name="box" size={14} sw={1.9} /> Drug Substance COA
             </button>
             <button onClick={() => setCoaTab("dp")}
-              style={{ background: coaTab==="dp" ? "#34D399" : "var(--bg-card)", color: coaTab==="dp" ? "#000" : "var(--text-sec)",
+              style={{ background: coaTab==="dp" ? "#1F9D63" : "var(--bg-card)", color: coaTab==="dp" ? "#000" : "var(--text-sec)",
                 border:"none", borderRadius:10, padding:"9px 20px", cursor:"pointer", fontWeight:700, fontSize:13, transition:"all 0.18s",
                 display:"inline-flex", alignItems:"center", gap:8 }}>
               <Icon name="syringe" size={14} sw={1.9} /> Drug Product COA
@@ -472,7 +472,7 @@ export default function QbDView({ navigate }) {
 
           {(() => {
             const ex = coaTab==="ds" ? COA_ELEMENTS.dsExample : COA_ELEMENTS.dpExample;
-            const accentColor = coaTab==="ds" ? "var(--accent)" : "#34D399";
+            const accentColor = coaTab==="ds" ? "var(--accent)" : "#1F9D63";
             return (
               <div style={{ background:"var(--bg-card)", border:`1.5px solid ${accentColor}44`, borderRadius:14, overflow:"hidden" }}>
                 <div style={{ background:`${accentColor}18`, padding:"16px 22px", borderBottom:`1px solid ${accentColor}33` }}>
@@ -494,10 +494,10 @@ export default function QbDView({ navigate }) {
                           <tr key={i} style={{ borderBottom:"1px solid var(--border)", background: i%2===0?"transparent":"var(--bg-surface)" }}>
                             <td style={{ color:"var(--text-h)", padding:"10px 14px", fontWeight:700, fontSize:11 }}>{t.test}</td>
                             <td style={{ color:"var(--text-sec)", padding:"10px 14px", fontSize:10, maxWidth:180 }}>{t.method}</td>
-                            <td style={{ color:"#22D3EE", padding:"10px 14px", fontFamily:"monospace", fontSize:10 }}>{t.spec}</td>
+                            <td style={{ color:"#3D63DD", padding:"10px 14px", fontFamily:"monospace", fontSize:10 }}>{t.spec}</td>
                             <td style={{ padding:"10px 14px" }}>
-                              <span style={{ background: passed ? "#34D39922" : "#F472B622",
-                                color: passed ? "#34D399" : "#F472B6",
+                              <span style={{ background: passed ? "#1F9D6322" : "#C99A0622",
+                                color: passed ? "#1F9D63" : "#C99A06",
                                 borderRadius:8, padding:"3px 8px", fontSize:10, fontWeight:700 }}>
                                 {t.result}
                               </span>
@@ -508,8 +508,8 @@ export default function QbDView({ navigate }) {
                     </tbody>
                   </table>
                 </div>
-                <div style={{ background:"#34D39918", borderTop:"1px solid #34D39944", padding:"12px 22px" }}>
-                  <strong style={{ color:"#34D399", fontSize:11 }}>LOT DISPOSITION: </strong>
+                <div style={{ background:"#1F9D6318", borderTop:"1px solid #1F9D6344", padding:"12px 22px" }}>
+                  <strong style={{ color:"#1F9D63", fontSize:11 }}>LOT DISPOSITION: </strong>
                   <span style={{ color:"var(--text-h)", fontSize:12, fontWeight:700 }}>{ex.disposition}</span>
                 </div>
               </div>

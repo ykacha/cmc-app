@@ -1,11 +1,11 @@
 // src/pathway-data.js: Learning pathways per career level
 
 export const PATHWAY_LEVELS = [
-  { id: "ra1", label: "RA I / Scientist I", icon: "book", color: "#22D3EE", years: "0–2 years experience" },
-  { id: "ra2", label: "Scientist II / Sr. Scientist", icon: "flask", color: "#34D399", years: "2–5 years experience" },
-  { id: "assoc-dir", label: "Associate Director", icon: "target", color: "#F59E0B", years: "5–10 years experience" },
-  { id: "director", label: "Director", icon: "trophy", color: "#F472B6", years: "10–15 years experience" },
-  { id: "vp", label: "VP / Head of CMC", icon: "star", color: "#C99A3B", years: "15+ years experience" },
+  { id: "ra1", label: "RA I / Scientist I", icon: "book", color: "#3D63DD", years: "0–2 years experience" },
+  { id: "ra2", label: "Scientist II / Sr. Scientist", icon: "flask", color: "#1F9D63", years: "2–5 years experience" },
+  { id: "assoc-dir", label: "Associate Director", icon: "target", color: "#D9731A", years: "5–10 years experience" },
+  { id: "director", label: "Director", icon: "trophy", color: "#C99A06", years: "10–15 years experience" },
+  { id: "vp", label: "VP / Head of CMC", icon: "star", color: "#C99A06", years: "15+ years experience" },
 ];
 
 export const LEARNING_PATHWAYS = {
@@ -15,7 +15,7 @@ export const LEARNING_PATHWAYS = {
     day30: {
       label: "Days 1–30: Foundations",
       focus: "Core CMC concepts, pipeline basics, analytical fundamentals",
-      color: "#22D3EE",
+      color: "#3D63DD",
       topics: [
         { day: "1–3", topic: "Biologic Development Pipeline overview (all 16 stages)", view: "pipeline", competency: "Name and describe all 16 development stages", time_min: 60 },
         { day: "4–6", topic: "CMC Domains: Drug Substance, Drug Product, Analytical, Regulatory, QA/QC", view: "domains", competency: "Distinguish DS vs DP CMC activities", time_min: 45 },
@@ -31,7 +31,7 @@ export const LEARNING_PATHWAYS = {
     day60: {
       label: "Days 31–60: Core Skill Development",
       focus: "QbD principles, analytical methods depth, stability protocols",
-      color: "#34D399",
+      color: "#1F9D63",
       topics: [
         { day: "31–34", topic: "QbD: QTPP, CQA, CPP definitions and examples", view: "qbd", competency: "Identify CQAs for a mAb product from QTPP", time_min: 60 },
         { day: "35–38", topic: "Analytical Methods: Peptide mapping, glycan analysis, bioassay", view: "methods", competency: "Explain why peptide mapping is a critical characterization method", time_min: 90 },
@@ -46,7 +46,7 @@ export const LEARNING_PATHWAYS = {
     day90: {
       label: "Days 61–90: Applied Knowledge",
       focus: "Regulatory submissions, career skills, practical applications",
-      color: "#F59E0B",
+      color: "#D9731A",
       topics: [
         { day: "61–65", topic: "CTD Module 3.2: drug substance and drug product section deep dive", view: "ctd", competency: "Know what data goes in 3.2.S and 3.2.P sections", time_min: 90 },
         { day: "66–70", topic: "Excipient Compatibility basics: key incompatibilities", view: "excipient", competency: "Name 3 critical excipient incompatibilities and their mechanisms", time_min: 60 },
@@ -65,7 +65,7 @@ export const LEARNING_PATHWAYS = {
     day30: {
       label: "Days 1–30: Advanced Analytical Mastery",
       focus: "Advanced characterization, method validation, regulatory strategy",
-      color: "#22D3EE",
+      color: "#3D63DD",
       topics: [
         { day: "1–4", topic: "Advanced analytical: SPR, glycan analysis, MFI, DSC", view: "methods", competency: "Explain KD measurement by SPR and its regulatory significance", time_min: 90 },
         { day: "5–8", topic: "ICH Q2(R1) Method Validation: all validation characteristics", view: "ich", competency: "Design validation protocol for a new SEC method", time_min: 60 },
@@ -80,7 +80,7 @@ export const LEARNING_PATHWAYS = {
     day60: {
       label: "Days 31–60: Regulatory & Filing Depth",
       focus: "CTD authoring, comparability, post-approval changes",
-      color: "#34D399",
+      color: "#1F9D63",
       topics: [
         { day: "31–35", topic: "CTD Module 3 authoring: what makes a complete submission", view: "ctd", competency: "Identify gaps in a mock Module 3.2.S section", time_min: 90 },
         { day: "36–40", topic: "ICH Q5E Comparability for scale-up changes", view: "ich", competency: "Design comparability exercise for bioreactor scale-up", time_min: 60 },
@@ -94,7 +94,7 @@ export const LEARNING_PATHWAYS = {
     day90: {
       label: "Days 61–90: Leadership & Strategy",
       focus: "Program management, technical leadership, advanced regulatory",
-      color: "#F59E0B",
+      color: "#D9731A",
       topics: [
         { day: "61–65", topic: "Career: Scientist II/Sr. Scientist competencies; leadership interview prep", view: "career", competency: "Answer Intermediate-level interview questions", time_min: 90 },
         { day: "66–70", topic: "CMC Timeline: Regulatory milestones and deliverables", view: "timeline", competency: "Map CMC deliverables for IND, Phase 1, 2, 3 and BLA", time_min: 60 },
@@ -112,7 +112,7 @@ export const LEARNING_PATHWAYS = {
     day30: {
       label: "Days 1–30: Strategic CMC",
       focus: "Regulatory strategy, filing leadership, comparability programs",
-      color: "#22D3EE",
+      color: "#3D63DD",
       topics: [
         { day: "1–5", topic: "Full CTD review: identify strategic CMC arguments", view: "ctd", competency: "Evaluate a complete CTD module 3 for filing readiness", time_min: 120 },
         { day: "6–10", topic: "All ICH Q guidelines: Q1–Q14 strategic implications", view: "ich", competency: "Summarize impact of ICH Q14 on analytical procedure lifecycle", time_min: 90 },
@@ -126,7 +126,7 @@ export const LEARNING_PATHWAYS = {
     day60: {
       label: "Days 31–60: Team Leadership",
       focus: "Mentoring, process development strategy, change control",
-      color: "#34D399",
+      color: "#1F9D63",
       topics: [
         { day: "31–40", topic: "Career: Director-level competencies; leadership interviews", view: "career", competency: "Answer Advanced and Expert interview questions; develop team mentoring approach", time_min: 120 },
         { day: "41–50", topic: "Stability program strategy for a full development portfolio", view: "stability", competency: "Design stability matrix for 3 products at different development stages", time_min: 90 },
@@ -137,7 +137,7 @@ export const LEARNING_PATHWAYS = {
     day90: {
       label: "Days 61–90: Commercial & Post-Approval",
       focus: "Commercial CMC, post-approval changes, lifecycle management",
-      color: "#F59E0B",
+      color: "#D9731A",
       topics: [
         { day: "61–75", topic: "Batch Record Simulator: Full commercial BPR with all deviations", view: "batch", competency: "Manage all 8 deviation scenarios; write deviation reports", time_min: 120 },
         { day: "76–90", topic: "Progress: Track team-level competency development", view: "progress", competency: "Expert exam ≥80%; complete program completion badge", time_min: 60 },
@@ -151,7 +151,7 @@ export const LEARNING_PATHWAYS = {
     day30: {
       label: "Days 1–30: Executive Overview",
       focus: "Portfolio strategy, regulatory intelligence, organizational leadership",
-      color: "#22D3EE",
+      color: "#3D63DD",
       topics: [
         { day: "1–10", topic: "Rapid review: All 12 original + 8 new views for executive context", view: "dashboard", competency: "Identify top 3 CMC risks across a portfolio", time_min: 180 },
         { day: "11–20", topic: "All case studies: Executive lessons for portfolio risk management", view: "cases", competency: "Develop organizational policy recommendations from each case", time_min: 120 },
@@ -162,7 +162,7 @@ export const LEARNING_PATHWAYS = {
     day60: {
       label: "Days 31–60: Organizational Capability",
       focus: "Building CMC organization, talent development, regulatory partnerships",
-      color: "#34D399",
+      color: "#1F9D63",
       topics: [
         { day: "31–45", topic: "Career: VP-level competencies and leadership model", view: "career", competency: "Design team development curriculum using learning pathways", time_min: 120 },
         { day: "46–60", topic: "Learning Pathway design for team members across 5 levels", view: "pathway", competency: "Assign appropriate pathway to team members at each level", time_min: 60 },
@@ -172,7 +172,7 @@ export const LEARNING_PATHWAYS = {
     day90: {
       label: "Days 61–90: External Engagement",
       focus: "FDA/EMA interactions, industry standards, thought leadership",
-      color: "#F59E0B",
+      color: "#D9731A",
       topics: [
         { day: "61–90", topic: "ICH advanced: Q12, Q13, Q14: emerging guidelines leadership", view: "ich", competency: "Articulate industry impact of ICH Q13 continuous manufacturing", time_min: 120 },
       ],
@@ -185,7 +185,7 @@ export const LEARNING_PATHWAYS = {
     day30: {
       label: "Days 1–30: Strategic Landscape",
       focus: "Full app review for organizational deployment, competitive landscape, talent strategy",
-      color: "#22D3EE",
+      color: "#3D63DD",
       topics: [
         { day: "1–30", topic: "Full platform review: Evaluate CMC Master App for organizational training deployment", view: "dashboard", competency: "Propose deployment strategy for organization-wide CMC training", time_min: 240 },
       ],
@@ -194,7 +194,7 @@ export const LEARNING_PATHWAYS = {
     day60: {
       label: "Days 31–60: Innovation & Emerging Science",
       focus: "Novel modalities, emerging technologies, regulatory innovation",
-      color: "#34D399",
+      color: "#1F9D63",
       topics: [
         { day: "31–60", topic: "Advanced case studies: Lessons for next-generation biologics (ADCs, mRNA, gene therapy)", view: "cases", competency: "Extrapolate CMC principles to novel modalities beyond mAbs", time_min: 180 },
       ],
@@ -203,7 +203,7 @@ export const LEARNING_PATHWAYS = {
     day90: {
       label: "Days 61–90: Legacy & Impact",
       focus: "Knowledge transfer, industry contribution, mentorship at scale",
-      color: "#F59E0B",
+      color: "#D9731A",
       topics: [
         { day: "61–90", topic: "Progress: Complete all badges; design team performance metrics", view: "progress", competency: "All badges earned; team performance baseline established", time_min: 120 },
       ],
@@ -213,16 +213,16 @@ export const LEARNING_PATHWAYS = {
 };
 
 export const PATHWAY_MILESTONES = [
-  { id: "m-pipeline", label: "Pipeline Master", icon: "pipeline", req: "Visit Pipeline view + pass 5 pipeline questions", color: "#C0654A" },
-  { id: "m-methods", label: "Analytical Expert", icon: "methods", req: "View 10+ methods in detail", color: "#22D3EE" },
-  { id: "m-qbd", label: "QbD Practitioner", icon: "qbd", req: "Complete all 7 QbD tabs", color: "#F472B6" },
-  { id: "m-stability", label: "Stability Scientist", icon: "stability", req: "Complete stability matrix for 2 product types", color: "#34D399" },
-  { id: "m-oos", label: "OOS Investigator", icon: "oos", req: "Complete OOS decision tree to resolution", color: "#F59E0B" },
-  { id: "m-exam-found", label: "Foundational Graduate", icon: "book", req: "Pass Foundational exam ≥80%", color: "#60A5FA" },
-  { id: "m-exam-adv", label: "Advanced Scholar", icon: "trophy", req: "Pass Advanced exam ≥70%", color: "#F59E0B" },
+  { id: "m-pipeline", label: "Pipeline Master", icon: "pipeline", req: "Visit Pipeline view + pass 5 pipeline questions", color: "#E0393E" },
+  { id: "m-methods", label: "Analytical Expert", icon: "methods", req: "View 10+ methods in detail", color: "#3D63DD" },
+  { id: "m-qbd", label: "QbD Practitioner", icon: "qbd", req: "Complete all 7 QbD tabs", color: "#C99A06" },
+  { id: "m-stability", label: "Stability Scientist", icon: "stability", req: "Complete stability matrix for 2 product types", color: "#1F9D63" },
+  { id: "m-oos", label: "OOS Investigator", icon: "oos", req: "Complete OOS decision tree to resolution", color: "#D9731A" },
+  { id: "m-exam-found", label: "Foundational Graduate", icon: "book", req: "Pass Foundational exam ≥80%", color: "#3D63DD" },
+  { id: "m-exam-adv", label: "Advanced Scholar", icon: "trophy", req: "Pass Advanced exam ≥70%", color: "#D9731A" },
   { id: "m-exam-expert", label: "CMC Expert", icon: "star", req: "Pass Expert exam ≥70%", color: "#7A8FA6" },
-  { id: "m-cases", label: "Case Study Analyst", icon: "cases", req: "Study all 6 case studies", color: "#FB923C" },
-  { id: "m-batch", label: "Batch Record Pro", icon: "batch", req: "Complete BPR with ≤1 deviation", color: "#38BDF8" },
-  { id: "m-notes", label: "Knowledge Builder", icon: "notes", req: "Create 10+ personal notes", color: "#F472B6" },
-  { id: "m-complete", label: "CMC Master", icon: "gene", req: "Earn all other badges", color: "#C99A3B" },
+  { id: "m-cases", label: "Case Study Analyst", icon: "cases", req: "Study all 6 case studies", color: "#D9731A" },
+  { id: "m-batch", label: "Batch Record Pro", icon: "batch", req: "Complete BPR with ≤1 deviation", color: "#3D63DD" },
+  { id: "m-notes", label: "Knowledge Builder", icon: "notes", req: "Create 10+ personal notes", color: "#C99A06" },
+  { id: "m-complete", label: "CMC Master", icon: "gene", req: "Earn all other badges", color: "#C99A06" },
 ];

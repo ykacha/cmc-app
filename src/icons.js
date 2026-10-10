@@ -74,6 +74,7 @@ const PATHS = {
   users:     <><circle cx="8.5" cy="8" r="3"/><path d="M2.5 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.7 14.3c2.6.3 4.3 2.2 4.3 5.2"/></>,
   lightbulb: <><path d="M9 18.5h6M9.5 21h5"/><path d="M12 3.5a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3.5z"/></>,
   flag:      <><path d="M5 3v18"/><path d="M5 4.5h13l-3 4 3 4H5"/></>,
+  menu:     <><path d="M4 7h16M4 12h16M4 17h10"/></>,
   search:    <><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2L20.5 20.5"/></>,
   scale:     <><path d="M12 3v18M6 7h12"/><path d="M4 7l2.5 5.3H1.5z"/><path d="M20 7l2.5 5.3h-5z"/><path d="M2 13.3a2.5 2.5 0 0 0 4 0M18 13.3a2.5 2.5 0 0 0 4 0"/></>,
   syringe:   <><path d="M20 4l-2-2M17 5l2 2M9 13l6-6"/><path d="M4 20l3.5-1 7-7-2.5-2.5-7 7L4 20z"/></>,

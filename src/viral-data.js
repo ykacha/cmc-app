@@ -14,31 +14,31 @@ export const VIRAL_INTRO = {
 };
 
 export const MODEL_VIRUSES = [
-  { id:"xmulv", name:"X-MuLV", full:"Xenotropic Murine Leukemia Virus", family:"Retroviridae", genome:"ssRNA", env:"Enveloped", size:"80–110 nm", resistance:"Low", color:"#34D399",
+  { id:"xmulv", name:"X-MuLV", full:"Xenotropic Murine Leukemia Virus", family:"Retroviridae", genome:"ssRNA", env:"Enveloped", size:"80–110 nm", resistance:"Low", color:"#1F9D63",
     role:"Specific model for the endogenous retrovirus-like particles of CHO/rodent cell lines. Readily inactivated by low pH and solvent/detergent; cleared by chromatography & filtration." },
-  { id:"mmv", name:"MMV / MVM", full:"Minute Virus of Mice", family:"Parvoviridae", genome:"ssDNA", env:"Non-enveloped", size:"18–24 nm", resistance:"Very High", color:"#F472B6",
+  { id:"mmv", name:"MMV / MVM", full:"Minute Virus of Mice", family:"Parvoviridae", genome:"ssDNA", env:"Non-enveloped", size:"18–24 nm", resistance:"Very High", color:"#C99A06",
     role:"Worst-case small non-enveloped virus: the benchmark a process must clear. Extremely resistant to pH and chemicals; cleared mainly by 20 nm nanofiltration and robust AEX." },
-  { id:"prv", name:"PRV", full:"Pseudorabies Virus", family:"Herpesviridae", genome:"dsDNA", env:"Enveloped", size:"120–200 nm", resistance:"Medium", color:"#38BDF8",
+  { id:"prv", name:"PRV", full:"Pseudorabies Virus", family:"Herpesviridae", genome:"dsDNA", env:"Enveloped", size:"120–200 nm", resistance:"Medium", color:"#3D63DD",
     role:"Large enveloped DNA virus; models herpes-type contaminants. Cleared efficiently by size-based filtration and inactivated by low pH." },
-  { id:"reo", name:"Reo-3", full:"Reovirus Type 3", family:"Reoviridae", genome:"dsRNA", env:"Non-enveloped", size:"60–80 nm", resistance:"Medium–High", color:"#F59E0B",
+  { id:"reo", name:"Reo-3", full:"Reovirus Type 3", family:"Reoviridae", genome:"dsRNA", env:"Non-enveloped", size:"60–80 nm", resistance:"Medium–High", color:"#D9731A",
     role:"Medium non-enveloped virus; broad biophysical/host range model. Resistant to inactivation; cleared by filtration and partitioning steps." },
 ];
 
 export const CLEARANCE_STEPS = [
   { id:"protA", name:"Protein A Capture", mech:"Partitioning", lrv:"1.0 – 4.0", primary:false,
-    targets:["xmulv","prv"], color:"#C99A3B",
+    targets:["xmulv","prv"], color:"#C99A06",
     how:"Virus partitions away from antibody during bind/elute. Contributes clearance but variable and load-dependent: usually a supporting, not claimed-primary, step." },
   { id:"lowph", name:"Low-pH Inactivation", mech:"Inactivation", lrv:"≥ 4.0 – 6.0", primary:true,
-    targets:["xmulv","prv"], color:"#22D3EE",
+    targets:["xmulv","prv"], color:"#3D63DD",
     how:"Hold at pH 3.3–3.7 for 30–60 min (often the post-Protein-A eluate). Disrupts viral envelopes → robust inactivation of enveloped viruses. Ineffective against non-enveloped (MMV, Reo)." },
   { id:"aex", name:"Anion Exchange (flow-through)", mech:"Partitioning / Removal", lrv:"3.0 – 6.0", primary:true,
-    targets:["mmv","reo","xmulv"], color:"#34D399",
+    targets:["mmv","reo","xmulv"], color:"#1F9D63",
     how:"At pH where mAb flows through, negatively-charged viruses bind the resin and are removed. Effective for non-enveloped viruses; robust across conductivity within validated ranges." },
   { id:"vf", name:"Virus Filtration (20 nm)", mech:"Size Exclusion", lrv:"≥ 4.0 – 6.0", primary:true,
-    targets:["mmv","reo","prv","xmulv"], color:"#F472B6",
+    targets:["mmv","reo","prv","xmulv"], color:"#C99A06",
     how:"Parvovirus-retentive nanofilter (e.g., 20N grade). Removes by size: the key orthogonal step for small non-enveloped MMV. Robust, mechanism-independent; validate Vmax, pressure, flux decay." },
   { id:"sd", name:"Solvent / Detergent", mech:"Inactivation", lrv:"≥ 4.0", primary:false,
-    targets:["xmulv","prv"], color:"#FB923C",
+    targets:["xmulv","prv"], color:"#D9731A",
     how:"Triton/tri-n-butyl phosphate disrupts lipid envelopes. Common in plasma products; less typical for mAbs but a strong enveloped-virus inactivation option." },
 ];
 

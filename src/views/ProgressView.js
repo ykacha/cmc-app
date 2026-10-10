@@ -77,7 +77,7 @@ export default function ProgressView() {
           <p style={{ color: "var(--text-sec)", margin: "6px 0 0", fontSize: 14 }}>Your CMC learning journey: quiz performance, activity, and milestones.</p>
         </div>
         <button onClick={copyReport}
-          style={{ background: copied ? "#34D399" : "var(--accent)", color: "#fff", border: "none",
+          style={{ background: copied ? "#1F9D63" : "var(--accent)", color: "#fff", border: "none",
             borderRadius: 8, padding: "9px 18px", cursor: "pointer", fontWeight: 700, fontSize: 13, transition: "background 0.2s",
             display: "flex", alignItems: "center", gap: 8 }}>
           <Icon name={copied ? "check" : "ctd"} size={14} sw={2} /> {copied ? "Copied!" : "Copy Report"}
@@ -94,10 +94,10 @@ export default function ProgressView() {
 
       {/* Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 14, marginBottom: 28 }}>
-        <StatCard icon="exam" label="Questions Attempted" value={stats.attempted} color="#38BDF8" />
-        <StatCard icon="check" label="Correct Rate" value={`${stats.correctRate}%`} color="#34D399" />
-        <StatCard icon="eye" label="Views Explored" value={visitedViews.length} color="#C99A3B" />
-        <StatCard icon="notes" label="Notes Created" value={notes.length} color="#FB923C" />
+        <StatCard icon="exam" label="Questions Attempted" value={stats.attempted} color="#3D63DD" />
+        <StatCard icon="check" label="Correct Rate" value={`${stats.correctRate}%`} color="#1F9D63" />
+        <StatCard icon="eye" label="Views Explored" value={visitedViews.length} color="#C99A06" />
+        <StatCard icon="notes" label="Notes Created" value={notes.length} color="#D9731A" />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 28 }}>
@@ -109,8 +109,8 @@ export default function ProgressView() {
               <div style={{ color: "#F47228", fontWeight: 900, fontSize: 22 }}>{dueToday.length}</div>
               <div style={{ color: "var(--text-muted)", fontSize: 11 }}>Due Today</div>
             </div>
-            <div style={{ background: "#60A5FA15", border: "1px solid #60A5FA44", borderRadius: 8, padding: "10px 14px", flex: 1, textAlign: "center" }}>
-              <div style={{ color: "#60A5FA", fontWeight: 900, fontSize: 22 }}>{dueWeek.length}</div>
+            <div style={{ background: "#3D63DD15", border: "1px solid #3D63DD44", borderRadius: 8, padding: "10px 14px", flex: 1, textAlign: "center" }}>
+              <div style={{ color: "#3D63DD", fontWeight: 900, fontSize: 22 }}>{dueWeek.length}</div>
               <div style={{ color: "var(--text-muted)", fontSize: 11 }}>Due This Week</div>
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function ProgressView() {
               const maxH = 80;
               const maxCount = Math.max(...activity.map(a => a.count), 1);
               const h = d.count > 0 ? Math.max(16, (d.count / maxCount) * maxH) : 8;
-              const color = d.count === 0 ? "var(--border)" : d.count >= 5 ? "#34D399" : d.count >= 2 ? "#60A5FA" : "#7A8FA6";
+              const color = d.count === 0 ? "var(--border)" : d.count >= 5 ? "#1F9D63" : d.count >= 2 ? "#3D63DD" : "#7A8FA6";
               return (
                 <div key={d.date} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
                   <div style={{ color: "var(--text-muted)", fontSize: 10 }}>{d.count || ""}</div>
@@ -159,8 +159,8 @@ export default function ProgressView() {
           <h3 style={{ margin: "0 0 14px", color: "var(--text-h)", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}><Icon name="eye" size={16} sw={1.9} /> Views Explored</h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {visitedViews.map(v => (
-              <span key={v} style={{ background: "#C99A3B22", color: "#C99A3B", borderRadius: 8,
-                padding: "4px 12px", fontSize: 12, fontWeight: 700, border: "1px solid #C99A3B44" }}>{v}</span>
+              <span key={v} style={{ background: "#C99A0622", color: "#C99A06", borderRadius: 8,
+                padding: "4px 12px", fontSize: 12, fontWeight: 700, border: "1px solid #C99A0644" }}>{v}</span>
             ))}
           </div>
         </div>

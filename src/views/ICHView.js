@@ -62,7 +62,7 @@ export default function ICHView() {
             <p style={{ color:"var(--text-sec)", fontSize:14, lineHeight:1.7, marginBottom:18 }}>{gl.summary}</p>
 
             <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 16px", marginBottom:14 }}>
-              <strong style={{ color:"#34D399", fontSize:11, letterSpacing:"0.05em" }}>KEY REQUIREMENTS</strong>
+              <strong style={{ color:"#1F9D63", fontSize:11, letterSpacing:"0.05em" }}>KEY REQUIREMENTS</strong>
               <ul style={{ margin:"8px 0 0", paddingLeft:18, color:"var(--text-body)", fontSize:13, lineHeight:1.8 }}>
                 {gl.key.map((k,i) => <li key={i}>{k}</li>)}
               </ul>

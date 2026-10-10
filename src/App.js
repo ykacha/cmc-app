@@ -3,7 +3,6 @@ import { flushSync } from "react-dom";
 import { reducedMotion } from "./motion";
 import "./fx.css";
 import Dashboard from "./views/Dashboard";
-import { LiquidBackdrop } from "./lc";
 import { Icon } from "./icons";
 import PipelineView   from "./views/PipelineView";
 import MethodsView    from "./views/MethodsView";
@@ -30,29 +29,57 @@ import TermsView      from "./views/TermsView";
 import { DNALogo }    from "./shared";
 
 const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
-const LC_VIEWS = ["dashboard","pipeline","methods","qbd","ctd","timeline","domains","ich","glossary","viral"];
 const SURFACE_VIEWS = ["methods","qbd","ctd","timeline","domains","ich","glossary","viral"];
 
+// Each group is a chain segment in the sequence-track nav (colour = CPK role).
 const NAV_GROUPS = [
-  { id:"learn",    label:"Learn",    color:"var(--accent)", items:[
-    { id:"pipeline", label:"Pipeline Explorer" }, { id:"timeline", label:"CMC Timeline" },
-    { id:"domains", label:"Domain Q-Bank" }, { id:"ich", label:"ICH Guidelines" }, { id:"glossary", label:"CMC Glossary" },
+  { id:"learn",    label:"Learn",    color:"var(--chain-h)", items:[
+    { id:"pipeline", label:"Pipeline Explorer", short:"Pipeline" }, { id:"timeline", label:"CMC Timeline", short:"Timeline" },
+    { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
   ]},
-  { id:"science",  label:"Science",  color:"var(--accent-2)", items:[
-    { id:"methods", label:"Analytical Methods" }, { id:"qbd", label:"QbD / CQA / CPP" }, { id:"viral", label:"Viral Clearance" },
-    { id:"stability", label:"Stability Studies" }, { id:"compendial", label:"Compendial Reference" }, { id:"excipient", label:"Excipient Compatibility" },
+  { id:"science",  label:"Science",  color:"var(--chain-l)", items:[
+    { id:"methods", label:"Analytical Methods", short:"Methods" }, { id:"qbd", label:"QbD / CQA / CPP", short:"QbD" }, { id:"viral", label:"Viral Clearance", short:"Viral" },
+    { id:"stability", label:"Stability Studies", short:"Stability" }, { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
   ]},
-  { id:"tools",    label:"Tools",    color:"var(--accent)", items:[
-    { id:"ctd", label:"CTD Navigator" }, { id:"oos", label:"OOS/OOT Investigation" },
-    { id:"batch", label:"Batch Record Simulator" }, { id:"cases", label:"Case Studies" },
+  { id:"tools",    label:"Tools",    color:"var(--bridge)", items:[
+    { id:"ctd", label:"CTD Navigator", short:"CTD" }, { id:"oos", label:"OOS/OOT Investigation", short:"OOS/OOT" },
+    { id:"batch", label:"Batch Record Simulator", short:"Batch" }, { id:"cases", label:"Case Studies", short:"Cases" },
   ]},
-  { id:"practice", label:"Practice", color:"var(--accent-2)", items:[
-    { id:"exam", label:"Exam Mode" }, { id:"notes", label:"My Notes" },
+  { id:"practice", label:"Practice", color:"var(--glycan)", items:[
+    { id:"exam", label:"Exam Mode", short:"Exam" }, { id:"notes", label:"My Notes", short:"Notes" },
   ]},
-  { id:"career",   label:"Career",   color:"var(--accent)", items:[
-    { id:"career", label:"Career & Interviews" }, { id:"pathway", label:"Learning Pathways" }, { id:"progress", label:"My Progress" },
+  { id:"career",   label:"Career",   color:"var(--text-muted)", items:[
+    { id:"career", label:"Career & Interviews", short:"Career" }, { id:"pathway", label:"Learning Pathways", short:"Pathways" }, { id:"progress", label:"My Progress", short:"Progress" },
   ]},
 ];
+const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...NAV_GROUPS.flatMap(g => g.items.map(i => i.id))]);
+
+// "#/methods/am-sec" -> { view:"methods", focus:"am-sec" }
+function readHash() {
+  const [v, f] = window.location.hash.replace(/^#\/?/, "").split("/");
+  return ALL_VIEWS.has(v) ? { view: v, focus: f || null } : { view: "dashboard", focus: null };
+}
+
+// Sequence-track navigation: every section is a residue cell on one chain.
+function SequenceTrack({ view, onPick }) {
+  return (
+    <div className="sq-track" role="navigation" aria-label="Sections">
+      {NAV_GROUPS.map(g => (
+        <div key={g.id} className="sq-seg" style={{ "--seg": g.color }}>
+          <span className="sq-seg-name">{g.label}</span>
+          <div className="sq-cells">
+            {g.items.map(it => (
+              <button key={it.id} className={`sq-cell${view === it.id ? " is-on" : ""}`} onClick={() => onPick(it.id)}
+                aria-current={view === it.id ? "page" : undefined} title={it.label}>
+                <i /><span>{it.short}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // ── Fullscreen index (replaces the dropdown mega-menu) ─────────
 function IndexOverlay({ open, onClose, groups, view, onPick }) {
@@ -66,20 +93,20 @@ function IndexOverlay({ open, onClose, groups, view, onPick }) {
   return (
     <div style={{ position:"fixed", inset:0, zIndex:500, background:"var(--bg-base)", overflowY:"auto", animation:"lc-dropin .35s cubic-bezier(.16,.6,.2,1)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto", padding:"26px 32px 0", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-        <div style={{ fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:".2em", color:"var(--text-faint)" }}>INDEX</div>
-        <button onClick={onClose} className="lc-link" style={{ fontFamily:"var(--font-mono)", fontSize:12, letterSpacing:".1em" }}>CLOSE ✕</button>
+        <div style={{ fontSize:15, fontWeight:700, color:"var(--text-h)" }}>All sections</div>
+        <button onClick={onClose} className="lc-link" style={{ fontSize:14, display:"inline-flex", gap:8, alignItems:"center" }}><Icon name="cross" size={14} sw={2} /> Close</button>
       </div>
       <div style={{ maxWidth:1200, margin:"0 auto", padding:"48px 32px 100px", display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:"48px 40px" }}>
         {groups.map(g => (
           <div key={g.id}>
-            <div style={{ fontFamily:"var(--font-mono)", fontSize:10.5, fontWeight:700, letterSpacing:".2em", color:"var(--text-faint)", textTransform:"uppercase", marginBottom:18, paddingBottom:12, borderBottom:"1px solid var(--hairline)" }}>{g.label}</div>
+            <div style={{ display:"flex", alignItems:"center", gap:10, fontSize:13, fontWeight:700, color:"var(--text-sec)", marginBottom:16, paddingBottom:12, borderBottom:"1px solid var(--hairline)" }}><span style={{ width:18, height:4, borderRadius:2, background:g.color }} />{g.label}</div>
             <div style={{ display:"flex", flexDirection:"column" }}>
               {g.items.map(item => {
                 const on = view === item.id;
                 return (
                   <button key={item.id} onClick={() => { onPick(item.id); onClose(); }}
                     style={{ textAlign:"left", background:"none", border:"none", cursor:"pointer", padding:"9px 0",
-                      fontFamily:"var(--font-serif)", fontSize:23, lineHeight:1.25, letterSpacing:"-.01em",
+                      fontFamily:"var(--font-display)", fontStretch:"112%", fontWeight:700, fontSize:22, lineHeight:1.25, letterSpacing:"-.02em",
                       color: on ? "var(--accent)" : "var(--text-h)", transition:"color .25s ease" }}
                     onMouseEnter={e => { if (!on) e.currentTarget.style.color = "var(--accent)"; }}
                     onMouseLeave={e => { if (!on) e.currentTarget.style.color = "var(--text-h)"; }}>
@@ -171,7 +198,7 @@ function AdminModal({ onLogin, onClose }) {
               onKeyDown={e => e.key==="Enter" && attempt()}/>
           </div>
         ))}
-        {err && <div style={{ color:"#F472B6", fontSize:12, marginBottom:12, textAlign:"center" }}>{err}</div>}
+        {err && <div style={{ color:"#C99A06", fontSize:12, marginBottom:12, textAlign:"center" }}>{err}</div>}
         <button onClick={attempt} className="lc-pill lc-shine" style={{ width:"100%", padding:"12px", fontSize:14, marginBottom:10 }}>Login</button>
         <button onClick={onClose} className="lc-ghost" style={{ width:"100%", padding:"10px", fontSize:13 }}>Cancel</button>
       </div>
@@ -181,7 +208,8 @@ function AdminModal({ onLogin, onClose }) {
 
 // ════════════════════════════════════════════════════════════════
 export default function App() {
-  const [view, setView]           = useState("dashboard");
+  const [{ view, focus }, setRoute] = useState(readHash);
+  const setView = (v, f = null) => setRoute({ view: v, focus: f });
   const [darkMode, setDarkMode]   = useState(() => localStorage.getItem("cmc-theme") === "dark");
   const [adminMode, setAdminMode] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -190,18 +218,27 @@ export default function App() {
 
   const toggleTheme = () => setDarkMode(d => { const n = !d; localStorage.setItem("cmc-theme", n ? "dark" : "light"); return n; });
 
-  const navigate = (id) => {
-    const swap = () => { flushSync(() => setView(id)); window.scrollTo(0, 0); };
+  const navigate = (id, f = null) => {
+    const hash = id === "dashboard" ? "#/" : `#/${id}${f ? "/" + f : ""}`;
+    if (window.location.hash !== hash) window.history.pushState(null, "", hash);
+    const swap = () => { flushSync(() => setView(id, f)); window.scrollTo(0, 0); };
     if (document.startViewTransition && id !== view && !reducedMotion()) {
       document.documentElement.classList.add("mo-vt");
       document.startViewTransition(swap).finished.finally(() => document.documentElement.classList.remove("mo-vt"));
     } else {
-      setView(id);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setView(id, f);
+      window.scrollTo({ top: 0, behavior: id === view ? "smooth" : "auto" });
     }
     try { const v = JSON.parse(localStorage.getItem("cmc-visited-views") || "[]");
       if (!v.includes(id)) { v.push(id); localStorage.setItem("cmc-visited-views", JSON.stringify(v)); } } catch { /* ignore */ }
   };
+
+  // back/forward and pasted links
+  useEffect(() => {
+    const onPop = () => { setRoute(readHash()); window.scrollTo(0, 0); };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -226,40 +263,33 @@ export default function App() {
   };
 
   return (
-    <div data-theme={darkMode ? "dark" : "light"} style={{ minHeight:"100vh", background:"var(--bg-base)", fontFamily:"system-ui,sans-serif", color:"var(--text-body)" }}>
+    <div data-theme={darkMode ? "dark" : "light"} style={{ minHeight:"100vh", background:"var(--bg-base)", color:"var(--text-body)" }}>
 
-      {LC_VIEWS.includes(view) && <LiquidBackdrop />}
       <CommandPalette open={palette} onClose={() => setPalette(false)} items={paletteItems} onPick={pickPalette} />
       <IndexOverlay open={menuOpen} onClose={() => setMenuOpen(false)} groups={NAV_GROUPS} view={view} onPick={navigate} />
 
-      {/* ── Minimal fixed bar ── */}
-      <div className="mo-vt-nav" style={{ position:"sticky", top:0, zIndex:200, background:"var(--bg-base)" }}>
-        <nav style={{ maxWidth:1280, margin:"0 auto", height:72, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", borderBottom:"1px solid var(--hairline)" }}>
-
-          <button onClick={() => navigate("dashboard")}
-            style={{ display:"flex", alignItems:"center", gap:11, background:"none", border:"none", cursor:"pointer", padding:0 }}>
+      {/* ── Masthead + sequence track ── */}
+      <header className="mo-vt-nav sv-mast">
+        <div className="sv-mast-row">
+          <button onClick={() => navigate("dashboard")} className="sv-brand" aria-label="Yash Kacha, CMC reference: home">
             <span style={{ display:"flex" }}><DNALogo/></span>
-            <span style={{ fontFamily:"var(--font-serif)", fontSize:17, color:"var(--text-h)", letterSpacing:"-.01em" }}>Yash Kacha</span>
-            <span style={{ width:1, height:14, background:"var(--hairline)" }} />
-            <span style={{ color:"var(--text-faint)", fontSize:9.5, fontWeight:700, letterSpacing:"0.2em", fontFamily:MONO }}>CMC APP</span>
+            <span className="sv-brand-name">Yash Kacha</span>
+            <span className="sv-brand-sub">Biologics CMC</span>
           </button>
-
-          <div style={{ display:"flex", gap:28, alignItems:"center" }}>
-            <button onClick={() => setPalette(true)} className="lc-link hide-mobile" style={{ fontSize:12.5, fontFamily:MONO, display:"flex", alignItems:"center", gap:6 }}>
-              <Icon name="search" size={12} sw={2} /> Search <span style={{ color:"var(--text-faint)" }}>⌘K</span>
+          <div className="sv-mast-actions">
+            <button onClick={() => setPalette(true)} className="sv-mast-btn hide-mobile">
+              <Icon name="search" size={14} sw={2} /> Search <kbd>⌘K</kbd>
             </button>
-            <button onClick={toggleTheme} className="lc-link" style={{ fontSize:12.5, fontFamily:MONO }}>
-              {darkMode ? "Light" : "Dark"}
+            <button onClick={toggleTheme} className="sv-mast-btn" aria-label={`Switch to ${darkMode ? "light" : "dark"} theme`}>
+              <Icon name={darkMode ? "sun" : "moon"} size={15} sw={1.8} />
             </button>
-            <button onClick={() => setMenuOpen(true)} className="lc-ghost"
-              style={{ padding:"9px 20px", fontSize:12.5, fontFamily:MONO, letterSpacing:".08em",
-                borderColor:"color-mix(in srgb, var(--accent) 45%, var(--hairline))",
-                background:"color-mix(in srgb, var(--accent) 7%, transparent)" }}>
-              INDEX
+            <button onClick={() => setMenuOpen(true)} className="sv-mast-btn sv-mast-index">
+              <Icon name="menu" size={15} sw={2} /> Index
             </button>
           </div>
-        </nav>
-      </div>
+        </div>
+        <SequenceTrack view={view} onPick={navigate} />
+      </header>
 
       {adminMode && (
         <div style={{ background:"color-mix(in srgb, var(--accent-2) 12%, transparent)", borderBottom:"1px solid color-mix(in srgb, var(--accent-2) 35%, transparent)", padding:"6px 16px", display:"flex", alignItems:"center", gap:12, fontSize:12, position:"relative", zIndex:5 }}>
@@ -274,7 +304,7 @@ export default function App() {
       <main key={view} className={`view-enter ${SURFACE_VIEWS.includes(view) ? "lc-surface" : ""}`} style={{ position:"relative", zIndex:1 }}>
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
         {view==="pipeline"   && <PipelineView />}
-        {view==="methods"    && <MethodsView navigate={navigate} />}
+        {view==="methods"    && <MethodsView navigate={navigate} focus={focus} />}
         {view==="qbd"        && <QbDView navigate={navigate} />}
         {view==="ctd"        && <CTDView />}
         {view==="timeline"   && <TimelineView />}
@@ -297,11 +327,11 @@ export default function App() {
         {view==="terms"      && <TermsView />}
       </main>
 
-      <footer style={{ position:"relative", zIndex:1, borderTop:"1px solid var(--hairline)", marginTop:40, padding:"18px 16px", display:"flex", flexDirection:"column", alignItems:"center", fontSize:12, color:"var(--text-faint)", fontFamily:MONO }}>
+      <footer style={{ position:"relative", zIndex:1, borderTop:"1px solid var(--hairline)", marginTop:40, padding:"22px 16px", display:"flex", flexDirection:"column", alignItems:"center", fontSize:13, color:"var(--text-muted)" }}>
         <div style={{ display:"flex", gap:20, flexWrap:"wrap", justifyContent:"center" }}>
         <span>CMC App by Yash Kacha</span>
-        <button onClick={() => navigate("privacy")} style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-faint)", fontFamily:MONO, fontSize:12, padding:0 }}>Privacy Policy</button>
-        <button onClick={() => navigate("terms")} style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-faint)", fontFamily:MONO, fontSize:12, padding:0 }}>Terms & Conditions</button>
+        <button onClick={() => navigate("privacy")} style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-muted)", fontSize:13, padding:0 }}>Privacy Policy</button>
+        <button onClick={() => navigate("terms")} style={{ background:"none", border:"none", cursor:"pointer", color:"var(--text-muted)", fontSize:13, padding:0 }}>Terms & Conditions</button>
         </div>
       </footer>
     </div>

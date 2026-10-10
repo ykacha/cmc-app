@@ -63,11 +63,11 @@ export default function ExamView() {
       <SectionHeader icon={<Icon name="exam" size={28} sw={1.6} />} title="Exam Mode" subtitle="No multiple choice, no guessing your way through it. Answers stay hidden until you commit to one." />
 
       {dueToday > 0 && (
-        <div style={{ background:"#F59E0B18", border:"1px solid #F59E0B44", borderRadius:10, padding:"10px 16px",
+        <div style={{ background:"#D9731A18", border:"1px solid #D9731A44", borderRadius:10, padding:"10px 16px",
           marginBottom:16, display:"flex", alignItems:"center", gap:10 }}>
-          <span style={{ color:"#F59E0B", fontWeight:800, display:"flex", alignItems:"center", gap:7 }}><Icon name="lightbulb" size={15} sw={1.9} /> {dueToday} SM-2 questions due today</span>
+          <span style={{ color:"#D9731A", fontWeight:800, display:"flex", alignItems:"center", gap:7 }}><Icon name="lightbulb" size={15} sw={1.9} /> {dueToday} SM-2 questions due today</span>
           <button onClick={() => setSrMode(true)}
-            style={{ background:"#F59E0B", color:"#000", border:"none", borderRadius:6, padding:"4px 12px",
+            style={{ background:"#D9731A", color:"#000", border:"none", borderRadius:6, padding:"4px 12px",
               cursor:"pointer", fontWeight:700, fontSize:12 }}>Enable Spaced Rep Mode</button>
         </div>
       )}
@@ -76,8 +76,8 @@ export default function ExamView() {
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
           <h3 style={{ color:"var(--text-h)", margin:0, fontSize:16, fontWeight:800 }}>Configure Your Exam</h3>
           <button onClick={() => setSrMode(m => !m)}
-            style={{ background: srMode ? "#F59E0B" : "var(--bg-surface)", color: srMode ? "#000" : "var(--text-sec)",
-              border:`1px solid ${srMode ? "#F59E0B" : "var(--border)"}`, borderRadius:8, padding:"6px 14px",
+            style={{ background: srMode ? "#D9731A" : "var(--bg-surface)", color: srMode ? "#000" : "var(--text-sec)",
+              border:`1px solid ${srMode ? "#D9731A" : "var(--border)"}`, borderRadius:8, padding:"6px 14px",
               cursor:"pointer", fontWeight:700, fontSize:12, transition:"all 0.18s", display:"flex", alignItems:"center", gap:7 }}>
             <Icon name="lightbulb" size={13} sw={1.9} /> Spaced Rep {srMode ? "ON" : "OFF"}
           </button>
@@ -162,7 +162,7 @@ export default function ExamView() {
           <span style={{ color:"var(--text-muted)", fontSize:12, fontWeight:600 }}>
             Progress: <strong style={{ color:"var(--text-h)" }}>{score}</strong> / {questions.length} revealed
           </span>
-          <span style={{ background:`${score===questions.length?"#34D39922":"var(--bg-surface)"}`, color:score===questions.length?"#34D399":"var(--accent-light)",
+          <span style={{ background:`${score===questions.length?"#1F9D6322":"var(--bg-surface)"}`, color:score===questions.length?"#1F9D63":"var(--accent-light)",
             borderRadius:8, padding:"3px 10px", fontSize:11, fontWeight:800 }}>
             {score===questions.length ? "Complete" : `${Math.round(score/questions.length*100)}%`}
           </span>
@@ -196,16 +196,16 @@ export default function ExamView() {
             </button>
           ) : (
             <div style={{ borderTop:"1px solid var(--border)", paddingTop:16, animation:"slideDown 0.2s ease" }}>
-              <InfoBox color="#22D3EE" label="WHY IT MATTERS" text={q.why} />
-              <InfoBox color="#34D399" label="HOW TO FIND THE ANSWER" text={q.how} />
+              <InfoBox color="#3D63DD" label="WHY IT MATTERS" text={q.why} />
+              <InfoBox color="#1F9D63" label="HOW TO FIND THE ANSWER" text={q.how} />
               <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>Ref: {q.ref}</p>
               {srMode && (
                 <div style={{ marginTop:14, padding:"12px", background:"var(--bg-surface)", borderRadius:8 }}>
                   <div style={{ color:"var(--text-faint)", fontSize:11, fontWeight:700, marginBottom:8, display:"flex", alignItems:"center", gap:7 }}>
-                    <Icon name="lightbulb" size={13} sw={1.9} /> HOW WELL DID YOU KNOW THIS? {srRated[q.id] !== undefined && <span style={{ color:"#34D399", display:"inline-flex", alignItems:"center", gap:4 }}><Icon name="check" size={12} sw={2.2} /> Rated</span>}
+                    <Icon name="lightbulb" size={13} sw={1.9} /> HOW WELL DID YOU KNOW THIS? {srRated[q.id] !== undefined && <span style={{ color:"#1F9D63", display:"inline-flex", alignItems:"center", gap:4 }}><Icon name="check" size={12} sw={2.2} /> Rated</span>}
                   </div>
                   <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-                    {[{q:0,label:"Again",c:"#F87171"},{q:1,label:"Hard",c:"#F59E0B"},{q:3,label:"Good",c:"#34D399"},{q:5,label:"Easy",c:"#22D3EE"}].map(r => (
+                    {[{q:0,label:"Again",c:"#E0393E"},{q:1,label:"Hard",c:"#D9731A"},{q:3,label:"Good",c:"#1F9D63"},{q:5,label:"Easy",c:"#3D63DD"}].map(r => (
                       <button key={r.q} onClick={() => rateSR(q.id, r.q)}
                         style={{ background: srRated[q.id]===r.q ? r.c : "transparent",
                           color: srRated[q.id]===r.q ? "#fff" : r.c,

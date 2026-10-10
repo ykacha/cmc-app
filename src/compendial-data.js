@@ -14,7 +14,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Injectables", "Ophthalmics", "Implants", "Biologics"],
     notes: "Parametric release may replace end-product sterility testing for terminally sterilized products. SCDm method must show no growth in 14 days per USP <71>.",
     icon: "alert",
-    color: "#F472B6",
+    color: "#C99A06",
   },
   {
     id: "endotoxin",
@@ -29,7 +29,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["All parenterals", "Medical devices", "Biologics"],
     notes: "Maximum Valid Dilution (MVD) = Endotoxin Limit × concentration / 0.125 (gel-clot) or lambda. IPC spike recovery 50–200% required.",
     icon: "flask",
-    color: "#F59E0B",
+    color: "#D9731A",
   },
   {
     id: "particulate-inj",
@@ -44,7 +44,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Small molecule injectables", "IV solutions", "Parenterals"],
     notes: "Biological products use USP <787> with different limits. Visible particle inspection per USP <1> / EP 2.9.20 is separate test.",
     icon: "search",
-    color: "#38BDF8",
+    color: "#3D63DD",
   },
   {
     id: "particulate-bio",
@@ -59,7 +59,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["mAbs", "Fusion proteins", "Vaccines", "Peptide injectables"],
     notes: "USP <787> was created specifically for biologics recognizing that protein particles behave differently. Resonant mass measurement (Archimedes) emerging for high-concentration mAbs.",
     icon: "gene",
-    color: "#C99A3B",
+    color: "#C99A06",
   },
   {
     id: "elemental-impurities",
@@ -74,7 +74,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["All drug products", "Biologics", "Drug substances"],
     notes: "ICH Q3D replaced USP <231> Heavy Metals test which was deemed insufficiently sensitive. ICP-MS preferred for low ppb detection. Risk assessment approach allows reduced testing if risk factors low.",
     icon: "flask",
-    color: "#34D399",
+    color: "#1F9D63",
   },
   {
     id: "residual-solvents",
@@ -89,7 +89,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["All drug substances and products"],
     notes: "Water-soluble samples dissolved in water; water-insoluble in DMSO. Static headspace injection with GC-FID. Method must be validated for all Class 1/2 solvents used in synthesis.",
     icon: "thermometer",
-    color: "#60A5FA",
+    color: "#3D63DD",
   },
   {
     id: "dissolution",
@@ -104,7 +104,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Oral solid dosage forms", "Modified release"],
     notes: "f2 similarity factor used for comparing dissolution profiles during SUPAC changes. Modified release: 3+ timepoints required. Dissolution may be used for in vitro–in vivo correlation (IVIVC).",
     icon: "vial",
-    color: "#F59E0B",
+    color: "#D9731A",
   },
   {
     id: "disintegration",
@@ -119,7 +119,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Tablets", "Capsules", "Suppositories"],
     notes: "Disintegration is a surrogate – not the same as dissolution. For buccal/sublingual tablets: 4 min or less. Hard shells: longer than soft gel. Disc may be added for floating tablets.",
     icon: "vial",
-    color: "#34D399",
+    color: "#1F9D63",
   },
   {
     id: "water-kf",
@@ -134,7 +134,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Drug substances", "Lyophilized biologics", "Hygroscopic solids"],
     notes: "Volumetric: sample dissolved in Karl Fischer solvent. Coulometric: sample dissolved or titrated with direct electrode generation. Oven/pyrolysis KF for insoluble materials. Interferences: aldehydes, ketones, ascorbic acid.",
     icon: "droplet",
-    color: "#38BDF8",
+    color: "#3D63DD",
   },
   {
     id: "lod",
@@ -149,7 +149,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Drug substances", "Excipients", "Solid dosage forms"],
     notes: "Less specific than KF (includes volatile solvents). Cannot distinguish water from other volatiles. Preferred for non-hygroscopic materials or when KF interferences present. Oven or desiccator drying.",
     icon: "thermometer",
-    color: "#C0654A",
+    color: "#E0393E",
   },
   {
     id: "ph",
@@ -164,7 +164,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["All liquid drug products", "Reconstituted powders", "Biologics"],
     notes: "Calibration buffers must be within 2 pH units of measurement. Response linearity ≥96.5% Nernst factor. Temperature-compensated electrode preferred. Air equilibration can shift pH in CO₂-sensitive products.",
     icon: "chartbar",
-    color: "#F472B6",
+    color: "#C99A06",
   },
   {
     id: "osmolality",
@@ -179,7 +179,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Injectables", "Ophthalmics", "Dialysis solutions"],
     notes: "Osmolality (mOsm/kg solvent) vs. osmolarity (mOsm/L solution). Clinical important: iso-osmotic reduces injection site pain and hemolysis. Sample size: typically 20–150 µL.",
     icon: "flask",
-    color: "#60A5FA",
+    color: "#3D63DD",
   },
   {
     id: "aerosol-ddp",
@@ -194,7 +194,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["MDI", "DPI", "Nasal sprays", "Inhalation solutions"],
     notes: "In vitro-in vivo correlation for inhalation products is developing area. Critical quality attribute: fine particle dose (FPD) for lung deposition. Inhalation: particles ≤5 µm reach lower airways.",
     icon: "gauge",
-    color: "#FB923C",
+    color: "#D9731A",
   },
   {
     id: "viscosity",
@@ -209,7 +209,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Ophthalmics", "High-concentration biologics", "Topicals", "Sustained release"],
     notes: "High viscosity in concentrated mAb formulations is a major developability challenge. Arginine, NaCl, and other viscosity-reducing excipients used. Measured at relevant temperature (25°C or body temperature).",
     icon: "droplet",
-    color: "#34D399",
+    color: "#1F9D63",
   },
   {
     id: "optical-rotation",
@@ -239,7 +239,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Drug substances", "Excipients"],
     notes: "More specific than loss on ignition (no H₂SO₄). Detects metallic impurities not caught by elemental analysis. Precursor to ICH Q3D implementation – historically was the sole metal impurity test.",
     icon: "thermometer",
-    color: "#F59E0B",
+    color: "#D9731A",
   },
   {
     id: "microbial-limits",
@@ -254,7 +254,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Non-sterile oral solids and liquids", "Topicals", "Excipients"],
     notes: "Suitability testing (method validation) required: each organism recovery ≥70% in presence of product matrix. Neutralization of preservatives (e.g., inactivators for benzalkonium chloride). R2A agar for slow-growing organisms.",
     icon: "alert",
-    color: "#34D399",
+    color: "#1F9D63",
   },
   {
     id: "assay-hplc",
@@ -269,7 +269,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["All drug substances and products"],
     notes: "ICH Q2(R1) validation: accuracy, precision, specificity, LOD/LOQ, linearity, range, robustness. USP <621> covers HPLC system suitability. ICH Q14 (new): analytical procedure development.",
     icon: "chartline",
-    color: "#38BDF8",
+    color: "#3D63DD",
   },
   {
     id: "color-clarity",
@@ -284,7 +284,7 @@ export const COMPENDIAL_METHODS = [
     product_types: ["Injectable solutions", "Biologics", "Oral liquids"],
     notes: "Routine release test for injectables. Color shift can indicate oxidation (protein Met oxidation, product degradation). Near-UV turbidity at 340 nm used for protein aggregation monitoring.",
     icon: "eye",
-    color: "#C99A3B",
+    color: "#C99A06",
   },
 ];
 

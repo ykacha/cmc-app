@@ -9,11 +9,11 @@ import { STAGE_OVERVIEWS } from "../pipeline-overview-data";
 const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
 
 const PHASES = [
-  { id:"p1", name:"Cell Line Engineering",        range:[1, 4],   color:"#C0654A", ic:"cell" },
-  { id:"p2", name:"Process & Product Development", range:[5, 8],   color:"#22D3EE", ic:"science" },
-  { id:"p3", name:"Transfer & Clinical Supply",    range:[9, 10],  color:"#2DD4BF", ic:"transfer" },
-  { id:"p4", name:"Characterization & Validation", range:[11, 13], color:"#34D399", ic:"shieldcheck" },
-  { id:"p5", name:"Filing & Lifecycle",            range:[14, 16], color:"#F59E0B", ic:"cases" },
+  { id:"p1", name:"Cell Line Engineering",        range:[1, 4],   color:"#3D63DD", ic:"cell" },
+  { id:"p2", name:"Process & Product Development", range:[5, 8],   color:"#D9731A", ic:"science" },
+  { id:"p3", name:"Transfer & Clinical Supply",    range:[9, 10],  color:"#C99A06", ic:"transfer" },
+  { id:"p4", name:"Characterization & Validation", range:[11, 13], color:"#1F9D63", ic:"shieldcheck" },
+  { id:"p5", name:"Filing & Lifecycle",            range:[14, 16], color:"#7A8794", ic:"cases" },
 ];
 const phaseOfNum = (n) => PHASES.find(p => n >= p.range[0] && n <= p.range[1]) || PHASES[0];
 const stagesIn = (p) => PIPELINE.filter(s => { const n = parseInt(s.stage, 10); return n >= p.range[0] && n <= p.range[1]; });
@@ -113,8 +113,7 @@ export default function PipelineView() {
       <Reveal>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", gap:16, flexWrap:"wrap", marginBottom:26 }}>
           <div>
-            <div style={{ fontFamily:MONO, fontSize:11, fontWeight:700, letterSpacing:".22em", color:"var(--accent)", marginBottom:8 }}>THE JOURNEY · 16 STAGES · 5 PHASES</div>
-            <h1 className="lc-iri-text" style={{ fontSize:46, fontWeight:500, margin:"0 0 8px", letterSpacing:"-.01em", lineHeight:1.05 }}>Pipeline Explorer</h1>
+            <h1 className="lc-iri-text" style={{ fontSize:"clamp(34px,4.6vw,60px)", margin:"0 0 12px", lineHeight:1 }}>Pipeline Explorer</h1>
             <p style={{ color:SUB, fontSize:14.5, margin:0, maxWidth:560, lineHeight:1.6 }}>
               {mode === "overview" ? "Every stage between a gene sequence and a filed BLA, grouped by phase. Open a card to go deep." : "Scroll through it like the process actually runs: one stage feeding the next."}
             </p>
@@ -136,8 +135,8 @@ export default function PipelineView() {
             <div key={p.id} style={{ marginBottom:26 }}>
               <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:13 }}>
                 <span style={{ display:"flex", color:p.color }}><Icon name={p.ic} size={16} /></span>
-                <span style={{ color:p.color, fontFamily:MONO, fontSize:11, fontWeight:800, letterSpacing:".1em", textTransform:"uppercase" }}>{p.name}</span>
-                <span style={{ color:FAINT, fontFamily:MONO, fontSize:11 }}>STAGES {String(p.range[0]).padStart(2,"0")}–{String(p.range[1]).padStart(2,"0")}</span>
+                <span style={{ color:TEXT, fontSize:15, fontWeight:700 }}>{p.name}</span>
+                <span className="sv-mono" style={{ color:FAINT, fontSize:12 }}>{String(p.range[0]).padStart(2,"0")}–{String(p.range[1]).padStart(2,"0")}</span>
                 <div style={{ flex:1, height:1, background:`color-mix(in srgb, ${p.color} 22%, transparent)` }}/>
               </div>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(265px,1fr))", gap:12 }}>
@@ -150,13 +149,13 @@ export default function PipelineView() {
                     <div style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", height:"100%" }}>
                       <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:9 }}>
                         <span style={{ fontFamily:MONO, fontSize:12, color:FAINT, fontWeight:700 }}>{s.stage}</span>
-                        <span style={{ width:34, height:34, borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid var(--hairline)", background:`color-mix(in srgb, ${p.color} 14%, transparent)`, color:p.color }}><Icon name={stageIcon(s.id)} size={18} /></span>
+                        <span style={{ display:"flex", color:p.color }}><Icon name={stageIcon(s.id)} size={18} /></span>
                         <span style={{ marginLeft:"auto", fontFamily:MONO, fontSize:10, color:FAINT }}>{s.topics?.length || 0}T · {s.questions?.length || 0}Q</span>
                       </div>
                       <div style={{ color:TEXT, fontWeight:800, fontSize:15, letterSpacing:"-.01em" }}>{s.label}</div>
-                      <div style={{ color:p.color, fontSize:11.5, fontWeight:600, marginBottom:7 }}>{s.sub}</div>
+                      <div style={{ color:FAINT, fontSize:12, fontWeight:600, marginBottom:7 }}>{s.sub}</div>
                       <div style={{ color:SUB, fontSize:12, lineHeight:1.55, flex:1, display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{preview(s)}</div>
-                      <div style={{ color:"var(--accent)", fontSize:12, fontWeight:700, marginTop:11 }}>Enter stage →</div>
+                      <div style={{ color:"var(--accent)", fontSize:13, fontWeight:700, marginTop:11 }}>Open stage</div>
                     </div>
                   </button>
                 ))}
@@ -261,7 +260,7 @@ export default function PipelineView() {
                       <Reveal delay={110}>
                         <h4 style={{ color:sp.color, margin:"18px 0 12px", fontSize:12.5, fontWeight:800, textTransform:"uppercase", letterSpacing:".06em" }}>What actually happens</h4>
                         {ov.steps.map((step, i) => (
-                          <div key={i} style={{ display:"flex", gap:14, ...glassPanel, borderLeft:`3px solid ${sp.color}`, padding:14, marginBottom:10 }}>
+                          <div key={i} style={{ display:"flex", gap:14, ...glassPanel, borderLeft: `1px solid ${sp.color}`, padding:14, marginBottom:10 }}>
                             <div style={{ flexShrink:0, width:30, height:30, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", background:`color-mix(in srgb, ${sp.color} 16%, transparent)`, border:`2px solid color-mix(in srgb, ${sp.color} 45%, transparent)`, color:sp.color, fontWeight:800, fontSize:13, fontFamily:MONO }}>{step.num}</div>
                             <div style={{ flex:1, minWidth:0 }}>
                               <div style={{ color:TEXT, fontWeight:750, fontSize:14, marginBottom:5 }}>{step.title}</div>
@@ -274,9 +273,9 @@ export default function PipelineView() {
                     {(ov.duration || ov.team || ov.deliverables) && (
                       <Reveal delay={130}>
                         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:12, marginTop:14 }}>
-                          {ov.duration && <GBox color="#F59E0B" label="DURATION">{ov.duration}</GBox>}
-                          {ov.team && <GBox color="#34D399" label="TEAM">{ov.team}</GBox>}
-                          {ov.deliverables && <GBox color="#C99A3B" label="DELIVERABLES"><ul style={{ margin:0, paddingLeft:16, lineHeight:1.8 }}>{ov.deliverables.map((d, i) => <li key={i}>{d}</li>)}</ul></GBox>}
+                          {ov.duration && <GBox color="#D9731A" label="DURATION">{ov.duration}</GBox>}
+                          {ov.team && <GBox color="#1F9D63" label="TEAM">{ov.team}</GBox>}
+                          {ov.deliverables && <GBox color="#C99A06" label="DELIVERABLES"><ul style={{ margin:0, paddingLeft:16, lineHeight:1.8 }}>{ov.deliverables.map((d, i) => <li key={i}>{d}</li>)}</ul></GBox>}
                         </div>
                       </Reveal>
                     )}
@@ -294,8 +293,8 @@ export default function PipelineView() {
                               <summary style={{ cursor:"pointer", color:SUB, fontWeight:600, fontSize:13 }}>{tp.title}</summary>
                               <div style={{ marginTop:10 }}>
                                 <p style={{ color:SUB, fontSize:13, lineHeight:1.7, margin:"0 0 10px" }}>{tp.body}</p>
-                                <GBox color="#22D3EE" label="WHY THIS MATTERS">{tp.why}</GBox>
-                                <GBox color="#34D399" label="HOW TO STUDY">{tp.how}</GBox>
+                                <GBox color="#3D63DD" label="WHY THIS MATTERS">{tp.why}</GBox>
+                                <GBox color="#1F9D63" label="HOW TO STUDY">{tp.how}</GBox>
                                 <p style={{ color:FAINT, fontSize:11, margin:0, fontStyle:"italic" }}>Ref · {tp.ref}</p>
                               </div>
                             </details>
@@ -314,8 +313,8 @@ export default function PipelineView() {
                                 <span style={{ color:SUB, fontWeight:600, fontSize:13 }}>{q.q}</span>
                               </summary>
                               <div style={{ marginTop:10 }}>
-                                <GBox color="#22D3EE" label="WHY IT MATTERS">{q.why}</GBox>
-                                <GBox color="#34D399" label="HOW TO FIND THE ANSWER">{q.how}</GBox>
+                                <GBox color="#3D63DD" label="WHY IT MATTERS">{q.why}</GBox>
+                                <GBox color="#1F9D63" label="HOW TO FIND THE ANSWER">{q.how}</GBox>
                                 <p style={{ color:FAINT, fontSize:11, margin:0, fontStyle:"italic" }}>Ref · {q.ref}</p>
                               </div>
                             </details>

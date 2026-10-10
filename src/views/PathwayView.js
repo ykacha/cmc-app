@@ -110,7 +110,7 @@ const BadgeCard = ({ badge, earned, onToggle }) => {
       {earned && (
         <div style={{
           position: "absolute", top: 6, right: 8,
-          background: "#34D399", color: "#000",
+          background: "#1F9D63", color: "#000",
           borderRadius: "50%", width: 16, height: 16,
           fontSize: 9, fontWeight: 800,
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -146,7 +146,7 @@ const BadgeCard = ({ badge, earned, onToggle }) => {
       {/* Toggle button hint */}
       <div style={{
         marginTop: 8,
-        color: earned ? "#34D399" : "var(--text-faint)",
+        color: earned ? "#1F9D63" : "var(--text-faint)",
         fontSize: 9, fontWeight: 700, letterSpacing: "0.05em",
       }}>
         {earned ? "Earned. Click to undo." : "Click to mark earned."}
@@ -156,7 +156,7 @@ const BadgeCard = ({ badge, earned, onToggle }) => {
 };
 
 // ── Sub-component: ProgressBar ────────────────────────────────
-const ProgressBar = ({ value, max, color = "#34D399" }) => {
+const ProgressBar = ({ value, max, color = "#1F9D63" }) => {
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
   return (
     <div>
@@ -443,10 +443,10 @@ export default function PathwayView() {
               {/* Earned list */}
               {earnedBadges.length > 0 && (
                 <div style={{
-                  background: "var(--bg-card)", border: "1px solid #34D39933",
+                  background: "var(--bg-card)", border: "1px solid #1F9D6333",
                   borderRadius: 10, padding: "12px 14px", marginTop: 14,
                 }}>
-                  <div style={{ color: "#34D399", fontSize: 11, fontWeight: 800, marginBottom: 8 }}>
+                  <div style={{ color: "#1F9D63", fontSize: 11, fontWeight: 800, marginBottom: 8 }}>
                     EARNED BADGES ({earnedBadges.length})
                   </div>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>

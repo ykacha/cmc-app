@@ -192,7 +192,7 @@ export const ROOT_CAUSES = [
   {
     category: "Analyst Error",
     icon: "users",
-    color: "#F59E0B",
+    color: "#D9731A",
     examples: [
       "Incorrect sample preparation (wrong dilution, missed dilution step)",
       "Wrong standard concentration used for calculations",
@@ -207,7 +207,7 @@ export const ROOT_CAUSES = [
   {
     category: "Instrument / Equipment",
     icon: "gear",
-    color: "#38BDF8",
+    color: "#3D63DD",
     examples: [
       "HPLC pump failure (pressure spike, gradient error, degasser failure)",
       "Detector drift or lamp failure (UV lamp aging causing baseline drift)",
@@ -222,7 +222,7 @@ export const ROOT_CAUSES = [
   {
     category: "Reagent / Standard",
     icon: "flask",
-    color: "#34D399",
+    color: "#1F9D63",
     examples: [
       "Reference standard expired, degraded, or beyond use-period per SOP",
       "Reagent contamination or prepared at wrong concentration",
@@ -236,7 +236,7 @@ export const ROOT_CAUSES = [
   {
     category: "Environmental",
     icon: "thermometer",
-    color: "#C99A3B",
+    color: "#C99A06",
     examples: [
       "Temperature excursion in stability chamber during storage period",
       "Humidity excursion affecting hygroscopic sample or mobile phase",
@@ -249,7 +249,7 @@ export const ROOT_CAUSES = [
   {
     category: "Manufacturing",
     icon: "factory",
-    color: "#F472B6",
+    color: "#C99A06",
     examples: [
       "Raw material out of specification (impurity, potency, or physical property)",
       "Critical process parameter deviation (temperature, time, pH, agitation speed)",
@@ -265,7 +265,7 @@ export const ROOT_CAUSES = [
   {
     category: "Sampling",
     icon: "flask",
-    color: "#FB923C",
+    color: "#D9731A",
     examples: [
       "Sample taken from non-representative location in vessel or blend",
       "Sample container contamination (residual cleaning agent, previous product)",
@@ -283,49 +283,49 @@ export const OOT_CRITERIA = [
     description: "One result exceeds mean ± 2SD",
     action: "Warning only: increase monitoring frequency; no OOS investigation required",
     type: "warning",
-    color: "#F59E0B",
+    color: "#D9731A",
   },
   {
     rule: "Westgard 1₃s Reject",
     description: "One result exceeds mean ± 3SD",
     action: "Reject run; investigate possible systemic cause; consider OOS investigation",
     type: "reject",
-    color: "#F472B6",
+    color: "#C99A06",
   },
   {
     rule: "Westgard 2₂s",
     description: "Two consecutive results both exceed same ± 2SD limit",
     action: "Systematic error signal: investigate cause; review process and method",
     type: "trend",
-    color: "#FB923C",
+    color: "#D9731A",
   },
   {
     rule: "Westgard R₄s",
     description: "Range between two results exceeds 4SD",
     action: "Random error signal: check analyst technique, reagents, instrument precision",
     type: "alert",
-    color: "#F59E0B",
+    color: "#D9731A",
   },
   {
     rule: "Westgard 10₇",
     description: "Ten consecutive results all above or below the mean",
     action: "Strong trend: systematic bias; investigate process drift, standard aging, column aging",
     type: "trend",
-    color: "#38BDF8",
+    color: "#3D63DD",
   },
   {
     rule: "CUSUM",
     description: "Cumulative sum exceeds decision interval h (typically h = 5σ)",
     action: "Process mean has shifted: investigate root cause; consider process re-validation",
     type: "trend",
-    color: "#C0654A",
+    color: "#E0393E",
   },
   {
     rule: "Linear Trend (6 points)",
     description: "Six consecutive results trending monotonically up or down",
     action: "Trend investigation required: column degradation, reagent aging, process drift",
     type: "trend",
-    color: "#60A5FA",
+    color: "#3D63DD",
   },
 ];
 
@@ -335,7 +335,7 @@ export const OOS_SCENARIOS = [
     id: "s1",
     icon: "vial",
     difficulty: "Beginner",
-    diffColor: "#34D399",
+    diffColor: "#1F9D63",
     title: "Low HPLC Potency",
     product: "Ibuprofen 200 mg Tablet: Lot Release",
     method: "HPLC Potency Assay (USP)",
@@ -346,7 +346,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "HPLC potency result is 94.8% against a specification of 97.0–103.0%. Conduct Phase 1 lab investigation. Reveal each item to see what the records show.",
         items: [
           {
@@ -387,7 +387,7 @@ export const OOS_SCENARIOS = [
       {
         id: "retest",
         title: "Phase 1: Retest with Fresh Standard",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Prepare a fresh reference standard solution from the same certified lot. Retest the original retained sample.",
         items: [
           {
@@ -417,7 +417,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Laboratory Error: Phase 1 Resolved",
-    finalVerdictColor: "#34D399",
+    finalVerdictColor: "#1F9D63",
     finalVerdictIcon: "check",
     keyLearning: "Reference standard solution age must be verified before every analysis session. A single pre-analysis checklist item (confirm standard preparation date) would have prevented this OOS.",
     capa: "Revise SOP QC-105: analyst must record reference standard preparation date on each run worksheet. QC supervisor to verify expiry before approving run for analysis.",
@@ -426,7 +426,7 @@ export const OOS_SCENARIOS = [
     id: "s2",
     icon: "gene",
     difficulty: "Intermediate",
-    diffColor: "#F59E0B",
+    diffColor: "#D9731A",
     title: "Bioassay Low Potency: mAb",
     product: "Monoclonal Antibody: Lot 2401-MAB (Pre-release)",
     method: "Cell-Based Potency Bioassay (Luciferase Reporter)",
@@ -437,7 +437,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Cell-based potency bioassay result is 76% relative activity against a specification of 80–120%. Investigate the laboratory systematically.",
         items: [
           {
@@ -478,7 +478,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2a",
         title: "Phase 2A: Expanded Lab Investigation",
-        color: "#F59E0B",
+        color: "#D9731A",
         intro: "QA authorized Phase 2A. Retest additional aliquots from the same retained sample, using a second analyst and a second instrument where possible.",
         items: [
           {
@@ -514,7 +514,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Manufacturing Investigation",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "QA Director and VP Manufacturing authorized Phase 2B. Full review of batch production records, equipment logs, in-process data, and raw materials.",
         items: [
           {
@@ -554,7 +554,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "True OOS: Batch Rejected (Phase 2B, Manufacturing)",
-    finalVerdictColor: "#F472B6",
+    finalVerdictColor: "#C99A06",
     finalVerdictIcon: "cross",
     keyLearning: "Bioreactor pH deviations must trigger immediate corrective action: not just alarm acknowledgment. Operators must understand the scientific consequence of pH excursions on protein quality. CPP deviations require immediate supervisor notification.",
     capa: "Revise alarm management SOP: pH deviations >0.1 unit require immediate supervisor notification and corrective action within 30 minutes. Implement automated CO₂ correction algorithm. Enhanced operator training on CPP criticality and protein science.",
@@ -563,7 +563,7 @@ export const OOS_SCENARIOS = [
     id: "s3",
     icon: "droplet",
     difficulty: "Beginner",
-    diffColor: "#34D399",
+    diffColor: "#1F9D63",
     title: "IV Solution pH Out of Spec",
     product: "Sodium Bicarbonate 8.4% Injection: QC Release",
     method: "pH Determination (USP <791>)",
@@ -574,7 +574,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "pH of a sodium bicarbonate 8.4% IV injection is 6.7: below the specification of 7.0–8.5. This is a critical test for an injectable product. Investigate all relevant factors.",
         items: [
           {
@@ -620,7 +620,7 @@ export const OOS_SCENARIOS = [
       {
         id: "retest",
         title: "Phase 1: Retest with Recalibrated Instrument",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Recondition the electrode, recalibrate the pH meter with fresh buffers, then retest the retained sample.",
         items: [
           {
@@ -650,7 +650,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Instrument Error: Phase 1 Resolved",
-    finalVerdictColor: "#34D399",
+    finalVerdictColor: "#1F9D63",
     finalVerdictIcon: "check",
     keyLearning: "pH measurement errors from missed calibration or improper electrode storage are among the most preventable laboratory errors. A single pre-analysis instrument check prevents OOS investigations and batch holds.",
     capa: "Revise SOP-INST-08 to include: (1) daily electrode storage check on instrument log; (2) calibration timestamp check before each sample run. Install reminder placard on pH meter. Supervisor sign-off required on calibration log for each working day.",
@@ -659,7 +659,7 @@ export const OOS_SCENARIOS = [
     id: "s4",
     icon: "trendup",
     difficulty: "Intermediate",
-    diffColor: "#F59E0B",
+    diffColor: "#D9731A",
     title: "Moisture Upward Trend: OOT",
     product: "Lyophilized Anti-IL-6 mAb: 18-Month Stability",
     method: "Karl Fischer Water Determination (USP <921>)",
@@ -671,7 +671,7 @@ export const OOS_SCENARIOS = [
       {
         id: "oot-assess",
         title: "OOT Statistical Assessment",
-        color: "#38BDF8",
+        color: "#3D63DD",
         intro: "The current result (0.38%) passes the specification limit (≤0.50%): this is NOT an OOS. However, historical trending data raises a statistical concern. Investigate the data pattern and potential causes.",
         items: [
           {
@@ -716,7 +716,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "OOT: Enhanced Monitoring Required",
-    finalVerdictColor: "#38BDF8",
+    finalVerdictColor: "#3D63DD",
     finalVerdictIcon: "alert",
     keyLearning: "OOT detection requires proactive statistical trending programs: individual result compliance is not sufficient. Results within spec can still signal a developing product quality issue that will become an OOS if not addressed.",
     capa: "Implement automated stability trending software to flag Westgard rule violations at each timepoint. Add desiccant placement verification to stability setup checklist with supervisor sign-off. Evaluate additional stability samples stored with desiccant for comparison.",
@@ -727,7 +727,7 @@ export const OOS_SCENARIOS = [
     id: "s5",
     icon: "droplet",
     difficulty: "Beginner",
-    diffColor: "#34D399",
+    diffColor: "#1F9D63",
     title: "Dissolution Failure: Extended Release Tablet",
     product: "Metoprolol Succinate 100 mg ER Tablet: Lot Release",
     method: "USP Dissolution Apparatus II (Paddle), 900 mL pH 6.8 phosphate buffer, 50 rpm",
@@ -738,7 +738,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Dissolution result at 30 minutes is 18%, well below the NLT 30% specification. Systematically investigate all laboratory aspects before drawing conclusions.",
         items: [
           { id: "s5-a", area: "Tablet Sample Identity", icon: "vial", finding: "Tablets confirmed correct lot, correct strength (100 mg, marked MET 100). Weight uniformity of 6 tested tablets: mean 312.1 mg, RSD 0.8% (spec ≤5%). Tablet appearance normal. No obvious manufacturing defects observed.", isIssue: false, isCause: false },
@@ -755,7 +755,7 @@ export const OOS_SCENARIOS = [
       {
         id: "retest",
         title: "Phase 1: Retest with Properly Degassed Media",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Prepare fresh pH 6.8 phosphate buffer with full vacuum degassing as specified in SOP. Retest the same retained tablet lot.",
         items: [
           { id: "s5-e", area: "Degassed Media Preparation", icon: "flask", finding: "Fresh pH 6.8 buffer prepared. Vacuum degassed for 15 minutes with continuous stirring per SOP. Dissolved oxygen measured at 2.1 mg/L (target ≤4 mg/L). pH confirmed 6.80. Preparation logged and independently verified by second analyst.", isIssue: false, isCause: false },
@@ -769,7 +769,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Laboratory Error: Phase 1 Resolved",
-    finalVerdictColor: "#34D399",
+    finalVerdictColor: "#1F9D63",
     finalVerdictIcon: "check",
     keyLearning: "Dissolution media degassing is a critical, often underestimated pre-analytical requirement. Undissolved gas forms micro-bubbles on tablet surfaces, creating a physical dissolution barrier that gives falsely low results. Analyst attestation of each SOP step: especially preparatory steps: is essential.",
     capa: "Revise SOP to require analyst sign-off on dissolution media degassing with a dissolved oxygen measurement recorded before use. Add supervisor pre-run check for media preparation completion. Include dissolution media degassing in annual analyst retraining.",
@@ -778,7 +778,7 @@ export const OOS_SCENARIOS = [
     id: "s6",
     icon: "alert",
     difficulty: "Beginner",
-    diffColor: "#34D399",
+    diffColor: "#1F9D63",
     title: "Bacterial Endotoxin Spike: IV Infusion",
     product: "Vancomycin 500 mg/vial for IV Infusion: Lot 2024-VAN-041",
     method: "Kinetic Chromogenic LAL Assay (USP <85>)",
@@ -789,7 +789,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Endotoxin result is 6.8 EU/mL: 13× above specification. Such a large spike in an endotoxin test warrants immediate, careful Phase 1 investigation before any manufacturing escalation.",
         items: [
           { id: "s6-a", area: "LAL Reagent Water Source", icon: "droplet", finding: "LAL reagent water (LRW) was drawn from the standard laboratory supply. However, the LRW bottle was opened 38 days ago. SOP specifies LRW bottles must be discarded after 14 days post-opening due to risk of environmental endotoxin contamination. The cap was not tight when found. This is a documented SOP violation.", isIssue: true, isCause: true },
@@ -806,7 +806,7 @@ export const OOS_SCENARIOS = [
       {
         id: "retest",
         title: "Phase 1: Retest with Fresh LAL Reagent Water",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Open a new, certified LAL reagent water bottle. Confirm it meets <0.005 EU/mL. Retest the product at the validated MVD.",
         items: [
           { id: "s6-e", area: "New LRW Lot Verification", icon: "droplet", finding: "New LRW bottle opened, lot #LRW-2024-12, CoA confirmed <0.005 EU/mL. Blank test: <0.005 EU/mL: passed. Opened and used same day per SOP. Date of opening labeled on bottle.", isIssue: false, isCause: false },
@@ -820,7 +820,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Laboratory Error: Phase 1 Resolved",
-    finalVerdictColor: "#34D399",
+    finalVerdictColor: "#1F9D63",
     finalVerdictIcon: "check",
     keyLearning: "LAL reagent water is a critical consumable in endotoxin testing. Environmental endotoxin is ubiquitous and will contaminate open LRW bottles rapidly. LRW management (date of opening, tight caps, short use periods) must be rigorously controlled. False-positive endotoxin spikes from contaminated LRW are a common, preventable lab error.",
     capa: "Revise SOP to require date-of-opening label on all LRW bottles and discard after 14 days. Introduce daily LRW blank check. Store LRW in a dedicated, sealed cabinet in the LAL testing area. Include in quarterly LAL analyst requalification.",
@@ -831,7 +831,7 @@ export const OOS_SCENARIOS = [
     id: "s7",
     icon: "methods",
     difficulty: "Intermediate",
-    diffColor: "#F59E0B",
+    diffColor: "#D9731A",
     title: "Particulate Matter OOS: Injectable Vials",
     product: "Meropenem 1 g for Injection: Lot 2024-MER-019",
     method: "Light Obscuration (HIAC): USP <788> Particulate Matter in Injections",
@@ -842,7 +842,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Particulate matter by light obscuration exceeds specification at both ≥10 µm and ≥25 µm thresholds. Investigate laboratory and analytical procedure first.",
         items: [
           { id: "s7-a", area: "HIAC Instrument Qualification", icon: "gear", finding: "HIAC 9703+ sensor last qualified 3 months ago (interval: 12 months). Pre-run system suitability using 10 µm standard: 9,850 ± 2% (spec: within 10% of certified count). Background count in WFI: ≤5 particles/mL ≥10 µm. All instrument checks pass.", isIssue: false, isCause: false },
@@ -859,7 +859,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2a",
         title: "Phase 2A: Expanded Laboratory Testing",
-        color: "#F59E0B",
+        color: "#D9731A",
         intro: "QA authorizes Phase 2A. Test additional vials from the same lot and conduct microscopic particle identification.",
         items: [
           { id: "s7-e", area: "Additional Vials (n=10 from lot)", icon: "methods", finding: "10 additional vials tested individually: 6/10 exceed ≥10 µm limit; 4/10 pass. Mean ≥10 µm across all 10: 7,200/container. This confirms a widespread particulate issue within the lot rather than isolated sample contamination.", isIssue: true, isCause: false },
@@ -874,7 +874,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Manufacturing Investigation",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Manufacturing investigation to identify the glass particle source and scope of impact.",
         items: [
           { id: "s7-g", area: "Fill Line Review", icon: "factory", finding: "Fill line CCTV review of Lot 2024-MER-019 production: during stoppering operation, one stoppering head was misaligned for approximately 40 minutes (2,300 vials filled in this window). Misalignment causes glass-on-glass contact between the vial neck and stopper insertion guide: known to generate glass particles.", isIssue: true, isCause: true },
@@ -888,7 +888,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Manufacturing Failure: Phase 2B → Lot Rejected",
-    finalVerdictColor: "#EF4444",
+    finalVerdictColor: "#E0393E",
     finalVerdictIcon: "cross",
     keyLearning: "USP <788> particulate matter OOS from glass particles is a serious quality and patient safety concern. Stoppering equipment alignment is a critical process parameter requiring real-time monitoring. FTIR particle identification is essential for root cause: it distinguishes glass from environmental contamination.",
     capa: "Install automated stoppering head alignment sensors with real-time alarm and line stop capability. Add in-process particulate check at start, mid, and end of stoppering run. Revise AQL visual inspection intensity after equipment maintenance.",
@@ -897,7 +897,7 @@ export const OOS_SCENARIOS = [
     id: "s8",
     icon: "scale",
     difficulty: "Intermediate",
-    diffColor: "#F59E0B",
+    diffColor: "#D9731A",
     title: "Loss on Drying OOS: Lyophilized Product",
     product: "Cefazolin 1 g Lyophilized Powder: Lot 2024-CEF-007",
     method: "Loss on Drying (LOD): Gravimetric (USP <731>), 105°C / 2h",
@@ -908,7 +908,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "LOD result is 4.6%, exceeding the NMT 3.5% specification. This is unexpected for a freshly manufactured lyophilized product at release. Investigate systematically.",
         items: [
           { id: "s8-a", area: "Analytical Balance Calibration", icon: "scale", finding: "Balance calibrated 2 days ago (interval: monthly). Daily sensitivity check this morning: 200 mg certified weight reads 200.0002 mg (tolerance ±0.0005 g). Balance performance acceptable. No drift or mechanical issues.", isIssue: false, isCause: false },
@@ -925,7 +925,7 @@ export const OOS_SCENARIOS = [
       {
         id: "retest",
         title: "Phase 1: Retest with Correct Pan Pre-Treatment",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Pre-dry fresh aluminum sample pans at 105°C for 30 minutes, cool in desiccator, and retest from retained vials.",
         items: [
           { id: "s8-e", area: "Pre-Dried Pans", icon: "thermometer", finding: "3 pans pre-dried at 105°C for 30 minutes, cooled in desiccator 15 minutes, tared individually. Procedure verified by second analyst. Tare recorded, pan identity labeled. Procedure matches SOP QC-44 exactly.", isIssue: false, isCause: false },
@@ -939,7 +939,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Laboratory Error: Phase 1 Resolved",
-    finalVerdictColor: "#34D399",
+    finalVerdictColor: "#1F9D63",
     finalVerdictIcon: "check",
     keyLearning: "Gravimetric testing is highly sensitive to seemingly minor procedural steps. Sample pan pre-conditioning eliminates the contribution of ambient pan moisture to LOD results. SOP compliance for every preparatory step is as important as the analysis itself.",
     capa: "Revise LOD SOP to require analyst sign-off with time log for pan pre-drying. Add pre-dried pans as a required pre-requisite material in the materials checklist. Retrain all QC analysts on gravimetric SOPs quarterly.",
@@ -948,7 +948,7 @@ export const OOS_SCENARIOS = [
     id: "s9",
     icon: "trendup",
     difficulty: "Intermediate",
-    diffColor: "#F59E0B",
+    diffColor: "#D9731A",
     title: "SEC HMW Elevated at DS Release",
     product: "Anti-CD20 mAb Drug Substance: Lot 2024-ACD-012",
     method: "Size Exclusion Chromatography (SEC-HPLC), PBS pH 7.4, UV 280 nm",
@@ -959,7 +959,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "SEC result shows 3.9% HMW: significantly above the 1.5% specification. HMW content above limit is a critical quality concern for a biologic DS. Investigate lab first.",
         items: [
           { id: "s9-a", area: "SEC Column and System", icon: "gear", finding: "TSKgel G3000SWxl column, serial #C-2041, within column lifetime (2,850 injections, limit 3,000). System suitability: thyroglobulin monomer peak plates 35,200 (spec ≥30,000); tailing factor 1.08 (spec ≤1.5). Retention times: ±0.1 min vs. reference. Column performance fully acceptable.", isIssue: false, isCause: false },
@@ -976,7 +976,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Manufacturing Investigation",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "QA authorizes Phase 2A (duplicate SEC by second analyst, passes confirmation of OOS) then Phase 2B. Investigate DS manufacturing records for this lot.",
         items: [
           { id: "s9-e", area: "DS Cold Chain Monitoring", icon: "thermometer", finding: "DS Lot 2024-ACD-012 was transferred from Manufacturing Building 4 to DS storage in Building 7 on 2024-08-14. Temperature data logger for the transfer: 12.8°C for 4.5 hours: significantly above the 2–8°C specification. Cold chain was broken during the inter-building transfer due to a refrigerated transport vehicle breakdown.", isIssue: true, isCause: true },
@@ -991,7 +991,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Manufacturing Failure (Cold Chain): Phase 2B → Lot Rejected",
-    finalVerdictColor: "#EF4444",
+    finalVerdictColor: "#E0393E",
     finalVerdictIcon: "cross",
     keyLearning: "mAb drug substances are thermolabile: even hours at slightly elevated temperatures can cause significant, irreversible aggregation. Cold chain management during DS transfer is a critical process step. Deviation risk assessments must be performed by CMC scientists who understand product-specific stability vulnerabilities.",
     capa: "Install real-time continuous temperature monitoring with automated SMS/email alerts for all DS transfers. Require CMC Scientist (not just operator) sign-off on thermal deviation risk assessment. Establish mandatory re-test protocol for HMW whenever a cold chain deviation >15°C × >1h occurs.",
@@ -1000,7 +1000,7 @@ export const OOS_SCENARIOS = [
     id: "s10",
     icon: "flask",
     difficulty: "Intermediate",
-    diffColor: "#F59E0B",
+    diffColor: "#D9731A",
     title: "Sterility Test Failure: Initial Positive",
     product: "Ceftriaxone 2 g Lyophilized for Injection: Lot 2024-CFX-031",
     method: "Sterility Test by Membrane Filtration (USP <71> / EP 2.6.1)",
@@ -1011,7 +1011,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Sterility test positive for Staphylococcus epidermidis. This is a critical result: but USP <71> acknowledges that initial sterility test failures may be due to test environment contamination. A rigorous Phase 1 investigation is required before product batch disposition.",
         items: [
           { id: "s10-a", area: "Isolate Identification", icon: "gene", finding: "Organism identified as Staphylococcus epidermidis by MALDI-TOF. S. epidermidis is a common human skin commensal: a characteristic indicator of environmental/operator-source contamination during testing. It is not typically associated with manufacturing environment contamination of a lyophilized antibiotic.", isIssue: true, isCause: false },
@@ -1028,7 +1028,7 @@ export const OOS_SCENARIOS = [
       {
         id: "retest",
         title: "Retest: Full Sterility Test by Second Qualified Analyst",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Retest using retained vials from the same lot. A qualified, trained second analyst performs the test with enhanced supervision and gowning verification.",
         items: [
           { id: "s10-e", area: "Retest Conditions", icon: "search", finding: "Retest performed by Analyst B (5 years sterility testing experience, last gowning qualification 2 months ago). Pre-test gown check performed by supervisor. Test run observed and signed off. Full 14-day incubation.", isIssue: false, isCause: false },
@@ -1042,7 +1042,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Lab/Environmental Contamination: Phase 1 Resolved (Retest Passes)",
-    finalVerdictColor: "#34D399",
+    finalVerdictColor: "#1F9D63",
     finalVerdictIcon: "check",
     keyLearning: "Initial sterility test failures are not automatically batch-rejecting events. USP <71> provides a scientifically valid path for documented false-positive attribution when evidence is rigorous. CCTV in sterility suites is an essential tool for post-failure investigation. The nature of the organism (skin commensal vs. environmental pathogen) is an important clue.",
     capa: "Mandatory re-qualification of aseptic technique for the analyst with documented failure. Add gown check log by supervisor before every sterility test run. Upgrade CCTV to cover all manipulation areas in sterility suite. Conduct monthly media fill simulation to ensure consistent aseptic performance.",
@@ -1053,7 +1053,7 @@ export const OOS_SCENARIOS = [
     id: "s11",
     icon: "trenddown",
     difficulty: "Advanced",
-    diffColor: "#F97316",
+    diffColor: "#D9731A",
     title: "Bioassay OOT: 4 Consecutive Lots Trending Low",
     product: "IL-6 Receptor Antagonist mAb: Multiple Commercial Lots",
     method: "Cell-Based STAT3 Reporter Potency Bioassay (% Relative Activity vs. RS)",
@@ -1064,7 +1064,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "4 consecutive lots show declining potency. Lot 4 is OOS. This is not random variation: it is a pattern. Phase 1 must investigate both the latest run and the trend.",
         items: [
           { id: "s11-a", area: "Current Lot Bioassay Review", icon: "ctd", finding: "Cell passage P24 (validated P20–P35). Viability 96%. Parallelism: sample vs. RS slope ratio 0.98 (spec 0.85–1.15). 4PL curve fit: R²=0.997. All run acceptance criteria met. No analyst or procedural error identified for Lot 4 run.", isIssue: false, isCause: false },
@@ -1081,7 +1081,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2a",
         title: "Phase 2A: Reference Standard Verification",
-        color: "#F59E0B",
+        color: "#D9731A",
         intro: "Investigate WRS-04 potency assignment. Compare WRS-04 against the Primary Reference Standard (PRS) and archived WRS-03 using an independent method.",
         items: [
           { id: "s11-e", area: "WRS-04 vs PRS Direct Comparison", icon: "flask", finding: "Direct 3-day comparison of WRS-04 against PRS (stored in liquid nitrogen, original potency assignment): WRS-04 measures 88% of PRS potency. However, WRS-04 was labeled as 100% potency (i.e., assumed equivalent to PRS). This means every measurement using WRS-04 as 100% reference has been deflated by ~12%.", isIssue: true, isCause: true },
@@ -1095,7 +1095,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Method Issue: WRS Miscalibration. All Lots Cleared on Reassessment.",
-    finalVerdictColor: "#F59E0B",
+    finalVerdictColor: "#D9731A",
     finalVerdictIcon: "alert",
     keyLearning: "Reference standard management is one of the highest-risk elements of potency bioassay programs. Every new working RS lot must be independently compared against a PRS using a statistically robust protocol (minimum 6 independent runs, acceptance criteria pre-defined). Trending potency data by RS lot change is a key signal to monitor.",
     capa: "Mandatory PRS comparison protocol for each new WRS lot: 6 independent runs, RS acceptance criteria ±10% of PRS. Store PRS in liquid nitrogen (validated stability). Add RS lot as a stratification variable in SPC trending. Independent QA review of RS qualification before release for use.",
@@ -1104,7 +1104,7 @@ export const OOS_SCENARIOS = [
     id: "s12",
     icon: "gene",
     difficulty: "Advanced",
-    diffColor: "#F97316",
+    diffColor: "#D9731A",
     title: "CE-SDS NR: Increased HMW Species",
     product: "Bevacizumab Biosimilar Drug Substance: Lot 2024-BEV-008",
     method: "Non-Reduced CE-SDS (Capillary Electrophoresis: SDS) for Purity",
@@ -1115,7 +1115,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "NR CE-SDS shows 5.8% HMW: nearly 2.5× the specification. In non-reduced CE-SDS, HMW above ~2% can indicate disulfide-bonded aggregates or covalent cross-links, which is distinct from non-covalent SEC aggregates.",
         items: [
           { id: "s12-a", area: "CE-SDS Method and System", icon: "gear", finding: "PA 800 Plus system. Method developed and validated. SDS gel buffer within use period (opened 8 days ago, limit 14 days). Capillary: 50 µm ID, replaced 2 weeks ago (≤300 injections used, limit 500). Internal standard (10 kDa APTS-labeled) response within 5% of expected. System performance acceptable.", isIssue: false, isCause: false },
@@ -1132,7 +1132,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2A/2B: Parallel Lab and Manufacturing Investigation",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Simultaneously: (1) retest with verified fresh NEM; (2) review manufacturing DS hold impact.",
         items: [
           { id: "s12-e", area: "Retest with Verified Fresh NEM", icon: "flask", finding: "Fresh NEM lot (verified expiry 2026-03) used. Retest NR CE-SDS of Lot 2024-BEV-008: HMW = 5.1%. Still significantly above specification (≤2.5%). Expired NEM contributed ~0.7% HMW artifact, but the remaining 5.1% is a real product quality signal.", isIssue: true, isCause: false },
@@ -1146,7 +1146,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Manufacturing Failure (Extended DS Hold): Phase 2B → Rejected",
-    finalVerdictColor: "#EF4444",
+    finalVerdictColor: "#E0393E",
     finalVerdictIcon: "cross",
     keyLearning: "NR CE-SDS HMW above specification can represent real covalent protein aggregation: distinct from SEC aggregates (non-covalent). DS hold limits are validated stability boundaries that must be strictly enforced in ERP batch tracking. Expired reagents (NEM) can introduce confounding artifacts: reagent expiry checks must be part of every pre-analysis verification.",
     capa: "Enforce DS hold limit in batch management system with mandatory QA release required to extend beyond SOP limit. NEM expiry verification added to method pre-analysis checklist. Quarterly review of DS hold deviation trends by QA.",
@@ -1155,7 +1155,7 @@ export const OOS_SCENARIOS = [
     id: "s13",
     icon: "methods",
     difficulty: "Advanced",
-    diffColor: "#F97316",
+    diffColor: "#D9731A",
     title: "Peptide Map: Uncharacterized New Peak",
     product: "Adalimumab Biosimilar Drug Substance: Lot 2024-ADA-015",
     method: "RP-LC-MS/MS Peptide Mapping (Tryptic Digest, Orbitrap, >95% Sequence Coverage)",
@@ -1166,7 +1166,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "A new peak at 23.4 min (0.42% area) is present in the test sample peptide map but absent from the reference standard. This must be identified before any product disposition decision.",
         items: [
           { id: "s13-a", area: "Peak Identity by MS/MS", icon: "search", finding: "Tandem MS fragmentation of the 23.4 min peak: b/y ion series matches tryptic peptide STAYYLQMNSLR (residues 296–307 of adalimumab HC). Monoisotopic mass: observed 1421.67 Da vs. expected 1420.66 Da for unmodified peptide: delta mass +1.01 Da. This is consistent with deamidation of asparagine (N) at position N301 (N→D, +0.984 Da).", isIssue: true, isCause: false },
@@ -1183,7 +1183,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Manufacturing and Process Investigation",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Identify what caused the 6-14× elevation in N301 deamidation for this lot. Review all manufacturing steps that could expose the DS to alkaline pH or elevated temperature.",
         items: [
           { id: "s13-e", area: "DS Formulation Buffer pH", icon: "flask", finding: "DS formulation step pH adjustment record: target pH 5.5. pH meter printout for Lot 2024-ADA-015 shows: initial measurement 5.52, adjusted with NaOH to 5.5: correct. But one in-process hold at pH 7.8 (pre-formulation, post-UF/DF step) lasted 6.5 hours. SOP maximum hold time at pH 7.8 is 2 hours. A 4.5-hour pH 7.8 overage was documented in deviation DEV-2024-396 but assessed as low risk.", isIssue: true, isCause: true },
@@ -1197,7 +1197,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Manufacturing Process Deviation: Phase 2B → Rejected",
-    finalVerdictColor: "#EF4444",
+    finalVerdictColor: "#E0393E",
     finalVerdictIcon: "cross",
     keyLearning: "Peptide mapping must be performed with deamidation-protective sample preparation conditions. Asparagine deamidation is a time/pH/temperature-dependent reaction: process hold conditions must be within validated limits. Deamidation risk assessments at the deviation stage must be performed by CMC scientists familiar with product-specific degradation kinetics.",
     capa: "Enforce DS hold time limits at each pH condition via ERP system automated timers. Mandate CMC Scientist sign-off on any process hold deviation risk assessment for deamidation-susceptible biologics. Add N-terminal deamidation site mapping to DS forced degradation study package.",
@@ -1208,7 +1208,7 @@ export const OOS_SCENARIOS = [
     id: "s14",
     icon: "alert",
     difficulty: "Expert",
-    diffColor: "#EF4444",
+    diffColor: "#E0393E",
     title: "Multi-CQA Cascade Failure: Aggregation, Potency, Opalescence",
     product: "PD-L1 Checkpoint Inhibitor mAb: Lot 2024-PDL-003 (Commercial DS)",
     method: "SEC-HPLC, Cell Potency Bioassay, Light Obscuration (sub-visible particles), Opalescence",
@@ -1219,7 +1219,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Initial Assessment and Lab Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Four CQAs failing simultaneously in the same lot: SEC, bioassay, opalescence, and sub-visible particles. Multi-CQA failure in a commercial biologic is a high-urgency event. Determine if any analytical error exists before escalating.",
         items: [
           { id: "s14-a", area: "Cross-CQA Correlation Analysis", icon: "chartbar", finding: "The 4 failures are mechanistically linked: protein aggregation (SEC HMW ↑) reduces monomer availability → reduces apparent potency in cell assay (fewer active molecules bind) → aggregates increase opalescence → large aggregates detected as sub-visible particles. This is a single root cause manifesting across 4 tests. Not independent analytical failures.", isIssue: true, isCause: false },
@@ -1236,7 +1236,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: DS Storage and Manufacturing Investigation",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Full manufacturing investigation to identify the aggregation driver during DS bulk storage.",
         items: [
           { id: "s14-e", area: "DS Tank Temperature Logs", icon: "thermometer", finding: "DS bulk tank continuous temperature logger review: temperature at 2–8°C for months 1–4. At month 5, tank refrigeration unit failed (alarm not connected to 24/7 monitoring). Tank temperature rose to 22°C over 36 hours before detection. After restoration to 2–8°C, temperature remained normal. The 36-hour excursion at 22°C occurred without detection.", isIssue: true, isCause: true },
@@ -1251,7 +1251,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Critical Manufacturing Failure: Reject + Regulatory Notification Required",
-    finalVerdictColor: "#EF4444",
+    finalVerdictColor: "#E0393E",
     finalVerdictIcon: "alert",
     keyLearning: "Multi-CQA failures with mechanistic coherence indicate a single severe root cause: investigate as a unified event, not independently. DS bulk storage temperature monitoring must be 24/7 with automated response. Polysorbate concentration is a critical quality attribute that must be tracked throughout DS shelf life. Commercial batch failures with distributed product require regulatory notification within days, not weeks.",
     capa: "Install 24/7 IoT temperature monitoring on all DS storage tanks with redundant sensors, automated alerts to QA, and auto-escalation if response not acknowledged in 30 minutes. Add PS80 concentration testing to DS stability protocol. Mandate CMC Director sign-off on any DS storage deviation risk assessment. Prepare and test regulatory notification SOP.",
@@ -1260,7 +1260,7 @@ export const OOS_SCENARIOS = [
     id: "s15",
     icon: "scale",
     difficulty: "Expert",
-    diffColor: "#EF4444",
+    diffColor: "#E0393E",
     title: "Method Transfer OOS: Bioassay Between Sites",
     product: "IL-2 Immunocytokine Fusion Protein: Multiple Lots Tested at Site B",
     method: "Cell-Based Proliferation Potency Assay (CTLL-2 cells): transferred from Site A to Site B",
@@ -1271,7 +1271,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Initial Discrepancy Analysis",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Site B systematically generates 25–30% lower potency results than Site A on identical lots. This is not random variation: it is a systematic bias. Investigate the method transfer.",
         items: [
           { id: "s15-a", area: "Side-by-Side Reference Standard Comparison", icon: "flask", finding: "Both sites use WRS lot WRS-IL2-04. Each site's aliquot compared: Site A WRS A280 = 0.220 (22 mg/mL); Site B WRS A280 = 0.221 (22.1 mg/mL). Concentration essentially identical. Potency of RS against PRS (tested at Site A only): 99% RA. Reference standard is not the issue.", isIssue: false, isCause: false },
@@ -1288,7 +1288,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2a",
         title: "Site B Method Requalification",
-        color: "#F59E0B",
+        color: "#D9731A",
         intro: "Regenerate Site B CTLL-2 working cell bank from the correct passage, requalify the method, and retest the 4 lots.",
         items: [
           { id: "s15-e", area: "WCB Regeneration at Site B", icon: "flask", finding: "Site B thawed CTLL-2 MCB vial (P5), expanded to P8, generated new WCB. Passage verified by independent cell counting and growth kinetics. EC50 of RS using new cells: 0.09 ng/mL (vs. Site A 0.08 ng/mL): now within expected range. Cell performance comparable to Site A.", isIssue: false, isCause: false },
@@ -1302,7 +1302,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Method Transfer Failure: No Product Rejection. All Lots Cleared.",
-    finalVerdictColor: "#F59E0B",
+    finalVerdictColor: "#D9731A",
     finalVerdictIcon: "alert",
     keyLearning: "Systematic site-to-site potency discrepancy is a method transfer problem until proven otherwise. Cell-based assays are uniquely vulnerable to cell passage drift: passage number must be explicitly defined and enforced in tech transfer SOPs. EC50 comparison (not just RA) is the key diagnostic to detect cell sensitivity changes. Discrepant site results do not automatically mean product rejection.",
     capa: "Revise tech transfer protocol to include: explicit cell passage range requirement, WCB generation procedure with passage verification, mandatory side-by-side concordance study (minimum 3 lots) before site authorization. Establish inter-site concordance monitoring as part of ongoing method lifecycle management.",
@@ -1311,7 +1311,7 @@ export const OOS_SCENARIOS = [
     id: "s16",
     icon: "alert",
     difficulty: "Expert",
-    diffColor: "#EF4444",
+    diffColor: "#E0393E",
     title: "Stability OOS: T=18 Month Accelerated Aggregation",
     product: "PCSK9 Inhibitor mAb Drug Product (DP): 75 mg/mL in Prefilled Syringe, 3-Year Shelf Life Claim",
     method: "SEC-HPLC (HMW%) at T=18 months under accelerated conditions (40°C/75%RH, ICH Q1A(R2))",
@@ -1322,7 +1322,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Laboratory Investigation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Accelerated stability failure at T=18m. This has major implications for shelf life claims and potentially for long-term storage specifications. A stability OOS has regulatory notification implications even if the product is not yet in commercial distribution.",
         items: [
           { id: "s16-a", area: "SEC Method Performance at T=18m Pull", icon: "gear", finding: "T=18m accelerated sample pull and analysis performed per protocol. SEC system suitability: plates 34,200 (pass ≥30,000). Reference standard HMW: 0.8% (within historical range). Blank injection: flat baseline. Column lifetime: 1,850 injections (within 3,000 limit). Method fully compliant.", isIssue: false, isCause: false },
@@ -1339,7 +1339,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Root Cause and Shelf Life Impact Assessment",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Determine whether the accelerated stability finding changes the long-term stability profile or requires shelf life revision.",
         items: [
           { id: "s16-e", area: "Long-Term Stability Projection (ICH Q1E)", icon: "trendup", finding: "Arrhenius modeling using T=0, T=6m, T=12m, T=18m long-term (5°C) HMW data: projected HMW at 36 months = 0.9%. Upper 95% confidence interval at 36m = 1.2%. Both below the 3.0% specification limit. Current long-term data supports a 36-month shelf life claim with statistical confidence.", isIssue: false, isCause: false },
@@ -1353,7 +1353,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Accelerated Stability Failure: Long-Term Shelf Life Maintained. Regulatory Notification Required.",
-    finalVerdictColor: "#F59E0B",
+    finalVerdictColor: "#D9731A",
     finalVerdictIcon: "alert",
     keyLearning: "Accelerated stability failures are not automatic shelf life withdrawals: ICH Q1E long-term data analysis is the authoritative basis for shelf life decisions. PS80 degradation under thermal stress is a known, documentable mechanism. Incoming excipient quality (PS80 peroxide value) is a critical control point that should be specified based on product-specific stability modeling. Regulatory notification of stability failures is a compliance obligation regardless of shelf life impact assessment.",
     capa: "Tighten PS80 incoming specification to ≤0.15 mEq/kg peroxide value. Add PS80 peroxide value monitoring at T=6m stability timepoints. Establish PS80 degradation as a tracked stability indicator. Review all current commercial DP lots for PS80 concentration; test oldest lots with UHPLC-ELSD method.",
@@ -1362,7 +1362,7 @@ export const OOS_SCENARIOS = [
     id: "s17",
     icon: "shieldalert",
     difficulty: "Expert",
-    diffColor: "#EF4444",
+    diffColor: "#E0393E",
     title: "Nitrosamine Impurity Above ICH M7 AI: NDMA Detected",
     product: "Ranitidine Hydrochloride 150 mg Tablets: Post-Market Surveillance Lot",
     method: "GC-MS/MS Headspace: NDMA (N-Nitrosodimethylamine) Quantification per FDA Guidance",
@@ -1373,7 +1373,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Analytical Confirmation",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "NDMA detected at 145 ppb: 4.5× the FDA acceptable intake limit. NDMA is a probable human carcinogen (IARC Group 2A). This result has immediate patient safety implications. Phase 1 must confirm the result and determine if it is analytical or real.",
         items: [
           { id: "s17-a", area: "GC-MS/MS Method Validation", icon: "gear", finding: "Method is validated per FDA nitrosamine guidance: LOQ = 2 ppb; linearity r²=0.9998 (2–500 ppb); matrix spike recovery 94–98% (spec 80–120%); selectivity confirmed against 14 other nitrosamines. Internal standard (d6-NDMA) response: within ±5% of calibration standard. Method fully validated.", isIssue: false, isCause: false },
@@ -1390,7 +1390,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Scope Assessment and Regulatory Response",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Determine extent of NDMA elevation across the product portfolio and manage regulatory and market response.",
         items: [
           { id: "s17-e", area: "Risk Stratification of In-Market Lots", icon: "chartbar", finding: "Testing of 8 in-market lots of varying ages: NDMA levels correlate strongly with age (R²=0.91). Lots <6 months old: 25–40 ppb (some below 32 ppb AI). Lots 6–12 months: 55–95 ppb. Lots >12 months: 110–165 ppb. All lots projected to exceed 32 ppb AI within 6 months of manufacture based on modeled kinetics. No safe shelf life can be established.", isIssue: true, isCause: true },
@@ -1413,7 +1413,7 @@ export const OOS_SCENARIOS = [
     id: "s18",
     icon: "factory",
     difficulty: "Expert",
-    diffColor: "#EF4444",
+    diffColor: "#E0393E",
     title: "Post-Approval Change OOS: Site Transfer Comparability Failure",
     product: "Trastuzumab Biosimilar DS: Site A (Originator Site) vs. Site B (New Commercial Site)",
     method: "Comprehensive Comparability Package: SEC, CE-SDS, glycan, bioassay, FcRn binding, clinical pharmacology model",
@@ -1424,7 +1424,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase1",
         title: "Phase 1: Analytical and Comparability Assessment",
-        color: "#34D399",
+        color: "#1F9D63",
         intro: "Site B DS does not meet the comparability criteria established against Site A. Three independent CQAs fail: SEC HMW, high-mannose glycans, and FcRn binding affinity. This is a manufacturing process comparability failure, not an analytical error.",
         items: [
           { id: "s18-a", area: "HMW Difference: Process Root Cause", icon: "chartbar", finding: "SEC HMW at Site B: 2.8% vs. Site A historical 0.6–0.9%. Phase 2B investigation: Site B protein A capture step operates at pH 3.5 for viral inactivation (same as Site A). However, Site B DS hold tank temperature after protein A: 12–15°C (Site A: 4–6°C). Higher hold temperature increases aggregation rate. Site B DS bulk hold at higher temperature explains SEC difference.", isIssue: true, isCause: true },
@@ -1441,7 +1441,7 @@ export const OOS_SCENARIOS = [
       {
         id: "phase2b",
         title: "Phase 2B: Site B Process Optimization and Resubmission",
-        color: "#F472B6",
+        color: "#C99A06",
         intro: "Optimize Site B manufacturing process to match Site A CQA profile. Generate new comparability data for regulatory submission.",
         items: [
           { id: "s18-e", area: "Process Optimization at Site B", icon: "factory", finding: "Optimizations implemented: (1) DS hold tank temperature reduced to 4°C ± 1°C (controlled). (2) Bioreactor DO target reduced to 30% ± 5%. (3) Agitation strategy revised with computational fluid dynamics analysis of 3,000L vessel to match shear stress profile of 2,000L vessel. Three engineering runs performed at optimized conditions.", isIssue: false, isCause: false },
@@ -1455,7 +1455,7 @@ export const OOS_SCENARIOS = [
       },
     ],
     finalVerdictLabel: "Comparability Failure → Process Optimized → Regulatory Approval Required",
-    finalVerdictColor: "#C99A3B",
+    finalVerdictColor: "#C99A06",
     finalVerdictIcon: "alert",
     keyLearning: "Manufacturing site transfers for biologics require formal ICH Q5E comparability exercises. Scale-up (2,000L→3,000L bioreactors) is not trivially comparable: dissolved oxygen control and agitation shear stress profiles must be matched. Glycosylation differences (Man5) can propagate to functional CQA changes (FcRn binding) with clinical PK implications. FcRn binding by BLI is an increasingly important characterization test for mAbs with shelf life and PK implications.",
     capa: "Establish site transfer comparability protocol as a governed document (QMS-controlled) requiring CMC Director and Regulatory Affairs sign-off. Include BLI FcRn binding as a mandatory comparability CQA. Perform scale-up CFD analysis before manufacturing at new bioreactor scale. Engage regulatory intelligence on current FDA expectations for site changes before initiating transfer.",

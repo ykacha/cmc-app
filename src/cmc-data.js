@@ -1,5 +1,5 @@
 export const PIPELINE = [
-  { id:"s01", stage:"01", label:"Gene Construction", sub:"Molecular Biology", icon:"🧬", accent:"#C99A3B",
+  { id:"s01", stage:"01", label:"Gene Construction", sub:"Molecular Biology", icon:"🧬", accent:"#C99A06",
     topics:[
       { id:"t01a", title:"Codon Optimization",
         body:"CHO cells prefer certain codons: suboptimal usage causes ribosomal stalling and dramatically lower titer. Codon optimization replaces rare CHO codons with preferred alternatives computationally before de novo gene synthesis. Studies show 3–10× titer improvements from optimization alone.",
@@ -45,7 +45,7 @@ export const PIPELINE = [
       { id:"q01e", level:"Advanced", q:"How does Fc engineering (LALA, YTE, afucosylation) affect CMC development strategy, the CQA list, and potency assay design?", why:"Fc engineering changes which attributes are CQAs and what potency assay format is required.", how:"Read Saunders 2019. Ask your mentor: what CMC challenges did Fc engineering create?", ref:"ICH Q6B | FDA Potency Guidance (2008)" },
     ]
   },
-  { id:"s02", stage:"02", label:"Transfection & Integration", sub:"Stable Cell Lines", icon:"⚡", accent:"#F472B6",
+  { id:"s02", stage:"02", label:"Transfection & Integration", sub:"Stable Cell Lines", icon:"⚡", accent:"#C99A06",
     topics:[
       { id:"t02a", title:"Stable vs Transient Transfection",
         body:"Transient transfection (HEK293, ExpiCHO) delivers mg-scale material in 7–10 days without stable integration. Stable transfection permanently integrates the vector into the CHO genome via electroporation, followed by drug selection. Transient material enables early CQA profiling but lacks the cGMP documentation chain required for clinical dosing.",
@@ -89,7 +89,7 @@ export const PIPELINE = [
       { id:"q02c", level:"Advanced", q:"What is NGS-based integration site analysis and why are regulators increasingly requesting it in BLA packages?", why:"Integration into silenced chromatin causes expression loss; oncogene-adjacent integration is a theoretical safety concern.", how:"Read Thomas et al. 2018 on targeted integration in CHO.", ref:"ICH Q5B | ICH Q5D" },
     ]
   },
-  { id:"s03", stage:"03", label:"Cell Line Development", sub:"Clone Selection", icon:"🔵", accent:"#38BDF8",
+  { id:"s03", stage:"03", label:"Cell Line Development", sub:"Clone Selection", icon:"🔵", accent:"#3D63DD",
     topics:[
       { id:"t03a", title:"Clone Selection Criteria and the Selection Funnel",
         body:"Lead clone selection from hundreds of candidates uses a multi-criteria decision matrix balancing: specific productivity (qP), growth rate, metabolic profile (low lactate/ammonia production), product quality attributes (glycan profile, aggregation, charge variants), and genetic stability indicators. Typical funnel: ~500 clones → 48 deep well plate screen → 12 ambr15 → 4 shake flask → 2 bioreactor runs → 1 lead. Selection criteria should be pre-defined before screening begins.",
@@ -133,7 +133,7 @@ export const PIPELINE = [
       { id:"q03c", level:"Intermediate", q:"What does ICH Q5D require for genetic stability testing, how many PDLs must be covered, and what quality attributes must be monitored at end-of-production?", why:"Missing EOP data is a BLA deficiency that can trigger a CRL.", how:"Read ICH Q5D Section B.4. Build a stability test matrix.", ref:"ICH Q5D | ICH Q5B" },
     ]
   },
-  { id:"s04", stage:"04", label:"Cell Banking", sub:"MCB / WCB", icon:"🏦", accent:"#34D399",
+  { id:"s04", stage:"04", label:"Cell Banking", sub:"MCB / WCB", icon:"🏦", accent:"#1F9D63",
     topics:[
       { id:"t04a", title:"Two-Tier MCB/WCB Banking System",
         body:"The Master Cell Bank (MCB) is derived from the selected lead clone: 100–500 vials cryopreserved at passage P+3 to P+7 in controlled-rate freezers. The MCB is prepared once and serves as the permanent source for all Working Cell Banks (WCBs) throughout the product lifecycle. WCBs are prepared from single MCB vials, typically 50–200 vials each. Multiple geographic storage sites (minimum 2) provide redundancy against catastrophic loss.",
@@ -176,7 +176,7 @@ export const PIPELINE = [
       { id:"q04b", level:"Intermediate", q:"What testing must be performed on the MCB before Phase 1 IND vs. BLA submission? How do these timelines affect program planning?", why:"MCB viral safety testing takes 6–12 months: must be planned into the BLA Gantt, not discovered at submission.", how:"Build a two-column table: MCB tests at IND vs BLA. Use ICH Q5D as primary reference.", ref:"ICH Q5D | ICH Q5A(R1) | FDA Phase 1 CMC Guidance" },
     ]
   },
-  { id:"s05", stage:"05", label:"Upstream Development", sub:"Bioreactor Process", icon:"🔬", accent:"#22D3EE",
+  { id:"s05", stage:"05", label:"Upstream Development", sub:"Bioreactor Process", icon:"🔬", accent:"#3D63DD",
     topics:[
       { id:"t05a", title:"CPPs, Glycosylation Control, and Media Supplementation",
         body:"Key upstream CPP candidates: pH (6.8–7.2 range for CHO), dissolved oxygen (30–50% saturation), temperature (shift from 37°C to 31–34°C to boost qP), osmolality (280–350 mOsm/kg), CO2 accumulation, agitation rate. Glycosylation is controlled through media: manganese activates β1,4-galactosyltransferase (↑galactosylation), galactose supplementation increases G1F/G2F content, copper depletion reduces fucosylation (↑ADCC), and ammonia accumulation disrupts Golgi pH causing aberrant glycosylation.",
@@ -226,7 +226,7 @@ export const PIPELINE = [
       { id:"q05d", level:"Expert", q:"Upstream optimization improves titer 40% but shifts glycosylation outside historical comparability ranges. What is your full CMC and regulatory strategy?", why:"This is a classic CMC leadership dilemma: titer gain vs. CQA change.", how:"Read ICH Q5E. Build a decision tree: what tests first, regulatory filing pathway.", ref:"ICH Q5E | ICH Q8 | FDA Comparability Guidance (2003)" },
     ]
   },
-  { id:"s06", stage:"06", label:"Downstream Development", sub:"Purification Train", icon:"⚗️", accent:"#4ADE80",
+  { id:"s06", stage:"06", label:"Downstream Development", sub:"Purification Train", icon:"⚗️", accent:"#1F9D63",
     topics:[
       { id:"t06a", title:"Standard mAb Purification Train",
         body:"Platform mAb downstream process: (1) Harvest clarification: centrifugation + depth filtration to remove cells and debris; (2) Protein A capture chromatography: selective IgG capture, pH 7→3 elution; (3) Low pH viral inactivation (pH 3.4–3.7, ≥60 min hold): enveloped virus clearance step; (4) Polishing: CEX for aggregate/HCP/charge variant removal, AEX in flow-through mode for DNA/virus/endotoxin; (5) Viral filtration (20 nm Planova/Viresolve): non-enveloped virus clearance; (6) UF/DF: concentration to target and buffer exchange to formulation buffer.",
@@ -277,7 +277,7 @@ export const PIPELINE = [
       { id:"q06e", level:"Expert", q:"Post-approval, you discover a polishing step is not clearing PLBL2, which is degrading PS80. What are your simultaneous CMC, analytical, and regulatory actions?", why:"Post-approval HCP safety discoveries require parallel analytical work, process modification, and regulatory filing under time pressure.", how:"Read Labrenz 2014. Read FDA post-approval guidance.", ref:"ICH Q12 | FDA Post-Approval Guidance | ICH Q5E" },
     ]
   },
-  { id:"s07", stage:"07", label:"Analytical Development", sub:"Methods & CQAs", icon:"📊", accent:"#C0654A",
+  { id:"s07", stage:"07", label:"Analytical Development", sub:"Methods & CQAs", icon:"📊", accent:"#E0393E",
     topics:[
       { id:"t07a", title:"CQA Risk Assessment and the FMEA-Based Approach",
         body:"CQA identification uses FMEA-based risk assessment scoring each quality attribute on severity (impact on safety/efficacy), occurrence (frequency of observation), and detectability (ability to monitor). High-risk attributes become CQAs requiring controlled specifications. ICH Q8(R2) defines a CQA as 'a physical, chemical, biological, or microbiological property or characteristic that should be within an appropriate limit, range, or distribution to ensure the desired product quality.' Typical mAb CQAs: purity/aggregation, potency, glycosylation (Fc CQA), charge variants, identity, particulates, endotoxin.",
@@ -328,7 +328,7 @@ export const PIPELINE = [
       { id:"q07e", level:"Expert", q:"What is multi-attribute monitoring (MAM) and how does implementing it as a release test change the analytical control strategy and regulatory filing?", why:"MAM replaces multiple individual methods with one LC-MS method monitoring dozens of PTMs simultaneously.", how:"Read Rogers et al. 2015 and FDA 2018 MAM workshop proceedings.", ref:"FDA MAM Workshop (2018) | EMA Reflection Paper on MAM | Rogers et al. 2015" },
     ]
   },
-  { id:"s08", stage:"08", label:"Formulation Development", sub:"Drug Product", icon:"💊", accent:"#FB923C",
+  { id:"s08", stage:"08", label:"Formulation Development", sub:"Drug Product", icon:"💊", accent:"#D9731A",
     topics:[
       { id:"t08a", title:"Excipient Selection and Forced Degradation Studies",
         body:"Standard biologic formulation platform: buffer (histidine pH 5.5–6.0 or citrate pH 6.0–6.5 for stability), tonicity agent (sucrose 5–10% or mannitol 5%), surfactant (PS20 0.01–0.05% or PS80 0.02–0.1%), and for lyophilized products a lyoprotectant (sucrose or trehalose as bulking/stabilizing agent). Forced degradation studies expose the formulation to: heat (40°C, 25°C), light (ICH Q1B), freeze-thaw cycles, agitation (rocker), and low/high pH to identify the primary degradation pathways and select conditions that best suppress them.",
@@ -378,7 +378,7 @@ export const PIPELINE = [
       { id:"q08d", level:"Advanced", q:"How do you set and justify drug product release specifications under ICH Q6B?", why:"Spec setting requires clinical justification plus manufacturing capability. Regulators challenge specs without scientific basis.", how:"Read ICH Q6B and FDA 2014 specifications Q&A.", ref:"ICH Q6B | FDA Specifications Q&A (2014) | ICH Q1E" },
     ]
   },
-  { id:"s09", stage:"09", label:"Technology Transfer", sub:"Site Transfers", icon:"🔄", accent:"#F59E0B",
+  { id:"s09", stage:"09", label:"Technology Transfer", sub:"Site Transfers", icon:"🔄", accent:"#D9731A",
     topics:[
       { id:"t09a", title:"Transfer Package & Site Comparability",
         body:"The technology transfer package is a formal dossier compiled by the sending site covering all unit operations: Master Batch Records (MBRs), SOPs, raw material specifications, equipment qualification requirements, Process Description Document (PDD), analytical method procedures, process flow diagrams, in-process control ranges, and a Transfer Plan with pre-defined acceptance criteria. The receiving site cannot manufacture GMP batches without a complete transfer package. Gaps in documentation: 'tribal knowledge' residing only in people's heads: are the primary cause of transfer failures.",
@@ -421,7 +421,7 @@ export const PIPELINE = [
       { id:"q09b", level:"Advanced", q:"How do you design a site comparability study per ICH Q5E for first GMP batches at a new site, including analytical panel selection and statistical acceptance criteria?", why:"Site comparability is a regulatory requirement. Pre-defined criteria are essential: setting them after seeing data is specification shopping, a regulatory integrity violation.", how:"Read ICH Q5E. Draft a comparability acceptance criteria table.", ref:"ICH Q5E | FDA Comparability Guidance (2003) | ICH Q2(R2)" },
     ]
   },
-  { id:"s10", stage:"10", label:"Clinical Manufacturing", sub:"Phase 1→3", icon:"🏭", accent:"#2DD4BF",
+  { id:"s10", stage:"10", label:"Clinical Manufacturing", sub:"Phase 1→3", icon:"🏭", accent:"#3D63DD",
     topics:[
       { id:"t10a", title:"cGMP, Data Integrity & IND Evolution",
         body:"cGMP for biologics is governed by 21 CFR 210/211 and 600/610 (US) and EU GMP Part I plus Annex 2 (biologics) in Europe. FDA's 2018 data integrity guidance mandates ALCOA+ principles: data must be Attributable, Legible, Contemporaneous, Original, Accurate, and additionally Complete, Consistent, Enduring, and Available. CMC IND content escalates from Phase 1 (limited analytical characterization, proposed specifications) through Phase 3 (commercial-scale process, validated methods, qualified reference standards).",
@@ -464,7 +464,7 @@ export const PIPELINE = [
       { id:"q10b", level:"Intermediate", q:"How does the CMC section of an IND evolve from Phase 1 through Phase 3, and which CMC activities most commonly become critical-path risks to BLA filing if not initiated early enough?", why:"Many programs fail at BLA because CMC wasn't upgraded adequately between Phase 2 and 3.", how:"Draw a CMC lifecycle Gantt from Phase 1 IND to BLA. Ask your mentor: what CMC activity most threatened our last BLA timeline?", ref:"FDA Phase 1 CMC Guidance | FDA Phase 2/3 CMC Guidance | ICH M4Q" },
     ]
   },
-  { id:"s11", stage:"11", label:"Process Characterization", sub:"CPP / Design Space", icon:"🎯", accent:"#F472B6",
+  { id:"s11", stage:"11", label:"Process Characterization", sub:"CPP / Design Space", icon:"🎯", accent:"#C99A06",
     topics:[
       { id:"t11a", title:"FMEA, Risk Assessment, and Parameter Classification",
         body:"Process characterization begins with a risk assessment: typically Failure Mode and Effects Analysis (FMEA): classifying each process parameter as: potential Critical Process Parameter (pCPP, requires characterization studies to determine impact on CQAs), Key Process Parameter (KPP, affects yield/efficiency not CQAs), or Non-Key Parameter (demonstrated no effect within ranges studied). Risk ranking is based on severity of potential CQA impact × probability of occurrence × detectability. The FMEA output directly drives the experimental design for characterization studies.",
@@ -508,7 +508,7 @@ export const PIPELINE = [
       { id:"q11c", level:"Advanced", q:"Your DoE shows load challenge has a statistically significant effect on HCP clearance (20 vs 18 ng/mg): both well within specification. Should it be classified as a CPP? Defend your scientific and regulatory reasoning.", why:"Statistical significance does not equal practical significance. ICH Q8 allows scientific judgment: if the effect is within spec and lacks clinical relevance, a non-CPP classification may be defensible.", how:"Read ICH Q8 on statistical vs. practical significance. Discuss with your mentor: what documentation would support a non-CPP classification?", ref:"ICH Q8(R2) | ICH Q9" },
     ]
   },
-  { id:"s12", stage:"12", label:"Process Validation", sub:"PPQ & Lifecycle", icon:"✅", accent:"#38BDF8",
+  { id:"s12", stage:"12", label:"Process Validation", sub:"PPQ & Lifecycle", icon:"✅", accent:"#3D63DD",
     topics:[
       { id:"t12a", title:"FDA 2011 Three-Stage Validation Lifecycle",
         body:"FDA's 2011 Process Validation Guidance replaced the outdated '3 successful GMP batches = validated' paradigm with a science and risk-based lifecycle approach. Stage 1 (Process Design): all development, characterization, and scale-up activities. Stage 2 (Process Performance Qualification: PPQ): commercial-scale confirmation with pre-defined acceptance criteria in a PPQ protocol that must be approved before the first PPQ batch. Stage 3 (Continued Process Verification: CPV): ongoing statistical monitoring of the commercial process using control charts and capability indices to detect drift before specification failures.",
@@ -553,7 +553,7 @@ export const PIPELINE = [
       { id:"q12d", level:"Expert", q:"During execution of your final PPQ batch, a critical IPC result falls outside the pre-defined acceptance criterion. What are your immediate steps, investigation approach, and batch disposition decision framework?", why:"A PPQ failure at the last batch is high-stakes: a CMC leadership judgment call with BLA timeline implications.", how:"Build a flowchart: deviation → Phase I → Phase II → assignable cause assessment → disposition.", ref:"FDA PV Guidance (2011) | FDA OOS Guidance (2006) | 21 CFR 211.192" },
     ]
   },
-  { id:"s13", stage:"13", label:"Commercial Manufacturing", sub:"GMP Operations", icon:"🏭", accent:"#22D3EE",
+  { id:"s13", stage:"13", label:"Commercial Manufacturing", sub:"GMP Operations", icon:"🏭", accent:"#3D63DD",
     topics:[
       { id:"t13a", title:"Annual Product Quality Review (APQR) and Change Control",
         body:"APQR (US: Product Quality Review per 21 CFR 211.180(e); EU: Annual Product Review per EU GMP Chapter 1; ICH Q10) is a systematic annual review compiling all quality data for each product: batch release results, OOS/OOT occurrences, deviations and CAPAs, change controls implemented, stability data, CPV statistical outputs, complaint trends, and regulatory commitments. The APQR must identify any trends, confirm process control, evaluate change effectiveness, and recommend improvements. Post-approval changes are classified: Annual Report (AR), CBE-0 (Comparability Protocol), CBE-30, or Prior Approval Supplement (PAS) per 21 CFR 601.12.",
@@ -597,7 +597,7 @@ export const PIPELINE = [
       { id:"q13c", level:"Expert", q:"A field complaint reports visible particulates in your commercial drug product. Walk through your immediate regulatory reporting obligations, investigation steps, and supply continuity considerations.", why:"Product quality complaints leading to recalls are the highest-consequence commercial CMC events. Field Alert Reports must be filed within 3 business days.", how:"Read 21 CFR 600.14 on Field Alert Reports. Read FDA recall guidance.", ref:"21 CFR 600.14 | FDA Recall Guidance | ICH Q10" },
     ]
   },
-  { id:"s14", stage:"14", label:"Stability & Shelf Life", sub:"ICH Q5C", icon:"📅", accent:"#4ADE80",
+  { id:"s14", stage:"14", label:"Stability & Shelf Life", sub:"ICH Q5C", icon:"📅", accent:"#1F9D63",
     topics:[
       { id:"t14a", title:"ICH Q5C Biologic Stability Program Design",
         body:"ICH Q5C (biologic stability) requires: long-term real-time conditions (2–8°C for refrigerated products, -20°C for frozen), accelerated conditions (25°C/60%RH), and stress studies. Time points: 0, 3, 6, 9, 12, 18, 24 months, then annually. Critical difference from small molecules (ICH Q1A): accelerated stability data for biologics CANNOT generally be used for shelf-life extrapolation or prediction: real-time data under actual storage conditions is required. Analytical panel for biologics must include stability-indicating methods for potency, aggregation, fragmentation, glycosylation, and oxidation.",
@@ -636,7 +636,7 @@ export const PIPELINE = [
       { id:"q14c", level:"Advanced", q:"If a commercial drug product shows an OOT stability result at 24 months but remains within specification, what is the investigation pathway and potential regulatory action?", why:"OOT results require investigation even without a spec failure: the trend may predict a future OOS and may require shelf-life shortening.", how:"Read ICH Q10 on OOT investigations. Build a decision tree.", ref:"ICH Q10 | FDA Stability Guidance | ICH Q5C" },
     ]
   },
-  { id:"s15", stage:"15", label:"BLA Filing", sub:"Submissions", icon:"📋", accent:"#F59E0B",
+  { id:"s15", stage:"15", label:"BLA Filing", sub:"Submissions", icon:"📋", accent:"#D9731A",
     topics:[
       { id:"t15a", title:"CTD Module 3 Architecture and Quality Overall Summary (QOS)",
         body:"The Common Technical Document (CTD) Module 3 organizes all CMC data: 3.2.S Drug Substance (manufacturer, characterization, manufacture, specifications, reference standards, CCS, stability) and 3.2.P Drug Product (description, manufacture, characterization, specs, reference standards, CCS, stability). The Quality Overall Summary (QOS) precedes Module 3: the first CMC document a regulatory reviewer reads: and must accurately summarize all Module 3 content in narrative form with integrated justifications. Inconsistencies between the QOS and Module 3 body are a leading cause of deficiency letters.",
@@ -728,7 +728,7 @@ export const PIPELINE = [
 
 
 export const DOMAINS = [
-  { id:"dom_up", label:"Upstream Bioprocess", icon:"bioreactor", accent:"#22D3EE", desc:"Bioreactor operations, cell culture, media, scale-up, PAT, intensification",
+  { id:"dom_up", label:"Upstream Bioprocess", icon:"bioreactor", accent:"#3D63DD", desc:"Bioreactor operations, cell culture, media, scale-up, PAT, intensification",
     questions:[
       { id:"du01", level:"Foundational", q:"What is the difference between batch, fed-batch, and perfusion bioreactor modes for mAb production? What are the productivity and product quality trade-offs of each?", why:"Bioreactor mode is a fundamental platform decision affecting titer, product quality, facility fit, and COGS over the entire commercial product lifecycle.", how:"Ask your mentor: why did we choose fed-batch: were alternatives evaluated and what were the COGS implications?", ref:"ICH Q11 | FDA Process Development Guidance" },
       { id:"du02", level:"Foundational", q:"What is viable cell density (VCD), viability, and cell-specific productivity (qP), and why are daily measurements essential for interpreting bioreactor performance?", why:"VCD, viability, and qP together define integrated manufacturing performance. A viability drop below 70–80% is an early signal of metabolic stress that can shift CQAs before any specification failure.", how:"Review your site's bioreactor IPC monitoring system.", ref:"ICH Q11 | FDA Process Validation Guidance" },
@@ -740,7 +740,7 @@ export const DOMAINS = [
       { id:"du08", level:"Expert", q:"What is continuous bioreactor manufacturing and how does ICH Q13 address the unique CMC and process validation challenges, including the regulatory definition of 'batch'?", why:"ICH Q13 (2022) provides the first comprehensive guidance on validation, batch definition, and control strategy for continuous upstream.", how:"Read ICH Q13 on continuous manufacturing for biologics.", ref:"ICH Q13 | ICH Q8 | FDA Continuous Manufacturing Guidance" },
     ]
   },
-  { id:"dom_ds", label:"Downstream Purification", icon:"filter", accent:"#34D399", desc:"Chromatography, viral clearance, filtration, UF/DF, impurity clearance, resin reuse",
+  { id:"dom_ds", label:"Downstream Purification", icon:"filter", accent:"#1F9D63", desc:"Chromatography, viral clearance, filtration, UF/DF, impurity clearance, resin reuse",
     questions:[
       { id:"dd01", level:"Foundational", q:"What are the key impurities that must be cleared during mAb downstream purification, what are the patient risks of each, and what regulatory specification limits apply?", why:"Impurity clearance is the primary function of downstream processing. Understanding which impurities exist, their risks, and spec limits is essential for designing and defending a purification process.", how:"Build an impurity table: impurity | source | patient risk | regulatory limit | detection method.", ref:"ICH Q6B | FDA HCP Guidance | FDA Residual DNA Guidance" },
       { id:"dd02", level:"Foundational", q:"What is the mechanism of Protein A affinity chromatography, what are the main commercial resin options, and what are the key advantages and limitations of each?", why:"Protein A is the workhorse of mAb capture. CMC leaders must understand the chemistry, resin options, and limitations.", how:"Review the Cytiva and Repligen Protein A resin portfolios.", ref:"ICH Q11 | Cytiva MabSelect Technical Guide | ICH Q6B" },
@@ -752,7 +752,7 @@ export const DOMAINS = [
       { id:"dd08", level:"Expert", q:"You are developing the downstream process for a novel modality (ADC or gene therapy vector). What platform knowledge from mAb purification transfers, and what novel regulatory challenges arise?", why:"Platform extension to novel modalities requires identifying transferable vs. modality-specific process knowledge.", how:"Read FDA guidance on ADC CMC and gene therapy manufacturing.", ref:"FDA ADC CMC Guidance | FDA Gene Therapy CMC Guidance | ICH Q11" },
     ]
   },
-  { id:"dom_dp", label:"Drug Product & Formulation", icon:"vial", accent:"#FB923C", desc:"Formulation design, excipients, container-closure, stability, lyophilization, E&L",
+  { id:"dom_dp", label:"Drug Product & Formulation", icon:"vial", accent:"#D9731A", desc:"Formulation design, excipients, container-closure, stability, lyophilization, E&L",
     questions:[
       { id:"df01", level:"Foundational", q:"What is protein aggregation, what are the physical and chemical mechanisms driving it in biologics, and how is aggregation risk assessed during formulation development?", why:"Aggregation is the most important immunogenicity CQA for biologics.", how:"Read Roberts 2014 on protein aggregation mechanisms.", ref:"ICH Q6B | USP <787> | ICH Q5C" },
       { id:"df02", level:"Foundational", q:"What are polysorbate 20 and polysorbate 80, why are they used, and what is the PLBL2-mediated polysorbate degradation risk and its clinical consequences?", why:"Polysorbates prevent surface aggregation but are susceptible to enzymatic degradation by PLBL2 and other HCPs. Degradation causes particle formation and product recalls.", how:"Read Labrenz 2014 on PLBL2.", ref:"ICH Q8 | ICH Q3E | ICH Q5C | Labrenz 2014" },
@@ -764,7 +764,7 @@ export const DOMAINS = [
       { id:"df08", level:"Expert", q:"What is a drug-device combination product under 21 CFR Part 3 and how do CMC development and regulatory submission requirements differ when an auto-injector is involved?", why:"Combination products require device CMC (human factors, injection force, delivery volume verification) on top of drug CMC. FDA's OCP requirements can add 12+ months.", how:"Read 21 CFR Part 3. Read ISO 11608.", ref:"21 CFR Part 3 | ISO 11608 | FDA OCP Guidance | ICH Q8" },
     ]
   },
-  { id:"dom_an", label:"Analytical Methods & CQAs", icon:"methods", accent:"#C99A3B", desc:"Method development, validation, characterization, potency, HOS, MAM, OOS",
+  { id:"dom_an", label:"Analytical Methods & CQAs", icon:"methods", accent:"#C99A06", desc:"Method development, validation, characterization, potency, HOS, MAM, OOS",
     questions:[
       { id:"da01", level:"Foundational", q:"What is N-glycosylation and how does the glycan profile of a mAb drug substance affect effector function (ADCC/CDC), pharmacokinetics, and immunogenicity?", why:"Glycosylation is the most complex and clinically consequential CQA for most mAbs.", how:"Read Jefferis 2009 review on glycosylation and antibody pharmacology.", ref:"ICH Q6B | A-Mab Case Study | Jefferis 2009 Review" },
       { id:"da02", level:"Foundational", q:"What is an OOS investigation and what are the two phases defined in FDA's 2006 guidance? What constitutes adequate Phase I vs. Phase II investigation?", why:"OOS investigations are the most cited category in FDA Warning Letters.", how:"Read FDA 2006 OOS Guidance in full. Build a Phase I/Phase II investigation flowchart.", ref:"FDA OOS Guidance (2006) | 21 CFR 211.192" },
@@ -776,7 +776,7 @@ export const DOMAINS = [
       { id:"da08", level:"Expert", q:"What is multi-attribute monitoring (MAM) by LC-MS and how does implementing it as a release test change the analytical control strategy and regulatory filing?", why:"MAM is a paradigm shift: one LC-MS method simultaneously monitors dozens of PTMs, replacing multiple individual methods.", how:"Read Rogers et al. 2015 and FDA 2018 MAM workshop proceedings.", ref:"FDA MAM Workshop (2018) | EMA Reflection Paper on MAM | Rogers et al. 2015" },
     ]
   },
-  { id:"dom_reg", label:"Regulatory & Submissions", icon:"ctd", accent:"#F59E0B", desc:"IND, BLA, CTD Module 3, FDA/EMA strategy, CRLs, ICH framework, PAI",
+  { id:"dom_reg", label:"Regulatory & Submissions", icon:"ctd", accent:"#D9731A", desc:"IND, BLA, CTD Module 3, FDA/EMA strategy, CRLs, ICH framework, PAI",
     questions:[
       { id:"dr01", level:"Foundational", q:"What is an IND and what CMC information is required in each section under FDA's Phase 1 IND CMC guidance?", why:"The IND is the regulatory vehicle for clinical investigation. CMC professionals must know what is required at Phase 1 to prepare an adequate package without over-investing.", how:"Read FDA Phase 1 IND CMC Guidance (2003). Build a checklist of all CMC sections.", ref:"FDA Phase 1 IND CMC Guidance (2003) | 21 CFR 312 | ICH M4Q" },
       { id:"dr02", level:"Foundational", q:"What is the CTD and how does ICH M4Q Module 3 organize the CMC information in a BLA submission?", why:"Module 3 is the CMC backbone of every BLA. Knowing the architecture fluently prevents both gaps and redundancies.", how:"Download ICH M4Q. Map every CMC deliverable to a specific CTD section number.", ref:"ICH M4Q | FDA BLA Guidance | EMA Quality CTD Guidance" },
@@ -788,7 +788,7 @@ export const DOMAINS = [
       { id:"dr08", level:"Expert", q:"What is Breakthrough Therapy Designation (FDA) or PRIME (EMA) and how does expedited review status change the CMC development strategy?", why:"Breakthrough/PRIME designations accelerate timelines: creating CMC pressure to compress activities that normally take years.", how:"Read FDA Breakthrough Therapy Guidance and EMA PRIME guidance.", ref:"FDA Breakthrough Therapy Guidance | EMA PRIME Guideline | 21 CFR 312.82" },
     ]
   },
-  { id:"dom_val", label:"Process Validation", icon:"shieldcheck", accent:"#38BDF8", desc:"PPQ, cleaning validation, aseptic fills, Stage 1–3 lifecycle, PVLP, CPV",
+  { id:"dom_val", label:"Process Validation", icon:"shieldcheck", accent:"#3D63DD", desc:"PPQ, cleaning validation, aseptic fills, Stage 1–3 lifecycle, PVLP, CPV",
     questions:[
       { id:"dv01", level:"Foundational", q:"What is the difference between process validation and process qualification, and how does FDA's 2011 lifecycle approach redefine validation as a continual activity?", why:"The 2011 guidance reframed validation from a 3-batch event to a scientific lifecycle process.", how:"Read FDA's 2011 Process Validation Guidance in full.", ref:"FDA Process Validation Guidance (2011) | ICH Q10 | ICH Q11" },
       { id:"dv02", level:"Foundational", q:"What is cleaning validation and what is the MACO calculation using a health-based exposure limit (HBEL/PDE)? Why have the old 10 ppm and 0.001-dose criteria been replaced?", why:"The old criteria are not health-based. HBEL limits are now required because they are patient-safety-justified.", how:"Read ISPE Cleaning Validation Guide. Read EMA HBEL guideline. Calculate a mock MACO.", ref:"ISPE Cleaning Validation Guide | EMA HBEL Guideline | EU GMP Annex 15" },
@@ -800,7 +800,7 @@ export const DOMAINS = [
       { id:"dv08", level:"Expert", q:"During commercial manufacturing, Stage 3 CPV monitoring shows a sustained upward trend in bioreactor ammonia over 18 months without spec failures. What investigation steps and regulatory actions are required?", why:"Sustained upward trends without failures are the 'silent risk' in CPV: they signal drift that will eventually cause batch failure.", how:"Build a CPV trend investigation plan.", ref:"FDA Process Validation Guidance (2011) | ICH Q10 | ASTM E2587" },
     ]
   },
-  { id:"dom_bio", label:"Biosimilars CMC", icon:"scale", accent:"#4ADE80", desc:"351(k) pathway, analytical similarity tiers, reference product, interchangeability, totality of evidence",
+  { id:"dom_bio", label:"Biosimilars CMC", icon:"scale", accent:"#1F9D63", desc:"351(k) pathway, analytical similarity tiers, reference product, interchangeability, totality of evidence",
     questions:[
       { id:"db01", level:"Foundational", q:"What is a biosimilar and how does FDA's 351(k) approval pathway differ from the 351(a) pathway? What role does CMC/analytical similarity play in the totality-of-evidence approach?", why:"Biosimilars are approved through analytical similarity + clinical extrapolation: not identical replication. CMC/analytical similarity is the centerpiece.", how:"Read FDA 2012 Biosimilar Development Guidance. Read the BPCI Act.", ref:"FDA Biosimilar Development Guidance (2012) | BPCI Act | 21 USC 351(k)" },
       { id:"db02", level:"Foundational", q:"What is reference product characterization in biosimilar development and why is it the critical first CMC step?", why:"You must understand the reference product deeply before designing your biosimilar process. The reference product's CQA distribution defines the similarity acceptance ranges.", how:"Read FDA 2019 guidance on reference product characterization.", ref:"FDA Reference Product Characterization Guidance (2019) | ICH Q6B" },
@@ -812,7 +812,7 @@ export const DOMAINS = [
       { id:"db08", level:"Expert", q:"As a CMC leader at an originator company, how does your post-approval manufacturing change strategy need to account for biosimilar competition, and what proactive CMC stewardship activities are required?", why:"Originator CMC leaders must think strategically about how manufacturing changes affect the biosimilar landscape.", how:"Read ICH Q12 on lifecycle management.", ref:"ICH Q12 | ICH Q5E | FDA Biosimilar Guidance | FDA Reference Product Guidance" },
     ]
   },
-  { id:"dom_qbd", label:"Quality by Design & ICH", icon:"qbd", accent:"#F59E0B", desc:"QbD, design space, PAT, RTRT, ICH Q8–Q13 integrated framework",
+  { id:"dom_qbd", label:"Quality by Design & ICH", icon:"qbd", accent:"#D9731A", desc:"QbD, design space, PAT, RTRT, ICH Q8–Q13 integrated framework",
     questions:[
       { id:"dq01", level:"Foundational", q:"What is Quality by Design (QbD) and how does it fundamentally differ from the traditional quality-by-testing (QbT) approach? What specific ICH Q8 tools operationalize QbD?", why:"QbD is the paradigm shift that underpins the entire modern CMC regulatory framework.", how:"Read ICH Q8(R2). Read FDA 2006 Critical Path Initiative white paper.", ref:"ICH Q8(R2) | FDA Critical Path Initiative | A-Mab Case Study" },
       { id:"dq02", level:"Foundational", q:"What is a design space in ICH Q8 and how does it differ from a proven acceptable range (PAR) and a normal operating range (NOR)?", why:"Design space is the multidimensional combination of input variables within which product quality is assured. Operating within it doesn't require a regulatory filing.", how:"Read ICH Q8 Annex on design space.", ref:"ICH Q8(R2) | FDA Process Validation Guidance | ICH Q10" },
@@ -824,7 +824,7 @@ export const DOMAINS = [
       { id:"dq08", level:"Expert", q:"How does the concept of 'Established Conditions' (ECs) in ICH Q12 interact with the design space concept in ICH Q8, and how can a CMC leader use EC designation to maximize post-approval manufacturing flexibility?", why:"ECs are the subset of design space information that triggers a regulatory submission when changed.", how:"Read ICH Q12 Sections 2 and 3 on ECs. Read ICH Q8 Annex on design space.", ref:"ICH Q12 | ICH Q8(R2) | FDA Draft Q12 Implementation Guidance" },
     ]
   },
-  { id:"dom_novel", label:"Novel Modalities", icon:"lightbulb", accent:"#F472B6", desc:"ADCs, mRNA/LNPs, CAR-T, gene therapy, bispecifics",
+  { id:"dom_novel", label:"Novel Modalities", icon:"lightbulb", accent:"#C99A06", desc:"ADCs, mRNA/LNPs, CAR-T, gene therapy, bispecifics",
     questions:[
       { id:"dn01", level:"Foundational", q:"What is an antibody-drug conjugate (ADC) and what are the three structural components (antibody, linker, payload) whose CMC development must be independently developed and integrated?", why:"ADCs are among the most CMC-complex molecules. Each component requires independent CMC development, but all three must work together.", how:"Read FDA 2019 Guidance on ADC CMC.", ref:"FDA ADC CMC Guidance (2019) | ICH Q11 | ICH Q6B" },
       { id:"dn02", level:"Foundational", q:"What are lipid nanoparticles (LNPs) as delivery vehicles for mRNA therapeutics, and what are the unique CMC challenges for LNP manufacturing, characterization, and stability?", why:"mRNA/LNP products have unique CMC challenges: LNP encapsulation efficiency, mRNA integrity, particle size, lipid composition, and ultra-low temperature storage.", how:"Read FDA guidance on mRNA products.", ref:"FDA mRNA CMC Guidance | ICH Q11 | ICH Q6B" },

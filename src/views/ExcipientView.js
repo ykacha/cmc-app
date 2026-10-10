@@ -4,28 +4,28 @@ import { EXCIPIENTS, INCOMPATIBILITIES, FUNCTION_MAP } from "../excipient-data";
 
 // ── Class badge color map ──────────────────────────────────────
 const CLASS_COLORS = {
-  "Surfactant": "#38BDF8",
-  "Lyoprotectant / Cryoprotectant": "#F472B6",
-  "Bulking Agent / Tonicity Agent": "#C99A3B",
-  "Buffer": "#F59E0B",
+  "Surfactant": "#3D63DD",
+  "Lyoprotectant / Cryoprotectant": "#C99A06",
+  "Bulking Agent / Tonicity Agent": "#C99A06",
+  "Buffer": "#D9731A",
   "Tonicity Agent": "#94A3B8",
-  "Chelating Agent / Antioxidant": "#34D399",
-  "Antimicrobial Preservative": "#F472B6",
-  "Polymeric Excipient / Laxative": "#60A5FA",
-  "Polymer / Viscosity Modifier / Film Coat": "#C99A3B",
-  "Superdisintegrant": "#FB923C",
+  "Chelating Agent / Antioxidant": "#1F9D63",
+  "Antimicrobial Preservative": "#C99A06",
+  "Polymeric Excipient / Laxative": "#3D63DD",
+  "Polymer / Viscosity Modifier / Film Coat": "#C99A06",
+  "Superdisintegrant": "#D9731A",
   "Lubricant": "#94A3B8",
-  "Filler / Binder / Disintegrant": "#34D399",
-  "Filler / Diluent": "#F59E0B",
-  "Stabilizer / Viscosity Reducer": "#C0654A",
+  "Filler / Binder / Disintegrant": "#1F9D63",
+  "Filler / Diluent": "#D9731A",
+  "Stabilizer / Viscosity Reducer": "#E0393E",
 };
 const classColor = (cls) => CLASS_COLORS[cls] || "#94A3B8";
 
 // ── Severity config ────────────────────────────────────────────
 const SEV_CONFIG = {
-  avoid:   { label: "AVOID",   color: "#F87171", bg: "#F8717122" },
-  caution: { label: "CAUTION", color: "#FBBF24", bg: "#FBBF2422" },
-  monitor: { label: "MONITOR", color: "#34D399", bg: "#34D39922" },
+  avoid:   { label: "AVOID",   color: "#E0393E", bg: "#E0393E22" },
+  caution: { label: "CAUTION", color: "#D9731A", bg: "#D9731A22" },
+  monitor: { label: "MONITOR", color: "#1F9D63", bg: "#1F9D6322" },
 };
 
 // ── Helper: look up excipient name from id ─────────────────────
@@ -124,10 +124,10 @@ const ExcipientCard = ({ ex }) => {
           {/* Degradation */}
           {ex.degradation && (
             <div style={{
-              background: "#F8717111", border: "1px solid #F8717133",
+              background: "#E0393E11", border: "1px solid #E0393E33",
               borderRadius: 7, padding: "8px 12px", marginBottom: 10,
             }}>
-              <div style={{ color: "#F87171", fontSize: 10, fontWeight: 700, marginBottom: 3 }}>
+              <div style={{ color: "#E0393E", fontSize: 10, fontWeight: 700, marginBottom: 3 }}>
                 DEGRADATION PATHWAY
               </div>
               <p style={{ color: "var(--text-body)", fontSize: 12, margin: 0, lineHeight: 1.6 }}>
@@ -267,10 +267,10 @@ const IncompatibilityRow = ({ inc }) => {
 
           {inc.mitigation && (
             <div style={{
-              background: "#34D39911", border: "1px solid #34D39933",
+              background: "#1F9D6311", border: "1px solid #1F9D6333",
               borderRadius: 7, padding: "8px 12px", marginBottom: 10,
             }}>
-              <div style={{ color: "#34D399", fontSize: 10, fontWeight: 700, marginBottom: 3 }}>
+              <div style={{ color: "#1F9D63", fontSize: 10, fontWeight: 700, marginBottom: 3 }}>
                 MITIGATION STRATEGY
               </div>
               <p style={{ color: "var(--text-body)", fontSize: 12, margin: 0, lineHeight: 1.6 }}>
@@ -293,7 +293,7 @@ const IncompatibilityRow = ({ inc }) => {
 
 // ── Sub-component: FunctionCard ──────────────────────────────
 const FunctionCard = ({ fnName, fnData }) => {
-  const col = classColor(fnName) || "#C99A3B";
+  const col = classColor(fnName) || "#C99A06";
   const exampleExcipients = (fnData.examples || []).map((id) => {
     const ex = EXCIPIENTS.find((e) => e.id === id);
     return ex ? ex : { id, name: id, color: "#94A3B8", abbrev: id };
@@ -386,10 +386,10 @@ export default function ExcipientView() {
         {/* Stats row */}
         <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
           {[
-            { label: "Excipients", value: EXCIPIENTS.length, color: "#38BDF8" },
-            { label: "Incompatibilities", value: INCOMPATIBILITIES.length, color: "#F87171" },
-            { label: "Functional Classes", value: Object.keys(FUNCTION_MAP).length, color: "#34D399" },
-            { label: "AVOID pairs", value: INCOMPATIBILITIES.filter((i) => i.severity === "avoid").length, color: "#F87171" },
+            { label: "Excipients", value: EXCIPIENTS.length, color: "#3D63DD" },
+            { label: "Incompatibilities", value: INCOMPATIBILITIES.length, color: "#E0393E" },
+            { label: "Functional Classes", value: Object.keys(FUNCTION_MAP).length, color: "#1F9D63" },
+            { label: "AVOID pairs", value: INCOMPATIBILITIES.filter((i) => i.severity === "avoid").length, color: "#E0393E" },
           ].map((s) => (
             <div key={s.label} style={{
               background: "var(--bg-card)", border: `1px solid ${s.color}33`,
@@ -483,16 +483,16 @@ export default function ExcipientView() {
         <div>
           {/* Note */}
           <div style={{
-            background: "#F59E0B11", border: "1px solid #F59E0B33",
+            background: "#D9731A11", border: "1px solid #D9731A33",
             borderRadius: 8, padding: "10px 14px", marginBottom: 20,
             display: "flex", alignItems: "center", gap: 10,
           }}>
-            <span style={{ display: "flex", color: "#F59E0B" }}><Icon name="book" size={17} sw={1.7} /></span>
+            <span style={{ display: "flex", color: "#D9731A" }}><Icon name="book" size={17} sw={1.7} /></span>
             <p style={{ color: "var(--text-sec)", margin: 0, fontSize: 13, lineHeight: 1.5 }}>
               Showing known incompatibilities from literature. Entries are grouped by severity:
-              <strong style={{ color: "#F87171" }}> AVOID</strong> (serious incompatibility),
-              <strong style={{ color: "#FBBF24" }}> CAUTION</strong> (conditional risk),
-              <strong style={{ color: "#34D399" }}> MONITOR</strong> (requires monitoring).
+              <strong style={{ color: "#E0393E" }}> AVOID</strong> (serious incompatibility),
+              <strong style={{ color: "#D9731A" }}> CAUTION</strong> (conditional risk),
+              <strong style={{ color: "#1F9D63" }}> MONITOR</strong> (requires monitoring).
             </p>
           </div>
 

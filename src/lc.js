@@ -156,18 +156,14 @@ export function TraceGlyph({ seed, color = "var(--accent)", w = 300, h = 44, opa
   );
 }
 
-/* Iridescent-free signal header (drop-in for shared SectionHeader on LC views) */
-export function LiquidHeader({ icon, title, subtitle, eyebrow }) {
+/* Page title block (same anatomy as shared SectionHeader). eyebrow/icon kept
+   in the signature for callers but no longer rendered: the title carries itself. */
+export function LiquidHeader({ title, subtitle }) {
   return (
-    <div style={{ marginBottom:26 }}>
-      {eyebrow && <div style={{ fontSize:11, fontWeight:800, letterSpacing:".22em", marginBottom:8, color:"var(--accent)", fontFamily:"ui-monospace, SFMono-Regular, Menlo, monospace" }}>{eyebrow}</div>}
-      <div style={{ display:"flex", alignItems:"center", gap:14 }}>
-        {icon && <span style={{ fontSize:32, filter:"drop-shadow(0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent))" }}>{icon}</span>}
-        <div>
-          <h2 className="lc-iri-text" style={{ margin:0, fontSize:30, fontWeight:850, letterSpacing:"-.025em", lineHeight:1.05 }}>{title}</h2>
-          {subtitle && <p style={{ color:SUB, margin:"6px 0 0", fontSize:14, lineHeight:1.55, maxWidth:720 }}>{subtitle}</p>}
-        </div>
-      </div>
-    </div>
+    <header className="sv-title">
+      <h1>{title}</h1>
+      {subtitle && <p>{subtitle}</p>}
+      <div className="sv-chainrule" aria-hidden="true"><i /><i /><i /><i /></div>
+    </header>
   );
 }

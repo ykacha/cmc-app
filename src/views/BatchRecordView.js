@@ -4,17 +4,17 @@ import { BPR_STEPS, DEVIATION_SCENARIOS, YIELD_STAGES } from "../batch-data";
 
 // ── Phase colors ───────────────────────────────────────────────
 const PHASE_COLORS = {
-  Upstream:    "#38BDF8",
-  Downstream:  "#F472B6",
-  Formulation: "#34D399",
-  "Fill/Finish": "#FB923C",
+  Upstream:    "#3D63DD",
+  Downstream:  "#C99A06",
+  Formulation: "#1F9D63",
+  "Fill/Finish": "#D9731A",
 };
 
 // ── Severity colors ────────────────────────────────────────────
 const SEV_COLORS = {
-  critical: "#F87171",
-  major:    "#F59E0B",
-  minor:    "#34D399",
+  critical: "#E0393E",
+  major:    "#D9731A",
+  minor:    "#1F9D63",
 };
 
 // ── Phase Badge ────────────────────────────────────────────────
@@ -290,7 +290,7 @@ export default function BatchRecordView() {
                   {/* Completion checkmark */}
                   {complete && (
                     <span style={{
-                      color: "#34D399",
+                      color: "#1F9D63",
                       fontSize: 13,
                       fontWeight: 900,
                       flexShrink: 0,
@@ -309,10 +309,10 @@ export default function BatchRecordView() {
             style={{
               width: "100%",
               padding: "10px 14px",
-              background: showYield ? "#34D39922" : "var(--bg-card)",
-              border: `1px solid ${showYield ? "#34D399" : "var(--border)"}`,
+              background: showYield ? "#1F9D6322" : "var(--bg-card)",
+              border: `1px solid ${showYield ? "#1F9D63" : "var(--border)"}`,
               borderRadius: 10,
-              color: showYield ? "#34D399" : "var(--text-body)",
+              color: showYield ? "#1F9D63" : "var(--text-body)",
               cursor: "pointer",
               fontSize: 12,
               fontWeight: 700,
@@ -385,7 +385,7 @@ export default function BatchRecordView() {
                       </td>
                       <td style={{
                         fontSize: 10,
-                        color: "#34D399",
+                        color: "#1F9D63",
                         fontWeight: 700,
                         padding: "5px 0",
                         borderBottom: "1px solid var(--border)",
@@ -394,7 +394,7 @@ export default function BatchRecordView() {
                       </td>
                       <td style={{
                         fontSize: 10,
-                        color: "#F87171",
+                        color: "#E0393E",
                         fontWeight: 700,
                         padding: "5px 0",
                         borderBottom: "1px solid var(--border)",
@@ -425,7 +425,7 @@ export default function BatchRecordView() {
                 <div style={{
                   fontSize: 22,
                   fontWeight: 900,
-                  color: "#34D399",
+                  color: "#1F9D63",
                   lineHeight: 1,
                 }}>
                   {cumYield}%
@@ -526,16 +526,16 @@ export default function BatchRecordView() {
                       borderRadius: "50%",
                       border: i === currentStep
                         ? `2px solid ${s.color}`
-                        : `1px solid ${isStepComplete(s) ? "#34D39966" : "var(--border)"}`,
+                        : `1px solid ${isStepComplete(s) ? "#1F9D6366" : "var(--border)"}`,
                       background: i === currentStep
                         ? `${s.color}33`
                         : isStepComplete(s)
-                        ? "#34D39922"
+                        ? "#1F9D6322"
                         : "var(--bg-surface)",
                       cursor: "pointer",
                       fontSize: 9,
                       fontWeight: 800,
-                      color: i === currentStep ? s.color : isStepComplete(s) ? "#34D399" : "var(--text-faint)",
+                      color: i === currentStep ? s.color : isStepComplete(s) ? "#1F9D63" : "var(--text-faint)",
                     }}
                   >
                     {String(s.step).padStart(2, "0")}
@@ -631,10 +631,10 @@ export default function BatchRecordView() {
                                 style={{
                                   width: 80,
                                   padding: "5px 8px",
-                                  background: dev ? "#F8717122" : "var(--bg-surface)",
-                                  border: `1px solid ${dev ? "#F87171" : "var(--border)"}`,
+                                  background: dev ? "#E0393E22" : "var(--bg-surface)",
+                                  border: `1px solid ${dev ? "#E0393E" : "var(--border)"}`,
                                   borderRadius: 7,
-                                  color: dev ? "#F87171" : "var(--text-body)",
+                                  color: dev ? "#E0393E" : "var(--text-body)",
                                   fontSize: 12,
                                   fontFamily: "monospace",
                                   fontWeight: 700,
@@ -649,9 +649,9 @@ export default function BatchRecordView() {
                               )}
                               {dev && (
                                 <span style={{
-                                  background: "#F8717122",
-                                  color: "#F87171",
-                                  border: "1px solid #F8717155",
+                                  background: "#E0393E22",
+                                  color: "#E0393E",
+                                  border: "1px solid #E0393E55",
                                   borderRadius: 8,
                                   padding: "2px 7px",
                                   fontSize: 10,
@@ -753,7 +753,7 @@ export default function BatchRecordView() {
                 <SectionLabel>BPR Checkboxes</SectionLabel>
                 <span style={{
                   fontSize: 11,
-                  color: isStepComplete(step) ? "#34D399" : "var(--text-muted)",
+                  color: isStepComplete(step) ? "#1F9D63" : "var(--text-muted)",
                   fontWeight: 700,
                 }}>
                   {step.checkboxes.filter((_, i) => isChecked(i)).length}/{step.checkboxes.length} complete
@@ -772,8 +772,8 @@ export default function BatchRecordView() {
                         alignItems: "flex-start",
                         gap: 12,
                         padding: "10px 14px",
-                        background: checked ? "#34D39914" : "var(--bg-raised)",
-                        border: `1px solid ${checked ? "#34D39955" : "var(--border)"}`,
+                        background: checked ? "#1F9D6314" : "var(--bg-raised)",
+                        border: `1px solid ${checked ? "#1F9D6355" : "var(--border)"}`,
                         borderRadius: 9,
                         cursor: "pointer",
                         textAlign: "left",
@@ -786,8 +786,8 @@ export default function BatchRecordView() {
                         width: 18,
                         height: 18,
                         borderRadius: 5,
-                        border: `2px solid ${checked ? "#34D399" : "var(--border)"}`,
-                        background: checked ? "#34D399" : "transparent",
+                        border: `2px solid ${checked ? "#1F9D63" : "var(--border)"}`,
+                        background: checked ? "#1F9D63" : "transparent",
                         flexShrink: 0,
                         display: "flex",
                         alignItems: "center",

@@ -9187,7 +9187,7 @@ export const MAB_SECTIONS = [
     "id": "moa",
     "title": "Mechanisms of Action",
     "icon": "🎯",
-    "color": "#ef4444",
+    "color": "#E0393E",
     "modules": [
       {
         "id": "moa-m0",
@@ -11925,7 +11925,7 @@ export const MAB_SECTIONS = [
     "id": "effector",
     "title": "Fc Effector Functions",
     "icon": "🛡️",
-    "color": "#8b5cf6",
+    "color": "#3D63DD",
     "modules": [
       {
         "id": "effector-m0",
@@ -13931,7 +13931,7 @@ export const MAB_SECTIONS = [
     "id": "engineering",
     "title": "Fc Engineering",
     "icon": "🔧",
-    "color": "#f59e0b",
+    "color": "#D9731A",
     "modules": [
       {
         "id": "engineering-m0",
@@ -16780,7 +16780,7 @@ export const MAB_SECTIONS = [
     "id": "cqa",
     "title": "CQAs & CMC",
     "icon": "📋",
-    "color": "#10b981",
+    "color": "#1F9D63",
     "modules": [
       {
         "id": "cqa-m0",

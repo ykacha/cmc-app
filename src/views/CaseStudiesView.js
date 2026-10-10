@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Icon } from "../icons";
 import { CASE_STUDIES, CASE_CATEGORIES } from "../case-study-data";
 
-const SEV_COLOR = { critical: "#F472B6", high: "#F59E0B", moderate: "#34D399" };
+const SEV_COLOR = { critical: "#C99A06", high: "#D9731A", moderate: "#1F9D63" };
 const SEV_LABEL = { critical: "CRITICAL", high: "HIGH", moderate: "MODERATE" };
 
 // ── Severity bar (color strip) ────────────────────────────────
@@ -274,10 +274,10 @@ function CaseDetailPanel({ cs, onBack }) {
           </div>
         </DetailSection>
 
-        <DetailSection label="CMC Issues" color="#60A5FA">
+        <DetailSection label="CMC Issues" color="#3D63DD">
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             {cs.cmc_issues.map((issue, i) => (
-              <BulletItem key={i} text={issue} color="#60A5FA" />
+              <BulletItem key={i} text={issue} color="#3D63DD" />
             ))}
           </div>
         </DetailSection>
@@ -385,10 +385,10 @@ export default function CaseStudiesView() {
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {[
               { label: "Cases", value: counts.total, color: "var(--accent)" },
-              { label: "Critical", value: counts.critical, color: "#F472B6" },
-              { label: "High", value: counts.high, color: "#F59E0B" },
-              { label: "Moderate", value: counts.moderate, color: "#34D399" },
-              { label: "Categories", value: counts.cats, color: "#38BDF8" },
+              { label: "Critical", value: counts.critical, color: "#C99A06" },
+              { label: "High", value: counts.high, color: "#D9731A" },
+              { label: "Moderate", value: counts.moderate, color: "#1F9D63" },
+              { label: "Categories", value: counts.cats, color: "#3D63DD" },
             ].map(s => (
               <div key={s.label} style={{
                 background: `${s.color}15`, border: `1px solid ${s.color}35`,

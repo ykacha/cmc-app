@@ -11,14 +11,14 @@
 
 // ── Attribute groups (drives color + icon in the UI) ──
 export const ATTR_GROUPS = {
-  Purity:    { color:"#2DBF9E", icon:"filter" },
-  Charge:    { color:"#E0A33B", icon:"wave" },
-  Glycan:    { color:"#C99A3B", icon:"excipient" },
-  Sequence:  { color:"#6E8AF2", icon:"gene" },
-  Structure: { color:"#7FB069", icon:"infinity" },
-  Potency:   { color:"#E0707A", icon:"qbd" },
+  Purity:    { color:"#3D63DD", icon:"filter" },
+  Charge:    { color:"#D9731A", icon:"wave" },
+  Glycan:    { color:"#C99A06", icon:"excipient" },
+  Sequence:  { color:"#3D63DD", icon:"gene" },
+  Structure: { color:"#1F9D63", icon:"infinity" },
+  Potency:   { color:"#E0393E", icon:"qbd" },
   Identity:  { color:"#5C9EAD", icon:"glossary" },
-  Safety:    { color:"#D0895E", icon:"shieldcheck" },
+  Safety:    { color:"#D9731A", icon:"shieldcheck" },
   General:   { color:"#8A94A6", icon:"vial" },
 };
 
@@ -286,10 +286,10 @@ export const METHOD_EXTRAS = {
 
 // ── Method role classification (control-strategy view) ──
 export const ROLE_DEFS = {
-  "Release":              { color:"#2DBF9E", desc:"Run on every lot to confirm it meets specification before disposition." },
-  "Stability-indicating": { color:"#E0A33B", desc:"Detects degradation and is trended over shelf-life to justify the expiry date." },
-  "Characterization":     { color:"#6E8AF2", desc:"Deep structural analysis: at the BLA, for comparability, not on every lot." },
-  "In-process":           { color:"#C0654A", desc:"Monitors intermediates to keep the process in control in real time." },
+  "Release":              { color:"#3D63DD", desc:"Run on every lot to confirm it meets specification before disposition." },
+  "Stability-indicating": { color:"#D9731A", desc:"Detects degradation and is trended over shelf-life to justify the expiry date." },
+  "Characterization":     { color:"#3D63DD", desc:"Deep structural analysis: at the BLA, for comparability, not on every lot." },
+  "In-process":           { color:"#E0393E", desc:"Monitors intermediates to keep the process in control in real time." },
 };
 export const METHOD_ROLE_BASE = ["Release","Stability-indicating","Characterization","In-process"];
 

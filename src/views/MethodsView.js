@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { METHOD_STEPS } from "../shared";
 import { LiquidHeader, TraceGlyph } from "../lc";
 import { Icon } from "../icons";
@@ -16,21 +16,21 @@ import {
 // method category lens (atlas): muted editorial palette + glyph + the question it answers
 const CAT = {
   Identity:             { color:"#5C9EAD", icon:"glossary",   q:"Is it the right molecule?" },
-  Purity:               { color:"#2DBF9E", icon:"filter",     q:"How pure is it?" },
-  Potency:              { color:"#E0707A", icon:"qbd",        q:"Does it actually work?" },
+  Purity:               { color:"#3D63DD", icon:"filter",     q:"How pure is it?" },
+  Potency:              { color:"#E0393E", icon:"qbd",        q:"Does it actually work?" },
   Glycosylation:        { color:"#7A8FA6", icon:"excipient",  q:"What are the glycans?" },
   "Physical/Chemical":  { color:"#57B8C9", icon:"wave",       q:"What are its physical traits?" },
-  Safety:               { color:"#D0895E", icon:"shieldcheck",q:"Is it safe to dose?" },
-  Structural:           { color:"#7FB069", icon:"infinity",   q:"How is it folded?" },
-  "Process Impurities": { color:"#E0A33B", icon:"vial",       q:"What's left from the process?" },
-  "Binding/Kinetics":   { color:"#6E8AF2", icon:"transfer",   q:"How tightly does it bind?" },
+  Safety:               { color:"#D9731A", icon:"shieldcheck",q:"Is it safe to dose?" },
+  Structural:           { color:"#1F9D63", icon:"infinity",   q:"How is it folded?" },
+  "Process Impurities": { color:"#D9731A", icon:"vial",       q:"What's left from the process?" },
+  "Binding/Kinetics":   { color:"#3D63DD", icon:"transfer",   q:"How tightly does it bind?" },
 };
 const meta = (c) => CAT[c] || { color:"var(--accent)", icon:"methods", q:"" };
 const PHASES = ["Pre-IND","IND","Ph1","Ph2","Ph3","BLA"];
 
 const byId = Object.fromEntries(ANALYTICAL_METHODS.map(m => [m.id, m]));
 const roleColor = (r) => { const b = METHOD_ROLE_BASE.find(x => r.startsWith(x)); return b ? ROLE_DEFS[b].color : "var(--text-muted)"; };
-const riskColor = (r) => r === "High" ? "#E0707A" : r === "Medium" ? "#E0A33B" : "#8A94A6";
+const riskColor = (r) => r === "High" ? "#E0393E" : r === "Medium" ? "#D9731A" : "#8A94A6";
 // which CQAs a method interrogates (derived from CQA_METHODS)
 const methodCqas = (mid) => QUALITY_ATTRIBUTES
   .map(c => { const hit = CQA_METHODS[c.id]?.methods.find(x => x.m === mid); return hit ? { cqa:c, role:hit.role } : null; })
@@ -78,7 +78,7 @@ const MODES = [
   { id:"strategy",   label:"Strategy",      icon:"timeline", sub:"phase & role" },
 ];
 
-export default function MethodsView({ navigate }) {
+export default function MethodsView({ navigate, focus }) {
   const [mode, setMode] = useState("atlas");
   // atlas
   const [catFilter, setCatFilter] = useState("All");
@@ -92,6 +92,8 @@ export default function MethodsView({ navigate }) {
 
   const openMethod = (id) => { setMode("atlas"); setCatFilter("All"); setSearch(""); setActiveMethod(id); setDetailTab("about"); window.scrollTo({ top:0, behavior:"smooth" }); };
   const openCqa = (id) => { setMode("matrix"); setActiveCqa(id); };
+  // deep link: #/methods/<method-id> opens that assay's spec sheet
+  useEffect(() => { if (focus && ANALYTICAL_METHODS.some(m => m.id === focus)) { setMode("atlas"); setActiveMethod(focus); setDetailTab("about"); } }, [focus]);
 
   return (
     <div style={{ maxWidth:1360, margin:"0 auto", padding:"28px 24px 56px" }}>

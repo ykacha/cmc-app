@@ -19,7 +19,7 @@ export const QTPP = [
 export const CQA_LIST = [
   {
     id:"cqa-aggregation", name:"Aggregation (HMW Species)", abbreviation:"HMW",
-    category:"Purity", risk:"Critical", color:"#F472B6",
+    category:"Purity", risk:"Critical", color:"#C99A06",
     rationale:"HMW aggregates are linked to immunogenicity risk: pre-formed aggregates can trigger anti-drug antibody (ADA) responses. Aggregates ≥0.1 µm are most immunogenic. Upward HMW trend is the primary stability-indicating signal for protein biologics.",
     spec:"≤2% by SEC-HPLC at release; ≤5% end-of-shelf-life",
     testMethods:["am-sec","am-dls","am-mfi","am-sec-mals"],
@@ -31,7 +31,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-fragmentation", name:"Fragmentation / LMW Degradants", abbreviation:"LMW",
-    category:"Purity", risk:"Critical", color:"#F472B6",
+    category:"Purity", risk:"Critical", color:"#C99A06",
     rationale:"Fragmentation produces non-functional protein fragments (Fc/2, Fab, half-antibody) with altered PK and potential immunogenicity. CE-SDS (non-reduced) is the primary release test; intact mass spectrometry for characterization.",
     spec:"LMW ≤3% (CE-SDS NR); specific bands <1% each",
     testMethods:["am-ce-sds","am-intact-mass"],
@@ -43,7 +43,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-potency", name:"Potency / Biological Activity", abbreviation:"Potency",
-    category:"Function", risk:"Critical", color:"#F59E0B",
+    category:"Function", risk:"Critical", color:"#D9731A",
     rationale:"Potency directly determines therapeutic dose. Per ICH Q6B §3.5, every biologic lot must have a validated potency assay on the release specification. A 4-parameter logistic (4PL) cell-based assay with parallelism testing is the gold standard.",
     spec:"70–130% relative potency vs. reference standard",
     testMethods:["am-cell-bioassay","am-elisa","am-spr"],
@@ -55,7 +55,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-glycosylation", name:"Glycosylation Profile (Afucosylation %)", abbreviation:"Glycan",
-    category:"Function", risk:"Critical", color:"#C99A3B",
+    category:"Function", risk:"Critical", color:"#C99A06",
     rationale:"For ADCC-dependent mAbs, afucosylation % directly governs FcγRIIIa binding affinity and NK-cell cytotoxicity. G0F/G1F/G2F/Man5 distribution impacts efficacy, FcRn recycling (PK), and immunogenicity. ICH Q6B §3.4 requires glycosylation characterization for all biologics.",
     spec:"Afucosylation 5–15%; G0+G1+G2 ≥60%; each high-mannose species <5%",
     testMethods:["am-glycan","am-peptide-map"],
@@ -67,7 +67,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-charge-variants", name:"Charge Variant Profile (Main/Acidic/Basic %)", abbreviation:"Charge",
-    category:"Identity/Purity", risk:"Key→Critical if CDR", color:"#22D3EE",
+    category:"Identity/Purity", risk:"Key→Critical if CDR", color:"#3D63DD",
     rationale:"Charge variants arise from deamidation (Asn→Asp), oxidation (Met, Trp), C-term Lys truncation, N-term pyroGlu. CDR deamidation directly impacts antigen binding. Charge profile is a fingerprint for identity and comparability studies.",
     spec:"Main peak ≥75%; Acidic ≤15%; Basic ≤10% (icIEF); CDR deamidation sites monitored by peptide mapping",
     testMethods:["am-cief","am-iex","am-peptide-map"],
@@ -79,7 +79,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-hcp", name:"Host Cell Proteins (HCP)", abbreviation:"HCP",
-    category:"Process Impurity", risk:"Critical", color:"#FB923C",
+    category:"Process Impurity", risk:"Critical", color:"#D9731A",
     rationale:"CHO-derived HCPs can trigger immune responses, degrade product via enzymatic activity (lipases degrade PS-80; proteases cleave mAb), and accumulate in patients with repeated dosing. FDA/EMA expect <100 ppm; leading programs achieve <10 ppm.",
     spec:"≤100 ppm (ng HCP/mg protein) by generic CHO HCP ELISA; individual high-risk HCPs <1 ppm",
     testMethods:["am-elisa"],
@@ -91,7 +91,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-endotoxin", name:"Endotoxin / Bacterial Pyrogens", abbreviation:"ET",
-    category:"Safety", risk:"Critical", color:"#F59E0B",
+    category:"Safety", risk:"Critical", color:"#D9731A",
     rationale:"Endotoxins (LPS from gram-negative bacteria) are potent pyrogens. Nanogram quantities can cause fever, septic shock, and death in IV patients. LAL kinetic chromogenic assay (KCA) is the standard method per USP <85> and EP 2.6.14.",
     spec:"≤0.5 EU/mg protein for DS; ≤0.2 EU/mL for IV DP",
     testMethods:["am-endotoxin"],
@@ -103,7 +103,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-particulates", name:"Sub-visible Particulates", abbreviation:"SvP",
-    category:"Safety", risk:"Critical", color:"#60A5FA",
+    category:"Safety", risk:"Critical", color:"#3D63DD",
     rationale:"Sub-visible particles (1–100 µm) include protein aggregates, silicone oil, glass delamination, and rubber stopper particles. Protein particles in the 0.1–10 µm range are most immunogenic. USP <787>/<788> limits required for injectable products.",
     spec:"≤6,000 particles/container ≥10 µm; ≤600 ≥25 µm (USP <788>); MFI as orthogonal method",
     testMethods:["am-mfi","am-dls"],
@@ -115,7 +115,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-sterility", name:"Sterility (Absence of Viable Microorganisms)", abbreviation:"Sterility",
-    category:"Safety", risk:"Critical", color:"#34D399",
+    category:"Safety", risk:"Critical", color:"#1F9D63",
     rationale:"Sterile injectable products must be completely free of viable microorganisms. Bacterial contamination of IV drugs can cause life-threatening sepsis. Sterility testing per USP <71> is required for every lot. The SAL design basis is 10⁻⁶.",
     spec:"No growth in USP <71> (14-day incubation at 22.5°C and 32.5°C)",
     testMethods:["am-bioburden"],
@@ -127,7 +127,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-concentration", name:"Protein Concentration (Strength)", abbreviation:"Conc",
-    category:"Strength", risk:"Critical", color:"#34D399",
+    category:"Strength", risk:"Critical", color:"#1F9D63",
     rationale:"Correct concentration directly determines clinical dose. OOS concentration risks under- or overdosing the patient. A280 spectrophotometry is the standard method using the protein's extinction coefficient.",
     spec:"Nominal ± 10% (e.g., 9.0–11.0 mg/mL for 10 mg/mL target)",
     testMethods:["am-a280"],
@@ -139,7 +139,7 @@ export const CQA_LIST = [
   },
   {
     id:"cqa-cci", name:"Container Closure Integrity (CCI)", abbreviation:"CCI",
-    category:"Safety", risk:"Critical", color:"#C0654A",
+    category:"Safety", risk:"Critical", color:"#E0393E",
     rationale:"CCI ensures the sterile barrier is maintained throughout shelf life. A breached container exposes the product to microbial contamination and O₂ ingress. USP <1207> provides the framework; deterministic methods (vacuum decay, HVLD) are preferred over probabilistic methods.",
     spec:"No leak detected; vacuum decay ≤10⁻⁶ mbar·L/sec or equivalent",
     testMethods:[],
@@ -155,7 +155,7 @@ export const CQA_LIST = [
 export const CPP_LIST = [
   // UPSTREAM
   {
-    id:"cpp-do", name:"Dissolved Oxygen (DO) Setpoint", processStep:"Upstream: Bioreactor", stepColor:"#22D3EE",
+    id:"cpp-do", name:"Dissolved Oxygen (DO) Setpoint", processStep:"Upstream: Bioreactor", stepColor:"#3D63DD",
     normalRange:"20–60% air saturation", criticalLow:"<15%", criticalHigh:">80%",
     mechanismOfEffect:"DO regulates oxidative glycosylation pathways. Low DO → reduced UDP-glucose transfer → altered glycoform distribution (↑ high-mannose). High DO → oxidative stress → Met/Trp oxidation (charge variants, potency impact). Cascade: DO deviation → glycosylation CQA and charge variant CQA.",
     linkedCQAs:["cqa-glycosylation","cqa-charge-variants","cqa-aggregation"],
@@ -165,7 +165,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-ph-bioreactor", name:"Bioreactor pH Setpoint", processStep:"Upstream: Bioreactor", stepColor:"#22D3EE",
+    id:"cpp-ph-bioreactor", name:"Bioreactor pH Setpoint", processStep:"Upstream: Bioreactor", stepColor:"#3D63DD",
     normalRange:"pH 6.95–7.10 (setpoint 7.02)", criticalLow:"<6.80", criticalHigh:">7.30",
     mechanismOfEffect:"pH directly affects glycosyltransferase enzyme activity (optimal pH 6.0–7.0) and cellular protein secretion. Low pH → increased acidic glycoforms; affects product deamidation rate. CO₂ accumulation at large scale lowers pH: active control critical.",
     linkedCQAs:["cqa-glycosylation","cqa-charge-variants","cqa-aggregation"],
@@ -175,7 +175,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-temp-bioreactor", name:"Bioreactor Temperature", processStep:"Upstream: Bioreactor", stepColor:"#22D3EE",
+    id:"cpp-temp-bioreactor", name:"Bioreactor Temperature", processStep:"Upstream: Bioreactor", stepColor:"#3D63DD",
     normalRange:"37°C growth → 33–35°C production phase (temperature shift)", criticalLow:"<36°C (growth phase)", criticalHigh:">37.5°C",
     mechanismOfEffect:"Temperature shift is the most common upstream process strategy. Lower production temp: reduces high-mannose glycoforms, decreases aggregation by slowing folding kinetics, extends run duration, increases productivity. Deviations → altered glycosylation, aggregation, potency.",
     linkedCQAs:["cqa-glycosylation","cqa-aggregation","cqa-potency"],
@@ -185,7 +185,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-glucose-feed", name:"Glucose/Galactose Feed Strategy", processStep:"Upstream: Fed-Batch Feeding", stepColor:"#22D3EE",
+    id:"cpp-glucose-feed", name:"Glucose/Galactose Feed Strategy", processStep:"Upstream: Fed-Batch Feeding", stepColor:"#3D63DD",
     normalRange:"Glucose 2–8 mM; Galactose feed timed per PD protocol", criticalLow:"Glucose <1 mM", criticalHigh:"Glucose >20 mM (hyperosmolality)",
     mechanismOfEffect:"Galactose supplementation specifically increases G1F and G2F galactosylation. G2F glycoforms important for FcRn binding and complement. Nutrient depletion → cell stress → altered glycosylation, increased HCP secretion.",
     linkedCQAs:["cqa-glycosylation","cqa-hcp","cqa-potency"],
@@ -195,7 +195,7 @@ export const CPP_LIST = [
     riskLevel:"Medium-High",
   },
   {
-    id:"cpp-harvest-vcd", name:"Viable Cell Density (VCD) at Harvest", processStep:"Upstream: Harvest", stepColor:"#22D3EE",
+    id:"cpp-harvest-vcd", name:"Viable Cell Density (VCD) at Harvest", processStep:"Upstream: Harvest", stepColor:"#3D63DD",
     normalRange:"10–30 × 10⁶ cells/mL; viability ≥80%", criticalHigh:"Viability <75% or culture day >14",
     mechanismOfEffect:"High VCD + apoptosis at end of culture increases HCP release. Very high density causes nutrient depletion, lactate/ammonium accumulation, and product quality changes. Harvest timing balances yield vs. quality.",
     linkedCQAs:["cqa-hcp","cqa-aggregation"],
@@ -206,7 +206,7 @@ export const CPP_LIST = [
   },
   // DOWNSTREAM
   {
-    id:"cpp-pra-load", name:"Protein A Load Density", processStep:"Downstream: Protein A Capture (Step 1)", stepColor:"#34D399",
+    id:"cpp-pra-load", name:"Protein A Load Density", processStep:"Downstream: Protein A Capture (Step 1)", stepColor:"#1F9D63",
     normalRange:"≤30 g protein/L resin (dynamic binding capacity, DBC)", criticalHigh:">40 g/L (breakthrough)",
     mechanismOfEffect:"Overloading above DBC leads to product breakthrough: yield loss and HCP carryover. DBC determined in process validation (10% breakthrough curve). Load density also affects HCP clearance and resin lifetime.",
     linkedCQAs:["cqa-hcp","cqa-aggregation"],
@@ -216,7 +216,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-low-ph-hold", name:"Low pH Viral Inactivation (pH, Temp, Hold Time)", processStep:"Downstream: Viral Inactivation (Step 2)", stepColor:"#34D399",
+    id:"cpp-low-ph-hold", name:"Low pH Viral Inactivation (pH, Temp, Hold Time)", processStep:"Downstream: Viral Inactivation (Step 2)", stepColor:"#1F9D63",
     normalRange:"pH 3.50 ± 0.05; ≥37°C; ≥60 min hold", criticalLow:"pH >3.70 = insufficient; hold <55 min",
     mechanismOfEffect:"Low pH denatures enveloped virus capsids by disrupting lipid bilayer. Must achieve ≥4-log LRV for retroviruses. pH <3.4 risks mAb aggregation. All three parameters are critical: pH ≤3.7, time ≥60 min, temperature ≥15°C (per ICH Q5A framework).",
     linkedCQAs:["cqa-aggregation","cqa-potency","cqa-sterility"],
@@ -226,7 +226,7 @@ export const CPP_LIST = [
     riskLevel:"Critical (viral safety: not a quality attribute but process safety control)",
   },
   {
-    id:"cpp-cex-gradient", name:"CEX Chromatography pH and Salt Gradient", processStep:"Downstream: CEX Polishing (Step 3)", stepColor:"#34D399",
+    id:"cpp-cex-gradient", name:"CEX Chromatography pH and Salt Gradient", processStep:"Downstream: CEX Polishing (Step 3)", stepColor:"#1F9D63",
     normalRange:"Load pH 5.0; elution 0–500 mM NaCl gradient over 20 CV; collection by UV + IPC",
     criticalLow:"Load pH >5.3 (poor binding); gradient <15 CV (poor resolution)",
     mechanismOfEffect:"CEX separates charge variants by isoelectric point. Gradient slope controls charge variant profile of the elution pool (acidic species removal vs. main peak recovery). Also clears HCP, DNA, and leached Protein A.",
@@ -237,7 +237,7 @@ export const CPP_LIST = [
     riskLevel:"High",
   },
   {
-    id:"cpp-ufdf-tmp", name:"UF/DF Transmembrane Pressure (TMP)", processStep:"Downstream: UF/DF (Final Step)", stepColor:"#34D399",
+    id:"cpp-ufdf-tmp", name:"UF/DF Transmembrane Pressure (TMP)", processStep:"Downstream: UF/DF (Final Step)", stepColor:"#1F9D63",
     normalRange:"TMP ≤2.0 bar; flux ≤30 LMH", criticalHigh:"TMP >3.0 bar",
     mechanismOfEffect:"Excessive TMP causes protein fouling of the TFF membrane, flux decline, and: critically: surface-induced aggregation. High-concentration mAbs (>50 mg/mL) especially susceptible. Final concentration set by UF/DF volume target.",
     linkedCQAs:["cqa-aggregation","cqa-particulates","cqa-concentration"],
@@ -414,7 +414,7 @@ export const CONTROL_STRATEGY = {
   overview:"A comprehensive, multi-tiered control strategy per ICH Q10 §1.7 and Q8 §3. Aligns process understanding (DoE, scale-down models) with CQA risk assessment to ensure every batch meets quality specifications. Defense-in-depth: multiple orthogonal controls provide redundancy.",
   tiers:[
     {
-      tier:1, name:"Specification Controls", color:"#F472B6",
+      tier:1, name:"Specification Controls", color:"#C99A06",
       description:"Release and shelf-life specifications applied to every lot. Final quality gate before patient use. All methods validated per ICH Q2(R1).",
       elements:[
         { control:"SEC-HPLC (% HMW)", target:"≤2% release; ≤5% shelf-life", frequency:"Every lot (release) + every stability time point", linkedCQA:"cqa-aggregation" },
@@ -431,7 +431,7 @@ export const CONTROL_STRATEGY = {
       ],
     },
     {
-      tier:2, name:"In-Process Controls (IPCs)", color:"#F59E0B",
+      tier:2, name:"In-Process Controls (IPCs)", color:"#D9731A",
       description:"Real-time monitoring during manufacturing steps. IPCs provide early warning before batch completion. Action limits are tighter than release specifications.",
       elements:[
         { control:"Bioreactor DO (inline)", target:"15–65% air sat (alarm at limits)", frequency:"Continuous", linkedCPP:"cpp-do" },
@@ -445,7 +445,7 @@ export const CONTROL_STRATEGY = {
       ],
     },
     {
-      tier:3, name:"Process Parameter Controls (Design Space / PAR)", color:"#22D3EE",
+      tier:3, name:"Process Parameter Controls (Design Space / PAR)", color:"#3D63DD",
       description:"Operating within proven acceptable ranges (PAR) and design space ensures quality without additional testing. Critical process parameters are controlled within defined ranges per validated batch records.",
       elements:[
         { control:"Upstream design space (all CPPs)", target:"All upstream CPPs within defined PAR/NOR", frequency:"Continuous monitoring + batch record review", linkedCPP:"cpp-do, cpp-ph-bioreactor, cpp-temp-bioreactor" },
@@ -454,7 +454,7 @@ export const CONTROL_STRATEGY = {
       ],
     },
     {
-      tier:4, name:"Raw Material Controls", color:"#C99A3B",
+      tier:4, name:"Raw Material Controls", color:"#C99A06",
       description:"Control of critical raw materials (CRM) that directly impact product quality or safety. Enhanced testing or Certificate of Analysis (CoA) verification required.",
       elements:[
         { control:"Cell culture media components", target:"Vendor CoA + identity testing on each lot received", frequency:"Each lot received", linkedCPP:"Multiple CPPs" },

@@ -73,7 +73,7 @@ export default function ViralClearanceView() {
       {/* CLEARANCE STEPS */}
       {tab === "steps" && (
         <div style={{ animation:"lc-dropin .25s ease" }}>
-          <GBox color="#22D3EE" label="ORTHOGONALITY">{VIRAL_FACTS.orthogonality}</GBox>
+          <GBox color="#3D63DD" label="ORTHOGONALITY">{VIRAL_FACTS.orthogonality}</GBox>
           <div style={{ display:"grid", gap:14, marginTop:6 }}>
             {CLEARANCE_STEPS.map(s => (
               <div key={s.id} style={{ ...panel, padding:"18px 20px", borderLeft:`3px solid ${s.color}` }}>
@@ -124,7 +124,7 @@ export default function ViralClearanceView() {
                       <td style={{ padding:"13px 16px", color:SUB }}>{v.env}</td>
                       <td style={{ padding:"13px 16px", color:SUB, fontFamily:MONO, fontSize:12 }}>{v.size}</td>
                       <td style={{ padding:"13px 16px" }}>
-                        <span style={{ color: v.resistance.includes("High") ? "#F472B6" : v.resistance === "Medium" ? "#F59E0B" : "#34D399", fontWeight:700, fontSize:12 }}>{v.resistance}</span>
+                        <span style={{ color: v.resistance.includes("High") ? "#C99A06" : v.resistance === "Medium" ? "#D9731A" : "#1F9D63", fontWeight:700, fontSize:12 }}>{v.resistance}</span>
                       </td>
                     </tr>
                   ))}
@@ -157,7 +157,7 @@ export default function ViralClearanceView() {
               </div>
             ))}
           </div>
-          <div style={{ marginTop:16 }}><GBox color="#F59E0B" label="ASSAY & STATISTICS">{VIRAL_FACTS.cap}</GBox></div>
+          <div style={{ marginTop:16 }}><GBox color="#D9731A" label="ASSAY & STATISTICS">{VIRAL_FACTS.cap}</GBox></div>
         </div>
       )}
 
@@ -198,12 +198,12 @@ export default function ViralClearanceView() {
                 {[["Distinct mechanisms", primaryMechs.size], ["Enveloped covered", clearsEnv ? "Yes" : "No"], ["Non-enveloped covered", clearsNonEnv ? "Yes" : "No"]].map(([k, v]) => (
                   <div key={k} style={{ display:"flex", justifyContent:"space-between", fontSize:12.5 }}>
                     <span style={{ color:SUB }}>{k}</span>
-                    <span style={{ color: (v === "No") ? "#F472B6" : TEXT, fontWeight:700, fontFamily:MONO }}>{v}</span>
+                    <span style={{ color: (v === "No") ? "#C99A06" : TEXT, fontWeight:700, fontFamily:MONO }}>{v}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop:18, padding:"12px 14px", borderRadius:12, background: robust ? "color-mix(in srgb, var(--accent-2) 14%, transparent)" : "color-mix(in srgb, #F472B6 12%, transparent)", border:`1px solid ${robust ? "color-mix(in srgb, var(--accent-2) 40%, transparent)" : "color-mix(in srgb, #F472B6 35%, transparent)"}` }}>
-                <div style={{ color: robust ? "var(--accent-2)" : "#F472B6", fontWeight:800, fontSize:13, display:"flex", alignItems:"center", gap:7 }}><Icon name={robust ? "check" : "alert"} size={14} sw={2} /> {robust ? "Robust orthogonal clearance" : "Not yet orthogonal"}</div>
+              <div style={{ marginTop:18, padding:"12px 14px", borderRadius:12, background: robust ? "color-mix(in srgb, var(--accent-2) 14%, transparent)" : "color-mix(in srgb, #C99A06 12%, transparent)", border:`1px solid ${robust ? "color-mix(in srgb, var(--accent-2) 40%, transparent)" : "color-mix(in srgb, #C99A06 35%, transparent)"}` }}>
+                <div style={{ color: robust ? "var(--accent-2)" : "#C99A06", fontWeight:800, fontSize:13, display:"flex", alignItems:"center", gap:7 }}><Icon name={robust ? "check" : "alert"} size={14} sw={2} /> {robust ? "Robust orthogonal clearance" : "Not yet orthogonal"}</div>
                 <div style={{ color:SUB, fontSize:11.5, lineHeight:1.5, marginTop:5 }}>
                   {robust ? "Two+ distinct mechanisms covering both enveloped and small non-enveloped viruses." : "Need ≥2 distinct mechanisms covering both enveloped (e.g., low-pH) and non-enveloped (e.g., 20 nm filtration)."}
                 </div>

@@ -73,8 +73,8 @@ export default function DomainsView() {
                 <span style={{ fontWeight:600, fontSize:14, lineHeight:1.55 }}>{q.q}</span>
               </summary>
               <div style={{ marginTop:12, paddingTop:12, borderTop:"1px solid var(--border)" }}>
-                <InfoBox color="#22D3EE" label="WHY IT MATTERS" text={q.why} />
-                <InfoBox color="#34D399" label="HOW TO FIND THE ANSWER" text={q.how} />
+                <InfoBox color="#3D63DD" label="WHY IT MATTERS" text={q.why} />
+                <InfoBox color="#1F9D63" label="HOW TO FIND THE ANSWER" text={q.how} />
                 <p style={{ color:"var(--text-faint)", fontSize:11, margin:0, fontStyle:"italic" }}>Ref: {q.ref}</p>
               </div>
             </details>

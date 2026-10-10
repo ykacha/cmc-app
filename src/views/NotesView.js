@@ -16,8 +16,8 @@ export default function NotesView({ adminMode }) {
   const [catFilter, setCatFilter] = useState("All");
 
   const NOTE_CATS = ["General","Analytical","Regulatory","Formulation","Process","QbD","Career","Study Tips"];
-  const catColors = { General:"#C99A3B", Analytical:"#22D3EE", Regulatory:"#F472B6", Formulation:"#34D399",
-    Process:"#F59E0B", QbD:"#C0654A", Career:"#60A5FA", "Study Tips":"#FB923C" };
+  const catColors = { General:"#C99A06", Analytical:"#3D63DD", Regulatory:"#C99A06", Formulation:"#1F9D63",
+    Process:"#D9731A", QbD:"#E0393E", Career:"#3D63DD", "Study Tips":"#D9731A" };
 
   const save = (ns) => { setNotes(ns); localStorage.setItem("cmc-notes", JSON.stringify(ns)); };
 
@@ -100,7 +100,7 @@ export default function NotesView({ adminMode }) {
       )}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(290px,1fr))", gap:14 }}>
         {filtered.map(n => {
-          const cc = catColors[n.category] || "#C99A3B";
+          const cc = catColors[n.category] || "#C99A06";
           return (
             <div key={n.id} className="card-hover"
               style={{ background:"var(--bg-card)", borderRadius:14, border:`1px solid ${cc}22`,
@@ -122,7 +122,7 @@ export default function NotesView({ adminMode }) {
                   <button onClick={() => editNote(n)} title="Edit"
                     style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"var(--text-muted)" }}><Icon name="edit" size={13} sw={1.9} /></button>
                   <button onClick={() => deleteNote(n.id)} title="Delete"
-                    style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"#F472B6" }}><Icon name="trash" size={13} sw={1.9} /></button>
+                    style={{ background:"none", border:"none", cursor:"pointer", display:"flex", color:"#C99A06" }}><Icon name="trash" size={13} sw={1.9} /></button>
                 </div>
               </div>
             </div>

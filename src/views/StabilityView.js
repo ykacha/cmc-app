@@ -1,3 +1,4 @@
+import { PageHead } from "../shared";
 import { useState } from "react";
 import { Icon } from "../icons";
 import {
@@ -31,28 +32,6 @@ function SectionHeader({ icon, title, subtitle }) {
   );
 }
 
-function TabBtn({ label, active, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: "9px 20px",
-        borderRadius: 8,
-        border: "1.5px solid",
-        borderColor: active ? "var(--accent-glow)" : "var(--border)",
-        background: active ? "var(--accent)" : "transparent",
-        color: active ? "#fff" : "var(--text-sec)",
-        fontWeight: active ? 700 : 500,
-        fontSize: 13,
-        cursor: "pointer",
-        transition: "all 0.18s ease",
-        letterSpacing: "0.1px",
-      }}
-    >
-      {label}
-    </button>
-  );
-}
 
 function Badge({ children, color, bg }) {
   return (
@@ -182,7 +161,7 @@ function ConditionsTab({ selectedCondition, onSelectCondition }) {
         <div style={{
           background: "var(--bg-card)",
           border: `1.5px solid ${selectedCondition.color}55`,
-          borderLeft: `4px solid ${selectedCondition.color}`,
+          borderLeft: `1px solid ${selectedCondition.color}`,
           borderRadius: 12,
           padding: 24,
           animation: "slideDown 0.22s ease",
@@ -237,7 +216,7 @@ function ICHZonesTab() {
       <div style={{
         background: "var(--bg-raised)",
         border: "1px solid var(--border)",
-        borderLeft: "4px solid #38BDF8",
+        borderLeft: "1px solid #3D63DD",
         borderRadius: 10,
         padding: "14px 18px",
         marginBottom: 24,
@@ -603,8 +582,8 @@ function ShelfLifeTab() {
                     <span style={{
                       padding: "3px 10px",
                       borderRadius: 6,
-                      background: "#34D39920",
-                      color: "#34D399",
+                      background: "#1F9D6320",
+                      color: "#1F9D63",
                       fontSize: 13, fontWeight: 700,
                     }}>{row.typical}</span>
                   </td>
@@ -612,8 +591,8 @@ function ShelfLifeTab() {
                     <span style={{
                       padding: "3px 10px",
                       borderRadius: 6,
-                      background: "#38BDF820",
-                      color: "#38BDF8",
+                      background: "#3D63DD20",
+                      color: "#3D63DD",
                       fontSize: 13, fontWeight: 700,
                     }}>{row.with_data}</span>
                   </td>
@@ -629,7 +608,7 @@ function ShelfLifeTab() {
       <div style={{
         background: "var(--bg-card)",
         border: "1.5px solid var(--border)",
-        borderLeft: "4px solid var(--accent-glow)",
+        borderLeft: "1px solid var(--accent-glow)",
         borderRadius: 12,
         padding: 28,
       }}>
@@ -717,9 +696,9 @@ function ShelfLifeTab() {
               marginBottom: 22,
             }}>
               {[
-                { label: "T90 (months)", value: calcResult.T90_months + " mo", color: "#34D399" },
-                { label: "T90 (years)", value: calcResult.T90_years + " yr", color: "#38BDF8" },
-                { label: "Projected Expiry", value: calcResult.expiry, color: "#C99A3B" },
+                { label: "T90 (months)", value: calcResult.T90_months + " mo", color: "#1F9D63" },
+                { label: "T90 (years)", value: calcResult.T90_years + " yr", color: "#3D63DD" },
+                { label: "Projected Expiry", value: calcResult.expiry, color: "#C99A06" },
               ].map(stat => (
                 <div key={stat.label} style={{
                   padding: "16px 18px",
@@ -752,7 +731,7 @@ function ShelfLifeTab() {
                 {progressPoints.map(month => {
                   const potency = kM > 0 ? parseFloat(initVal) * Math.exp(-kM * month) : parseFloat(initVal);
                   const pct = Math.max(0, Math.min(100, potency));
-                  const color = pct >= 95 ? "#34D399" : pct >= 90 ? "#F59E0B" : "#F472B6";
+                  const color = pct >= 95 ? "#1F9D63" : pct >= 90 ? "#D9731A" : "#C99A06";
                   return (
                     <div key={month} style={{ display: "flex", alignItems: "center", gap: 12 }}>
                       <div style={{ width: 40, fontSize: 11, color: "var(--text-sec)", fontWeight: 600, textAlign: "right", flexShrink: 0 }}>
@@ -803,63 +782,12 @@ export default function StabilityView() {
   return (
     <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
 
-      {/* Page header */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
-          <div style={{
-            width: 50, height: 50,
-            borderRadius: 14,
-            background: "#34D399",
-            display: "flex", alignItems: "center", justifyContent: "center", color: "#06281c",
-            boxShadow: "0 4px 16px rgba(52,211,153,0.35)",
-          }}>
-            <Icon name="thermometer" size={24} sw={1.6} />
-          </div>
-          <div>
-            <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "var(--text-h)", letterSpacing: "-0.5px" }}>
-              Stability Studies
-            </h1>
-            <p style={{ margin: 0, fontSize: 13, color: "var(--text-sec)" }}>
-              ICH Q1A(R2), Q1B, Q1C, Q1D, Q1E: storage conditions, climatic zones, study design, and shelf life.
-            </p>
-          </div>
-        </div>
-
-        {/* Quick stats */}
-        <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
-          {[
-            { label: "Conditions", value: STABILITY_CONDITIONS.length, color: "#34D399" },
-            { label: "ICH Zones", value: ICH_Q1_ZONES.length, color: "#38BDF8" },
-            { label: "Product Types", value: STABILITY_TESTS.length, color: "#C0654A" },
-            { label: "Shelf Life Profiles", value: SHELF_LIFE_STATS.length, color: "#F59E0B" },
-          ].map(s => (
-            <div key={s.label} style={{
-              padding: "10px 16px",
-              borderRadius: 10,
-              background: "var(--bg-card)",
-              border: `1px solid ${s.color}44`,
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}>
-              <span style={{ fontSize: 20, fontWeight: 800, color: s.color }}>{s.value}</span>
-              <span style={{ fontSize: 12, color: "var(--text-sec)", fontWeight: 500 }}>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Tab navigation */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 28, flexWrap: "wrap" }}>
-        {tabs.map(t => (
-          <TabBtn
-            key={t}
-            label={t}
-            active={activeTab === t}
-            onClick={() => setActiveTab(t)}
-          />
-        ))}
-      </div>
+      <PageHead
+        title="Stability Studies"
+        subtitle="ICH Q1A(R2), Q1B, Q1C, Q1D and Q1E: storage conditions, climatic zones, study design, and the statistics behind shelf life."
+        facts={[[STABILITY_CONDITIONS.length, "Storage conditions"], [ICH_Q1_ZONES.length, "ICH climatic zones"], [STABILITY_TESTS.length, "Product types"], [SHELF_LIFE_STATS.length, "Shelf-life profiles"]]}
+        tabs={tabs} active={activeTab} onTab={setActiveTab}
+      />
 
       {/* Tab content */}
       <div>

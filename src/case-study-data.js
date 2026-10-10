@@ -11,7 +11,7 @@ export const CASE_STUDIES = [
     company: "Baxter International / Scientific Protein Laboratories",
     severity: "critical",
     icon: "droplet",
-    color: "#F472B6",
+    color: "#C99A06",
     what_happened: "In 2007–2008, over 100 patient deaths and 785 serious adverse events were reported in the US following administration of heparin. FDA investigation traced contamination to raw heparin API sourced from China. The adulterant was identified as oversulfated chondroitin sulfate (OSCS), a semi-synthetic compound structurally similar to heparin but not detectable by traditional identity tests (e.g., anti-Xa activity assay, metachromatic shift). OSCS activates the contact pathway and complement system, triggering allergic-type reactions.",
     cmc_issues: [
       "API sourced from unregulated Chinese facilities without adequate FDA inspection",
@@ -42,7 +42,7 @@ export const CASE_STUDIES = [
     company: "Zhejiang Huahai Pharmaceuticals / multiple generics",
     severity: "critical",
     icon: "vial",
-    color: "#F59E0B",
+    color: "#D9731A",
     what_happened: "In July 2018, N-nitrosodimethylamine (NDMA), a probable human carcinogen (IARC Group 2A), was detected in valsartan API manufactured at Zhejiang Huahai Pharmaceuticals (China). NDMA formed as a process-related impurity due to a change in the synthesis process: specifically, the use of dimethylformamide (DMF) as solvent combined with sodium nitrite as a reagent under acidic conditions generated trace NDMA. The impurity was not detected for years because NDMA was not included in specifications or methods. Over 40 countries issued recalls. Subsequent investigations found NDMA/NDEA in multiple sartans (losartan, irbesartan) and later in ranitidine.",
     cmc_issues: [
       "Process change (introduction of DMF/sodium nitrite chemistry) not adequately risk-assessed for genotoxic impurity formation",
@@ -73,7 +73,7 @@ export const CASE_STUDIES = [
     company: "Boehringer Ingelheim",
     severity: "moderate",
     icon: "vial",
-    color: "#34D399",
+    color: "#1F9D63",
     what_happened: "Post-approval stability studies and clinical investigations revealed that dabigatran etexilate mesylate is extremely sensitive to moisture. The drug substance degrades when exposed to humidity: pellet moisture content directly affects both in-vitro dissolution and in-vivo bioavailability. FDA published a Drug Safety Communication in 2014 after reports of reduced efficacy in patients who stored pills outside the original blister packaging. Real-world use showed patients transferred pills to pill organizers or weekly dispensers, exposing them to ambient humidity. The original HDPE bottle with desiccant (provided by Boehringer) was essential to maintaining product performance.",
     cmc_issues: [
       "Extreme moisture sensitivity of dabigatran pellets (hygroscopic API/excipient system)",
@@ -104,7 +104,7 @@ export const CASE_STUDIES = [
     company: "Eli Lilly",
     severity: "high",
     icon: "gene",
-    color: "#C99A3B",
+    color: "#C99A06",
     what_happened: "Drotrecogin alfa (Xigris) was approved in 2001 for severe sepsis based on Phase 3 PROWESS trial data. However, post-approval manufacturing scale-up from clinical to commercial scale introduced subtle differences in glycosylation patterns of the recombinant protein. The glycan profile, particularly sialic acid content and glycan heterogeneity, can affect protein clearance rate, half-life, and biological activity. The PROWESS-SHOCK trial (2011), using commercial-scale material, showed no benefit and excess bleeding risk, leading to voluntary worldwide withdrawal. Post-hoc analyses suggested manufacturing differences between clinical trial and commercial material may have contributed.",
     cmc_issues: [
       "Manufacturing scale-up changed glycosylation microheterogeneity in recombinant protein",
@@ -135,7 +135,7 @@ export const CASE_STUDIES = [
     company: "Genentech/Roche",
     severity: "moderate",
     icon: "search",
-    color: "#38BDF8",
+    color: "#3D63DD",
     what_happened: "Sub-visible particle (SVP) investigations in bevacizumab and other mAb formulations revealed that polysorbate 80 (PS80) degradation generates oxidized lipid species (free fatty acids including lauric, myristic acids) that can nucleate protein particle formation. PS80 is ubiquitously used as a non-ionic surfactant in biologic formulations to prevent interfacial denaturation/aggregation. However, PS80 is susceptible to oxidative and hydrolytic degradation, generating free fatty acids that are poorly soluble and can precipitate. This formed visible and sub-visible particles in commercial products. Multiple regulatory agency meetings addressed this issue; industry-wide awareness led to new specifications for PS80 quality (fatty acid profile, ester content) and new assays for PS80 degradation.",
     cmc_issues: [
       "Polysorbate 80 degradation (hydrolysis + oxidation) generates insoluble fatty acid species",
@@ -166,7 +166,7 @@ export const CASE_STUDIES = [
     title: "Thalidomide Racemization and Chiral Inversion",
     severity: "critical",
     icon: "flask",
-    color: "#FB923C",
+    color: "#D9731A",
     what_happened: "Thalidomide was marketed as a racemate (50:50 R and S enantiomers) in the late 1950s–1960s. The R-(+)-enantiomer had sedative properties; the S-(-)-enantiomer was subsequently found to be teratogenic (causing phocomelia: limb shortening in ~10,000 babies worldwide). Early assumptions were that administering the 'safe' R-enantiomer alone would eliminate teratogenicity. However, research showed that thalidomide undergoes rapid in vivo chiral interconversion (racemization) via proton abstraction at the chiral center under physiological pH conditions. Even pure R-thalidomide racemizes to the S-form in vivo, meaning enantiopure dosing cannot prevent teratogenicity. This case fundamentally changed pharmaceutical regulatory requirements for chiral drugs globally.",
     cmc_issues: [
       "Racemate rather than single enantiomer developed: no chiral characterization at development",
@@ -199,7 +199,7 @@ export const CASE_STUDIES = [
     company: "New England Compounding Center (NECC)",
     severity: "critical",
     icon: "alert",
-    color: "#F472B6",
+    color: "#C99A06",
     what_happened: "In 2012, the New England Compounding Center (NECC) in Framingham, Massachusetts shipped contaminated methylprednisolone acetate (MPA) injections used in epidural steroid procedures. The MPA was contaminated with Exserohilum rostratum, a black mold, causing fungal meningitis in patients. The outbreak resulted in 753 confirmed cases across 20 states and 64 deaths: the largest healthcare-associated meningitis outbreak in US history. Investigation revealed NECC was operating as a large-scale drug manufacturer under the guise of a compounding pharmacy, evading FDA oversight. The facility had grossly inadequate sterility controls, visible mold in clean rooms, and failed sterility tests that were systematically ignored.",
     cmc_issues: [
       "Contamination with Exserohilum rostratum from inadequate aseptic manufacturing controls",
@@ -231,7 +231,7 @@ export const CASE_STUDIES = [
     company: "Showa Denko K.K. (Japan)",
     severity: "critical",
     icon: "flask",
-    color: "#F472B6",
+    color: "#C99A06",
     what_happened: "In 1989, a new and severe illness: eosinophilia-myalgia syndrome (EMS): appeared in the US, affecting over 1,500 people and causing 37 deaths. All cases traced to L-tryptophan supplements manufactured by Showa Denko K.K. Showa Denko had made undisclosed process changes to their fermentation process: specifically reducing a filtration step and increasing bacterial enzyme expression: allowing trace process impurities to pass through. The causative contaminant, 1,1'-ethylidenebis[tryptophan] (EBT, 'Peak E'), was a dimerization byproduct from the altered fermentation. EBT at concentrations as low as 0.1% caused EMS. The outbreak led to a complete US recall of all tryptophan supplements and fundamentally changed how process impurity profiling is conducted.",
     cmc_issues: [
       "Undisclosed fermentation process change altered impurity profile without re-validation",
@@ -263,7 +263,7 @@ export const CASE_STUDIES = [
     company: "Janssen-Cilag (Johnson & Johnson)",
     severity: "critical",
     icon: "syringe",
-    color: "#F472B6",
+    color: "#C99A06",
     what_happened: "Between 1998 and 2004, 277 patients receiving subcutaneous Eprex (epoetin alfa) in Europe developed pure red cell aplasia (PRCA): a life-threatening bone marrow failure where neutralizing anti-EPO antibodies destroy both exogenous and endogenous erythropoietin production, causing transfusion-dependent anemia. In 1998, Janssen-Cilag reformulated Eprex: replaced human serum albumin (HSA) stabilizer with polysorbate 80 and glycine, and switched to uncoated rubber stoppers in pre-filled syringes. The combination of polysorbate 80 and silicone oil from uncoated rubber surfaces generated leachable organic compounds that, combined with protein aggregates from the new formulation, created immunogenic neo-antigens. The intravenous route (used in dialysis patients) did not trigger PRCA: only the subcutaneous route showed this pattern, consistent with enhanced subcutaneous immunogenicity.",
     cmc_issues: [
       "Formulation change (HSA → Tween 80/glycine) introduced new leachables from uncoated rubber stopper interaction",
@@ -295,7 +295,7 @@ export const CASE_STUDIES = [
     company: "Multiple Australian manufacturers",
     severity: "high",
     icon: "flask",
-    color: "#34D399",
+    color: "#1F9D63",
     what_happened: "In 1968, a sudden epidemic of phenytoin toxicity in Australia: cerebellar dysfunction, ataxia, diplopia: was traced to a single formulation change. The diluent excipient in phenytoin sodium capsules was changed from calcium sulfate (CaSO₄) to lactose monohydrate. Unknown to the manufacturers, calcium sulfate had been forming an insoluble salt complex with phenytoin sodium, markedly limiting dissolution and absorption. When lactose replaced CaSO₄, phenytoin dissolved normally and was fully absorbed, causing serum concentrations to triple in patients stabilized on the previous formulation: despite taking the identical labeled dose. Hundreds of patients experienced toxicity before the root cause was identified. This was one of the first major demonstrations that excipients can dramatically alter bioavailability of drug products.",
     cmc_issues: [
       "Excipient change (CaSO₄ → lactose) dramatically altered drug bioavailability without in vivo testing",
@@ -326,7 +326,7 @@ export const CASE_STUDIES = [
     company: "Burroughs Wellcome / Multiple manufacturers",
     severity: "moderate",
     icon: "droplet",
-    color: "#F59E0B",
+    color: "#D9731A",
     what_happened: "In 1972, clinical reports documented that digoxin tablets from multiple manufacturers were failing to dissolve in patients: undissolved tablets were found literally in patients' stools. Digoxin is a cardiac glycoside with a narrow therapeutic index (0.8–2.0 ng/mL), and dissolution failure caused therapeutic failure in patients with heart failure and atrial fibrillation. Simultaneously, other batches caused toxicity from higher bioavailability. The manufacturing process: granulation technique, particle size, compression force, and crystal form: dramatically affected dissolution and bioavailability. Inter-manufacturer dissolution time differences exceeded 10-fold. The crisis directly led to USP mandating dissolution testing as a specification requirement and to FDA establishing bioavailability/bioequivalence requirements.",
     cmc_issues: [
       "Granulation and compression force directly affected digoxin dissolution rate and extent",
@@ -358,7 +358,7 @@ export const CASE_STUDIES = [
     company: "Sanofi / Multiple generic manufacturers",
     severity: "critical",
     icon: "flask",
-    color: "#F59E0B",
+    color: "#D9731A",
     what_happened: "In 2019–2020, FDA discovered that ranitidine (Zantac) generates NDMA as an inherent product of its molecular structure rather than as a manufacturing process impurity. Unlike the valsartan NDMA crisis (caused by process chemistry), ranitidine's dimethylaminomethyl side chain can spontaneously generate NDMA through intramolecular self-nitrosation under physiological conditions. Accelerated stability studies at 37–50°C showed NDMA concentrations increasing dramatically over time: some samples exceeded 9,000,000 ng per tablet (vs. the acceptable daily intake of 96 ng/day). The instability is intrinsic to the molecule and unfixable by manufacturing process changes. In April 2020, FDA requested market withdrawal of all ranitidine products globally. This fundamentally differed from valsartan because the problem was the drug molecule itself, not its manufacture.",
     cmc_issues: [
       "Dimethylaminomethyl side chain of ranitidine undergoes self-nitrosation → NDMA intrinsically",
@@ -390,7 +390,7 @@ export const CASE_STUDIES = [
     company: "Biogen / Elan",
     severity: "high",
     icon: "alert",
-    color: "#C0654A",
+    color: "#E0393E",
     what_happened: "Natalizumab (Tysabri) was approved in November 2004 for relapsing multiple sclerosis. Within 3 months, two cases of progressive multifocal leukoencephalopathy (PML): a rare, often fatal brain infection caused by JC polyomavirus: were reported in trial participants receiving natalizumab plus interferon beta-1a. A third PML case was later confirmed. Biogen voluntarily withdrew natalizumab in February 2005. The mechanism was clear: natalizumab blocks α4-integrin, preventing lymphocyte CNS entry (its therapeutic mechanism). This immunosurveillance blockade also prevented immune control of latent JC virus in brain tissue. Re-approved in 2006 with mandatory TOUCH REMS program including JC antibody serology testing to stratify PML risk.",
     cmc_issues: [
       "Anti-natalizumab antibodies found in ~6% of patients, affecting both efficacy and safety profile",
@@ -421,7 +421,7 @@ export const CASE_STUDIES = [
     company: "Genzyme Corporation (Sanofi)",
     severity: "high",
     icon: "factory",
-    color: "#60A5FA",
+    color: "#3D63DD",
     what_happened: "In June 2009, Genzyme's Allston, Massachusetts facility: sole global source of Cerezyme (imiglucerase) for Gaucher disease: was contaminated with Vesivirus 2117, a non-enveloped RNA virus, in cell culture bioreactors. Genzyme shut down manufacturing voluntarily, creating a global shortage affecting ~6,000 patients worldwide who depend on weekly enzyme infusions. Simultaneously, Parvovirus B19 (a non-enveloped DNA virus) was also detected. Both viruses are non-enveloped and resistant to standard solvent-detergent viral clearance steps. The shortage lasted six months, requiring dose rationing to 30% of normal doses. Some patients with severe Gaucher phenotype experienced progressive organ damage during the shortage. FDA cited Genzyme with manufacturing violations in a 2010 warning letter.",
     cmc_issues: [
       "Single manufacturing site for critical orphan drug: no supply redundancy or emergency backup",
@@ -452,7 +452,7 @@ export const CASE_STUDIES = [
     company: "Johnson & Johnson (McNeil Consumer Healthcare)",
     severity: "critical",
     icon: "shieldalert",
-    color: "#FB923C",
+    color: "#D9731A",
     what_happened: "In September–October 1982, seven people in the Chicago area died after taking Extra Strength Tylenol capsules laced with potassium cyanide. An unknown perpetrator removed bottles from retail shelves, opened capsules, mixed in KCN (lethal dose ~200 mg), and returned them to store shelves. No tamper-evident packaging existed for OTC drug products in 1982. Johnson & Johnson immediately recalled 31 million bottles worth $100 million: one of the first large-scale pharmaceutical recalls. The company's transparent public response and rapid product redesign became a crisis management benchmark. No one was ever convicted for the murders. The Tylenol brand recovered to full market leadership within a year due to the HDPE triple-safety-seal redesign (foil seal + cardboard inner seal + child-resistant cap).",
     cmc_issues: [
       "No tamper-evident packaging requirement existed for OTC drug products in 1982",
@@ -483,7 +483,7 @@ export const CASE_STUDIES = [
     company: "Wyeth-Ayerst (fenfluramine) / multiple (phentermine)",
     severity: "high",
     icon: "alert",
-    color: "#F59E0B",
+    color: "#D9731A",
     what_happened: "During the 1990s obesity epidemic, physicians commonly prescribed fenfluramine and phentermine together as an off-label combination ('fen-phen'), despite each being approved only as individual agents. Approximately 6 million Americans were prescribed fen-phen by 1996. In 1997, researchers reported abnormal echocardiograms in 24 of 291 patients: aortic and mitral regurgitation from valvular abnormalities caused by fenfluramine's serotonergic mechanism (5-HT2B receptor activation on cardiac valves). Neither combination pharmacology, toxicology, nor long-term cardiovascular safety had ever been studied. FDA requested voluntary withdrawal of fenfluramine and dexfenfluramine on September 15, 1997. Phentermine alone remained approved. Wyeth (formerly American Home Products) paid over $21 billion in settlements.",
     cmc_issues: [
       "Off-label combination use without combination pharmacology, toxicology, or clinical safety studies",
@@ -545,7 +545,7 @@ export const CASE_STUDIES = [
     company: "Pfizer-BioNTech",
     severity: "high",
     icon: "syringe",
-    color: "#34D399",
+    color: "#1F9D63",
     what_happened: "The Pfizer-BioNTech COVID-19 mRNA vaccine introduced an entirely new drug formulation paradigm: lipid nanoparticle (LNP)-encapsulated mRNA. The formulation required ultra-cold storage (−80°C to −60°C) for long-term stability, based on mRNA's intrinsic instability (susceptibility to ribonuclease degradation) and LNP particle integrity degradation at higher temperatures. The 5-dose (later 6-dose) multi-dose vials required controlled dilution with 0.9% sodium chloride prior to administration and had only a 2-hour window at room temperature and 5-day window at 2–8°C post-puncture. During mass vaccination, field errors included wrong diluent (sterile water instead of saline), incorrect dilution volumes, and temperature excursions. CMC evolution over 2021–2022 demonstrated that LNP lipid composition changes (ionizable lipid, PEG-lipid hydrolysis) could extend stability to 2–8°C for months.",
     cmc_issues: [
       "mRNA stability requires cold chain beyond standard pharmaceutical infrastructure (−80°C)",
@@ -577,7 +577,7 @@ export const CASE_STUDIES = [
     company: "Bayer (Magnevist), Bracco (Omniscan), GE Healthcare (OptiMARK)",
     severity: "moderate",
     icon: "search",
-    color: "#60A5FA",
+    color: "#3D63DD",
     what_happened: "In 2014, Kanda et al. (Japan) reported high signal intensity on unenhanced T1-weighted MRI in brain regions after repeated GBCA administration: evidence that gadolinium was accumulating in brain tissue (dentate nucleus, globus pallidus). Subsequent studies confirmed that linear GBCAs (open-chain chelates) release free Gd³⁺ in vivo through transmetallation: displacement of Gd³⁺ from the chelate by endogenous Zn²⁺, Ca²⁺, Cu²⁺. Macrocyclic GBCAs (cyclic chelate structure) have orders-of-magnitude higher thermodynamic and kinetic stability and do not show brain retention. In 2017, EMA suspended three linear GBCAs for systemic use (Magnevist, Omniscan, OptiMARK). Free Gd³⁺ is highly toxic (LD50 ~100 mg/kg IV in rats); chelation is essential for safety. Earlier (2006), nephrogenic systemic fibrosis (NSF) in renally impaired patients had already flagged linear GBCA instability.",
     cmc_issues: [
       "Chelate thermodynamic stability (log K_cond) differs by orders of magnitude between linear and macrocyclic agents",
@@ -608,7 +608,7 @@ export const CASE_STUDIES = [
     company: "GSK (Ventolin HFA), 3M/Teva (Proventil HFA), multiple",
     severity: "moderate",
     icon: "leaf",
-    color: "#38BDF8",
+    color: "#3D63DD",
     what_happened: "Under the Montreal Protocol (1987) and subsequent amendments, chlorofluorocarbon (CFC) propellants used in metered-dose inhalers (MDIs) were phased out globally due to stratospheric ozone depletion. The pharmaceutical industry was required to reformulate all MDI products using hydrofluorocarbon (HFA) propellants: primarily HFA 134a (1,1,1,2-tetrafluoroethane) and HFA 227ea. HFA propellants have completely different solubility, density, vapor pressure, and polarity properties compared to CFCs. Simply substituting HFA for CFC was not possible: entire formulations, actuators, and valve systems required redesign. Salbutamol in CFC-MDIs was a suspension; some HFA formulations became solution-based with different particle size distributions and lung deposition characteristics. FDA required a full New Drug Application, not a supplement, recognizing the magnitude of the formulation change.",
     cmc_issues: [
       "Propellant physical properties (vapor pressure, density, polarity) completely changed formulation design space",
@@ -639,7 +639,7 @@ export const CASE_STUDIES = [
     company: "Industry-wide (FDA, J&J, Genentech, Amgen, Novartis)",
     severity: "high",
     icon: "methods",
-    color: "#C99A3B",
+    color: "#C99A06",
     what_happened: "As biologics proliferated in the 2000s, the standard method for sub-visible particle (SVP) counting: light obscuration (LO) per USP <788>: was found severely inadequate for proteinaceous particles in biologic formulations. Light obscuration measures particles by the shadow cast as they pass a photodetector. Transparent or translucent proteinaceous aggregates (similar refractive index to water) scatter very little light compared to opaque particles such as glass shards or silicone oil. Industry and FDA observed that LO undercounted proteinaceous aggregates in mAb formulations: often by 100-fold or more. Micro-Flow Imaging (MFI), combining microscopy with flow, counts transparent particles efficiently and provides morphological data to distinguish particle origin. This triggered creation of USP <787> (Subvisible Particulate Matter in Therapeutic Protein Injections), with different acceptance limits and explicit acknowledgment of LO limitations.",
     cmc_issues: [
       "USP <788> light obscuration severely undercounts transparent proteinaceous particles in biologics",
@@ -670,7 +670,7 @@ export const CASE_STUDIES = [
     company: "Eli Lilly / Novo Nordisk",
     severity: "moderate",
     icon: "search",
-    color: "#34D399",
+    color: "#1F9D63",
     what_happened: "Before 1982, all insulin used for diabetes treatment was extracted from bovine or porcine pancreatic tissue. Bovine insulin differs from human insulin at 3 amino acid positions (A8 Thr→Ala, A10 Ile→Val, B30 Ala→Thr); porcine differs at only 1 (B30). These differences drove immune responses in 30–50% of long-term users: anti-insulin antibodies causing insulin resistance, local injection site reactions, and rare lipodystrophy. In 1982, Eli Lilly launched Humulin: the first recombinant DNA drug approved by FDA: produced in E. coli with the identical human insulin sequence. Despite sequence identity, Humulin had a different immunogenicity profile (lower ADA rate) and slightly different PK due to differences in process impurities and formulation. The transition established the foundational biosimilar principle: identical sequence does not guarantee identical product.",
     cmc_issues: [
       "Amino acid sequence differences between animal and human insulin drive species-specific immunogenicity",
@@ -701,7 +701,7 @@ export const CASE_STUDIES = [
     company: "Dendreon Corporation",
     severity: "high",
     icon: "gene",
-    color: "#C0654A",
+    color: "#E0393E",
     what_happened: "Sipuleucel-T (Provenge) received FDA approval in April 2010 as the first autologous cellular immunotherapy. Each patient's dendritic cells are harvested via leukapheresis, activated ex vivo with a fusion protein (PA2024: PAP-GM-CSF), and infused back within 18 hours of manufacture. The starting material (patient's peripheral blood mononuclear cells) varies dramatically between patients: depending on age, disease status, prior therapy, and apheresis conditions: making traditional lot consistency requirements inapplicable. Clinical trials showed median overall survival benefit of 4.1 months vs. placebo, but with enormous individual variability. Manufacturing characterization revealed that CD54 upregulation (a surrogate marker for dendritic cell activation) correlated with clinical outcome but showed high lot-to-lot variability. The product's 18-hour shelf life created complex logistics coupling manufacture to infusion.",
     cmc_issues: [
       "Starting material (patient leukapheresis product) is inherently variable: impossible to fully standardize",
@@ -732,7 +732,7 @@ export const CASE_STUDIES = [
     company: "AstraZeneca / Teva / APP Pharmaceuticals / multiple",
     severity: "high",
     icon: "alert",
-    color: "#F472B6",
+    color: "#C99A06",
     what_happened: "Multiple healthcare-associated infection outbreaks linked to propofol contamination were documented in the US between 2004 and 2010, including clusters of hepatitis C transmission and bacterial sepsis in endoscopy and surgical settings. Propofol's formulation: a 1% oil-in-water emulsion of soybean oil, egg phospholipid, and glycerol: supports rapid microbial growth at room temperature due to its rich lipid/protein nutrient content and neutral pH (~7.0). Single-use vials contain no antimicrobial preservative. Healthcare providers reused single-use vials across multiple patients, either directly syringing from the same vial or using shared syringes, transmitting blood-borne pathogens (HCV) and introducing environmental bacteria. The 2007-2010 Las Vegas endoscopy clinic outbreak infected 63 patients with HCV. FDA investigated multiple similar clusters and strengthened labeling to emphasize single-patient, single-use requirements.",
     cmc_issues: [
       "Preservative-free formulation (lipid emulsion) supports rapid microbial growth when container integrity is compromised",
@@ -757,10 +757,10 @@ export const CASE_STUDIES = [
 
 export const CASE_CATEGORIES = [
   { id: "all",           label: "All Cases",     color: "#7A8FA6", icon: "cases" },
-  { id: "contamination", label: "Contamination",  color: "#F472B6", icon: "alert" },
-  { id: "impurities",    label: "Impurities",     color: "#F59E0B", icon: "flask" },
-  { id: "formulation",   label: "Formulation",    color: "#34D399", icon: "vial" },
-  { id: "biologic",      label: "Biologics",      color: "#38BDF8", icon: "gene" },
-  { id: "regulatory",    label: "Regulatory",     color: "#FB923C", icon: "scale" },
-  { id: "analytical",    label: "Analytical",     color: "#C99A3B", icon: "methods" },
+  { id: "contamination", label: "Contamination",  color: "#C99A06", icon: "alert" },
+  { id: "impurities",    label: "Impurities",     color: "#D9731A", icon: "flask" },
+  { id: "formulation",   label: "Formulation",    color: "#1F9D63", icon: "vial" },
+  { id: "biologic",      label: "Biologics",      color: "#3D63DD", icon: "gene" },
+  { id: "regulatory",    label: "Regulatory",     color: "#D9731A", icon: "scale" },
+  { id: "analytical",    label: "Analytical",     color: "#C99A06", icon: "methods" },
 ];

@@ -72,7 +72,7 @@ export default function CareerView({ navigate }) {
             <>
               <InfoBox color={cp.color} label="DEGREE REQUIREMENT" text={cp.degree}/>
               <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 14px", marginBottom:8 }}>
-                <div style={{ color:"#34D399", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>KEY RESPONSIBILITIES</div>
+                <div style={{ color:"#1F9D63", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>KEY RESPONSIBILITIES</div>
                 <ul style={{ margin:0, paddingLeft:18, color:"var(--text-body)", fontSize:12, lineHeight:1.75 }}>
                   {cp.responsibilities.slice(0,5).map((r,i) => <li key={i}>{r}</li>)}
                 </ul>
@@ -84,7 +84,7 @@ export default function CareerView({ navigate }) {
           {levelTab==="skills" && (
             <>
               <div style={{ marginBottom:12 }}>
-                <div style={{ color:"#22D3EE", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>TECHNICAL SKILLS</div>
+                <div style={{ color:"#3D63DD", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>TECHNICAL SKILLS</div>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                   {cp.technicalSkills.map((s,i) => (
                     <span key={i} style={{ background:`${cp.color}18`, color:"var(--text-body)", border:`1px solid ${cp.color}33`,
@@ -93,10 +93,10 @@ export default function CareerView({ navigate }) {
                 </div>
               </div>
               <div>
-                <div style={{ color:"#F59E0B", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>SOFT SKILLS</div>
+                <div style={{ color:"#D9731A", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>SOFT SKILLS</div>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                   {cp.softSkills.map((s,i) => (
-                    <span key={i} style={{ background:"#F59E0B18", color:"var(--text-body)", border:"1px solid #F59E0B33",
+                    <span key={i} style={{ background:"#D9731A18", color:"var(--text-body)", border:"1px solid #D9731A33",
                       borderRadius:8, padding:"3px 10px", fontSize:11 }}>{s}</span>
                   ))}
                 </div>
@@ -219,10 +219,10 @@ export default function CareerView({ navigate }) {
                   </div>
                   {q.followUps?.length > 0 && (
                     <div style={{ marginBottom:12 }}>
-                      <div style={{ color:"#F59E0B", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>LIKELY FOLLOW-UP QUESTIONS</div>
+                      <div style={{ color:"#D9731A", fontSize:10, fontWeight:800, marginBottom:8, letterSpacing:"0.06em" }}>LIKELY FOLLOW-UP QUESTIONS</div>
                       {q.followUps.map((f,i) => (
-                        <div key={i} style={{ background:"#F59E0B0A", border:"1px solid #F59E0B22", borderRadius:8, padding:"8px 12px", marginBottom:6 }}>
-                          <span style={{ color:"#F59E0B", fontSize:11, fontWeight:800, marginRight:6 }}>Q{i+1}:</span>
+                        <div key={i} style={{ background:"#D9731A0A", border:"1px solid #D9731A22", borderRadius:8, padding:"8px 12px", marginBottom:6 }}>
+                          <span style={{ color:"#D9731A", fontSize:11, fontWeight:800, marginRight:6 }}>Q{i+1}:</span>
                           <span style={{ color:"var(--text-body)", fontSize:12 }}>{f}</span>
                         </div>
                       ))}

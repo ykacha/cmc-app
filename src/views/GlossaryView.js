@@ -10,9 +10,9 @@ export default function GlossaryView() {
 
   const cats = ["All", ...new Set(GLOSSARY.map(g => g.cat))];
   const catColors = {
-    Regulatory:"#F59E0B", QbD:"#34D399", "Cell Science":"#22D3EE",
-    Manufacturing:"#C99A3B", Analytical:"#F472B6", Quality:"#FB923C",
-    Validation:"#38BDF8", "Novel Modalities":"#C0654A"
+    Regulatory:"#D9731A", QbD:"#1F9D63", "Cell Science":"#3D63DD",
+    Manufacturing:"#C99A06", Analytical:"#C99A06", Quality:"#D9731A",
+    Validation:"#3D63DD", "Novel Modalities":"#E0393E"
   };
 
   const filtered = GLOSSARY.filter(g =>

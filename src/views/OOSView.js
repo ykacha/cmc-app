@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Icon } from "../icons";
-import { ReleaseStamp } from "../shared";
+import { ReleaseStamp, PageHead } from "../shared";
 import { OOS_TREE, ROOT_CAUSES, OOT_CRITERIA, OOS_SCENARIOS } from "../oos-data";
 
 /* ─── Shared tiny components ──────────────────────────────── */
@@ -20,39 +20,22 @@ function SectionHeader({ icon, title, subtitle }) {
   );
 }
 
-function TabBtn({ label, active, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: "9px 20px", borderRadius: 8, border: "1.5px solid",
-        borderColor: active ? "var(--accent)" : "var(--border)",
-        background: active ? "var(--accent)" : "transparent",
-        color: active ? "#fff" : "var(--text-sec)",
-        fontWeight: active ? 700 : 500, fontSize: 13, cursor: "pointer",
-        transition: "all 0.18s ease",
-      }}
-    >
-      {label}
-    </button>
-  );
-}
 
 const PHASE_COLORS = {
-  "Initial Assessment": "#38BDF8",
-  "Phase 1: Laboratory Investigation": "#34D399",
-  "Phase 1: Invalidation": "#34D399",
-  "Phase 1: Retest": "#34D399",
-  "Phase 1 → Phase 2 Escalation": "#F59E0B",
-  "Phase 2A: Expanded Lab Investigation": "#F59E0B",
-  "Phase 2A: Expanded Results": "#F59E0B",
-  "Phase 2A → Phase 2B Escalation": "#FB923C",
-  "Phase 2B: Manufacturing Investigation": "#F472B6",
-  "Phase 2B: Cause Found": "#F472B6",
-  "Phase 2B: Unresolved": "#F87171",
-  "Phase 2B: Further Review": "#F87171",
-  "Resolution": "#7C6FE0",
-  "Final Decision: REJECT": "#F87171",
+  "Initial Assessment": "#3D63DD",
+  "Phase 1: Laboratory Investigation": "#1F9D63",
+  "Phase 1: Invalidation": "#1F9D63",
+  "Phase 1: Retest": "#1F9D63",
+  "Phase 1 → Phase 2 Escalation": "#D9731A",
+  "Phase 2A: Expanded Lab Investigation": "#D9731A",
+  "Phase 2A: Expanded Results": "#D9731A",
+  "Phase 2A → Phase 2B Escalation": "#D9731A",
+  "Phase 2B: Manufacturing Investigation": "#C99A06",
+  "Phase 2B: Cause Found": "#C99A06",
+  "Phase 2B: Unresolved": "#E0393E",
+  "Phase 2B: Further Review": "#E0393E",
+  "Resolution": "#3D63DD",
+  "Final Decision: REJECT": "#E0393E",
 };
 function phaseColor(phase) { return PHASE_COLORS[phase] || "#6B88A8"; }
 
@@ -66,10 +49,10 @@ const NODE_ORDER = [
 const NODE_NUM = Object.fromEntries(NODE_ORDER.map((id, i) => [id, i + 1]));
 
 const PHASE_HEADERS = {
-  "start":        { label: "Initial Assessment", color: "#38BDF8", desc: "Confirm and document the OOS/OOT result before starting the investigation" },
-  "phase1-start": { label: "Phase 1: Laboratory Investigation", color: "#34D399", desc: "Immediate laboratory investigation by the analyst (FDA 2006 Section IVA)" },
-  "phase2a-start":{ label: "Phase 2A: Expanded Laboratory", color: "#F59E0B", desc: "Additional testing of retained samples with a second analyst (Section IVB1)" },
-  "phase2b-start":{ label: "Phase 2B: Manufacturing Investigation", color: "#F472B6", desc: "Full batch record review and manufacturing investigation (Section IVB2)" },
+  "start":        { label: "Initial Assessment", color: "#3D63DD", desc: "Confirm and document the OOS/OOT result before starting the investigation" },
+  "phase1-start": { label: "Phase 1: Laboratory Investigation", color: "#1F9D63", desc: "Immediate laboratory investigation by the analyst (FDA 2006 Section IVA)" },
+  "phase2a-start":{ label: "Phase 2A: Expanded Laboratory", color: "#D9731A", desc: "Additional testing of retained samples with a second analyst (Section IVB1)" },
+  "phase2b-start":{ label: "Phase 2B: Manufacturing Investigation", color: "#C99A06", desc: "Full batch record review and manufacturing investigation (Section IVB2)" },
 };
 
 /* ─── Tab 1: Decision Tree ────────────────────────────────── */
@@ -124,8 +107,8 @@ function DecisionTreeTab() {
           <button
             onClick={reset}
             style={{
-              padding: "8px 16px", borderRadius: 8, border: "1.5px solid #F4727288",
-              background: "#F4727218", color: "#F47272", fontSize: 13, fontWeight: 700, cursor: "pointer",
+              padding: "8px 16px", borderRadius: 8, border: "1.5px solid #E0393E88",
+              background: "#E0393E18", color: "#E0393E", fontSize: 13, fontWeight: 700, cursor: "pointer",
             }}
           >
             ↺ Restart
@@ -163,7 +146,7 @@ function DecisionTreeTab() {
 
           // Outcome type styling
           const outcomeColor = isResult
-            ? (n.outcome === "pass" ? "#34D399" : "#F87171")
+            ? (n.outcome === "pass" ? "#1F9D63" : "#E0393E")
             : null;
 
           return (
@@ -275,8 +258,8 @@ function DecisionTreeTab() {
                           onClick={e => { e.stopPropagation(); navigate(n.yes); }}
                           style={{
                             padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
-                            background: "#34D39918", border: "1px solid #34D39944",
-                            color: "#34D399", cursor: "pointer",
+                            background: "#1F9D6318", border: "1px solid #1F9D6344",
+                            color: "#1F9D63", cursor: "pointer",
                           }}
                         >
                           YES → #{NODE_NUM[n.yes]}
@@ -287,8 +270,8 @@ function DecisionTreeTab() {
                           onClick={e => { e.stopPropagation(); navigate(n.no); }}
                           style={{
                             padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
-                            background: "#F59E0B18", border: "1px solid #F59E0B44",
-                            color: "#F59E0B", cursor: "pointer",
+                            background: "#D9731A18", border: "1px solid #D9731A44",
+                            color: "#D9731A", cursor: "pointer",
                           }}
                         >
                           NO → #{NODE_NUM[n.no]}
@@ -303,7 +286,7 @@ function DecisionTreeTab() {
                       {/* Guidance */}
                       <div style={{
                         padding: "12px 16px", background: "var(--bg-raised)",
-                        border: "1px solid var(--border)", borderLeft: `3px solid ${pc}`,
+                        border: "1px solid var(--border)", borderLeft: `1px solid ${pc}`,
                         borderRadius: 8, fontSize: 13, color: "var(--text-sec)",
                         lineHeight: 1.7, marginBottom: 10,
                       }}>
@@ -317,7 +300,7 @@ function DecisionTreeTab() {
                       {n.example && (
                         <div style={{
                           padding: "10px 14px", background: "color-mix(in srgb, var(--accent) 5%, transparent)",
-                          border: "1px solid color-mix(in srgb, var(--accent) 20%, transparent)", borderLeft: "3px solid var(--accent)",
+                          border: "1px solid color-mix(in srgb, var(--accent) 20%, transparent)", borderLeft: "1px solid var(--accent)",
                           borderRadius: 8, fontSize: 12, color: "var(--text-sec)", lineHeight: 1.65, marginBottom: 16,
                         }}>
                           <strong style={{ color: "var(--accent)", display: "block", marginBottom: 4, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.4px" }}>
@@ -335,13 +318,13 @@ function DecisionTreeTab() {
                               onClick={() => navigate(n.yes)}
                               style={{
                                 flex: 1, minWidth: 160, padding: "11px 16px", borderRadius: 10,
-                                border: "1.5px solid #34D39966",
-                                background: "#34D3991A",
-                                color: "#34D399", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                                border: "1.5px solid #1F9D6366",
+                                background: "#1F9D631A",
+                                color: "#1F9D63", fontWeight: 700, fontSize: 13, cursor: "pointer",
                                 textAlign: "center", transition: "all 0.15s",
                               }}
-                              onMouseEnter={e => e.currentTarget.style.background = "#34D39935"}
-                              onMouseLeave={e => e.currentTarget.style.background = "#34D3991A"}
+                              onMouseEnter={e => e.currentTarget.style.background = "#1F9D6335"}
+                              onMouseLeave={e => e.currentTarget.style.background = "#1F9D631A"}
                             >
                               <span style={{ fontSize: 14 }}>✓</span><br />
                               <span style={{ fontSize: 12 }}>{n.yesLabel || "Yes"}</span>
@@ -352,13 +335,13 @@ function DecisionTreeTab() {
                               onClick={() => navigate(n.no)}
                               style={{
                                 flex: 1, minWidth: 160, padding: "11px 16px", borderRadius: 10,
-                                border: "1.5px solid #F59E0B66",
-                                background: "#F59E0B14",
-                                color: "#F59E0B", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                                border: "1.5px solid #D9731A66",
+                                background: "#D9731A14",
+                                color: "#D9731A", fontWeight: 700, fontSize: 13, cursor: "pointer",
                                 textAlign: "center", transition: "all 0.15s",
                               }}
-                              onMouseEnter={e => e.currentTarget.style.background = "#F59E0B28"}
-                              onMouseLeave={e => e.currentTarget.style.background = "#F59E0B14"}
+                              onMouseEnter={e => e.currentTarget.style.background = "#D9731A28"}
+                              onMouseLeave={e => e.currentTarget.style.background = "#D9731A14"}
                             >
                               <span style={{ fontSize: 14 }}>✗</span><br />
                               <span style={{ fontSize: 12 }}>{n.noLabel || "No"}</span>
@@ -371,13 +354,13 @@ function DecisionTreeTab() {
                       {isResult && (
                         <div style={{
                           padding: "14px 18px", borderRadius: 10,
-                          background: n.outcome === "pass" ? "#34D39918" : "#F8717118",
-                          border: `1.5px solid ${n.outcome === "pass" ? "#34D39955" : "#F8717155"}`,
+                          background: n.outcome === "pass" ? "#1F9D6318" : "#E0393E18",
+                          border: `1.5px solid ${n.outcome === "pass" ? "#1F9D6355" : "#E0393E55"}`,
                           display: "flex", alignItems: "center", gap: 12,
                         }}>
-                          <span style={{ display: "flex", color: n.outcome === "pass" ? "#34D399" : "#F87171" }}><Icon name={n.outcome === "pass" ? "check" : "cross"} size={24} sw={2} /></span>
+                          <span style={{ display: "flex", color: n.outcome === "pass" ? "#1F9D63" : "#E0393E" }}><Icon name={n.outcome === "pass" ? "check" : "cross"} size={24} sw={2} /></span>
                           <div>
-                            <div style={{ fontWeight: 800, fontSize: 14, color: n.outcome === "pass" ? "#34D399" : "#F87171", marginBottom: 2 }}>
+                            <div style={{ fontWeight: 800, fontSize: 14, color: n.outcome === "pass" ? "#1F9D63" : "#E0393E", marginBottom: 2 }}>
                               {n.outcome === "pass" ? "INVESTIGATION RESOLVED: BATCH MAY PROCEED" : "BATCH REJECTED: OOS CONFIRMED"}
                             </div>
                             <div style={{ fontSize: 12, color: "var(--text-sec)" }}>
@@ -400,7 +383,7 @@ function DecisionTreeTab() {
       {/* Regulatory callout */}
       <div style={{
         marginTop: 24, padding: "14px 18px", background: "var(--bg-raised)",
-        border: "1px solid var(--border)", borderLeft: "4px solid #38BDF8",
+        border: "1px solid var(--border)", borderLeft: "1px solid #3D63DD",
         borderRadius: 10, fontSize: 12, color: "var(--text-sec)", lineHeight: 1.65,
       }}>
         <strong style={{ color: "var(--text-h)" }}>Key regulatory principle:</strong> Per FDA 2006 OOS Guidance and <em>United States v. Barr Laboratories</em> (1993),
@@ -413,7 +396,7 @@ function DecisionTreeTab() {
 
 /* ─── Tab 2: Case Simulator ───────────────────────────────── */
 const DIFF_LEVELS = ["All", "Beginner", "Intermediate", "Advanced", "Expert"];
-const DIFF_COLORS = { Beginner: "#34D399", Intermediate: "#F59E0B", Advanced: "#F97316", Expert: "#EF4444" };
+const DIFF_COLORS = { Beginner: "#1F9D63", Intermediate: "#D9731A", Advanced: "#D9731A", Expert: "#E0393E" };
 
 function SimulatorTab() {
   const [selected, setSelected] = useState(null);
@@ -503,11 +486,11 @@ function SimulatorTab() {
             >
               {/* Header strip */}
               <div style={{
-                background: s.isOOT ? "#38BDF820" : "#F8717120",
-                borderBottom: `1px solid ${s.isOOT ? "#38BDF833" : "#F8717133"}`,
+                background: s.isOOT ? "#3D63DD20" : "#E0393E20",
+                borderBottom: `1px solid ${s.isOOT ? "#3D63DD33" : "#E0393E33"}`,
                 padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between",
               }}>
-                <span style={{ display: "flex", color: s.isOOT ? "#38BDF8" : "#F87171" }}><Icon name={s.icon} size={24} sw={1.6} /></span>
+                <span style={{ display: "flex", color: s.isOOT ? "#3D63DD" : "#E0393E" }}><Icon name={s.icon} size={24} sw={1.6} /></span>
                 <div style={{ display: "flex", gap: 6 }}>
                   <span style={{
                     padding: "3px 10px", borderRadius: 12,
@@ -518,10 +501,10 @@ function SimulatorTab() {
                   </span>
                   <span style={{
                     padding: "3px 10px", borderRadius: 12,
-                    background: s.isOOT ? "#38BDF822" : "#F8717122",
-                    color: s.isOOT ? "#38BDF8" : "#F87171",
+                    background: s.isOOT ? "#3D63DD22" : "#E0393E22",
+                    color: s.isOOT ? "#3D63DD" : "#E0393E",
                     fontSize: 11, fontWeight: 700,
-                    border: `1px solid ${s.isOOT ? "#38BDF844" : "#F8717144"}`,
+                    border: `1px solid ${s.isOOT ? "#3D63DD44" : "#E0393E44"}`,
                   }}>
                     {s.isOOT ? "OOT" : "OOS"}
                   </span>
@@ -556,7 +539,7 @@ function SimulatorTab() {
                   {/* Result: 2-line clamp, never overflows */}
                   <div style={{
                     fontWeight: 900, fontSize: 14,
-                    color: s.isOOT ? "#38BDF8" : "#F87171",
+                    color: s.isOOT ? "#3D63DD" : "#E0393E",
                     lineHeight: 1.35, marginBottom: 4,
                     display: "-webkit-box", WebkitLineClamp: 2,
                     WebkitBoxOrient: "vertical", overflow: "hidden",
@@ -586,7 +569,7 @@ function SimulatorTab() {
         {/* Tip callout */}
         <div style={{
           marginTop: 24, padding: "14px 18px", background: "var(--bg-raised)",
-          border: "1px solid var(--border)", borderLeft: "4px solid var(--accent)",
+          border: "1px solid var(--border)", borderLeft: "1px solid var(--accent)",
           borderRadius: 10, fontSize: 13, color: "var(--text-sec)", lineHeight: 1.65,
         }}>
           <strong style={{ color: "var(--accent)" }}>How to play:</strong> Pick a scenario, then reveal investigation findings one by one.
@@ -631,11 +614,11 @@ function SimulatorTab() {
         }}>
           <div style={{
             width: 64, height: 64, borderRadius: "50%",
-            background: perfect ? "#34D39920" : score > 0 ? "#F59E0B20" : "#F8717120",
-            border: `3px solid ${perfect ? "#34D399" : score > 0 ? "#F59E0B" : "#F87171"}`,
+            background: perfect ? "#1F9D6320" : score > 0 ? "#D9731A20" : "#E0393E20",
+            border: `3px solid ${perfect ? "#1F9D63" : score > 0 ? "#D9731A" : "#E0393E"}`,
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           }}>
-            <div style={{ fontWeight: 900, fontSize: 20, color: perfect ? "#34D399" : score > 0 ? "#F59E0B" : "#F87171" }}>
+            <div style={{ fontWeight: 900, fontSize: 20, color: perfect ? "#1F9D63" : score > 0 ? "#D9731A" : "#E0393E" }}>
               {pct}%
             </div>
           </div>
@@ -651,10 +634,10 @@ function SimulatorTab() {
 
         {/* Key Learning */}
         <div style={{
-          background: "#34D39912", border: "1px solid #34D39933",
-          borderLeft: "4px solid #34D399", borderRadius: 10, padding: "16px 20px", marginBottom: 14,
+          background: "#1F9D6312", border: "1px solid #1F9D6333",
+          borderLeft: "1px solid #1F9D63", borderRadius: 10, padding: "16px 20px", marginBottom: 14,
         }}>
-          <div style={{ fontWeight: 700, fontSize: 12, color: "#34D399", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+          <div style={{ fontWeight: 700, fontSize: 12, color: "#1F9D63", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.4px" }}>
             Key Learning
           </div>
           <div style={{ fontSize: 13, color: "var(--text-body)", lineHeight: 1.65 }}>{selected.keyLearning}</div>
@@ -662,10 +645,10 @@ function SimulatorTab() {
 
         {/* CAPA */}
         <div style={{
-          background: "#F59E0B10", border: "1px solid #F59E0B33",
-          borderLeft: "4px solid #F59E0B", borderRadius: 10, padding: "16px 20px", marginBottom: 24,
+          background: "#D9731A10", border: "1px solid #D9731A33",
+          borderLeft: "1px solid #D9731A", borderRadius: 10, padding: "16px 20px", marginBottom: 24,
         }}>
-          <div style={{ fontWeight: 700, fontSize: 12, color: "#F59E0B", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+          <div style={{ fontWeight: 700, fontSize: 12, color: "#D9731A", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.4px" }}>
             CAPA Recommendation
           </div>
           <div style={{ fontSize: 13, color: "var(--text-body)", lineHeight: 1.65 }}>{selected.capa}</div>
@@ -735,19 +718,19 @@ function SimulatorTab() {
 
       {/* OOS/OOT Alert box */}
       <div style={{
-        background: selected.isOOT ? "#38BDF812" : "#F8717115",
-        border: `1.5px solid ${selected.isOOT ? "#38BDF844" : "#F8717144"}`,
+        background: selected.isOOT ? "#3D63DD12" : "#E0393E15",
+        border: `1.5px solid ${selected.isOOT ? "#3D63DD44" : "#E0393E44"}`,
         borderRadius: 12, padding: "16px 20px", marginBottom: 24,
         display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap",
       }}>
-        <span style={{ display: "flex", color: selected.isOOT ? "#38BDF8" : "#F87171" }}><Icon name="alert" size={26} sw={1.6} /></span>
+        <span style={{ display: "flex", color: selected.isOOT ? "#3D63DD" : "#E0393E" }}><Icon name="alert" size={26} sw={1.6} /></span>
         <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 800, fontSize: 13, color: selected.isOOT ? "#38BDF8" : "#F87171", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <div style={{ fontWeight: 800, fontSize: 13, color: selected.isOOT ? "#3D63DD" : "#E0393E", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.5px" }}>
             {selected.isOOT ? "Out-of-Trend Result Flagged" : "Out-of-Specification Result"}
           </div>
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 13 }}>
             <span style={{ color: "var(--text-sec)" }}><strong style={{ color: "var(--text-body)" }}>Method:</strong> {selected.method}</span>
-            <span style={{ color: "var(--text-sec)" }}><strong style={{ color: "var(--text-body)" }}>Result:</strong> <span style={{ color: selected.isOOT ? "#38BDF8" : "#F87171", fontWeight: 700 }}>{selected.finding.result}</span></span>
+            <span style={{ color: "var(--text-sec)" }}><strong style={{ color: "var(--text-body)" }}>Result:</strong> <span style={{ color: selected.isOOT ? "#3D63DD" : "#E0393E", fontWeight: 700 }}>{selected.finding.result}</span></span>
             <span style={{ color: "var(--text-sec)" }}><strong style={{ color: "var(--text-body)" }}>Spec:</strong> {selected.finding.spec}</span>
           </div>
         </div>
@@ -767,7 +750,7 @@ function SimulatorTab() {
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
         {phase.items.map(item => {
           const isRev = revealed.has(item.id);
-          const statusColor = item.isIssue ? (item.isCause ? "#F87171" : "#F59E0B") : "#34D399";
+          const statusColor = item.isIssue ? (item.isCause ? "#E0393E" : "#D9731A") : "#1F9D63";
           const statusIcon = item.isIssue ? (item.isCause ? "alert" : "flag") : "check";
           const statusLabel = item.isIssue ? (item.isCause ? "Issue Found" : "Relevant") : "No Issue";
 
@@ -871,7 +854,7 @@ function SimulatorTab() {
             const isChosen = decisions[phase.id] === opt.id;
             const showResult = decided && isChosen;
             const btnColor = showResult
-              ? (opt.correct ? "#34D399" : "#F87171")
+              ? (opt.correct ? "#1F9D63" : "#E0393E")
               : (decided ? "var(--border)" : phaseColor_);
 
             return (
@@ -891,20 +874,20 @@ function SimulatorTab() {
                   onMouseEnter={e => { if (!decided && anyRevealed) e.currentTarget.style.borderColor = phaseColor_; }}
                   onMouseLeave={e => { if (!decided && anyRevealed) e.currentTarget.style.borderColor = phaseColor_ + "44"; }}
                 >
-                  {isChosen && <span style={{ display: "flex", flexShrink: 0, color: opt.correct ? "#34D399" : "#F87171" }}><Icon name={opt.correct ? "check" : "cross"} size={15} sw={2} /></span>}
+                  {isChosen && <span style={{ display: "flex", flexShrink: 0, color: opt.correct ? "#1F9D63" : "#E0393E" }}><Icon name={opt.correct ? "check" : "cross"} size={15} sw={2} /></span>}
                   <span>{opt.label}</span>
                 </button>
                 {/* Feedback */}
                 {showResult && (
                   <div style={{
                     marginTop: 8, padding: "12px 16px",
-                    background: opt.correct ? "#34D39912" : "#F8717112",
-                    border: `1px solid ${opt.correct ? "#34D39933" : "#F8717133"}`,
-                    borderLeft: `4px solid ${opt.correct ? "#34D399" : "#F87171"}`,
+                    background: opt.correct ? "#1F9D6312" : "#E0393E12",
+                    border: `1px solid ${opt.correct ? "#1F9D6333" : "#E0393E33"}`,
+                    borderLeft: `1px solid ${opt.correct ? "#1F9D63" : "#E0393E"}`,
                     borderRadius: 8, fontSize: 13, color: "var(--text-body)", lineHeight: 1.65,
                     animation: "fadeUp 0.25s ease",
                   }}>
-                    <strong style={{ color: opt.correct ? "#34D399" : "#F87171" }}>
+                    <strong style={{ color: opt.correct ? "#1F9D63" : "#E0393E" }}>
                       {opt.correct ? "Correct!" : "Not quite."}
                     </strong>{" "}
                     {opt.feedback}
@@ -1018,7 +1001,7 @@ function RootCausesTab() {
       </div>
       <div style={{
         marginTop: 28, padding: "16px 20px", background: "var(--bg-card)",
-        border: "1px solid var(--border)", borderLeft: "4px solid #F59E0B",
+        border: "1px solid var(--border)", borderLeft: "1px solid #D9731A",
         borderRadius: 10, fontSize: 13, color: "var(--text-sec)", lineHeight: 1.7,
       }}>
         <strong style={{ color: "var(--text-h)", display: "block", marginBottom: 6 }}>Root Cause Investigation Requirements (21 CFR 211.192)</strong>
@@ -1034,7 +1017,7 @@ function RootCausesTab() {
 function OOTCriteriaTab() {
   const [hovered, setHovered] = useState(null);
 
-  const typeColors = { warning: "#F59E0B", reject: "#F472B6", trend: "#38BDF8", alert: "#FB923C" };
+  const typeColors = { warning: "#D9731A", reject: "#C99A06", trend: "#3D63DD", alert: "#D9731A" };
   const typeIcons = { warning: "alert", reject: "cross", trend: "trendup", alert: "alert" };
   const typeLabels = { warning: "Warning", reject: "Reject", trend: "Trend", alert: "Alert" };
 
@@ -1047,7 +1030,7 @@ function OOTCriteriaTab() {
       />
       <div style={{
         padding: "14px 18px", background: "var(--bg-raised)", border: "1px solid var(--border)",
-        borderLeft: "4px solid var(--accent)", borderRadius: 10, marginBottom: 28,
+        borderLeft: "1px solid var(--accent)", borderRadius: 10, marginBottom: 28,
         fontSize: 13, color: "var(--text-sec)", lineHeight: 1.7,
       }}>
         <strong style={{ color: "var(--text-h)" }}>OOT vs OOS:</strong> An Out-of-Trend (OOT) result is within specification but follows an unexpected statistical
@@ -1075,7 +1058,7 @@ function OOTCriteriaTab() {
               onMouseLeave={() => setHovered(null)}
               style={{
                 background: "var(--bg-card)", border: "1.5px solid var(--border)",
-                borderLeft: `5px solid ${color}`, borderRadius: 10, padding: "18px 20px",
+                borderLeft: `1px solid ${color}`, borderRadius: 10, padding: "18px 20px",
                 transition: "all 0.18s",
                 boxShadow: hovered === rule.rule ? `0 6px 24px rgba(0,0,0,0.4), 0 0 0 1px ${color}33` : "0 2px 8px rgba(0,0,0,0.22)",
                 transform: hovered === rule.rule ? "translateY(-1px)" : "translateY(0)",
@@ -1136,52 +1119,12 @@ export default function OOSView() {
   return (
     <div className="view-enter" style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 24px" }}>
 
-      {/* Page header */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
-          <div style={{
-            width: 50, height: 50, borderRadius: 14,
-            background: "#F59E0B",
-            display: "flex", alignItems: "center", justifyContent: "center", color: "#2b1600",
-            boxShadow: "0 4px 16px rgba(245,158,11,0.35)",
-          }}>
-            <Icon name="search" size={24} sw={1.6} />
-          </div>
-          <div>
-            <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "var(--text-h)", letterSpacing: "-0.5px" }}>
-              OOS / OOT Investigation
-            </h1>
-            <p style={{ margin: 0, fontSize: 13, color: "var(--text-sec)" }}>
-              FDA 2006 OOS Guidance · 21 CFR 211.192 · Barr Laboratories · Westgard Rules · ICH Q10
-            </p>
-          </div>
-        </div>
-        {/* Quick stats */}
-        <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
-          {[
-            { label: "Decision Nodes", value: totalNodes - resultNodes, color: "#38BDF8" },
-            { label: "Outcome Nodes", value: resultNodes, color: "#7C6FE0" },
-            { label: "Root Cause Categories", value: ROOT_CAUSES.length, color: "#F59E0B" },
-            { label: "OOT / Westgard Rules", value: OOT_CRITERIA.length, color: "#34D399" },
-            { label: "Case Simulations", value: OOS_SCENARIOS.length, color: "#F472B6" },
-          ].map(s => (
-            <div key={s.label} style={{
-              padding: "10px 16px", borderRadius: 10, background: "var(--bg-card)",
-              border: `1px solid ${s.color}44`, display: "flex", alignItems: "center", gap: 10,
-            }}>
-              <span style={{ fontSize: 20, fontWeight: 800, color: s.color }}>{s.value}</span>
-              <span style={{ fontSize: 12, color: "var(--text-sec)", fontWeight: 500 }}>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Tab nav */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 28, flexWrap: "wrap" }}>
-        {tabs.map(t => (
-          <TabBtn key={t} label={t} active={activeTab === t} onClick={() => setActiveTab(t)} />
-        ))}
-      </div>
+      <PageHead
+        title="OOS / OOT Investigation"
+        subtitle="The FDA 2006 OOS guidance, 21 CFR 211.192, the Barr Laboratories ruling and Westgard rules, worked as an investigation you can step through."
+        facts={[[totalNodes - resultNodes, "Decision nodes"], [resultNodes, "Outcomes"], [ROOT_CAUSES.length, "Root-cause categories"], [OOT_CRITERIA.length, "OOT rules"], [OOS_SCENARIOS.length, "Case simulations"]]}
+        tabs={tabs} active={activeTab} onTab={setActiveTab}
+      />
 
       {/* Tab content */}
       <div>

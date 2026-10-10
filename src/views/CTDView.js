@@ -71,7 +71,7 @@ export default function CTDView() {
               <p style={{ color:"var(--text-body)", fontSize:14, lineHeight:1.75, marginBottom:20 }}>{sec.description}</p>
 
               <div style={{ background:"var(--bg-surface)", borderRadius:10, padding:"12px 16px", marginBottom:14 }}>
-                <strong style={{ color:"#34D399", fontSize:11, letterSpacing:"0.05em" }}>KEY CONTENT / REQUIRED ELEMENTS</strong>
+                <strong style={{ color:"#1F9D63", fontSize:11, letterSpacing:"0.05em" }}>KEY CONTENT / REQUIRED ELEMENTS</strong>
                 <ul style={{ margin:"8px 0 0", paddingLeft:18, color:"var(--text-body)", fontSize:13, lineHeight:1.8 }}>
                   {sec.keyContent.map((k,i) => <li key={i}>{k}</li>)}
                 </ul>
