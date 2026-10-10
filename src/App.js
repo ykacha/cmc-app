@@ -5,7 +5,7 @@ import "./fx.css";
 import Dashboard from "./views/Dashboard";
 import { Icon } from "./icons";
 import PipelineView   from "./views/PipelineView";
-import MethodsView    from "./views/MethodsView";
+import Analytical     from "./views/analytical/Analytical";
 import QbDView        from "./views/QbDView";
 import CTDView        from "./views/CTDView";
 import TimelineView   from "./views/TimelineView";
@@ -38,7 +38,7 @@ const NAV_GROUPS = [
     { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
   ]},
   { id:"science",  label:"Science",  color:"var(--chain-l)", items:[
-    { id:"methods", label:"Analytical Methods", short:"Methods" }, { id:"qbd", label:"QbD / CQA / CPP", short:"QbD" }, { id:"viral", label:"Viral Clearance", short:"Viral" },
+    { id:"analytical", label:"Analytical", short:"Analytical" }, { id:"qbd", label:"QbD / CQA / CPP", short:"QbD" }, { id:"viral", label:"Viral Clearance", short:"Viral" },
     { id:"stability", label:"Stability Studies", short:"Stability" }, { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
   ]},
   { id:"tools",    label:"Tools",    color:"var(--bridge)", items:[
@@ -56,8 +56,10 @@ const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...NAV_GROUPS.flatMa
 
 // "#/methods/am-sec" -> { view:"methods", focus:"am-sec" }
 function readHash() {
-  const [v, f] = window.location.hash.replace(/^#\/?/, "").split("/");
-  return ALL_VIEWS.has(v) ? { view: v, focus: f || null } : { view: "dashboard", focus: null };
+  const [v, ...rest] = window.location.hash.replace(/^#\/?/, "").split("/");
+  const f = rest.filter(Boolean).join("/") || null;
+  if (v === "methods") return { view: "analytical", focus: f ? "atlas/" + f : "atlas" };   // legacy links
+  return ALL_VIEWS.has(v) ? { view: v, focus: f } : { view: "dashboard", focus: null };
 }
 
 // Sequence-track navigation: every section is a residue cell on one chain.
@@ -219,6 +221,7 @@ export default function App() {
   const toggleTheme = () => setDarkMode(d => { const n = !d; localStorage.setItem("cmc-theme", n ? "dark" : "light"); return n; });
 
   const navigate = (id, f = null) => {
+    if (id === "methods") { f = f ? "atlas/" + f : "atlas"; id = "analytical"; }   // legacy callers
     const hash = id === "dashboard" ? "#/" : `#/${id}${f ? "/" + f : ""}`;
     if (window.location.hash !== hash) window.history.pushState(null, "", hash);
     const swap = () => { flushSync(() => setView(id, f)); window.scrollTo(0, 0); };
@@ -304,7 +307,7 @@ export default function App() {
       <main key={view} className={`view-enter ${SURFACE_VIEWS.includes(view) ? "lc-surface" : ""}`} style={{ position:"relative", zIndex:1 }}>
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
         {view==="pipeline"   && <PipelineView />}
-        {view==="methods"    && <MethodsView navigate={navigate} focus={focus} />}
+        {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="qbd"        && <QbDView navigate={navigate} />}
         {view==="ctd"        && <CTDView />}
         {view==="timeline"   && <TimelineView />}

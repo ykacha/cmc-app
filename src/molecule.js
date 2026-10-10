@@ -151,7 +151,7 @@ function sprite(color, size = 64) {
   return c;
 }
 
-export default function Molecule({ dark, stress, onHover, onPick, labels = true, interactive = true }) {
+export default function Molecule({ dark, stress, hit, onHover, onPick, labels = true, interactive = true }) {
   const host = useRef(null), cvs = useRef(null);
   const labelRefs = useRef({});
   const state = useRef({ yaw: 0.55, pitch: -0.12, vy: 0, vp: 0, drag: null, hover: null, t0: 0, stress: null });
@@ -160,7 +160,7 @@ export default function Molecule({ dark, stress, onHover, onPick, labels = true,
   const cb = useRef({});
   cb.current = { onHover, onPick };
 
-  useEffect(() => { state.current.stress = stress ? STRESSES.find(s => s.id === stress) : null; state.current.stressAt = performance.now(); }, [stress]);
+  useEffect(() => { state.current.stress = hit ? { hit } : stress ? STRESSES.find(s => s.id === stress) : null; state.current.stressAt = performance.now(); }, [stress, hit]);
 
   useEffect(() => {
     const canvas = cvs.current, el = host.current;

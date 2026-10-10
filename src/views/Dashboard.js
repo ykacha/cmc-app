@@ -18,7 +18,7 @@ const GROUPS = [
     { id:"glossary", name:"Glossary",          line:`${GLOSSARY.length} terms, defined the way a mentor would.` },
   ]},
   { label:"Science", color:"var(--chain-l)", items:[
-    { id:"methods",   name:"Analytical Methods", line:`${ANALYTICAL_METHODS.length} assays mapped to the quality attributes they measure.` },
+    { id:"analytical", name:"Analytical",       line:`${ANALYTICAL_METHODS.length} assays run live, a validation lab, specs and comparability.` },
     { id:"qbd",       name:"QbD / CQA / CPP",    line:"Design space, FMEA and the control strategy that follows." },
     { id:"viral",     name:"Viral Clearance",    line:"Model viruses, orthogonal steps and the LRV arithmetic." },
     { id:"stability", name:"Stability Studies",  line:"ICH Q1A(R2) conditions and the shelf-life math." },
