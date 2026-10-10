@@ -1,0 +1,496 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-10T00:00:00Z",
+  "title": "Design System: CMC App (Yash Kacha)",
+  "extensions": {
+    "colorMeta": {
+      "cpk-nitrogen": {
+        "role": "primary",
+        "displayName": "Nitrogen Blue",
+        "purpose": "Heavy chain and primary action; fills the main call to action in both themes.",
+        "canonical": "oklch(54.3% 0.191 266.8)",
+        "tonalRamp": [
+          "#02003B",
+          "#0A007E",
+          "#152AA2",
+          "#2D4FC7",
+          "#4972ED",
+          "#6F98FF",
+          "#A8C3FF",
+          "#E5EFFF"
+        ]
+      },
+      "cpk-phosphorus": {
+        "role": "secondary",
+        "displayName": "Phosphorus Orange",
+        "purpose": "Light chain, caution, live cursor.",
+        "canonical": "oklch(66.0% 0.156 54.4)",
+        "tonalRamp": [
+          "#1F0000",
+          "#421400",
+          "#6C2800",
+          "#974100",
+          "#C15D00",
+          "#E7802D",
+          "#FFAB6A",
+          "#FFE7D2"
+        ]
+      },
+      "cpk-sulfur": {
+        "role": "tertiary",
+        "displayName": "Sulfur Yellow",
+        "purpose": "Disulfide bridges, cross-links, highlight; Tools segment.",
+        "canonical": "oklch(71.1% 0.144 86.5)",
+        "tonalRamp": [
+          "#120900",
+          "#302100",
+          "#533C00",
+          "#775800",
+          "#9F7600",
+          "#C69700",
+          "#EDBD44",
+          "#FFE873"
+        ]
+      },
+      "cpk-oxygen": {
+        "role": "tertiary",
+        "displayName": "Oxygen Red",
+        "purpose": "Glycan, critical, failure; selected Stress tabs and stressed beads.",
+        "canonical": "oklch(60.1% 0.203 24.4)",
+        "tonalRamp": [
+          "#220000",
+          "#4F0002",
+          "#81000A",
+          "#B50018",
+          "#DC353B",
+          "#FF5D5C",
+          "#FFA7A0",
+          "#FFE5E2"
+        ]
+      },
+      "cpk-chlorine": {
+        "role": "tertiary",
+        "displayName": "Chlorine Green",
+        "purpose": "Conforms, pass.",
+        "canonical": "oklch(61.6% 0.137 157.2)",
+        "tonalRamp": [
+          "#001103",
+          "#002E14",
+          "#005027",
+          "#00733E",
+          "#0C955B",
+          "#43B77C",
+          "#6EDFA0",
+          "#B1FFD2"
+        ]
+      },
+      "figure-accent": {
+        "role": "primary",
+        "displayName": "Figure Accent",
+        "purpose": "Light-theme --accent and --chain-h: links, selected tabs, trace line, focus.",
+        "canonical": "oklch(48.0% 0.191 266.5)",
+        "tonalRamp": [
+          "#02003D",
+          "#09007E",
+          "#142AA2",
+          "#2C4FC7",
+          "#4972ED",
+          "#6F98FF",
+          "#A8C3FF",
+          "#E5EFFF"
+        ]
+      },
+      "viewer-accent": {
+        "role": "primary",
+        "displayName": "Viewer Accent",
+        "purpose": "Dark-theme --accent and --chain-h.",
+        "canonical": "oklch(67.1% 0.151 268.6)",
+        "tonalRamp": [
+          "#03003B",
+          "#0C0E6B",
+          "#20338E",
+          "#3B54B2",
+          "#5876D6",
+          "#7798FC",
+          "#AAC2FF",
+          "#E6EEFF"
+        ]
+      },
+      "figure-ground": {
+        "role": "neutral",
+        "displayName": "Figure White",
+        "purpose": "Light-theme page ground (journal figure).",
+        "canonical": "oklch(96.6% 0.003 228.8)",
+        "tonalRamp": [
+          "#0A0B0C",
+          "#232425",
+          "#3E4041",
+          "#5C5E5F",
+          "#7C7D7E",
+          "#9D9FA0",
+          "#C2C4C5",
+          "#EDEFF0"
+        ]
+      },
+      "viewer-ground": {
+        "role": "neutral",
+        "displayName": "Viewer Black",
+        "purpose": "Dark-theme page ground (molecular-graphics viewer).",
+        "canonical": "oklch(12.7% 0.009 253.7)",
+        "tonalRamp": [
+          "#090B0F",
+          "#212428",
+          "#3D4044",
+          "#5A5E63",
+          "#7A7E82",
+          "#9B9FA4",
+          "#C0C4CA",
+          "#EAEFF4"
+        ]
+      },
+      "figure-ink": {
+        "role": "neutral",
+        "displayName": "Figure Ink",
+        "purpose": "Light-theme headings and values.",
+        "canonical": "oklch(16.2% 0.012 254.2)",
+        "tonalRamp": [
+          "#080B10",
+          "#20242A",
+          "#3B4046",
+          "#595E65",
+          "#787E85",
+          "#999FA6",
+          "#BFC5CC",
+          "#E9EFF7"
+        ]
+      },
+      "figure-hairline": {
+        "role": "neutral",
+        "displayName": "Figure Hairline",
+        "purpose": "Light-theme rules and dividers.",
+        "canonical": "oklch(91.0% 0.009 242.8)",
+        "tonalRamp": [
+          "#080C0F",
+          "#202528",
+          "#3C4044",
+          "#595E63",
+          "#797E82",
+          "#9A9FA4",
+          "#BFC5CA",
+          "#E9EFF4"
+        ]
+      },
+      "viewer-hairline": {
+        "role": "neutral",
+        "displayName": "Viewer Hairline",
+        "purpose": "Dark-theme rules and dividers.",
+        "canonical": "oklch(26.0% 0.023 251.4)",
+        "tonalRamp": [
+          "#050C14",
+          "#1C252F",
+          "#37414C",
+          "#545F6A",
+          "#747F8B",
+          "#94A0AD",
+          "#BAC5D3",
+          "#E4F0FE"
+        ]
+      }
+    },
+    "themes": {
+      "default": "light (figure)",
+      "switch": "data-theme on the app root div, persisted to localStorage cmc-theme; molecule reads colors via getComputedStyle on its host, not <html>",
+      "roleTokens": [
+        "--accent",
+        "--accent-2",
+        "--chain-h",
+        "--chain-l",
+        "--bridge",
+        "--glycan",
+        "--ok",
+        "--warn",
+        "--bad",
+        "--text-h",
+        "--text-body",
+        "--text-sec",
+        "--text-muted",
+        "--text-faint",
+        "--panel",
+        "--panel-2",
+        "--hairline",
+        "--border-bright",
+        "--bg-base"
+      ]
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home headline and closing line; one per page."
+      },
+      "page-title": {
+        "displayName": "Page Title",
+        "purpose": "Every tool page title via PageHead / SectionHeader."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Home section heads, max 20ch."
+      },
+      "title": {
+        "displayName": "Cell Title",
+        "purpose": "Names in index cells and the molecule readout."
+      },
+      "body-lede": {
+        "displayName": "Lede",
+        "purpose": "Page subtitles, 66ch max."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, answers, table text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tabs, chips, buttons, headers; sentence case."
+      },
+      "readout": {
+        "displayName": "Readout",
+        "purpose": "Fact figures in page heads."
+      },
+      "value": {
+        "displayName": "Value",
+        "purpose": "Units, conditions, table values, kbd hints."
+      }
+    },
+    "fonts": {
+      "source": "Google Fonts: Archivo (wdth 62..125, wght 100..900) and JetBrains Mono 400-700, loaded in public/index.html"
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "Structure Viewer atoms are flat; separation is by hairline."
+      },
+      {
+        "name": "masthead-backdrop",
+        "value": "backdrop-filter: saturate(1.4) blur(10px) over bg-base at 92%",
+        "purpose": "Sticky masthead only."
+      },
+      {
+        "name": "legacy-shadow",
+        "value": "var(--shadow) = 0 12px 28px -14px rgba(10,14,19,.16) light / 0 14px 34px -14px rgba(0,0,0,.75) dark",
+        "purpose": "Older views only (.card-hover, .lc-glass); not for new surfaces."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state",
+        "value": "0.2s ease on color, border-color, background-color",
+        "purpose": "All hover/selected transitions."
+      },
+      {
+        "name": "press-lift",
+        "value": "translateY(-1px), 0.2s cubic-bezier(.2,.7,.2,1)",
+        "purpose": "Primary button hover."
+      },
+      {
+        "name": "drop-in",
+        "value": "lc-dropin 0.35s cubic-bezier(.16,.6,.2,1)",
+        "purpose": "Stress callout and revealed answers."
+      },
+      {
+        "name": "reveal",
+        "value": "lc-reveal 0.8s cubic-bezier(.16,.6,.2,1)",
+        "purpose": "Scroll reveal of home sections."
+      },
+      {
+        "name": "view-transition",
+        "value": "out 0.22s cubic-bezier(.4,0,1,1); in 0.42s cubic-bezier(.16,.6,.2,1) +0.06s",
+        "purpose": "Route changes; masthead held still."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Molecule renders still, SEC trace renders its finished run, reveals and transitions disabled."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "cells-3",
+        "value": "1100px"
+      },
+      {
+        "name": "pipeline-2",
+        "value": "1000px"
+      },
+      {
+        "name": "rail-stack",
+        "value": "960px"
+      },
+      {
+        "name": "hero-stack",
+        "value": "860px"
+      },
+      {
+        "name": "gutter-16",
+        "value": "720px"
+      },
+      {
+        "name": "pipeline-1",
+        "value": "560px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call to action (Enter the pipeline). Nitrogen blue in both themes.",
+      "html": "<button class=\"ds-btn-primary\">Enter the pipeline</button>",
+      "css": ".ds-btn-primary{font-family:var(--font-sans, Archivo, system-ui, sans-serif);height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:15px;line-height:1;background:var(--cpk-n,#3D63DD);color:#fff;border:1px solid var(--cpk-n,#3D63DD);cursor:pointer;transition:background-color .2s,transform .2s cubic-bezier(.2,.7,.2,1);} .ds-btn-primary:hover{background:color-mix(in srgb,var(--cpk-n,#3D63DD) 84%,#000);transform:translateY(-1px);} .ds-btn-primary:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:2px;}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Second action beside the primary (Open the assays).",
+      "html": "<button class=\"ds-btn-secondary\">Open the assays</button>",
+      "css": ".ds-btn-secondary{font-family:var(--font-sans, Archivo, system-ui, sans-serif);height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:15px;line-height:1;background:transparent;color:var(--text-h,#0A0E13);border:1px solid var(--border-bright,#BCC6CF);cursor:pointer;transition:border-color .2s;} .ds-btn-secondary:hover{border-color:var(--text-h,#0A0E13);} .ds-btn-secondary:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:2px;}"
+    },
+    {
+      "name": "Text Link",
+      "kind": "button",
+      "refersTo": "link",
+      "description": "In-place action set as an underlined accent link.",
+      "html": "<button class=\"ds-link\">Another question</button>",
+      "css": ".ds-link{font-family:var(--font-sans, Archivo, system-ui, sans-serif);background:none;border:none;padding:0;cursor:pointer;font-weight:600;font-size:14px;line-height:1.4;color:var(--accent,#2C4FC7);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;} .ds-link:hover{text-decoration-thickness:2px;} .ds-link:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:2px;border-radius:3px;}"
+    },
+    {
+      "name": "Mode Tabs",
+      "kind": "chip",
+      "refersTo": "tab",
+      "description": "The one control for modes, filters and Stress conditions: hover outlines, selected fills with the role color.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab is-on\">Atlas</button><button class=\"ds-tab\">CQA × Method</button><button class=\"ds-tab\">ICH Q2</button><button class=\"ds-tab\" disabled>Strategy</button></div>",
+      "css": ".ds-tabs{display:flex;flex-wrap:wrap;gap:8px;} .ds-tab{--tab:var(--accent,#2C4FC7);font-family:var(--font-sans, Archivo, system-ui, sans-serif);font-weight:600;font-size:13px;line-height:1;padding:9px 14px;border-radius:999px;background:transparent;color:var(--text-sec,#4A5662);border:1px solid var(--hairline,#DCE2E7);cursor:pointer;transition:border-color .2s,color .2s,background-color .2s;} .ds-tab:hover{border-color:var(--tab);color:var(--text-h,#0A0E13);} .ds-tab.is-on{background:var(--tab);border-color:var(--tab);color:#fff;} .ds-tab:disabled{opacity:.35;cursor:default;} .ds-tab:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:2px;}"
+    },
+    {
+      "name": "Role Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Label with a role-colored dot (levels, method roles). Not interactive.",
+      "html": "<span class=\"ds-chip\" style=\"--chip:#1F9D63\">Foundational</span> <span class=\"ds-chip\" style=\"--chip:#E0393E\">Expert</span>",
+      "css": ".ds-chip{--chip:var(--accent,#2C4FC7);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-family:var(--font-sans, Archivo, system-ui, sans-serif);font-weight:600;font-size:11px;line-height:1;padding:4px 8px 4px 7px;border-radius:999px;color:var(--text-h,#0A0E13);background:color-mix(in srgb,var(--chip) 12%,transparent);} .ds-chip::before{content:\"\";width:6px;height:6px;border-radius:50%;background:var(--chip);}"
+    },
+    {
+      "name": "Sequence Track",
+      "kind": "nav",
+      "refersTo": "track-cell-bar",
+      "description": "Global navigation: every section is a residue cell on one chain, grouped by segment color.",
+      "html": "<nav class=\"ds-track\"><div class=\"ds-seg\" style=\"--seg:#2C4FC7\"><span class=\"ds-seg-name\">Learn</span><div class=\"ds-cells\"><button class=\"ds-cell is-on\"><i></i><span>Pipeline</span></button><button class=\"ds-cell\"><i></i><span>Timeline</span></button></div></div><div class=\"ds-seg\" style=\"--seg:#C96A12\"><span class=\"ds-seg-name\">Science</span><div class=\"ds-cells\"><button class=\"ds-cell\"><i></i><span>Methods</span></button><button class=\"ds-cell\"><i></i><span>Stability</span></button></div></div><div class=\"ds-seg\" style=\"--seg:#A87F00\"><span class=\"ds-seg-name\">Tools</span><div class=\"ds-cells\"><button class=\"ds-cell\"><i></i><span>OOS/OOT</span></button></div></div></nav>",
+      "css": ".ds-track{display:flex;gap:14px;font-family:var(--font-sans, Archivo, system-ui, sans-serif);} .ds-seg{display:flex;flex-direction:column;gap:5px;flex:1 1 auto;} .ds-seg-name{font-weight:600;font-size:10.5px;color:var(--text-faint,#98A3AE);} .ds-cells{display:flex;gap:2px;} .ds-cell{flex:1 1 0;display:flex;flex-direction:column;gap:6px;background:none;border:none;padding:0;cursor:pointer;text-align:left;font-family:inherit;} .ds-cell i{display:block;height:4px;border-radius:2px;background:color-mix(in srgb,var(--seg) 32%,transparent);transition:background-color .2s;} .ds-cell span{font-weight:500;font-size:12px;line-height:1;color:var(--text-muted,#6B7783);padding-right:10px;transition:color .2s;} .ds-cell:hover i{background:color-mix(in srgb,var(--seg) 70%,transparent);} .ds-cell:hover span{color:var(--text-h,#0A0E13);} .ds-cell.is-on i{background:var(--seg);} .ds-cell.is-on span{color:var(--text-h,#0A0E13);font-weight:700;} .ds-cell:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:2px;border-radius:3px;}"
+    },
+    {
+      "name": "Index Cell",
+      "kind": "custom",
+      "refersTo": "track-cell-bar",
+      "description": "Identical cell used by home rows, method atlas and pipeline overview: track bar, wide name, one line.",
+      "html": "<button class=\"ds-icell\" style=\"--seg:#C96A12\"><i></i><strong>SEC-HPLC</strong><span>Separates aggregates, monomer and fragments by size.</span></button>",
+      "css": ".ds-icell{display:flex;flex-direction:column;gap:8px;text-align:left;background:none;border:none;padding:0;cursor:pointer;max-width:260px;font-family:var(--font-sans, Archivo, system-ui, sans-serif);} .ds-icell i{display:block;height:4px;border-radius:2px;background:color-mix(in srgb,var(--seg) 35%,transparent);transition:background-color .25s;margin-bottom:4px;} .ds-icell strong{font-weight:800;font-size:22px;line-height:1.05;font-stretch:115%;letter-spacing:-.02em;color:var(--text-h,#0A0E13);transition:color .2s;} .ds-icell span{font-size:13px;line-height:1.55;color:var(--text-muted,#6B7783);} .ds-icell:hover i{background:var(--seg);} .ds-icell:hover strong{color:var(--accent,#2C4FC7);} .ds-icell:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:4px;border-radius:3px;}"
+    },
+    {
+      "name": "Fact Readout",
+      "kind": "custom",
+      "refersTo": "readout",
+      "description": "Page-head facts strip: mono figures over captions, hairline-separated.",
+      "html": "<dl class=\"ds-facts\"><div><dt>Analytical methods</dt><dd>22</dd></div><div><dt>Quality attributes</dt><dd>17</dd></div><div><dt>Q2 characteristics</dt><dd>9</dd></div></dl>",
+      "css": ".ds-facts{display:flex;flex-wrap:wrap;margin:0;border-top:1px solid var(--hairline,#DCE2E7);border-bottom:1px solid var(--hairline,#DCE2E7);} .ds-facts>div{padding:14px 28px 14px 0;margin-right:28px;border-right:1px solid var(--hairline,#DCE2E7);display:flex;flex-direction:column-reverse;gap:4px;} .ds-facts>div:last-child{border-right:none;} .ds-facts dt{font-family:var(--font-sans, Archivo, system-ui, sans-serif);font-weight:500;font-size:12.5px;line-height:1.2;color:var(--text-muted,#6B7783);} .ds-facts dd{margin:0;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);font-weight:600;font-size:26px;line-height:1;color:var(--text-h,#0A0E13);font-variant-numeric:tabular-nums;}"
+    },
+    {
+      "name": "Question Card",
+      "kind": "card",
+      "refersTo": "question-card",
+      "description": "The one filled container on home: panel, hairline, 16px radius, no shadow.",
+      "html": "<div class=\"ds-qcard\"><p>Why is SEC-HPLC monomer purity a release test rather than characterization only?</p><button class=\"ds-qbtn\">Show the reasoning</button></div>",
+      "css": ".ds-qcard{border:1px solid var(--hairline,#DCE2E7);border-radius:16px;background:var(--panel,#fff);padding:36px 40px;max-width:720px;font-family:var(--font-sans, Archivo, system-ui, sans-serif);} .ds-qcard p{margin:0 0 26px;font-weight:600;font-size:22px;line-height:1.42;letter-spacing:-.01em;color:var(--text-h,#0A0E13);} .ds-qbtn{height:48px;padding:0 22px;border-radius:999px;font:700 15px/1 inherit;background:transparent;color:var(--text-h,#0A0E13);border:1px solid var(--border-bright,#BCC6CF);cursor:pointer;} .ds-qbtn:hover{border-color:var(--text-h,#0A0E13);} .ds-qbtn:focus-visible{outline:2px solid var(--accent,#2C4FC7);outline-offset:2px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Structure Viewer",
+    "overview": "The site is an IgG1 antibody you can turn in your hands. Every surface behaves like molecular-graphics software or the figure it exports: a near-black viewer ground in dark mode, a white journal-figure ground in light mode (the default for new visitors), and color that only ever means a structural role. The home page is a full-bleed canvas molecule (depth-shaded spheres, leader-line labels, a Stress mode that heats the regions a condition attacks); every other page reads the same chain of roles through the sequence track at the top of the window.\n\nDensity is that of a scientific figure: wide, heavy Archivo headlines set against quiet hairline-ruled lists, with measured values in JetBrains Mono. Navigation and indexes are not card grids; they are rows of identical \"residue\" cells, each led by a 4px track bar in its segment's color. The world explicitly refuses the portfolio template (name, headshot, card grid), the editorial broadsheet look the site wore before, and the rainbow \"liquid chrome\" the owner rejected.",
+    "keyCharacteristics": [
+      "Two designed grounds: viewer black and figure white, both first-class.",
+      "Color is chemistry: CPK element roles, never decoration.",
+      "Wide display type (Archivo, width 112 to 125%) over a plain Archivo text voice.",
+      "Mono only for values, units and conditions.",
+      "Hairlines and track bars instead of cards and shadows.",
+      "One state vocabulary everywhere: hover outlines, selected fills, disabled ghosts.",
+      "Section URLs are shareable (`#/methods/am-sec`)."
+    ],
+    "rules": [
+      {
+        "name": "The CPK Role Rule",
+        "body": "A hue means its element role and nothing else: nitrogen blue = heavy chain and primary action, phosphorus orange = light chain and caution, sulfur yellow = bridges and highlight, oxygen red = glycan, critical and failure, chlorine green = pass. If a color has no structural or status meaning, use ink or a neutral instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The Segment Color Rule",
+        "body": "The five navigation groups are chain segments, set by `--seg`: Learn = heavy chain, Science = light chain, Tools = bridge, Practice = glycan, Career = muted ink. Any index of sections (sequence track, home rows) uses exactly this mapping.",
+        "section": "colors"
+      },
+      {
+        "name": "The Wide Display Rule",
+        "body": "h1 and h2 are always Archivo set wide (width 112% minimum, 118 to 125% for display) with negative tracking (-0.02 to -0.035em). Body copy is never stretched.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono-for-Measurements Rule",
+        "body": "JetBrains Mono is reserved for values, units, residue numbers, run conditions and keyboard hints. Never for prose, headings, or labels in capitals.",
+        "section": "typography"
+      },
+      {
+        "name": "The 66ch Rule",
+        "body": "Reading copy holds a measure of at most 66ch (`.sv-measure`, page subtitles).",
+        "section": "typography"
+      },
+      {
+        "name": "The Identical Cell Rule",
+        "body": "An index is a set of identical cells (track bar, name, one line), never cards of varying size. Hierarchy comes from the row's segment, not from making one cell bigger.",
+        "section": "layout"
+      },
+      {
+        "name": "The Hairline-Not-Shadow Rule",
+        "body": "Separate with a 1px hairline or a panel fill. If something seems to need a shadow to stand out, it needs a better position or a role color instead.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** take every color from a role token (`--chain-h`, `--chain-l`, `--bridge`, `--glycan`, `--ok`, `--warn`, `--bad`, `--accent`) so both grounds hold contrast.",
+      "**Do** use one state vocabulary everywhere: hover = outline in the role color, selected = filled with the role color, disabled = 35% opacity.",
+      "**Do** lead every navigable index item with a 4px track bar (2px radius) in its segment color, and keep the cells identical.",
+      "**Do** set h1 and h2 in Archivo at width 112 to 125%, weight 800 to 850, tracking -0.02 to -0.035em.",
+      "**Do** put numbers, units and run conditions in JetBrains Mono with tabular figures.",
+      "**Do** cap reading copy at 66ch.",
+      "**Do** give every tool page the `PageHead`: wide title, one-paragraph subtitle, mode tabs.",
+      "**Do** design both themes; new visitors land on the light figure ground.",
+      "**Do** render a finished, still state under `prefers-reduced-motion` (molecule, SEC trace, reveals, view transitions)."
+    ],
+    "donts": [
+      "**Don't** use a CPK hue decoratively or outside its role.",
+      "**Don't** add drop shadows, gradients or glass to Structure Viewer surfaces; separate with hairlines.",
+      "**Don't** build indexes as card grids of mixed sizes or nest cards inside cards.",
+      "**Don't** use emoji in the interface; use the monoline set in `src/icons.js`.",
+      "**Don't** return to rainbow or iridescent \"liquid chrome\", or to the earlier editorial-broadsheet styling.",
+      "**Don't** hardcode hex colors in inline styles; colors that bypass the tokens break on one of the two grounds.",
+      "**Don't** put uppercase tracked mono labels above headings; the system has no eyebrow tier."
+    ]
+  },
+  "drift": [
+    "Out-of-scope views (QbD, CTD, Timeline, Domains, ICH, Glossary, Career, Notes, Batch, Cases, Compendial, Excipient, Pathway, Progress, Viral) inherit tokens only: older card layouts, InfoBox/PhasePill hex-alpha boxes, .card-hover lift-and-shadow.",
+    "OOS decision-tree body and Exam configuration body below their page heads not restructured; local 20px SectionHeader with icon span in StabilityView/OOSView; ExamView passes an icon prop the shared SectionHeader ignores; Exam due-today banner hardcodes #D9731A with 10px/6px radii.",
+    "Legacy focus ring: input:focus box-shadow rgba(124,58,237,.15) (off-palette violet) in index.css.",
+    "Mono drift: App.js MONO constant and ReleaseStamp use ui-monospace instead of JetBrains Mono; AdminModal error color hardcoded #C99A06.",
+    "Contrast: white on selected tab in dark theme (#6F8FF2) is 3.05:1 and white on oxygen-red Stress tab 4.35:1, both under AA for 13px text; --text-faint fails on both grounds (2.65:1 dark, 2.33:1 light) yet labels sequence-track segments.",
+    "Legacy fx.css/shared.js remnants: lc-pill/lc-ghost 3px radius, lc-glass shadow, bento, lc-spec uppercase tracked mono labels (eyebrow), HeroBiologic gradients; index.css and fx.css headers still say 'The Instrument'; duplicate scrollbar rules (10px and 5px).",
+    "Contract vs build: direction contract listed CPK #2F55D4/#E0821E/#E9B308/#D9362B; build ships #3D63DD/#D9731A/#C99A06/#E0393E. Build recorded.",
+    "LC level colours reuse CPK hues as a difficulty ramp (Expert = oxygen red), overlapping the critical/failure meaning."
+  ]
+}

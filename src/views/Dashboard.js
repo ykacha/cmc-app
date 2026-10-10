@@ -90,7 +90,7 @@ export default function Dashboard({ setView, dark }) {
               <strong>Stress the molecule</strong>
               <div className="hm-stress-tabs" role="group" aria-label="Stress condition">
                 {STRESSES.map(s => (
-                  <button key={s.id} className={`sv-tab${stress === s.id ? " is-on" : ""}`} style={{ "--tab":"var(--cpk-o)" }}
+                  <button key={s.id} className={`sv-tab${stress === s.id ? " is-on" : ""}`} style={{ "--tab":"#C8262C" }}
                     aria-pressed={stress === s.id} onClick={() => setStress(stress === s.id ? null : s.id)}>{s.label}</button>
                 ))}
               </div>
