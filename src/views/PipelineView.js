@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Reveal, Magnetic, TEXT, SUB, FAINT } from "../lc";
+import { ProcessLine } from "../motion";
 import { Icon, stageIcon } from "../icons";
 import { LC } from "../shared";
 import { PIPELINE } from "../cmc-data";
@@ -38,6 +39,7 @@ export default function PipelineView() {
   const [mode, setMode] = useState("overview");   // overview | journey
   const [activeId, setActiveId] = useState(PIPELINE[0].id);
   const [prog, setProg] = useState(0);
+  const [pos, setPos] = useState(0);   // continuous stage position, e.g. 3.4 = 40% through stage 4
   const [hoverDot, setHoverDot] = useState(null);
   const [pendingJump, setPendingJump] = useState(null);
   const refs = useRef({});
@@ -71,6 +73,13 @@ export default function PipelineView() {
           const top = el.getBoundingClientRect().top + window.scrollY;
           const total = el.offsetHeight - window.innerHeight;
           setProg(total > 0 ? Math.min(Math.max((window.scrollY - top) / total, 0), 1) : 0);
+          const mid = window.innerHeight * 0.5;
+          let p = 0;
+          PIPELINE.forEach((s, i) => {
+            const r = refs.current[s.id]?.getBoundingClientRect();
+            if (r && r.top <= mid) p = i + Math.min(Math.max((mid - r.top) / r.height, 0), 1);
+          });
+          setPos(p);
         }
         raf = 0;
       });
@@ -203,18 +212,8 @@ export default function PipelineView() {
                   </div>
                 );
               })()}
-              <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
-                {PIPELINE.map(s => {
-                  const on = s.id === activeId;
-                  const sp = phaseOfNum(parseInt(s.stage, 10));
-                  return (
-                    <button key={s.id} onClick={() => jump(s.id)} onMouseEnter={() => setHoverDot(s.id)} onMouseLeave={() => setHoverDot(null)}
-                      style={{ width: on ? 22 : 13, height:13, borderRadius:99, cursor:"pointer", border:"none", padding:0, flexShrink:0,
-                        background: on ? sp.color : (s.id === hoverDot ? `color-mix(in srgb, ${sp.color} 55%, transparent)` : "var(--panel-2)"),
-                        boxShadow: on ? `0 0 10px ${sp.color}` : "inset 0 0 0 1px var(--hairline)", transition:"all .25s cubic-bezier(.34,1.6,.5,1)" }} />
-                  );
-                })}
-              </div>
+              <ProcessLine stages={PIPELINE} colorOf={s => phaseOfNum(parseInt(s.stage, 10)).color}
+                pos={pos} activeId={activeId} onPick={jump} onHover={setHoverDot} />
             </div>
 
             <div style={{ display:"flex", gap:8 }}>

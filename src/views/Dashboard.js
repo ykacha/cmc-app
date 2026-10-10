@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Reveal, CountUp } from "../lc";
+import { InstrumentTrace } from "../motion";
 import { PIPELINE, DOMAINS, GLOSSARY } from "../cmc-data";
 import { ANALYTICAL_METHODS, ICH_GUIDELINES } from "../extra-data";
 import { CASE_STUDIES } from "../case-study-data";
@@ -32,7 +33,7 @@ const SECTIONS = [
   { id:"progress",  label:"My Progress",        desc:"What you've covered, and what's still due for review.",       group:"tools" },
 ];
 
-/* ── hero backdrop: oversized corner wordmark + soft ambient light. ── */
+/* ── hero backdrop: soft ambient light (the instrument trace is the hero object). ── */
 function HeroBackdrop() {
   return (
     <div aria-hidden="true" style={{ position:"absolute", inset:0, overflow:"hidden", pointerEvents:"none" }}>
@@ -45,13 +46,6 @@ function HeroBackdrop() {
         transform:"translate(-30%,-50%)",
         background:"radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent), transparent 72%)",
       }} />
-      <div style={{
-        position:"absolute", top:"4%", right:"-2%", fontFamily:SERIF, fontWeight:600,
-        fontSize:"clamp(240px,32vw,620px)", lineHeight:0.78, letterSpacing:"-.04em",
-        color:"var(--text-h)", opacity:0.05, userSelect:"none", whiteSpace:"nowrap",
-      }}>
-        CMC
-      </div>
     </div>
   );
 }
@@ -110,7 +104,7 @@ export default function Dashboard({ setView }) {
       {/* ── OPENING ── */}
       <section style={{ minHeight:"92vh", display:"flex", flexDirection:"column", justifyContent:"center", position:"relative", overflow:"hidden", padding:"48px 32px" }}>
         <HeroBackdrop />
-        <div style={{ maxWidth:1280, margin:"0 auto", width:"100%", position:"relative" }}>
+        <div className="lc-hero-grid" style={{ maxWidth:1280, margin:"0 auto", width:"100%", position:"relative" }}>
           <div style={{ maxWidth:640 }}>
             <div style={{ fontFamily:MONO, fontSize:11, fontWeight:700, letterSpacing:".24em", color:"var(--accent)", marginBottom:28 }}>
               CMC APP · BUILT FROM THE BENCH UP
@@ -130,6 +124,9 @@ export default function Dashboard({ setView }) {
                 Or test yourself first
               </button>
             </div>
+          </div>
+          <div style={{ width:"100%", maxWidth:560, justifySelf:"end" }}>
+            <InstrumentTrace />
           </div>
         </div>
       </section>

@@ -148,8 +148,25 @@
 .pl-rail::-webkit-scrollbar-thumb{ background:var(--hairline); border-radius:6px; }
 @media(max-width:960px){ .pl-grid{ grid-template-columns:1fr; } .pl-rail{ position:static; max-height:none; overflow:visible; } }
 
+/* ---------- motion graphics (src/motion.js) ---------- */
+@keyframes mo-blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+@keyframes mo-halo  { 0%{transform:scale(1); opacity:.8} 100%{transform:scale(1.9); opacity:0} }
+.mo-blink{ animation:mo-blink 1.4s ease-in-out infinite; }
+.mo-halo{ transform-box:fill-box; transform-origin:center; animation:mo-halo 2.2s cubic-bezier(.2,.6,.3,1) infinite; }
+
+/* view-to-view transition (View Transitions API, see navigate() in App.js) */
+@keyframes mo-vt-out { to{ opacity:0; transform:translateY(-6px); } }
+@keyframes mo-vt-in  { from{ opacity:0; transform:translateY(10px); } }
+::view-transition-old(root){ animation:mo-vt-out .22s cubic-bezier(.4,0,1,1) both; }
+::view-transition-new(root){ animation:mo-vt-in .42s cubic-bezier(.16,.6,.2,1) .06s both; }
+.mo-vt-nav{ view-transition-name:site-nav; }
+::view-transition-group(site-nav), ::view-transition-old(site-nav), ::view-transition-new(site-nav){ animation:none; }
+html.mo-vt main.view-enter{ animation:none; }
+
 /* ---------- accessibility ---------- */
 @media (prefers-reduced-motion: reduce){
   .lc-reveal{ opacity:1 !important; animation:none !important; }
   .lc-stamp{ animation:none !important; opacity:1 !important; transform:rotate(-7deg) !important; }
+  .mo-blink, .mo-halo{ animation:none !important; }
+  ::view-transition-old(root), ::view-transition-new(root){ animation:none !important; }
 }

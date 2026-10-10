@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { flushSync } from "react-dom";
+import { reducedMotion } from "./motion";
 import "./fx.css";
 import Dashboard from "./views/Dashboard";
 import { LiquidBackdrop } from "./lc";
@@ -189,8 +191,14 @@ export default function App() {
   const toggleTheme = () => setDarkMode(d => { const n = !d; localStorage.setItem("cmc-theme", n ? "dark" : "light"); return n; });
 
   const navigate = (id) => {
-    setView(id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const swap = () => { flushSync(() => setView(id)); window.scrollTo(0, 0); };
+    if (document.startViewTransition && id !== view && !reducedMotion()) {
+      document.documentElement.classList.add("mo-vt");
+      document.startViewTransition(swap).finished.finally(() => document.documentElement.classList.remove("mo-vt"));
+    } else {
+      setView(id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     try { const v = JSON.parse(localStorage.getItem("cmc-visited-views") || "[]");
       if (!v.includes(id)) { v.push(id); localStorage.setItem("cmc-visited-views", JSON.stringify(v)); } } catch { /* ignore */ }
   };
@@ -225,7 +233,7 @@ export default function App() {
       <IndexOverlay open={menuOpen} onClose={() => setMenuOpen(false)} groups={NAV_GROUPS} view={view} onPick={navigate} />
 
       {/* ── Minimal fixed bar ── */}
-      <div style={{ position:"sticky", top:0, zIndex:200, background:"var(--bg-base)" }}>
+      <div className="mo-vt-nav" style={{ position:"sticky", top:0, zIndex:200, background:"var(--bg-base)" }}>
         <nav style={{ maxWidth:1280, margin:"0 auto", height:72, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", borderBottom:"1px solid var(--hairline)" }}>
 
           <button onClick={() => navigate("dashboard")}
