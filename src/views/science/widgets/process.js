@@ -38,11 +38,11 @@ export function Bioreactor() {
           <line className="br-sparger" x1="104" y1="246" x2="156" y2="246" />
           <g className={`br-probe${on("probe-do")}`}><line x1="80" y1="40" x2="80" y2="190" /><circle cx="80" cy="192" r="4" /></g>
           <g className={`br-probe${on("probe-ph")}`}><line x1="96" y1="40" x2="96" y2="170" /><circle cx="96" cy="172" r="4" /></g>
-          <g className={`br-line${on("feed")}`}><path d="M226 40 v-12 h-40 v50" /><circle cx="226" cy="44" r="5" /></g>
-          <g className={`br-line${on("exhaust")}`}><path d="M170 78 v-30 h26" /></g>
+          <g className={`br-line${on("feed")}`}><path d="M254 34 h-62 v44" /><circle cx="254" cy="34" r="5" /></g>
+          <g className={`br-line${on("exhaust")}`}><path d="M166 78 v-52" /></g>
           <g className={`br-line${on("harvest")}`}><path d="M130 270 v18 h70" /></g>
-          <text x="80" y="34" className="br-t">DO</text><text x="96" y="22" className="br-t">pH</text>
-          <text x="236" y="48" className="br-t">feed</text><text x="200" y="52" className="br-t">gas out</text>
+          <text x="80" y="34" className="br-t" textAnchor="middle">DO</text><text x="96" y="22" className="br-t" textAnchor="middle">pH</text>
+          <text x="258" y="24" className="br-t" textAnchor="end">feed</text><text x="166" y="18" className="br-t" textAnchor="middle">gas out</text>
           <text x="204" y="292" className="br-t">harvest</text>
         </svg>
       </div>
@@ -104,7 +104,7 @@ export function CultureProfile() {
         <span>Harvest on day <strong className="sv-mono">{day}</strong></span>
         <input type="range" min="10" max="16" value={day} onChange={e => setDay(+e.target.value)} />
       </label>
-      <div className="wg-stats">
+      <div className="wg-stats" aria-live="polite">
         <div><span>Titer</span><strong className="sv-mono">{titer} g/L</strong></div>
         <div><span>Viability</span><strong className="sv-mono">{via}%</strong></div>
         <div><span>Downstream burden</span><strong className={`wg-band wg-band-${burden}`}>{burden}</strong></div>
@@ -328,7 +328,7 @@ export function StabilityTrend() {
         {[0, 1, 2, 3].map(v => <text key={v} x={P.l - 6} y={y(v) + 4} className="wg-tick" textAnchor="end">{v}%</text>)}
         <rect x={x(0)} y={P.t} width={x(avail) - x(0)} height={H - P.t - P.b} className="wg-avail" />
         <line x1={x(0)} x2={x(XM)} y1={y(lim)} y2={y(lim)} className="wg-limit" />
-        <text x={x(XM)} y={y(lim) - 5} className="wg-tick" textAnchor="end">acceptance criterion {lim}%</text>
+        <text x={x(0) + 6} y={y(lim) - 6} className="wg-tick">acceptance criterion {lim}%</text>
         <line x1={x(0)} x2={x(XM)} y1={y(res.f.a)} y2={y(res.f.a + res.f.b * XM)} className="wg-fit" />
         <polyline points={Array.from({ length: 49 }, (_, t) => `${x(t)},${y(Math.min(YM, res.ub(t)))}`).join(" ")} className="wg-ci" />
         {STAB_LOTS.map((l, li) => STAB_T.filter(t => t <= avail).map((t, i) => <circle key={l.id + t} cx={x(t) + (li - 1) * 2.5} cy={y(l.d[i])} r="3.2" className={`wg-pt wg-pt-${li}`} />))}
@@ -338,7 +338,7 @@ export function StabilityTrend() {
         <label className="wg-slider"><span>Real-time data available <strong className="sv-mono">{avail} months</strong></span><input type="range" min="6" max="24" step="3" value={avail} onChange={e => setAvail([6, 9, 12, 18, 24].reduce((a, b) => Math.abs(b - e.target.value) < Math.abs(a - e.target.value) ? b : a))} /></label>
         <label className="wg-slider"><span>Acceptance criterion <strong className="sv-mono">≤ {lim}%</strong></span><input type="range" min="1.8" max="3.5" step="0.1" value={lim} onChange={e => setLim(+e.target.value)} /></label>
       </div>
-      <div className="wg-stats">
+      <div className="wg-stats" aria-live="polite">
         <div><span>Slope</span><strong className="sv-mono">{fmt(res.f.b * 12, 2)}% per year</strong></div>
         <div><span>Where the 95% bound meets the limit</span><strong className="sv-mono">{res.cross == null ? `> ${XM}` : statistical} months</strong></div>
         <div><span>Shelf life the real-time data support</span><strong className="sv-mono">{supported} months</strong></div>

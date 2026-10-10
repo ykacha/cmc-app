@@ -49,6 +49,7 @@ Living document for the seven-phase rebuild. Update the checkpoint at the end of
   - 14 interactive widgets in `src/views/science/widgets/` (bioreactor variables, culture profile, purification train, clearance, formulation trade-offs, injection force, stability shelf-life, relationship explorer, FMEA, DoE, design space, control layers, CoA, CTD navigator).
   - CMX-417 is now only the worked example on Proposal and QTPP; the stage hero no longer carries a product panel.
   - Analytical: HIC and RP-HPLC added (data, CQA map, guided path, theatres); Atlas splits product-specific procedures from compendial tests.
-- **Phase 7 (global refinement): open.** Remaining: full accessibility pass on widgets (keyboard on SVG charts), dark-theme screenshot review of every widget, scientific review of example numbers.
+- **Phase 7 (global refinement): done.** Dark-theme and true 390 px phone review of the widgets; fixes to chart labels, FMEA layout, bioreactor labels and phone topic tabs (horizontal scroll); live regions on widget results; reduced-motion rules; values snapped to the DESIGN.md scale (impeccable detector: 0 findings).
+- Not automatable here: a human scientific review of example numbers, and generation of the 3 art assets.
 - Art assets: 3 defined in the manifest, **0 generated** (no `OPENAI_API_KEY`).
 - Open scientific review items: all widget numbers are hypothetical teaching values and are labelled; needle inner diameters in the injection widget are approximate; verify ICH M4Q revision status (M4Q(R2) was in draft at the time of writing).

@@ -73,7 +73,7 @@ export function Fmea() {
               const rpn = r.s * r.o * r.d;
               return (
                 <tr key={r.i} className={r.s >= 9 ? "is-sev" : ""}>
-                  <td><span className="sv-rowname">{r.step}</span><br />{r.mode}</td>
+                  <td className="wg-fmea-mode"><strong>{r.step}</strong><span>{r.mode}</span></td>
                   <td>{r.effect}</td>
                   <td><Score r={r} k="s" /></td><td><Score r={r} k="o" /></td><td><Score r={r} k="d" /></td>
                   <td className="sv-mono wg-rpn">{rpn}{r.s >= 9 && <span className="wg-sev" title="High severity">high severity</span>}</td>
@@ -100,7 +100,7 @@ export function Doe() {
   const corners = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
   const ys = corners.map(([a, b]) => doeY(a, b, b12));
   const e1 = (ys[1] + ys[3] - ys[0] - ys[2]) / 2, e2 = (ys[2] + ys[3] - ys[0] - ys[1]) / 2, e12 = (ys[0] + ys[3] - ys[1] - ys[2]) / 2;
-  const G = 9, S = 240, pad = 34;
+  const G = 9, S = 240, pad = 56;
   const cell = S / G;
   const runs = mode === "doe" ? [...corners, [0, 0]] : [[-1, 0], [0, 0], [1, 0], [0, -1], [0, 1]];
   const px = (c) => pad + ((c + 1) / 2) * S, py = (c) => pad + S - ((c + 1) / 2) * S;
@@ -109,7 +109,7 @@ export function Doe() {
   return (
     <div className="wg wg-split">
       <div>
-        <svg viewBox={`0 0 ${S + pad + 10} ${S + pad + 28}`} className="wg-doe" role="img" aria-label="Predicted aggregate level across hold pH and time">
+        <svg viewBox={`0 0 ${S + pad + 24} ${S + pad + 36}`} className="wg-doe" role="img" aria-label="Predicted aggregate level across hold pH and time">
           {Array.from({ length: G * G }, (_, k) => {
             const i = k % G, j = Math.floor(k / G);
             const x1 = -1 + (2 * (i + 0.5)) / G, x2 = 1 - (2 * (j + 0.5)) / G;
@@ -119,8 +119,8 @@ export function Doe() {
           {mode === "ofat" && <><line x1={px(-1)} x2={px(1)} y1={py(0)} y2={py(0)} className="wg-doe-path" /><line x1={px(0)} x2={px(0)} y1={py(-1)} y2={py(1)} className="wg-doe-path" /></>}
           {runs.map(([a, b], k) => <circle key={k} cx={px(a)} cy={py(b)} r="7" className="wg-doe-run" />)}
           {mode === "ofat" && <circle cx={px(worst[0])} cy={py(worst[1])} r="11" className="wg-doe-miss" />}
-          <text x={pad} y={S + pad + 18} className="wg-tick">pH 3.4</text><text x={pad + S} y={S + pad + 18} className="wg-tick" textAnchor="end">pH 3.8</text>
-          <text x={pad - 6} y={pad + 4} className="wg-tick" textAnchor="end">120</text><text x={pad - 6} y={pad + S} className="wg-tick" textAnchor="end">30 min</text>
+          <text x={pad} y={S + pad + 24} className="wg-tick" textAnchor="middle">pH 3.4</text><text x={pad + S} y={S + pad + 24} className="wg-tick" textAnchor="middle">pH 3.8</text>
+          <text x={pad - 14} y={pad + 4} className="wg-tick" textAnchor="end">120 min</text><text x={pad - 14} y={pad + S + 4} className="wg-tick" textAnchor="end">30 min</text>
         </svg>
       </div>
       <div>
@@ -131,7 +131,7 @@ export function Doe() {
         </div>
         <label className="wg-slider"><span>Strength of the pH × time interaction <strong className="sv-mono">{fmt(b12, 2)}</strong></span>
           <input type="range" min="0" max="0.5" step="0.05" value={b12} onChange={e => setB12(+e.target.value)} /></label>
-        <div className="wg-stats">
+        <div className="wg-stats" aria-live="polite">
           <div><span>pH effect</span><strong className="sv-mono">{fmt(e1, 2)}%</strong></div>
           <div><span>Time effect</span><strong className="sv-mono">+{fmt(e2, 2)}%</strong></div>
           <div><span>Interaction</span><strong className="sv-mono">{fmt(e12, 2)}%</strong></div>
