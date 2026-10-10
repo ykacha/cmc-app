@@ -6,6 +6,7 @@ import Dashboard from "./views/Dashboard";
 import { Icon } from "./icons";
 import PipelineView   from "./views/PipelineView";
 import Analytical     from "./views/analytical/Analytical";
+import Science        from "./views/science/Science";
 import QbDView        from "./views/QbDView";
 import CTDView        from "./views/CTDView";
 import TimelineView   from "./views/TimelineView";
@@ -38,7 +39,7 @@ const NAV_GROUPS = [
     { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
   ]},
   { id:"science",  label:"Science",  color:"var(--chain-l)", items:[
-    { id:"analytical", label:"Analytical", short:"Analytical" }, { id:"qbd", label:"QbD / CQA / CPP", short:"QbD" }, { id:"viral", label:"Viral Clearance", short:"Viral" },
+    { id:"science", label:"Science journey", short:"Journey" }, { id:"analytical", label:"Analytical", short:"Analytical" }, { id:"qbd", label:"QbD / CQA / CPP", short:"QbD" }, { id:"viral", label:"Viral Clearance", short:"Viral" },
     { id:"stability", label:"Stability Studies", short:"Stability" }, { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
   ]},
   { id:"tools",    label:"Tools",    color:"var(--bridge)", items:[
@@ -308,6 +309,7 @@ export default function App() {
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
         {view==="pipeline"   && <PipelineView />}
         {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
+        {view==="science"    && <Science navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="qbd"        && <QbDView navigate={navigate} />}
         {view==="ctd"        && <CTDView />}
         {view==="timeline"   && <TimelineView />}

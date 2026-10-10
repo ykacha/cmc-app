@@ -1,0 +1,32 @@
+{
+  "artDirection": "Premium scientific editorial illustration for an advanced biopharmaceutical CMC learning platform. Restrained palette of indigo, warm amber, slate and neutral greys matching the site's CPK roles. Precise, scientifically plausible structures, soft directional light, clean composition with generous negative space for HTML/SVG annotations. No text, no labels, no logos, no glowing DNA, no neon, no stock-lab clichés.",
+  "assets": [
+    {
+      "id": "science-journey-hero",
+      "section": "Science overview",
+      "objective": "Establish the end-to-end story: cells, bioreactor, purification train and a filled syringe as one continuous material flow.",
+      "prompt": "A single continuous material flow, left to right: a CHO cell culture suggested by suspended spherical cells, a stainless single-use bioreactor in cutaway, a compact chromatography skid with three columns, and a filled 1 mL glass prefilled syringe. Isometric editorial view, scientifically plausible equipment proportions, unlabeled.",
+      "size": "1536x1024",
+      "file": null, "model": null, "generatedAt": null,
+      "scientificReview": "not started", "approval": "not approved"
+    },
+    {
+      "id": "proposal-blueprint",
+      "section": "Stage 1: development proposal",
+      "objective": "Visual anchor for the proposal: the antibody and its intended presentation side by side.",
+      "prompt": "A humanised IgG1 antibody rendered as a clean ribbon structure with the Fab arms, hinge and Fc clearly distinguishable, beside a 1 mL glass prefilled syringe at the same visual weight, on a quiet light background. Editorial, precise, unlabeled.",
+      "size": "1536x1024",
+      "file": null, "model": null, "generatedAt": null,
+      "scientificReview": "not started", "approval": "not approved"
+    },
+    {
+      "id": "qtpp-cqa-network",
+      "section": "Stage 2: QTPP and CQAs",
+      "objective": "Background plate for the QTPP to CQA relationship (labels and links are drawn in SVG).",
+      "prompt": "An abstract but scientifically grounded composition: an IgG1 antibody at centre with subtle highlighted regions at the CDR tips, the hinge, the Fc glycan pocket and the CH2-CH3 interface, rendered as soft glowing patches of amber on an indigo-grey structure. Lots of clear space around for annotations. No text.",
+      "size": "1536x1024",
+      "file": null, "model": null, "generatedAt": null,
+      "scientificReview": "not started", "approval": "not approved"
+    }
+  ]
+}
