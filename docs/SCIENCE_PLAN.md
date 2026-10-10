@@ -43,6 +43,12 @@ Living document for the seven-phase rebuild. Update the checkpoint at the end of
 | 7 | Global refinement | Consistency, links, accessibility, performance, tests, open review items |
 
 ## Checkpoint
-- **Phase 1: complete, awaiting approval** (branch `science-phase1`).
+- **Phase 1: complete** (7b577ee).
+- **Phases 2–6: built** on `science-phase1`, after the user approved building all remaining stages at once and asked that sections teach general science rather than follow one molecule.
+  - Content engine: `src/science/content/*` (54 topics across 10 stages) rendered by `src/views/science/Blocks.js`; routes `#/science/<stage>/<topic>`.
+  - 14 interactive widgets in `src/views/science/widgets/` (bioreactor variables, culture profile, purification train, clearance, formulation trade-offs, injection force, stability shelf-life, relationship explorer, FMEA, DoE, design space, control layers, CoA, CTD navigator).
+  - CMX-417 is now only the worked example on Proposal and QTPP; the stage hero no longer carries a product panel.
+  - Analytical: HIC and RP-HPLC added (data, CQA map, guided path, theatres); Atlas splits product-specific procedures from compendial tests.
+- **Phase 7 (global refinement): open.** Remaining: full accessibility pass on widgets (keyboard on SVG charts), dark-theme screenshot review of every widget, scientific review of example numbers.
 - Art assets: 3 defined in the manifest, **0 generated** (no `OPENAI_API_KEY`).
-- Open scientific review items: CMX-417 targets and scores are hypothetical; verify ICH M4Q revision status before Phase 6 (M4Q(R2) was in draft at the time of writing).
+- Open scientific review items: all widget numbers are hypothetical teaching values and are labelled; needle inner diameters in the injection widget are approximate; verify ICH M4Q revision status (M4Q(R2) was in draft at the time of writing).

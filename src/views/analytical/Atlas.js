@@ -30,8 +30,21 @@ function PhaseTrack({ phases }) {
   );
 }
 
-export default function Atlas({ item, go }) {
+/* Tests performed to a pharmacopoeial chapter. These are verified for
+   suitability with the product (USP <1226>), not developed and validated
+   from scratch like product-specific procedures. */
+export const COMPENDIAL = {
+  "am-general": "pH USP <791> / Ph. Eur. 2.2.3; osmolality USP <785> / Ph. Eur. 2.2.35; clarity and colour Ph. Eur. 2.2.1, 2.2.2",
+  "am-endotoxin": "USP <85> / Ph. Eur. 2.6.14",
+  "am-bioburden": "USP <61>, <62> / Ph. Eur. 2.6.12, 2.6.13",
+  "am-myco": "Ph. Eur. 2.6.7 / USP <63>",
+  "am-lo": "USP <787>, <788> / Ph. Eur. 2.9.19",
+  "am-visual": "USP <790> / Ph. Eur. 2.9.20",
+};
+
+export default function Atlas({ item, go, nav }) {
   const [q, setQ] = useState("");
+  const [kind, setKind] = useState("product");
   if (item && byId[item]) return <AssayPage m={byId[item]} go={go} />;
   const match = (m) => !q || `${m.name} ${m.abbreviation} ${m.purpose} ${m.category}`.toLowerCase().includes(q.toLowerCase());
   const shown = new Set();
@@ -43,8 +56,28 @@ export default function Atlas({ item, go }) {
         <label className="an-search"><span className="sr-only">Search assays</span>
           <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search assay or attribute" /></label>
       </div>
-      {CHAPTERS.filter(c => c.assays.length).map((c, ci) => {
-        const rows = c.assays.filter(a => !shown.has(a.id) && match(byId[a.id]));
+      <div className="ax-kind" role="tablist" aria-label="Kind of procedure">
+        <button role="tab" aria-selected={kind === "product"} className={`sv-tab${kind === "product" ? " is-on" : ""}`} onClick={() => setKind("product")}>Product-specific procedures</button>
+        <button role="tab" aria-selected={kind === "comp"} className={`sv-tab${kind === "comp" ? " is-on" : ""}`} onClick={() => setKind("comp")}>Compendial tests</button>
+      </div>
+      {kind === "comp" ? (
+        <section className="ax-group">
+          <p className="an-prose sv-measure">Compendial tests follow a pharmacopoeial chapter. The method itself is already validated by the pharmacopoeia; the laboratory <strong>verifies</strong> that it works for this product and matrix (USP &lt;1226&gt;), for example by showing that the antibody does not inhibit the endotoxin assay. Product-specific procedures, by contrast, are developed, qualified and validated under ICH Q2(R2) and Q14.</p>
+          <ul className="ax-rows">
+            {Object.entries(COMPENDIAL).filter(([id]) => match(byId[id])).map(([id, ch]) => (
+              <li key={id}>
+                <button onClick={() => go("atlas/" + id)}>
+                  <strong>{byId[id].abbreviation}</strong>
+                  <span className="ax-name">{byId[id].name}</span>
+                  <span className="ax-says sv-mono">{ch}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          {nav && <p className="vl-explain">The full pharmacopoeial cross-reference is in the <button className="hm-link" onClick={() => nav("compendial")}>Compendial reference</button>.</p>}
+        </section>
+      ) : CHAPTERS.filter(c => c.assays.length).map((c, ci) => {
+        const rows = c.assays.filter(a => !COMPENDIAL[a.id] && !shown.has(a.id) && match(byId[a.id]));
         rows.forEach(a => shown.add(a.id));
         if (!rows.length) return null;
         return (

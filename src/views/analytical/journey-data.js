@@ -61,6 +61,8 @@ export const CHAPTERS = [
       { id: "am-peptide-map", says: "Locates each modification to a single residue and measures its level." },
       { id: "am-glycan", says: "Releases and profiles the N-glycans: fucosylation, galactosylation, high mannose, sialylation." },
       { id: "am-mam", says: "The modern QC version of peptide mapping: many modifications measured site by site in one run." },
+      { id: "am-hic", says: "Separates the folded antibody by surface hydrophobicity; oxidised and isomerised forms often appear as side peaks." },
+      { id: "am-rp", says: "Denatures and reduces the antibody, then separates the chains; with MS it names each variant by mass." },
     ],
     links: "Charge-variant methods report the sum of many modifications; peptide mapping tells you which ones they are.",
   },

@@ -1,16 +1,13 @@
 import { STAGES, STAGE, CTD, GROUPS } from "../../science/journey";
-import { STAGE_STATE, PRODUCT } from "../../science/product";
 import { CtdChip } from "../../science/ui";
 
 const ctdTitle = Object.fromEntries(CTD.map(c => [c.id, c.title]));
 const num = (n) => String(n).padStart(2, "0");
 
 /* The section hero: one screen that explains a stage's purpose, flow,
-   decisions, risks, product status and CTD destination. Deep content
-   follows below it on built stages. */
+   decisions, risks and CTD destination. Deep-dive topics follow it. */
 export default function StageHero({ id, go, nav }) {
   const s = STAGE[id];
-  const st = STAGE_STATE[id];
   const i = STAGES.findIndex(x => x.id === id);
   const prev = STAGES[i - 1], next = STAGES[i + 1];
   const group = GROUPS.find(g => g.id === s.group);
@@ -54,11 +51,6 @@ export default function StageHero({ id, go, nav }) {
           <h3 className="an-h3">What can go wrong</h3>
           <ul className="an-list">{s.risks.map(x => <li key={x}>{x}</li>)}</ul>
         </div>
-        <div className="sh-product">
-          <h3 className="an-h3">{PRODUCT.code} at this stage</h3>
-          <p><strong>Known now.</strong> {st.know}</p>
-          <p><strong>To establish next.</strong> {st.next}</p>
-        </div>
       </div>
 
       <div className="sh-bottom">
@@ -74,17 +66,12 @@ export default function StageHero({ id, go, nav }) {
         )}
         {s.links && (
           <div>
-            <h3 className="an-h3">Existing modules</h3>
+            <h3 className="an-h3">Related tools</h3>
             <div className="sh-feeds">{s.links.map(l => <button key={l.label} className="sv-tab" onClick={() => nav(l.view, l.focus || null)}>{l.label}</button>)}</div>
           </div>
         )}
       </div>
 
-      {!s.built && (
-        <p className="sh-status">
-          This stage is mapped and linked to the existing modules. Its full rebuild, with deep dives and visualisations, is planned for phase {s.phase}.
-        </p>
-      )}
     </header>
   );
 }

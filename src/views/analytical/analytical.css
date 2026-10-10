@@ -565,3 +565,5 @@
 @media (prefers-reduced-motion: reduce){
   .th-pop, .th-fade, .an-page{ animation:none !important; }
 }
+
+.ax-kind{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 28px; }

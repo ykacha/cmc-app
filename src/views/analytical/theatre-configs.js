@@ -26,6 +26,21 @@ export const THEATRES = {
       { id: "bs", label: "Basic", color: B, mu: 18.7, sig: 0.5, area: 13.5, size: 1 },
     ],
     note: "Acidic species (deamidation, sialylation, glycation) carry extra negative charge and release from the cation exchanger earlier; basic species (C-terminal lysine, pyroglutamate loss) hold on longer." },
+  "am-hic": { kind: "sep", skin: "column", instrument: "HIC-HPLC", mode: "decreasing ammonium sulfate, UV 280 nm", tMax: 36, axis: "retention time (min)", ticks: [0, 12, 24, 36],
+    species: [
+      { id: "ox2", label: "Fc ox (2 sites)", color: O, mu: 15.2, sig: 0.5, area: 1.4, size: 1 },
+      { id: "ox1", label: "Fc ox (1 site)", color: B, mu: 17.0, sig: 0.5, area: 4.1, size: 1 },
+      { id: "mn", label: "Main", color: H, mu: 19.4, sig: 0.55, area: 92.0, size: 1 },
+      { id: "post", label: "Post-peak", color: L, mu: 22.6, sig: 0.6, area: 2.5, size: 1 },
+    ],
+    note: "High salt pushes hydrophobic patches onto the column; as the salt falls, species let go in order of exposed hydrophobicity. Oxidised methionines are more polar, so oxidised forms usually release first." },
+  "am-rp": { kind: "sep", skin: "column", instrument: "RP-HPLC (reduced)", mode: "acetonitrile gradient, 0.1% TFA, 75 °C", tMax: 30, axis: "retention time (min)", ticks: [0, 10, 20, 30],
+    species: [
+      { id: "lc", label: "Light chain", color: L, mu: 11.5, sig: 0.35, area: 33.0, size: 0.8 },
+      { id: "hcox", label: "HC oxidised", color: O, mu: 17.4, sig: 0.35, area: 2.0, size: 1.2 },
+      { id: "hc", label: "Heavy chain", color: H, mu: 18.6, sig: 0.4, area: 65.0, size: 1.2 },
+    ],
+    note: "The antibody is reduced and unfolded, so the column sees each chain's chemistry rather than the folded surface. The smaller, more polar light chain elutes first; heavy-chain variants separate just ahead of the main heavy chain." },
   "am-cief": { kind: "sep", skin: "gradient", focus: true, instrument: "icIEF", mode: "whole-column imaging, 280 nm", tMax: 1, axis: "pI", leftLabel: "pI 7.5", rightLabel: "pI 9.5",
     ticks: [0, 0.25, 0.5, 0.75, 1], tickFmt: (v) => (7.5 + v * 2).toFixed(1),
     species: [

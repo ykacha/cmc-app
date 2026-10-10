@@ -69,7 +69,7 @@ export const STAGES = [
     links: [{ view: "qbd", label: "Existing QbD module" }],
   },
   {
-    id: "candidate", group: "make", title: "Development pipeline and candidate selection", short: "Candidate", phase: 2,
+    id: "candidate", group: "make", title: "Development pipeline and candidate selection", short: "Candidate", built: true, phase: 2,
     purpose: "Choose the molecule most likely to be both effective and manufacturable.",
     inputs: ["Lead candidates", "Developability data", "QTPP"], activities: ["Developability screening", "Sequence liability review", "Candidate nomination"],
     outputs: ["Nominated candidate", "Developability report"], decisions: ["Which candidate goes forward?", "Re-engineer a liability or accept and control it?"],
@@ -77,7 +77,7 @@ export const STAGES = [
     links: [{ view: "pipeline", label: "Pipeline Explorer" }],
   },
   {
-    id: "cellline", group: "make", title: "Cell line construction and cell substrate", short: "Cell line", phase: 2,
+    id: "cellline", group: "make", title: "Cell line construction and cell substrate", short: "Cell line", built: true, phase: 2,
     purpose: "Create a stable, productive, well-characterised source of the molecule.",
     inputs: ["Nominated sequence", "Host cell line", "Expression vector"], activities: ["Transfection and selection", "Clone screening and clonality", "MCB and WCB manufacture and testing"],
     outputs: ["Master and working cell banks", "Cell substrate characterisation"], decisions: ["Which clone becomes the production cell line?"],
@@ -85,7 +85,7 @@ export const STAGES = [
     links: [{ view: "pipeline", label: "Pipeline: cell line stages" }],
   },
   {
-    id: "upstream", group: "make", title: "Upstream process development", short: "Upstream", phase: 2,
+    id: "upstream", group: "make", title: "Upstream process development", short: "Upstream", built: true, phase: 2,
     purpose: "Grow the cells and produce the antibody at scale with consistent quality.",
     inputs: ["Working cell bank", "Media and feeds", "Quality targets"], activities: ["Seed train and production bioreactor development", "Feeding strategy", "Scale-down model, process characterisation"],
     outputs: ["Harvest with a known quality profile", "Proposed CPPs and in-process controls"], decisions: ["Which operating ranges protect glycosylation, charge and aggregation?"],
@@ -93,7 +93,7 @@ export const STAGES = [
     links: [{ view: "pipeline", label: "Pipeline: upstream stage" }],
   },
   {
-    id: "downstream", group: "make", title: "Downstream processing and viral safety", short: "Downstream", phase: 3,
+    id: "downstream", group: "make", title: "Downstream processing and viral safety", short: "Downstream", built: true, phase: 3,
     purpose: "Purify the antibody to drug substance and demonstrate viral safety.",
     inputs: ["Clarified harvest", "Impurity burden", "Platform purification"], activities: ["Capture, viral inactivation, polishing, virus filtration, UF/DF", "Impurity clearance studies", "Viral clearance validation"],
     outputs: ["Drug substance", "Clearance and recovery data", "Log reduction values"], decisions: ["Which steps and ranges deliver required purity and viral safety?"],
@@ -101,7 +101,7 @@ export const STAGES = [
     links: [{ view: "viral", label: "Viral Clearance module" }, { view: "batch", label: "Batch Record Simulator" }],
   },
   {
-    id: "analytical", group: "measure", title: "Analytical development and characterisation", short: "Analytical", phase: 4,
+    id: "analytical", group: "measure", title: "Analytical development and characterisation", short: "Analytical", built: true, phase: 4,
     purpose: "Measure every quality attribute that matters, and prove the methods can be trusted.",
     inputs: ["QTPP and provisional CQAs", "Material from every process stage"], activities: ["Method selection and development", "Characterisation", "Qualification and validation", "Release and stability testing"],
     outputs: ["Analytical procedures", "Characterisation package", "Release and stability data"], decisions: ["Which methods control which attributes?", "Is a variant a product-related substance or impurity?"],
@@ -109,7 +109,7 @@ export const STAGES = [
     links: [{ view: "analytical", label: "Analytical series (13 chapters)" }, { view: "compendial", label: "Compendial reference" }],
   },
   {
-    id: "formulation", group: "dp", title: "Formulation, excipients and drug product", short: "Formulation", phase: 5,
+    id: "formulation", group: "dp", title: "Formulation, excipients and drug product", short: "Formulation", built: true, phase: 5,
     purpose: "Design a formulation and presentation that keep the antibody stable and injectable.",
     inputs: ["Drug substance properties", "Target presentation", "Degradation knowledge"], activities: ["Preformulation", "Excipient and pH screening", "High-concentration development", "Fill-finish and container closure"],
     outputs: ["Formulation composition", "Drug product process", "Container closure selection"], decisions: ["Which formulation balances stability, viscosity and manufacturability?"],
@@ -117,7 +117,7 @@ export const STAGES = [
     links: [{ view: "excipient", label: "Excipient compatibility module" }],
   },
   {
-    id: "stability", group: "dp", title: "Stability and shelf-life strategy", short: "Stability", phase: 5,
+    id: "stability", group: "dp", title: "Stability and shelf-life strategy", short: "Stability", built: true, phase: 5,
     purpose: "Show how the product changes over time and justify storage conditions and shelf life.",
     inputs: ["Formulation", "Stability-indicating methods"], activities: ["Forced degradation", "Long-term and accelerated studies", "Trend analysis"],
     outputs: ["Shelf life and storage conditions", "Stability commitments"], decisions: ["What shelf life does the data support?"],
@@ -125,7 +125,7 @@ export const STAGES = [
     links: [{ view: "stability", label: "Stability Studies module" }],
   },
   {
-    id: "qbd", group: "control", title: "QbD, risk management and control strategy", short: "QbD & control", phase: 6,
+    id: "qbd", group: "control", title: "QbD, risk management and control strategy", short: "QbD & control", built: true, phase: 6,
     purpose: "Join process, material and analytical knowledge into a control strategy that protects every CQA.",
     inputs: ["Risk assessments from every stage", "Process characterisation", "Analytical data"], activities: ["Criticality reassessment", "CPP and CMA identification", "DoE and proven acceptable ranges", "Control strategy design"],
     outputs: ["Integrated control strategy", "Justified CPPs and ranges"], decisions: ["How is each CQA controlled: by design, by process control or by testing?"],
@@ -133,7 +133,7 @@ export const STAGES = [
     links: [{ view: "qbd", label: "Existing QbD module" }],
   },
   {
-    id: "specs", group: "control", title: "Specifications, release and lifecycle control", short: "Specifications", phase: 6,
+    id: "specs", group: "control", title: "Specifications, release and lifecycle control", short: "Specifications", built: true, phase: 6,
     purpose: "Set acceptance criteria, release each lot and keep control after approval.",
     inputs: ["Control strategy", "Batch and stability data", "Validated methods"], activities: ["Specification justification", "Batch release and CoA", "Continued process verification"],
     outputs: ["DS and DP specifications", "Certificates of analysis"], decisions: ["Which tests are on release, and with what limits?"],
@@ -141,7 +141,7 @@ export const STAGES = [
     links: [{ view: "analytical", focus: "specs", label: "Analytical: setting specifications" }],
   },
   {
-    id: "ctd", group: "control", title: "CTD evidence integration and submission readiness", short: "CTD", phase: 6,
+    id: "ctd", group: "control", title: "CTD evidence integration and submission readiness", short: "CTD", built: true, phase: 6,
     purpose: "Assemble the evidence from every stage into a dossier a reviewer can follow.",
     inputs: ["Evidence from all stages"], activities: ["Map evidence to Module 3", "Write the Quality Overall Summary", "Check consistency and gaps"],
     outputs: ["Module 3 and Module 2.3"], decisions: ["Is the evidence sufficient and consistent for submission?"],
