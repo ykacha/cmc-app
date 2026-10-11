@@ -607,3 +607,23 @@
 @media (min-width:1101px){ .sc-topic-tabs{ display:none; } }
 @media (max-width:720px){ .sh-keys{ grid-template-columns:1fr; gap:10px; } .sc-tl-grid{ --name:120px; grid-template-columns:var(--name) repeat(var(--cols), minmax(64px,1fr)); min-width:600px; } }
 @media (prefers-reduced-motion: reduce){ .sc-tl-bar{ transition:none; } }
+
+/* overview hero: the title over a self-assembling antibody */
+.sc-hero{ position:relative; display:block; min-height:min(78vh, 720px); padding:40px 0 64px; isolation:isolate; }
+.sc-ab{ position:absolute; z-index:-1; top:-40px; right:-48px; width:min(62%, 760px); height:calc(100% + 40px); pointer-events:none; }
+.sc-ab canvas{ display:block; }
+.sc-ab::after{ content:""; position:absolute; inset:0; background:radial-gradient(60% 55% at 55% 48%, color-mix(in srgb, var(--chain-h) 9%, transparent), transparent 70%); z-index:-1; }
+.sc-hero-text{ position:relative; max-width:720px; padding-top:min(10vh, 96px); }
+.sc-hero-text .ov-h1{ font-size:clamp(48px, 7vw, 116px); line-height:.9; letter-spacing:-.035em; max-width:9.5em; text-wrap:balance; }
+.sc-hero-text .ov-lede{ max-width:52ch; }
+.sc-hero-text .ov-lede, .sc-hero-text .ov-h1{ text-shadow:0 0 24px var(--bg-base), 0 0 2px var(--bg-base); }
+.sc-ab-key{ position:absolute; right:0; bottom:48px; list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 18px; font:500 12px/1 var(--font-sans); color:var(--text-muted); }
+.sc-ab-key li{ display:flex; align-items:center; gap:7px; }
+.sc-ab-key li::before{ content:""; width:8px; height:8px; border-radius:50%; background:var(--k); }
+.sc-ab-key .is-h{ --k:var(--chain-h); } .sc-ab-key .is-l{ --k:var(--chain-l); } .sc-ab-key .is-b{ --k:var(--bridge); } .sc-ab-key .is-g{ --k:var(--glycan); }
+@media (max-width:1100px){
+  .sc-hero{ min-height:0; padding:12px 0 24px; display:flex; flex-direction:column; }
+  .sc-ab{ position:relative; order:2; top:0; right:0; width:100%; height:min(70vw, 460px); z-index:0; margin-top:8px; }
+  .sc-hero-text{ padding-top:0; }
+  .sc-ab-key{ position:static; order:3; justify-content:flex-start; }
+}

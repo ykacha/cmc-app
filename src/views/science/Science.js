@@ -9,6 +9,7 @@ import StageHero from "./StageHero";
 import Proposal from "./Proposal";
 import Qtpp from "./Qtpp";
 import { Blocks } from "./Blocks";
+import AntibodyHero from "./AntibodyHero";
 
 /* The Science journey. Routes:
      #/science                     overview
@@ -17,7 +18,6 @@ import { Blocks } from "./Blocks";
 
 const DEEP = { proposal: Proposal, qtpp: Qtpp };
 const num = (n) => String(n).padStart(2, "0");
-const N_TOPICS = Object.values(TOPICS).reduce((s, t) => s + t.length, 0);
 
 // every topic in journey order, for prev/next across stage boundaries
 const SEQUENCE = STAGES.flatMap(s => [{ stage: s.id }, ...(TOPICS[s.id] || []).map(t => ({ stage: s.id, topic: t.id }))]);
@@ -65,7 +65,7 @@ export default function Science({ navigate, focus, dark }) {
       </div>
 
       <div className="an-main" key={focus || "overview"}>
-        {!stage ? <Overview go={go} />
+        {!stage ? <Overview go={go} dark={dark} />
           : topic ? <TopicPage stage={stage} topic={topic} go={go} nav={navigate} dark={dark} />
           : <>{tid && <p className="sc-missing" role="status">That topic is not in this stage. Here is the stage overview instead.</p>}<StagePage stage={stage} go={go} nav={navigate} dark={dark} /></>}
       </div>
@@ -147,14 +147,14 @@ function TopicPage({ stage, topic, go, nav, dark }) {
 
 /* ─────────── Overview: two perspectives on one programme ─────────── */
 
-function Overview({ go }) {
+function Overview({ go, dark }) {
   const [view, setView] = useState("journey");
   const [hover, setHover] = useState(null);
-  const n_tools = Object.values(TOPICS).flat().flatMap(t => t.blocks).filter(b => b.t === "widget").length;
   return (
     <>
       <section className="sc-hero">
-        <div>
+        <AntibodyHero dark={dark} />
+        <div className="sc-hero-text">
           <h1 className="ov-h1">Biologics CMC, from proposal to dossier.</h1>
           <p className="ov-lede">
             The stages of a therapeutic protein programme, in the order the work happens. Each stage explains the science,
@@ -165,15 +165,12 @@ function Overview({ go }) {
             <button className="hm-secondary" onClick={() => go("qbd/explorer")}>Follow one attribute end to end</button>
           </div>
         </div>
-        <aside className="sc-card" aria-label="What is inside">
-          <dl className="sc-counts">
-            <div><dt>Stages</dt><dd className="sv-mono">{STAGES.length}</dd></div>
-            <div><dt>Deep-dive topics</dt><dd className="sv-mono">{N_TOPICS}</dd></div>
-            <div><dt>Interactive tools</dt><dd className="sv-mono">{n_tools}</dd></div>
-            <div><dt>CTD sections mapped</dt><dd className="sv-mono">{CTD.length}</dd></div>
-          </dl>
-          <p className="sc-card-note">General science throughout. Where a worked example helps (the proposal and the QTPP), it uses a fictional antibody and labels every number with where it comes from.</p>
-        </aside>
+        <ul className="sc-ab-key" aria-label="Colours in the antibody">
+          <li className="is-h">Heavy chains</li>
+          <li className="is-l">Light chains</li>
+          <li className="is-b">Hinge disulfides</li>
+          <li className="is-g">N-glycans</li>
+        </ul>
       </section>
 
       <section className="sc-persp">
