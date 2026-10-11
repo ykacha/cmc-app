@@ -7,8 +7,6 @@ import { Icon } from "./icons";
 import PipelineView   from "./views/PipelineView";
 import Analytical     from "./views/analytical/Analytical";
 import Science        from "./views/science/Science";
-import QbDView        from "./views/QbDView";
-import CTDView        from "./views/CTDView";
 import TimelineView   from "./views/TimelineView";
 import DomainsView    from "./views/DomainsView";
 import ExamView       from "./views/ExamView";
@@ -34,32 +32,42 @@ const SURFACE_VIEWS = ["methods","qbd","ctd","timeline","domains","ich","glossar
 
 // Each group is a chain segment in the sequence-track nav (colour = CPK role).
 const NAV_GROUPS = [
-  { id:"learn",    label:"Learn",    color:"var(--chain-h)", items:[
-    { id:"pipeline", label:"Pipeline Explorer", short:"Pipeline" }, { id:"timeline", label:"CMC Timeline", short:"Timeline" },
-    { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
-  ]},
-  { id:"science",  label:"Science",  color:"var(--chain-l)", items:[
-    { id:"science", label:"Science journey", short:"Journey" }, { id:"analytical", label:"Analytical", short:"Analytical" }, { id:"qbd", label:"QbD / CQA / CPP", short:"QbD" }, { id:"viral", label:"Viral Clearance", short:"Viral" },
-    { id:"stability", label:"Stability Studies", short:"Stability" }, { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
+  { id:"learn",    label:"Explore",  color:"var(--chain-h)", items:[
+    { id:"pipeline", label:"Pipeline Explorer", short:"Pipeline" }, { id:"science", label:"Science journey", short:"Journey" },
+    { id:"analytical", label:"Analytical", short:"Analytical" },
   ]},
   { id:"tools",    label:"Tools",    color:"var(--bridge)", items:[
-    { id:"ctd", label:"CTD Navigator", short:"CTD" }, { id:"oos", label:"OOS/OOT Investigation", short:"OOS/OOT" },
-    { id:"batch", label:"Batch Record Simulator", short:"Batch" }, { id:"cases", label:"Case Studies", short:"Cases" },
+    { id:"oos", label:"OOS/OOT Investigation", short:"OOS/OOT" }, { id:"batch", label:"Batch Record Simulator", short:"Batch" },
   ]},
   { id:"practice", label:"Practice", color:"var(--glycan)", items:[
-    { id:"exam", label:"Exam Mode", short:"Exam" }, { id:"notes", label:"My Notes", short:"Notes" },
+    { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"exam", label:"Exam Mode", short:"Exam" }, { id:"notes", label:"My Notes", short:"Notes" },
+  ]},
+  { id:"science",  label:"Library",  color:"var(--chain-l)", items:[
+    { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
+    { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
+    { id:"cases", label:"Case Studies", short:"Cases" },
   ]},
   { id:"career",   label:"Career",   color:"var(--text-muted)", items:[
     { id:"career", label:"Career & Interviews", short:"Career" }, { id:"pathway", label:"Learning Pathways", short:"Pathways" }, { id:"progress", label:"My Progress", short:"Progress" },
   ]},
 ];
-const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...NAV_GROUPS.flatMap(g => g.items.map(i => i.id))]);
+// Out of the nav but still reachable until their content moves into the Journey (docs/SITE_PLAN.md).
+const INTERIM_VIEWS = ["viral", "stability", "timeline"];
+// Retired sections: old links land on the Journey page that replaced them.
+const QBD_TAB = { qtpp:"qtpp", cqa:"qbd/cqa", fmea:"qbd/fmea", cpp:"qbd/cpp", doe:"qbd/doe", strategy:"qbd/control", coa:"specs/coa" };
+function redirect(v, f) {
+  if (v === "qbd") return { view: "science", focus: (f && QBD_TAB[f.split("/")[0]]) || "qbd" };
+  if (v === "ctd") return { view: "science", focus: "ctd/dossier" };
+  return null;
+}
+const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...INTERIM_VIEWS, ...NAV_GROUPS.flatMap(g => g.items.map(i => i.id))]);
 
 // "#/methods/am-sec" -> { view:"methods", focus:"am-sec" }
 function readHash() {
   const [v, ...rest] = window.location.hash.replace(/^#\/?/, "").split("/");
   const f = rest.filter(Boolean).join("/") || null;
   if (v === "methods") return { view: "analytical", focus: f ? "atlas/" + f : "atlas" };   // legacy links
+  const r = redirect(v, f); if (r) return r;
   return ALL_VIEWS.has(v) ? { view: v, focus: f } : { view: "dashboard", focus: null };
 }
 
@@ -223,6 +231,7 @@ export default function App() {
 
   const navigate = (id, f = null) => {
     if (id === "methods") { f = f ? "atlas/" + f : "atlas"; id = "analytical"; }   // legacy callers
+    const r = redirect(id, f); if (r) { id = r.view; f = r.focus; }
     const hash = id === "dashboard" ? "#/" : `#/${id}${f ? "/" + f : ""}`;
     if (window.location.hash !== hash) window.history.pushState(null, "", hash);
     const swap = () => { flushSync(() => setView(id, f)); window.scrollTo(0, 0); };
@@ -258,6 +267,7 @@ export default function App() {
     { key:"__home", icon:<Icon name="home" size={16} />, label:"Go to Dashboard", hint:"HOME", type:"home" },
     { key:"__theme", icon:<Icon name={darkMode ? "sun" : "moon"} size={16} />, label:`Switch to ${darkMode ? "light" : "dark"} theme`, hint:"THEME", type:"theme" },
     ...NAV_GROUPS.flatMap(g => g.items.map(it => ({ key:it.id, id:it.id, icon:<Icon name={it.id} size={16} />, label:it.label, hint:g.label.toUpperCase(), type:"nav" }))),
+    ...[["viral", "Viral Clearance"], ["stability", "Stability Studies"], ["timeline", "CMC Timeline"]].map(([id, label]) => ({ key:id, id, icon:<Icon name={id} size={16} />, label, hint:"MOVING TO JOURNEY", type:"nav" })),
   ];
   const pickPalette = (it) => {
     setPalette(false);
@@ -310,8 +320,6 @@ export default function App() {
         {view==="pipeline"   && <PipelineView />}
         {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="science"    && <Science navigate={navigate} focus={focus} dark={darkMode} />}
-        {view==="qbd"        && <QbDView navigate={navigate} />}
-        {view==="ctd"        && <CTDView />}
         {view==="timeline"   && <TimelineView />}
         {view==="domains"    && <DomainsView />}
         {view==="exam"       && <ExamView />}

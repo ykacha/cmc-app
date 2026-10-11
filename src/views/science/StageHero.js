@@ -1,6 +1,6 @@
 import { STAGES, STAGE, CTD, GROUPS, GLANCE } from "../../science/journey";
 import { CtdChip } from "../../science/ui";
-import { stageArt, ART_NOTE } from "../../science/art";
+import { stageArt } from "../../science/art";
 
 const ctdTitle = Object.fromEntries(CTD.map(c => [c.id, c.title]));
 const num = (n) => String(n).padStart(2, "0");
@@ -19,7 +19,6 @@ export default function StageHero({ id, go, nav }) {
         {stageArt(id) && (
           <figure className="sh-art">
             <img src={stageArt(id)} alt="" width="1536" height="1024" />
-            <figcaption>{ART_NOTE}</figcaption>
           </figure>
         )}
         <h1 className="sh-title"><span className="sv-mono ch-num">{num(s.n)}</span>{s.title}</h1>

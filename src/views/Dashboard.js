@@ -10,31 +10,26 @@ const methodName = (id) => ANALYTICAL_METHODS.find(m => m.id === id)?.name || id
 
 /* The site's sections, grouped exactly like the sequence track. */
 const GROUPS = [
-  { label:"Learn", color:"var(--chain-h)", items:[
-    { id:"pipeline", name:"Pipeline Explorer", line:`Gene construction to post-approval lifecycle, in ${PIPELINE.length} stages.` },
-    { id:"timeline", name:"CMC Timeline",      line:"What is due, and when, from pre-IND to post-approval." },
-    { id:"domains",  name:"Domain Q-Bank",     line:`${DOMAINS.length} domains of interview-grade questions.` },
-    { id:"ich",      name:"ICH Guidelines",    line:"The guidelines, decoded into what they mean for CMC." },
-    { id:"glossary", name:"Glossary",          line:`${GLOSSARY.length} terms, defined the way a mentor would.` },
-  ]},
-  { label:"Science", color:"var(--chain-l)", items:[
-    { id:"science",   name:"Science journey",    line:"One fictional antibody followed from proposal to CTD dossier." },
-    { id:"analytical", name:"Analytical",       line:`${ANALYTICAL_METHODS.length} assays run live, a validation lab, specs and comparability.` },
-    { id:"qbd",       name:"QbD / CQA / CPP",    line:"Design space, FMEA and the control strategy that follows." },
-    { id:"viral",     name:"Viral Clearance",    line:"Model viruses, orthogonal steps and the LRV arithmetic." },
-    { id:"stability", name:"Stability Studies",  line:"ICH Q1A(R2) conditions and the shelf-life math." },
-    { id:"compendial",name:"Compendial Reference", line:"USP, EP and JP methods, cross-referenced." },
-    { id:"excipient", name:"Excipients",         line:"What can share a vial, and what cannot." },
+  { label:"Explore", color:"var(--chain-h)", items:[
+    { id:"pipeline", name:"Pipeline Explorer", line:`How it is done: gene construction to post-approval, in ${PIPELINE.length} operational stages.` },
+    { id:"science",  name:"Science journey",   line:"Why it is done: the development programme from proposal to dossier, with interactive tools." },
+    { id:"analytical", name:"Analytical",      line:`${ANALYTICAL_METHODS.length} assays run live, a validation lab, specs and comparability.` },
   ]},
   { label:"Tools", color:"var(--bridge)", items:[
-    { id:"ctd",   name:"CTD Navigator",   line:"Where every part of the dossier lives." },
-    { id:"oos",   name:"OOS / OOT",       line:"The FDA 2006 investigation, worked as a decision tree." },
-    { id:"batch", name:"Batch Record",    line:"A sterile mAb batch to execute, deviations included." },
-    { id:"cases", name:"Case Studies",    line:`${CASE_STUDIES.length} CMC failures, examined in full.` },
+    { id:"oos",   name:"OOS / OOT",    line:"The FDA 2006 investigation, worked as a decision tree." },
+    { id:"batch", name:"Batch Record", line:"A sterile mAb batch to execute, deviations included." },
   ]},
   { label:"Practice", color:"var(--glycan)", items:[
+    { id:"domains", name:"Domain Q-Bank", line:`${DOMAINS.length} domains of interview-grade questions.` },
     { id:"exam",  name:"Exam Mode", line:"Spaced repetition with written answers, no multiple choice." },
     { id:"notes", name:"Notes",     line:"Your own notes, kept in this browser." },
+  ]},
+  { label:"Library", color:"var(--chain-l)", items:[
+    { id:"ich",       name:"ICH Guidelines",       line:"The guidelines, decoded into what they mean for CMC." },
+    { id:"glossary",  name:"Glossary",             line:`${GLOSSARY.length} terms, defined the way a mentor would.` },
+    { id:"compendial",name:"Compendial Reference", line:"USP, EP and JP methods, cross-referenced." },
+    { id:"excipient", name:"Excipients",           line:"What can share a vial, and what cannot." },
+    { id:"cases",     name:"Case Studies",         line:`${CASE_STUDIES.length} CMC failures, examined in full.` },
   ]},
   { label:"Career", color:"var(--text-muted)", items:[
     { id:"career",   name:"Career & Interviews", line:"The ladder from associate to VP, and what each rung is asked." },

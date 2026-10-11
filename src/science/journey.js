@@ -68,7 +68,6 @@ export const STAGES = [
     decisions: ["Which attributes are provisional CQAs?", "Which studies come first?"],
     risks: ["Treating every measured attribute as a CQA", "Locking criticality before evidence exists"],
     feeds: ["candidate", "upstream", "analytical", "formulation", "qbd"], ctd: [{ s: "3.2.P.2", status: "dev" }, { s: "3.2.S.3", status: "dev" }],
-    links: [{ view: "qbd", label: "Existing QbD module" }],
   },
   {
     id: "candidate", group: "make", title: "Development pipeline and candidate selection", short: "Candidate", built: true, phase: 2,
@@ -132,7 +131,6 @@ export const STAGES = [
     inputs: ["Risk assessments from every stage", "Process characterisation", "Analytical data"], activities: ["Criticality reassessment", "CPP and CMA identification", "DoE and proven acceptable ranges", "Control strategy design"],
     outputs: ["Integrated control strategy", "Justified CPPs and ranges"], decisions: ["How is each CQA controlled: by design, by process control or by testing?"],
     risks: ["Calling every monitored parameter a CPP", "Labelling explored ranges as a design space"], feeds: ["transfer", "specs"], ctd: [{ s: "3.2.S.2", status: "dev" }, { s: "3.2.P.2", status: "dev" }],
-    links: [{ view: "qbd", label: "Existing QbD module" }],
   },
   {
     id: "transfer", group: "scale", title: "Scale-up, technology transfer and process validation", short: "Transfer & PPQ", built: true, phase: 7,
@@ -156,7 +154,6 @@ export const STAGES = [
     inputs: ["Evidence from all stages"], activities: ["Map evidence to Module 3", "Write the Quality Overall Summary", "Check consistency and gaps"],
     outputs: ["Module 3 and Module 2.3"], decisions: ["Is the evidence sufficient and consistent for submission?"],
     risks: ["The same number reported differently in two sections", "Gaps found by the reviewer, not the team"], feeds: [], ctd: [{ s: "2.3", status: "none" }],
-    links: [{ view: "ctd", label: "CTD Navigator" }],
   },
 ];
 

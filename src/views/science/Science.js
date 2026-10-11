@@ -276,7 +276,6 @@ function Route({ go }) {
     <div className="sc-route">
       <figure className="sc-route-art">
         <img src={`${process.env.PUBLIC_URL || ""}/science-art/science-journey-hero.webp`} alt="Illustration of the material flow: cells, a bioreactor, a chromatography skid, a syringe filling line and the dossier binders." loading="lazy" width="1600" height="1067" />
-        <figcaption>From cells to dossier: what the journey makes. AI-generated illustration, not equipment drawings.</figcaption>
       </figure>
       <ol className="sc-route-line" aria-label="The journey, stage by stage">
         {GROUPS.map((g, gi) => (

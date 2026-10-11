@@ -80,7 +80,7 @@ describe("Statistics used by the labs", () => {
 });
 
 describe("Deep-dive content integrity", () => {
-  const VIEWS = new Set(["analytical", "compendial", "excipient", "stability", "batch", "viral", "qbd", "ctd", "pipeline"]);
+  const VIEWS = new Set(["analytical", "compendial", "excipient", "stability", "batch", "viral", "pipeline"]);
   const ANALYTICAL_CH = new Set(["journey", "atlas", "cqa", "lifecycle", "validation", "sst", "standards", "specs", "stability", "oos", "comparability", "strategy", "review"]);
   const all = Object.entries(TOPICS).flatMap(([stage, ts]) => ts.map(t => ({ stage, ...t })));
 
