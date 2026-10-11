@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { STAGES, STAGE, CTD } from "./journey";
+import { STAGES, STAGE, CTD, GLANCE, MILESTONES } from "./journey";
 import { QTPP, ATTRIBUTES, bandOf, scoreOf, IMPACT_SCALE, UNCERTAINTY_SCALE } from "./product";
 import { ANALYTICAL_METHODS } from "../extra-data";
 import { CQA_METHODS } from "../analytical-data";
@@ -21,6 +21,15 @@ describe("Science journey data integrity", () => {
     STAGES.forEach(s => {
       s.ctd.forEach(c => expect(ctdIds.has(c.s)).toBe(true));
       s.feeds.forEach(f => expect(STAGE[f]).toBeDefined());
+    });
+  });
+  test("every stage has a summary and a timeline span inside the milestones", () => {
+    STAGES.forEach(s => {
+      const g = GLANCE[s.id];
+      expect(g.keys).toHaveLength(3);
+      expect(g.span[0]).toBeGreaterThanOrEqual(0);
+      expect(g.span[1]).toBeLessThan(MILESTONES.length);
+      expect(g.span[0]).toBeLessThanOrEqual(g.span[1]);
     });
   });
   test("QTPP links only to defined attributes", () => {
@@ -155,6 +164,16 @@ describe("Science views", () => {
     fireEvent.click(screen.getByRole("button", { name: "What exists today" }));
     fireEvent.click(screen.getByRole("button", { name: /Process validation and evaluation/ }));
     expect(screen.getByText("Not generated yet")).toBeInTheDocument();
+  });
+  test("the timeline opens a stage, and an unknown topic falls back to its stage", () => {
+    const nav = jest.fn();
+    render(<Science navigate={nav} focus={null} />);
+    fireEvent.click(screen.getByRole("button", { name: /^Scale-up, technology transfer and process validation:/ }));
+    expect(nav).toHaveBeenCalledWith("science", "transfer");
+  });
+  test("an unknown topic shows the stage with a notice", () => {
+    render(<Science navigate={() => {}} focus="upstream/nope" />);
+    expect(screen.getByRole("status")).toHaveTextContent("not in this stage");
   });
   test("the overview switches to the CTD evidence map", () => {
     render(<Science navigate={() => {}} focus={null} />);

@@ -107,7 +107,7 @@ export const MODULES = [
         why: "Shows how the process is controlled while it runs, not only tested at the end." },
       { id: "3.2.S.2.5", title: "Process validation and evaluation", status: "later",
         fill: "Three consecutive PPQ lots at 2,000 L met all acceptance criteria for CPPs, IPCs and release. Resin and membrane lifetime validated at scale-down and confirmed concurrently at scale. Impurity clearance (HCP, DNA, Protein A) demonstrated by spiking studies. Viral clearance: X-MuLV ≥ 17.4 and MMV ≥ 11.3 log₁₀ cumulative LRV from validated scale-down studies.",
-        from: "Scale-down characterisation (exists) plus at-scale PPQ (does not exist yet).", links: [{ label: "Scale-down models", to: "upstream/characterization" }, { label: "Viral safety", to: "downstream/viral" }, { label: "Process validation", to: "qbd/validation" }],
+        from: "Scale-down characterisation (exists) plus at-scale PPQ (does not exist yet).", links: [{ label: "Scale-down models", to: "upstream/characterization" }, { label: "Viral safety", to: "downstream/viral" }, { label: "Process validation", to: "transfer/ppq" }],
         why: "Evidence that the commercial process consistently makes product of the intended quality.",
         gap: "The scale-down qualification and characterisation data exist. The PPQ lots and the at-scale confirmation do not." },
       { id: "3.2.S.2.6", title: "Manufacturing process development", status: "now",

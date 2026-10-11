@@ -179,7 +179,7 @@ export const DOWNSTREAM = [
         "**Continued process verification**: ongoing trending of parameters and attributes after approval.",
       ]},
       { t: "callout", tone: "reg", title: "Where it is filed", text: "Process description 3.2.S.2.2; controls of critical steps 3.2.S.2.4; validation 3.2.S.2.5; development history 3.2.S.2.6; viral safety 3.2.A.2." },
-      { t: "links", items: [{ label: "Process validation lifecycle", to: "qbd/validation" }, { label: "Control strategy", to: "qbd/control" }] },
+      { t: "links", items: [{ label: "Process validation lifecycle", to: "transfer/ppq" }, { label: "Control strategy", to: "qbd/control" }] },
     ],
   },
 ];

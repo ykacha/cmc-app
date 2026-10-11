@@ -180,19 +180,6 @@ export const QBD = [
     lede: "Choose an attribute and follow it through every part of the programme.",
     blocks: [{ t: "widget", id: "explorer" }],
   },
-  {
-    id: "validation", title: "Process validation and lifecycle",
-    lede: "From design to qualification to continued verification and change.",
-    blocks: [
-      { t: "table", head: ["Stage", "What happens", "Evidence"], rows: [
-        ["Process design (stage 1)", "Development and characterisation define the process and its controls", "Characterisation reports, CPP rationale"],
-        ["Process qualification (stage 2)", "Facility and equipment qualification; process performance qualification (PPQ) batches at commercial scale", "PPQ protocol and report"],
-        ["Continued process verification (stage 3)", "Ongoing monitoring of parameters and attributes; statistical trending", "CPV plan and periodic reports"],
-      ]},
-      { t: "p", text: "The three-stage model follows FDA's 2011 process validation guidance; EU GMP Annex 15 describes equivalent expectations. Post-approval, ICH Q12 defines established conditions and allows post-approval change management protocols to agree how future changes will be handled." },
-      { t: "links", items: [{ label: "Downstream validation", to: "downstream/validation" }, { label: "Lifecycle control", to: "specs/lifecycle" }] },
-    ],
-  },
 ];
 
 export const COA = {
@@ -288,7 +275,7 @@ export const SPECS = [
         "QA combines the record review with QC results and makes the disposition decision.",
       ]},
       { t: "callout", tone: "reg", title: "Where the requirements come from", text: "In the US, 21 CFR 211.188 lists what batch production and control records must contain and 211.192 requires their review before release; 21 CFR 600.12 adds record requirements for biologics. In the EU, EudraLex Volume 4 Chapter 4 covers documentation, Annex 11 covers computerised systems and Annex 16 covers certification by a Qualified Person. Executed batch records are sometimes requested in a dossier, typically in regional section 3.2.R." },
-      { t: "links", items: [{ label: "Batch Record Simulator", to: "batch:" }, { label: "QC records for the same lot", to: "specs/qcrecords" }, { label: "Process validation", to: "qbd/validation" }] },
+      { t: "links", items: [{ label: "Batch Record Simulator", to: "batch:" }, { label: "QC records for the same lot", to: "specs/qcrecords" }, { label: "Process validation", to: "transfer/ppq" }] },
       { t: "refs", items: ["21 CFR 211.186, 211.188, 211.192 (master and batch records, record review)", "21 CFR 600.12 (records, biological products)", "EudraLex Volume 4, Part I Chapter 4 (Documentation); Annex 11; Annex 16", "FDA, Data Integrity and Compliance With Drug CGMP: Questions and Answers (2018)", "PIC/S PI 041-1, Good Practices for Data Management and Integrity in Regulated GMP/GDP Environments (2021)"] },
     ],
   },
@@ -332,7 +319,7 @@ export const SPECS = [
         "**Change control**: every change assessed for impact on CQAs and filed at the right category.",
         "**Specification changes**: tightening based on experience is common; widening needs strong justification.",
       ]},
-      { t: "links", items: [{ label: "Process validation", to: "qbd/validation" }, { label: "Comparability", to: "analytical:comparability" }] },
+      { t: "links", items: [{ label: "Process validation", to: "transfer/ppq" }, { label: "Comparability", to: "analytical:comparability" }] },
     ],
   },
 ];

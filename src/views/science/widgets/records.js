@@ -58,10 +58,11 @@ export function BatchRecord() {
       <div className="wg-br">
         <nav className="wg-br-pages" aria-label="Batch record pages">
           {PAGES.map(p => {
-            const n = BR_ISSUES.filter(r => r.section === p.id && flags.has(r.id)).length;
+            const rows = BR_SECTIONS.find(s => s.id === p.id)?.rows || [];
+            const n = rows.filter(r => flags.has(r.id)).length;
             return (
               <button key={p.id} aria-current={page === p.id ? "page" : undefined} className={page === p.id ? "is-on" : ""} onClick={() => setPage(p.id)}>
-                {p.title}{review && [...flags].some(id => BR_SECTIONS.find(s => s.id === p.id)?.rows.some(r => r.id === id)) && <i className="wg-br-dot" aria-label={`${n} flagged`} />}
+                {p.title}{review && n > 0 && <i className="wg-br-dot" role="img" aria-label={`${n} raised`} />}
               </button>
             );
           })}
@@ -188,8 +189,8 @@ export function QcRecord({ nav }) {
   return (
     <div className="wg">
       <div className="wg-head"><ProvTag p="hypothetical" /><span>Fictional QC worksheets for lot DS-24-0031. Procedures, criteria and data are illustrative; endotoxin criteria follow the pharmacopoeial test.</span></div>
-      <div className="wg-chips" role="tablist" aria-label="QC record">
-        {QC_TABS.map(x => <button key={x.id} role="tab" aria-selected={tab === x.id} className={`sv-tab${tab === x.id ? " is-on" : ""}`} onClick={() => pick(x.id)}>{x.name}</button>)}
+      <div className="wg-chips" role="group" aria-label="QC record">
+        {QC_TABS.map(x => <button key={x.id} aria-pressed={tab === x.id} className={`sv-tab${tab === x.id ? " is-on" : ""}`} onClick={() => pick(x.id)}>{x.name}</button>)}
       </div>
 
       <div className="wg-br-sheet">

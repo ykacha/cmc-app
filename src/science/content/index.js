@@ -4,6 +4,7 @@ import { DOWNSTREAM } from "./downstream";
 import { ANALYTICAL } from "./analytical";
 import { FORMULATION, STABILITY } from "./formulation";
 import { QBD, SPECS, CTD_TOPICS } from "./quality";
+import { TRANSFER } from "./transfer";
 
 /* Deep-dive topics per journey stage. Proposal and QTPP are taught through
    a worked example instead (src/views/science/Proposal.js, Qtpp.js). */
@@ -16,6 +17,7 @@ export const TOPICS = {
   formulation: FORMULATION,
   stability: STABILITY,
   qbd: QBD,
+  transfer: TRANSFER,
   specs: SPECS,
   ctd: CTD_TOPICS,
 };

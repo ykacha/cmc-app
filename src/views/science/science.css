@@ -38,13 +38,6 @@
 .sc-persp{ padding-top:96px; }
 .sc-persp-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
 .sc-toggle{ display:flex; gap:6px; }
-.sc-lanes{ display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:16px; margin-top:28px; }
-.sc-lane{ display:flex; flex-direction:column; gap:10px; }
-.sc-lane-title{ font:700 13px/1.2 var(--font-sans); color:var(--text-muted); padding-bottom:10px; border-bottom:4px solid var(--chain-h); }
-.sc-lane:nth-child(2) .sc-lane-title{ border-color:var(--chain-l); }
-.sc-lane:nth-child(3) .sc-lane-title{ border-color:var(--bridge); }
-.sc-lane:nth-child(4) .sc-lane-title{ border-color:var(--cpk-cl); }
-.sc-lane:nth-child(5) .sc-lane-title{ border-color:var(--glycan); }
 .sc-node{ display:flex; flex-direction:column; gap:6px; text-align:left; background:var(--panel); border:1px solid var(--hairline); border-radius:16px; padding:14px 14px 12px; cursor:pointer; transition:border-color .2s, transform .25s cubic-bezier(.16,.6,.2,1); }
 .sc-node:hover{ border-color:var(--chain-h); transform:translateY(-2px); }
 .sc-node .sv-mono{ font-size:12px; color:var(--chain-h); }
@@ -183,14 +176,14 @@
 
 @media (max-width:1100px){
   .sc-hero, .qt-risk, .sh-grid, .sh-bottom{ grid-template-columns:1fr; }
-  .sc-lanes{ grid-template-columns:1fr 1fr; }
+  
   .pp-sections, .qt-rank, .qt-three{ grid-template-columns:1fr 1fr; }
   .pp-chain{ grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px 4px; }
   .sc-prov-legend{ grid-template-columns:1fr 1fr; }
   .qt-detail{ position:static; }
 }
 @media (max-width:720px){
-  .sc-lanes, .pp-sections, .qt-rank, .qt-three, .pp-deliv, .sc-prov-legend{ grid-template-columns:1fr; }
+  .pp-sections, .qt-rank, .qt-three, .pp-deliv, .sc-prov-legend{ grid-template-columns:1fr; }
   .pp-facts{ grid-template-columns:1fr 1fr; }
   .pp-chain{ grid-template-columns:1fr 1fr; }
   .sh-flow{ grid-template-columns:1fr; }
@@ -575,3 +568,42 @@
 .wg-dz-doc p{ margin:0; font-size:15px; line-height:1.65; color:var(--text-body); max-width:72ch; }
 @media (max-width:1100px){ .wg-dz{ grid-template-columns:1fr; } .wg-dz-list{ max-height:340px; overflow:auto; } }
 @media (max-width:720px){ .wg-dz-top{ grid-template-columns:1fr; gap:16px; } .wg-dz-tri{ max-width:320px; margin:0 auto; } .wg-dz-counts dd{ font-size:17px; } }
+
+/* stage colours by group */
+.sc-g-plan{ --g:var(--chain-h); } .sc-g-make{ --g:var(--chain-l); } .sc-g-measure{ --g:var(--bridge); }
+.sc-g-dp{ --g:var(--cpk-cl); } .sc-g-control{ --g:var(--glycan); } .sc-g-scale{ --g:color-mix(in srgb, var(--ok) 45%, var(--chain-h)); } .sc-g-file{ --g:var(--text-h); }
+
+/* overview: timeline of when each stage happens */
+.sc-tl{ margin:28px 0 0; }
+.sc-tl-scroll{ overflow-x:auto; padding:30px 40px 4px 0; }
+.sc-tl-grid{ --name:170px; position:relative; display:grid; grid-template-columns:var(--name) repeat(var(--cols), minmax(72px,1fr)); min-width:760px; row-gap:4px; }
+.sc-tl-corner{ border-bottom:1px solid var(--hairline); }
+.sc-tl-head{ padding:0 6px 10px; border-bottom:1px solid var(--hairline); border-left:1px solid var(--hairline); font:600 12px/1.2 var(--font-sans); color:var(--text-muted); }
+.sc-tl-gate{ position:absolute; top:-24px; bottom:0; left:calc(var(--name) + (100% - var(--name)) * var(--at)); width:0; border-left:2px dashed var(--text-faint); z-index:1; pointer-events:none; }
+.sc-tl-gate b{ position:absolute; top:0; left:0; transform:translateX(-50%); white-space:nowrap; font:700 11.5px/1 var(--font-sans); color:var(--text-h); background:var(--bg-base); padding:2px 6px; border:1px solid var(--hairline); border-radius:999px; }
+.sc-tl-row{ grid-column:1 / -1; display:grid; grid-template-columns:subgrid; align-items:center; background:none; border:none; padding:0; cursor:pointer; text-align:left; border-radius:2px; }
+.sc-tl-row:hover, .sc-tl-row:focus-visible{ background:color-mix(in srgb, var(--g) 8%, transparent); }
+.sc-tl-name{ display:flex; align-items:baseline; gap:8px; padding:6px 8px 6px 0; font:600 13px/1.25 var(--font-sans); color:var(--text-h); }
+.sc-tl-name .sv-mono{ font-size:11.5px; color:var(--text-muted); }
+.sc-tl-track{ position:relative; height:28px; }
+.sc-tl-bar{ position:absolute; top:7px; height:14px; border-radius:999px; background:color-mix(in srgb, var(--g) 70%, transparent); transition:transform .25s cubic-bezier(.16,.6,.2,1); transform-origin:left center; }
+.sc-tl-row:hover .sc-tl-bar{ background:var(--g); }
+.sc-tl figcaption{ margin-top:14px; font-size:13px; line-height:1.55; color:var(--text-sec); max-width:78ch; }
+
+/* overview: stage index, uniform grid in journey order */
+.sc-index{ list-style:none; margin:40px 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px; }
+.sc-index li{ display:flex; }
+.sc-index .sc-node{ width:100%; border-top:4px solid var(--g); }
+.sc-node-top{ display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+.sc-node-group{ font:600 11.5px/1.2 var(--font-sans); color:var(--text-muted); text-align:right; }
+
+/* stage hero summary */
+.sh-keys{ list-style:none; margin:20px 0 0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; max-width:1000px; counter-reset:k; }
+.sh-keys li{ counter-increment:k; border-top:2px solid var(--chain-h); padding-top:10px; font-size:14.5px; line-height:1.5; color:var(--text-body); }
+.sh-keys li::before{ content:counter(k, decimal-leading-zero); display:block; font:500 12px var(--font-mono); color:var(--chain-h); margin-bottom:6px; }
+.sc-missing{ margin:0 0 20px; padding:10px 14px; border-left:4px solid var(--warn); background:color-mix(in srgb, var(--warn) 8%, transparent); font-size:14px; color:var(--text-body); }
+
+/* the rail already lists topics on desktop; tabs only where the rail is hidden */
+@media (min-width:1101px){ .sc-topic-tabs{ display:none; } }
+@media (max-width:720px){ .sh-keys{ grid-template-columns:1fr; gap:10px; } .sc-tl-grid{ --name:120px; grid-template-columns:var(--name) repeat(var(--cols), minmax(64px,1fr)); min-width:600px; } }
+@media (prefers-reduced-motion: reduce){ .sc-tl-bar{ transition:none; } }

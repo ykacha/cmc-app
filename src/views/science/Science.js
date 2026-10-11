@@ -1,7 +1,7 @@
 import "./science.css";
 import "../analytical/analytical.css";
 import { useState } from "react";
-import { STAGES, STAGE, GROUPS, CTD, EVIDENCE } from "../../science/journey";
+import { STAGES, STAGE, GROUPS, CTD, EVIDENCE, MILESTONES, GATES, GLANCE } from "../../science/journey";
 import { TOPICS, topicOf } from "../../science/content";
 import { WIDGETS } from "./widgets";
 import { ProvLegend, EvidenceLegend } from "../../science/ui";
@@ -67,7 +67,7 @@ export default function Science({ navigate, focus, dark }) {
       <div className="an-main" key={focus || "overview"}>
         {!stage ? <Overview go={go} />
           : topic ? <TopicPage stage={stage} topic={topic} go={go} nav={navigate} dark={dark} />
-          : <StagePage stage={stage} go={go} nav={navigate} dark={dark} />}
+          : <>{tid && <p className="sc-missing" role="status">That topic is not in this stage. Here is the stage overview instead.</p>}<StagePage stage={stage} go={go} nav={navigate} dark={dark} /></>}
       </div>
     </div>
   );
@@ -157,7 +157,7 @@ function Overview({ go }) {
         <div>
           <h1 className="ov-h1">Biologics CMC, from proposal to dossier.</h1>
           <p className="ov-lede">
-            Twelve stages of a therapeutic protein programme, in the order the work happens. Each stage explains the science,
+            The stages of a therapeutic protein programme, in the order the work happens. Each stage explains the science,
             the decisions it supports, how it connects to the others, and where its evidence ends up in the Common Technical Document.
           </p>
           <div className="hm-actions">
@@ -186,26 +186,26 @@ function Overview({ go }) {
         </div>
         <p className="hm-sub sv-measure">
           {view === "journey"
-            ? "What happens, in the order the work is done. Stages overlap in practice; this is the dependency order."
+            ? "When each stage happens across a typical programme, then every stage in dependency order. Select any stage to open it."
             : "Where each stage's evidence is filed. The dossier is organised by subject, not by chronology, so one section collects evidence from several stages."}
         </p>
 
         {view === "journey" ? (
-          <div className="sc-lanes">
-            {GROUPS.map(g => (
-              <div key={g.id} className="sc-lane">
-                <span className="sc-lane-title">{g.title}</span>
-                {STAGES.filter(s => s.group === g.id).map(s => (
-                  <button key={s.id} className="sc-node" onClick={() => go(s.id)}>
-                    <span className="sv-mono">{num(STAGE[s.id].n)}</span>
+          <>
+            <Timeline go={go} />
+            <ol className="sc-index" aria-label="All stages">
+              {STAGES.map(s => (
+                <li key={s.id} className={`sc-g-${s.group}`}>
+                  <button className="sc-node" onClick={() => go(s.id)}>
+                    <span className="sc-node-top"><span className="sv-mono">{num(STAGE[s.id].n)}</span><span className="sc-node-group">{GROUPS.find(g => g.id === s.group).title}</span></span>
                     <strong>{s.title}</strong>
                     <em>{s.purpose}</em>
                     <span className="sc-node-ctd">{TOPICS[s.id] ? `${TOPICS[s.id].length} topics` : "Worked example"}</span>
                   </button>
-                ))}
-              </div>
-            ))}
-          </div>
+                </li>
+              ))}
+            </ol>
+          </>
         ) : (
           <>
             <div className="sv-tablewrap">
@@ -236,7 +236,7 @@ function Overview({ go }) {
               </table>
             </div>
             <EvidenceLegend />
-            <p className="vl-explain">Dot colours show example statuses for a programme at the proposal stage. The mapping is educational, not a dossier template; Module 3 structure follows ICH M4Q. <button className="hm-link" onClick={() => go("ctd/navigator")}>Open the evidence navigator</button> to track your own programme.</p>
+            <p className="vl-explain">Dot colours show example statuses for a programme that has finished development at laboratory and scale-down scale, before GMP manufacture. The mapping is educational, not a dossier template; Module 3 structure follows ICH M4Q. <button className="hm-link" onClick={() => go("ctd/navigator")}>Open the evidence navigator</button> to track your own programme.</p>
           </>
         )}
       </section>
@@ -247,5 +247,38 @@ function Overview({ go }) {
         <ProvLegend />
       </section>
     </>
+  );
+}
+
+/* When each stage is most active, against the milestones of a typical
+   antibody programme. Stages overlap: that is the point of the picture. */
+function Timeline({ go }) {
+  const cols = MILESTONES.length;
+  return (
+    <figure className="sc-tl" aria-label="When each stage happens">
+      <div className="sc-tl-scroll">
+        <div className="sc-tl-grid" style={{ "--cols": cols }}>
+          <span className="sc-tl-corner" />
+          {MILESTONES.map(m => (
+            <span key={m.id} className="sc-tl-head">
+              {m.label}
+            </span>
+          ))}
+          {GATES.map(g => <i key={g.label} className="sc-tl-gate" style={{ "--at": (g.after + 1) / cols }} aria-hidden="true"><b>{g.label}</b></i>)}
+          {STAGES.map(s => {
+            const [a, b] = GLANCE[s.id].span;
+            return (
+              <button key={s.id} className={`sc-tl-row sc-g-${s.group}`} onClick={() => go(s.id)} aria-label={`${s.title}: ${MILESTONES[a].label} to ${MILESTONES[b].label}`}>
+                <span className="sc-tl-name"><span className="sv-mono">{num(STAGE[s.id].n)}</span>{s.short}</span>
+                <span className="sc-tl-track" style={{ gridColumn: `2 / span ${cols}` }}>
+                  <span className="sc-tl-bar" style={{ left: `${(a / cols) * 100}%`, width: `${((b - a + 1) / cols) * 100}%` }} />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <figcaption>Typical timing for a monoclonal antibody. Bars show when each stage's work is most active; real programmes vary, and many stages run in parallel. Analytical work runs from the first screen to the last variation.</figcaption>
+    </figure>
   );
 }

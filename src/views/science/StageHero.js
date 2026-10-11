@@ -1,4 +1,4 @@
-import { STAGES, STAGE, CTD, GROUPS } from "../../science/journey";
+import { STAGES, STAGE, CTD, GROUPS, GLANCE } from "../../science/journey";
 import { CtdChip } from "../../science/ui";
 
 const ctdTitle = Object.fromEntries(CTD.map(c => [c.id, c.title]));
@@ -17,6 +17,11 @@ export default function StageHero({ id, go, nav }) {
       <div className="sh-top">
         <h1 className="sh-title"><span className="sv-mono ch-num">{num(s.n)}</span>{s.title}</h1>
         <p className="sh-purpose">{s.purpose}</p>
+        {GLANCE[id] && (
+          <ol className="sh-keys" aria-label="In short">
+            {GLANCE[id].keys.map(k => <li key={k}>{k}</li>)}
+          </ol>
+        )}
       </div>
 
       <div className="sh-where" aria-label="Position in the development journey">
