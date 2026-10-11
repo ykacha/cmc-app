@@ -5,8 +5,8 @@ import { STAGES } from "../../science/journey";
    as scattered, noisy points, travel through the stages (taking each stage's
    colour), lose their scatter as each stage removes variability, and are
    finally filed by subject into the five CTD modules on the right.
-   The stage is always drawn on the dark palette; in light theme it sits on the
-   page as a dark instrument panel.
+   Dark theme draws glowing streaks; light theme draws it as a printed figure:
+   solid dots, a shaded envelope of the remaining variability, filled modules.
    Chronology in, subject structure out. The cursor causes a local excursion. */
 
 function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
@@ -94,6 +94,24 @@ export default function FlowHero({ dark }) {
       ctx.beginPath(); ctx.moveTo(...P(0.5, -0.02)); ctx.lineTo(...P(-0.02, 1.01)); ctx.lineTo(...P(1.02, 1.01)); ctx.closePath(); ctx.stroke();
       [0.32, 0.62].forEach(fy => { ctx.beginPath(); ctx.moveTo(...P(0.5 - fy * 0.51, fy)); ctx.lineTo(...P(0.5 + fy * 0.51, fy)); ctx.stroke(); });
       [1 / 3, 2 / 3].forEach(f => { const x0 = 0.5 - 0.62 * 0.5 + f * 0.62, x1 = 0 + f; ctx.beginPath(); ctx.moveTo(...P(x0, 0.62)); ctx.lineTo(...P(x1, 1.01)); ctx.stroke(); });
+      if (!dark) {
+        // the envelope of remaining variability, narrowing stage by stage
+        const env = (k, sgn) => { const spread = 0.42 * (0.86 * Math.pow(1 - k, 1.6) + 0.07) + 0.06 * Math.pow(1 - k, 1.8) + 0.02; return (0.5 + sgn * spread * (1 - ease((k - 0.7) / 0.16))) * h; };
+        const g = ctx.createLinearGradient(0, 0, RUN * w, 0);
+        g.addColorStop(0, stageCol[0]); g.addColorStop(0.5, stageCol[6]); g.addColorStop(1, stageCol[STAGES.length - 1]);
+        ctx.globalAlpha = 0.09; ctx.fillStyle = g; ctx.beginPath();
+        for (let i = 0; i <= 60; i++) { const k = (i / 60) * 0.86; ctx.lineTo(k * RUN * w, env(k, -1)); }
+        for (let i = 60; i >= 0; i--) { const k = (i / 60) * 0.86; ctx.lineTo(k * RUN * w, env(k, 1)); }
+        ctx.closePath(); ctx.fill();
+        // filled modules
+        const tier = (pts, c) => { ctx.globalAlpha = 0.12; ctx.fillStyle = c; ctx.beginPath(); pts.forEach((q, i) => (i ? ctx.lineTo(...P(...q)) : ctx.moveTo(...P(...q)))); ctx.closePath(); ctx.fill(); };
+        tier([[0.5, 0], [0.34, 0.32], [0.66, 0.32]], modCol[0]);
+        tier([[0.33, 0.34], [0.67, 0.34], [0.81, 0.6], [0.19, 0.6]], modCol[1]);
+        tier([[0.18, 0.64], [0.4, 0.64], [0.333, 1], [0, 1]], modCol[2]);
+        tier([[0.42, 0.64], [0.58, 0.64], [0.66, 1], [0.34, 1]], modCol[3]);
+        tier([[0.6, 0.64], [0.82, 0.64], [1, 1], [0.67, 1]], modCol[4]);
+        ctx.globalAlpha = 1;
+      }
       ctx.font = "500 10.5px ui-monospace, monospace"; ctx.textAlign = "center";
       [["M1", 0.5, 0.24], ["M2", 0.5, 0.52], ["M3", 0.2, 0.93], ["M4", 0.5, 0.93], ["M5", 0.8, 0.93]].forEach(([l, fx, fy]) => { ctx.globalAlpha = 0.9; ctx.fillStyle = tok("--text-muted", "#888"); ctx.fillText(l, ...P(fx, fy)); });
       ctx.globalAlpha = 1;
@@ -104,8 +122,8 @@ export default function FlowHero({ dark }) {
           // travelling through the stages: scatter shrinks as the stages add control
           const k = Math.max(0, p.u);
           const stage = Math.min(STAGES.length - 1, Math.floor((k / 1) * STAGES.length));
-          const amp = 0.22 * Math.pow(1 - k, 1.8);
-          const lane = 0.5 + (p.y0 - 0.5) * Math.pow(1 - k, 1.25) * 0.95 + (p.y0 - 0.5) * 0.06;
+          const amp = 0.12 * Math.pow(1 - k, 1.8);
+          const lane = 0.5 + (p.y0 - 0.5) * (0.86 * Math.pow(1 - k, 1.6) + 0.07);
           const sx = k * RUN * w, sy = (lane + amp * Math.sin(t * p.f + p.ph) * 0.5) * h;
           // converge on the dossier over the last stretch
           const c = ease((k - 0.82) / 0.18);
@@ -128,9 +146,11 @@ export default function FlowHero({ dark }) {
         if (d2 < 9000 && p.u < 0.9) p.kick = Math.min(28, p.kick + (9000 - d2) / 900);
         p.kick *= 0.94; y += Math.sin(p.ph + t * 9) * p.kick;
 
-        ctx.globalAlpha = alpha * 0.95;
+        ctx.globalAlpha = dark ? alpha * 0.95 : Math.min(1, alpha * 1.15);
         ctx.strokeStyle = col; ctx.fillStyle = col;
-        if (p.px !== null && p.u < 1 && !reduce) {
+        if (!dark) {
+          ctx.beginPath(); ctx.arc(x, y, p.u < 1 ? 1.75 : 1.5, 0, 6.283); ctx.fill();
+        } else if (p.px !== null && p.u < 1 && !reduce) {
           ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(x, y); ctx.stroke();
         } else {
           ctx.fillRect(x - 1.1, y - 1.1, 2.2, 2.2);
@@ -164,7 +184,7 @@ export default function FlowHero({ dark }) {
 
   return (
     <figure className="sc-flow">
-      <div className="sc-flow-stage" data-theme="dark" ref={host}>
+      <div className="sc-flow-stage" ref={host}>
         <canvas ref={canvas} aria-hidden="true" />
         <ol className="sc-flow-ticks" aria-hidden="true">
           {STAGES.map((s, i) => <li key={s.id} style={{ left: `${((i + 0.5) / STAGES.length) * RUN * 100}%` }}>{String(i + 1).padStart(2, "0")}</li>)}

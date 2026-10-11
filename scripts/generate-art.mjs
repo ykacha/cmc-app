@@ -55,7 +55,7 @@ async function generate(asset) {
   if (asset.file && !flag("--force")) { console.log(`skip ${asset.id} (already generated; use --force)`); return; }
   const prompt = `${manifest.artDirection}\n\nSubject: ${asset.prompt}`;
   console.log(`generating ${asset.id} with ${model} ...`);
-  const res = await client.images.generate({ model, prompt, size: asset.size || "1536x1024", output_format: "webp", n: 1 });
+  const res = await client.images.generate({ model, prompt, size: asset.size || "1536x1024", output_format: "webp", n: 1, ...(asset.background ? { background: asset.background } : {}) });
   writeResult(asset, res, prompt);
 }
 

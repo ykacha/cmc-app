@@ -627,8 +627,8 @@
 /* overview: the journey as a route map */
 .sc-route{ margin-top:56px; }
 .sc-route-art{ margin:0 0 48px; }
-.sc-route-art img{ display:block; width:100%; height:auto; max-height:460px; object-fit:cover; border-radius:16px; border:1px solid var(--hairline); background:var(--panel); }
-.sc-route-art figcaption{ margin-top:10px; font-size:12px; color:var(--text-muted); }
+.sc-route-art img{ display:block; width:min(100%, 980px); height:auto; margin:0 auto; aspect-ratio:3 / 2; object-fit:contain; }
+.sc-route-art figcaption{ margin-top:-24px; text-align:center; font-size:12px; color:var(--text-muted); }
 .sc-route-line, .sc-route-line ol{ list-style:none; margin:0; padding:0; }
 .sc-route-line{ --spine:50%; position:relative; }
 .sc-route-part{ position:relative; }
@@ -681,16 +681,15 @@
 .sh-top.has-art > .sh-art{ grid-column:2; grid-row:1 / span 2; }
 .sh-top.has-art > .sh-keys{ grid-column:1 / -1; }
 .sh-art{ margin:0; }
-.sh-art img{ display:block; width:100%; height:auto; aspect-ratio:3 / 2; object-fit:cover; border-radius:16px; border:1px solid var(--hairline); background:var(--panel); }
-.sh-art figcaption{ margin-top:6px; font-size:11.5px; color:var(--text-faint); text-align:right; }
+.sh-art{ position:relative; }
+.sh-art img{ position:relative; display:block; width:110%; max-width:none; margin:-4% -6% -4% -4%; height:auto; aspect-ratio:3 / 2; object-fit:contain; }
+/* a soft pool of the stage colour behind the object, so it sits in the page rather than on it */
+.sh-art::before{ content:""; position:absolute; inset:8% 6% 4% 6%; border-radius:50%; background:radial-gradient(closest-side, color-mix(in srgb, var(--chain-h) 12%, transparent), transparent); filter:blur(8px); }
+.sh-art figcaption{ position:relative; margin-top:10px; font-size:11.5px; color:var(--text-faint); text-align:right; }
 @media (max-width:1100px){
   .sh-top.has-art{ grid-template-columns:1fr; }
-  .sh-top.has-art > .sh-art{ grid-column:1; grid-row:auto; order:3; margin-top:20px; }
+  .sh-top.has-art > .sh-art{ grid-column:1; grid-row:auto; order:3; margin-top:12px; max-width:560px; }
+  .sh-art img{ width:100%; margin:0; }
   .sh-top.has-art > .sh-keys{ order:4; }
 }
 
-/* light theme: the stream keeps its dark stage, set into the page like an instrument display */
-[data-theme="light"] .sc-flow-stage{ border:none; border-radius:16px; background:radial-gradient(70% 120% at 88% 50%, color-mix(in srgb, var(--chain-h) 16%, var(--bg-base)), var(--bg-base) 65%); box-shadow:0 24px 60px -30px rgba(10,11,17,.55); }
-[data-theme="light"] .sc-flow-end{ top:14px; }
-[data-theme="light"] .sc-flow-end.is-start{ left:18px; }
-[data-theme="light"] .sc-flow-end.is-end{ right:18px; }
