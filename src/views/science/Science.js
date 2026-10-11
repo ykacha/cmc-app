@@ -268,47 +268,62 @@ function Timeline({ go }) {
 
 const STAGE_ICON = { proposal: "target", qtpp: "chartbar", candidate: "gene", cellline: "cell", upstream: "bioreactor", downstream: "filter", analytical: "wave", formulation: "vial", stability: "thermometer", qbd: "shieldcheck", transfer: "factory", specs: "check", ctd: "book" };
 
-/* The journey as a route: one line from proposal to dossier, a station per
-   stage, a chapter per group, and on each leg what one stage hands to the next. */
+/* The journey as one metro line: a station per stage, grouped into parts.
+   Picking a station opens its card underneath, so the whole route fits on
+   one screen and reads left to right like the timeline above it. */
 function Route({ go }) {
-  let side = 0;
+  const [sel, setSel] = useState(STAGES[0].id);
+  const s = STAGE[sel];
+  const next = STAGES[s.n];
+  const topics = TOPICS[sel] || [];
+  const g = GLANCE[sel];
   return (
-    <div className="sc-route">
-      <figure className="sc-route-art">
-        <img src={`${process.env.PUBLIC_URL || ""}/science-art/science-journey-hero.webp`} alt="Illustration of the material flow: cells, a bioreactor, a chromatography skid, a syringe filling line and the dossier binders." loading="lazy" width="1600" height="1067" />
-      </figure>
-      <ol className="sc-route-line" aria-label="The journey, stage by stage">
-        {GROUPS.map((g, gi) => (
-          <li key={g.id} className={`sc-route-part sc-g-${g.id}`}>
-            <div className="sc-route-chapter"><span className="sv-mono">Part {gi + 1}</span><strong>{g.title}</strong></div>
-            <ol>
-              {STAGES.filter(s => s.group === g.id).map(s => {
-                const n = TOPICS[s.id] ? TOPICS[s.id].length : 0;
-                const left = side++ % 2 === 0;
-                return (
-                  <li key={s.id} className={`sc-station${left ? " is-left" : " is-right"}`}>
-                    <button onClick={() => go(s.id)} aria-label={`${num(STAGE[s.id].n)} ${s.title}`}>
-                      <span className="sc-station-dot"><Icon name={STAGE_ICON[s.id]} size={22} /></span>
-                      <span className="sc-station-body">
-                        <span className="sc-station-n sv-mono">{num(STAGE[s.id].n)}</span>
-                        <strong>{s.title}</strong>
-                        <em>{s.purpose}</em>
-                        <span className="sc-station-meta">
-                          <span className="sc-station-ticks" aria-hidden="true">{Array.from({ length: n || 1 }, (_, i) => <i key={i} className={n ? "" : "is-example"} />)}</span>
-                          {n ? `${n} topics` : "Worked example"}
-                        </span>
-                      </span>
+    <div className="sc-metro">
+      <div className="sc-metro-scroll">
+        <ol className="sc-metro-line" aria-label="The journey, stage by stage">
+          {GROUPS.map(gr => (
+            <li key={gr.id} className={`sc-metro-part sc-g-${gr.id}`} style={{ "--n": STAGES.filter(x => x.group === gr.id).length }}>
+              <span className="sc-metro-pname">{gr.title}</span>
+              <ol>
+                {STAGES.filter(x => x.group === gr.id).map(x => (
+                  <li key={x.id}>
+                    <button className={`sc-metro-stop${x.id === sel ? " is-on" : ""}`} aria-pressed={x.id === sel} onClick={() => setSel(x.id)} onDoubleClick={() => go(x.id)}>
+                      <span className="sc-metro-dot"><Icon name={STAGE_ICON[x.id]} size={18} /></span>
+                      <span className="sv-mono">{num(STAGE[x.id].n)}</span>
+                      <span className="sc-metro-name">{x.short}</span>
                     </button>
-                    {s.outputs[0] && STAGES[STAGE[s.id].n] && (
-                      <span className="sc-station-hand"><span>Hands over</span>{s.outputs[0]}</span>
-                    )}
                   </li>
-                );
-              })}
-            </ol>
-          </li>
-        ))}
-      </ol>
+                ))}
+              </ol>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className={`sc-metro-card sc-g-${s.group}`} aria-live="polite" key={sel}>
+        <div className="sc-metro-main">
+          <span className="sc-metro-kicker"><span className="sv-mono">{num(s.n)}</span>{GROUPS.find(x => x.id === s.group).title}</span>
+          <h3>{s.title}</h3>
+          <p>{s.purpose}</p>
+          {g && <ul className="sc-metro-keys">{g.keys.map(k => <li key={k}>{k}</li>)}</ul>}
+          <div className="sc-metro-actions">
+            <button className="hm-primary" onClick={() => go(sel)}>Open stage {num(s.n)}</button>
+            {next && <button className="hm-link" onClick={() => setSel(next.id)}>Next station: {next.short}</button>}
+          </div>
+        </div>
+        <div className="sc-metro-side">
+          {s.outputs[0] && next && (
+            <div className="sc-metro-hand">
+              <span>Hands over to {next.short}</span>
+              <strong>{s.outputs.join(", ")}</strong>
+            </div>
+          )}
+          <div className="sc-metro-topics">
+            <span>{topics.length ? `${topics.length} deep-dive topics` : "Taught as a worked example"}</span>
+            {topics.length > 0 && <ul>{topics.map(t => <li key={t.id}><button className="hm-link" onClick={() => go(`${sel}/${t.id}`)}>{t.title}</button></li>)}</ul>}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
