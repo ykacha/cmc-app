@@ -6,6 +6,7 @@ import { STAGE_OVERVIEWS } from "../../pipeline-overview-data";
 import { PLANT, PHASES, phaseOf } from "../../pipeline/plant";
 import { pipeArt } from "../../science/art";
 import StagePage from "./StagePage";
+import { STAGE_PAPERS } from "../../pipeline/papers";
 
 /* Pipeline Explorer. Routes:
      #/pipeline                 the production line
@@ -62,7 +63,7 @@ function Line({ go, navigate, at }) {
                   <button onClick={() => go(s.id)}>
                     <span className="sv-mono">{num(s)}</span>
                     <strong>{s.label}</strong>
-                    <em>{s.topics.length} deep dives, {s.questions.length} questions</em>
+                    <em>{s.topics.length} deep dives, {s.questions.length} questions{STAGE_PAPERS[s.id] ? `, ${STAGE_PAPERS[s.id].length} papers` : ""}</em>
                   </button>
                 </li>
               ))}
@@ -199,7 +200,7 @@ function Station({ s, i, left, w, y, on, go }) {
         <div className="pl2-st-foot">
           <span className="pl2-st-time">{ov.duration.split(/[;(]/)[0]}</span>
           {next && <span className="pl2-st-pass">Passes on to {next.label}</span>}
-          <button className="pl2-dive" onClick={() => go(s.id)} tabIndex={on ? 0 : -1}>Open the deep dive, {s.topics.length} topics</button>
+          <button className="pl2-dive" onClick={() => go(s.id)} tabIndex={on ? 0 : -1}>Open the deep dive, {s.topics.length} topics{STAGE_PAPERS[s.id] ? `, ${STAGE_PAPERS[s.id].length} papers` : ""}</button>
         </div>
       </div>
     </article>
@@ -244,7 +245,7 @@ function Vertical({ go }) {
             <div className="pl2-st-hand"><span>In hand</span><strong>{plant.inHand.big}</strong><em>{plant.inHand.unit}</em><p>{plant.inHand.note}</p></div>
             <div className="pl2-st-who"><span>Who is at work</span><ul>{plant.people.map(p => <li key={p.role}><b>{p.role}</b>{p.does}</li>)}</ul></div>
             {next && <span className="pl2-st-pass">Passes on to {next.label}</span>}
-            <button className="pl2-dive" onClick={() => go(s.id)}>Open the deep dive, {s.topics.length} topics</button>
+            <button className="pl2-dive" onClick={() => go(s.id)}>Open the deep dive, {s.topics.length} topics{STAGE_PAPERS[s.id] ? `, ${STAGE_PAPERS[s.id].length} papers` : ""}</button>
           </li>
         );
       })}

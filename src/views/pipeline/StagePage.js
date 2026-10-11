@@ -4,6 +4,8 @@ import { STAGE_OVERVIEWS } from "../../pipeline-overview-data";
 import { PLANT, phaseOf, TO_JOURNEY } from "../../pipeline/plant";
 import { pipeArt } from "../../science/art";
 import { STAGE as JSTAGE } from "../../science/journey";
+import { PAPERS, STAGE_PAPERS, pubmedUrl, matchPaper } from "../../pipeline/papers";
+import { splitRefs } from "../../pipeline/refs";
 
 /* A station's deep dive: what actually happens, step by step; who and what;
    then every knowledge card and interview question for the stage. */
@@ -26,6 +28,9 @@ export default function StagePage({ sid, card, go, navigate }) {
   }, [card]);
 
   const journey = JSTAGE[TO_JOURNEY[sid]];
+  const papers = (STAGE_PAPERS[sid] || []).map(([pmid, why]) => ({ pmid, why, ...PAPERS[pmid],
+    citedBy: s.topics.filter(t => splitRefs(t.ref).some(r => r.paper && matchPaper(r.text) === pmid)) }));
+  const openCard = (id) => { setOpen(o => new Set([...o, id])); requestAnimationFrame(() => document.getElementById(`card-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" })); };
 
   return (
     <article className="pl2-page" style={{ "--ph": ph.color }}>
@@ -43,6 +48,7 @@ export default function StagePage({ sid, card, go, navigate }) {
           <dl className="pl2-page-facts">
             <div><dt>In hand</dt><dd><strong>{plant.inHand.big}</strong> {plant.inHand.unit}</dd></div>
             <div><dt>Typical duration</dt><dd>{ov.duration}</dd></div>
+            {papers.length > 0 && <div><dt>Research papers</dt><dd><a className="hm-link" href="#papers" onClick={(e) => { e.preventDefault(); document.getElementById("papers")?.scrollIntoView({ behavior: "smooth" }); }}>{papers.length} to read</a></dd></div>}
           </dl>
         </div>
         {art && <img className="pl2-page-art" src={art} alt="" width="1536" height="1024" />}
@@ -52,6 +58,28 @@ export default function StagePage({ sid, card, go, navigate }) {
         <div><span>Arrives</span><p>{ov.before}</p></div>
         <div><span>Leaves</span><p>{ov.after}</p></div>
       </section>
+
+      {papers.length > 0 && (
+        <section className="pl2-sec" id="papers" aria-labelledby="papers-h">
+          <h2 id="papers-h" className="hm-h2">Research papers.</h2>
+          <p className="pl2-small">The papers behind this station, checked against PubMed. Titles open the PubMed record.</p>
+          <ol className="pl2-papers">
+            {papers.map(p => (
+              <li key={p.pmid}>
+                <span className="pl2-paper-year sv-mono">{p.year}</span>
+                <div>
+                  <a className="pl2-paper-title" href={pubmedUrl(p.pmid)} target="_blank" rel="noopener noreferrer">{p.title}</a>
+                  <span className="pl2-paper-meta">{p.authors} <em>{p.journal}</em> {p.year};{p.cite}</span>
+                  <p className="pl2-paper-why">{p.why}</p>
+                  {p.citedBy.length > 0 && (
+                    <span className="pl2-paper-cited">Discussed in {p.citedBy.map((t, k) => <button key={t.id} className="hm-link" onClick={() => openCard(t.id)}>{t.title}{k < p.citedBy.length - 1 ? "," : ""}</button>)}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       <section className="pl2-sec">
         <h2 className="hm-h2">What actually happens.</h2>
@@ -104,7 +132,7 @@ export default function StagePage({ sid, card, go, navigate }) {
                       <div><span>Why it matters</span><p>{t.why}</p></div>
                       <div><span>How to learn it</span><p>{t.how}</p></div>
                     </div>
-                    {t.ref && <p className="pl2-card-ref">{t.ref}</p>}
+                    <Sources refText={t.ref} />
                   </div>
                 )}
               </li>
@@ -125,7 +153,7 @@ export default function StagePage({ sid, card, go, navigate }) {
                     <div><span>What the interviewer is testing</span><p>{q.why}</p></div>
                     <div><span>How to answer</span><p>{q.how}</p></div>
                   </div>
-                  {q.ref && <p className="pl2-card-ref">{q.ref}</p>}
+                  <Sources refText={q.ref} />
                 </details>
               </li>
             ))}
@@ -146,5 +174,22 @@ export default function StagePage({ sid, card, go, navigate }) {
         {next ? <button className="is-next" onClick={() => go(next.id)}><span>Next station</span><strong><em className="sv-mono">{next.stage}</em>{next.label}</strong></button> : <span />}
       </nav>
     </article>
+  );
+}
+
+function Sources({ refText }) {
+  const refs = splitRefs(refText);
+  if (!refs.length) return null;
+  const papers = refs.filter(r => r.paper), other = refs.filter(r => !r.paper);
+  return (
+    <div className="pl2-sources">
+      {papers.map(r => {
+        const pmid = matchPaper(r.text), p = pmid && PAPERS[pmid];
+        return p
+          ? <a key={r.text} className="pl2-src-paper" href={pubmedUrl(pmid)} target="_blank" rel="noopener noreferrer"><span>Paper</span>{p.title} <em>{p.journal} {p.year}</em></a>
+          : <span key={r.text} className="pl2-src-paper is-plain"><span>Paper</span>{r.text}</span>;
+      })}
+      {other.length > 0 && <p className="pl2-card-ref">{other.map(r => r.text).join(" · ")}</p>}
+    </div>
   );
 }
