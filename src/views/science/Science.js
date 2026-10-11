@@ -10,6 +10,7 @@ import Proposal from "./Proposal";
 import Qtpp from "./Qtpp";
 import { Blocks } from "./Blocks";
 import AntibodyHero from "./AntibodyHero";
+import { Icon } from "../../icons";
 
 /* The Science journey. Routes:
      #/science                     overview
@@ -17,6 +18,11 @@ import AntibodyHero from "./AntibodyHero";
      #/science/<stage>/<topic>     deep-dive topic */
 
 const DEEP = { proposal: Proposal, qtpp: Qtpp };
+// AI-generated illustrations for the worked-example stages (see src/science/art-manifest.json)
+const ART = {
+  proposal: { src: "proposal-blueprint.webp", alt: "Illustration of an IgG antibody beside a 1 mL prefilled syringe.", cap: "The molecule and the presentation it must fit. AI-generated illustration: domain structure is simplified and not accurate." },
+  qtpp: { src: "qtpp-cqa-network.webp", alt: "Illustration of an antibody surface with highlighted regions at the binding tips, hinge and Fc glycans.", cap: "Where quality attributes live on the molecule: binding regions, hinge and Fc glycans highlighted. AI-generated illustration, not a structural model." },
+};
 const num = (n) => String(n).padStart(2, "0");
 
 // every topic in journey order, for prev/next across stage boundaries
@@ -115,6 +121,12 @@ function StagePage({ stage, go, nav, dark }) {
       )}
       {Deep && (
         <>
+          {ART[stage.id] && (
+            <figure className="sc-stage-art">
+              <img src={`${process.env.PUBLIC_URL || ""}/science-art/${ART[stage.id].src}`} alt={ART[stage.id].alt} loading="lazy" width="1600" height="1067" />
+              <figcaption>{ART[stage.id].cap}</figcaption>
+            </figure>
+          )}
           <div className="sc-example">
             <h2 className="hm-h2">Worked example.</h2>
             <p className="hm-sub sv-measure">This stage is easiest to learn by doing it once. The example follows a fictional antibody; the method applies to any biologic.</p>
@@ -190,18 +202,7 @@ function Overview({ go, dark }) {
         {view === "journey" ? (
           <>
             <Timeline go={go} />
-            <ol className="sc-index" aria-label="All stages">
-              {STAGES.map(s => (
-                <li key={s.id} className={`sc-g-${s.group}`}>
-                  <button className="sc-node" onClick={() => go(s.id)}>
-                    <span className="sc-node-top"><span className="sv-mono">{num(STAGE[s.id].n)}</span><span className="sc-node-group">{GROUPS.find(g => g.id === s.group).title}</span></span>
-                    <strong>{s.title}</strong>
-                    <em>{s.purpose}</em>
-                    <span className="sc-node-ctd">{TOPICS[s.id] ? `${TOPICS[s.id].length} topics` : "Worked example"}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
+            <Route go={go} />
           </>
         ) : (
           <>
@@ -277,5 +278,53 @@ function Timeline({ go }) {
       </div>
       <figcaption>Typical timing for a monoclonal antibody. Bars show when each stage's work is most active; real programmes vary, and many stages run in parallel. Analytical work runs from the first screen to the last variation.</figcaption>
     </figure>
+  );
+}
+
+const STAGE_ICON = { proposal: "target", qtpp: "chartbar", candidate: "gene", cellline: "cell", upstream: "bioreactor", downstream: "filter", analytical: "wave", formulation: "vial", stability: "thermometer", qbd: "shieldcheck", transfer: "factory", specs: "check", ctd: "book" };
+
+/* The journey as a route: one line from proposal to dossier, a station per
+   stage, a chapter per group, and on each leg what one stage hands to the next. */
+function Route({ go }) {
+  let side = 0;
+  return (
+    <div className="sc-route">
+      <figure className="sc-route-art">
+        <img src={`${process.env.PUBLIC_URL || ""}/science-art/science-journey-hero.webp`} alt="Illustration of the material flow: cells in culture, a bioreactor, a three-column chromatography skid and a filled prefilled syringe." loading="lazy" width="1600" height="1067" />
+        <figcaption>From cells to syringe: the material the journey makes. AI-generated illustration, not equipment drawings.</figcaption>
+      </figure>
+      <ol className="sc-route-line" aria-label="The journey, stage by stage">
+        {GROUPS.map((g, gi) => (
+          <li key={g.id} className={`sc-route-part sc-g-${g.id}`}>
+            <div className="sc-route-chapter"><span className="sv-mono">Part {gi + 1}</span><strong>{g.title}</strong></div>
+            <ol>
+              {STAGES.filter(s => s.group === g.id).map(s => {
+                const n = TOPICS[s.id] ? TOPICS[s.id].length : 0;
+                const left = side++ % 2 === 0;
+                return (
+                  <li key={s.id} className={`sc-station${left ? " is-left" : " is-right"}`}>
+                    <button onClick={() => go(s.id)} aria-label={`${num(STAGE[s.id].n)} ${s.title}`}>
+                      <span className="sc-station-dot"><Icon name={STAGE_ICON[s.id]} size={22} /></span>
+                      <span className="sc-station-body">
+                        <span className="sc-station-n sv-mono">{num(STAGE[s.id].n)}</span>
+                        <strong>{s.title}</strong>
+                        <em>{s.purpose}</em>
+                        <span className="sc-station-meta">
+                          <span className="sc-station-ticks" aria-hidden="true">{Array.from({ length: n || 1 }, (_, i) => <i key={i} className={n ? "" : "is-example"} />)}</span>
+                          {n ? `${n} topics` : "Worked example"}
+                        </span>
+                      </span>
+                    </button>
+                    {s.outputs[0] && STAGES[STAGE[s.id].n] && (
+                      <span className="sc-station-hand"><span>Hands over</span>{s.outputs[0]}</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
