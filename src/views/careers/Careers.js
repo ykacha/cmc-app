@@ -1,6 +1,6 @@
 import "./careers.css";
 import { useEffect, useMemo, useState } from "react";
-import { PARTS, CHAPTERS, ROLES, COMPANIES, MARKS, CHECKLIST } from "../../careers/content";
+import { PARTS, ROLES, COMPANIES, MARKS, AUDIENCES, chaptersFor, checklistFor } from "../../careers/content";
 
 /* The career guide, #/careers: a section of its own in the site navigation. */
 
@@ -102,12 +102,15 @@ function Block({ b, done, toggle, cid, idx }) {
   }
 }
 
-export default function Careers({ navigate }) {
+export default function Careers({ navigate, focus }) {
+  const aud = AUDIENCES.some(a => a.id === focus) ? focus : "student";
+  const CHAPTERS = useMemo(() => chaptersFor(aud), [aud]);
+  const CHECKLIST = useMemo(() => checklistFor(aud), [aud]);
   const [done, setDone] = useState(loadDone);
   const [active, setActive] = useState(CHAPTERS[0].id);
   const toggle = (id) => { const n = new Set(done); n.has(id) ? n.delete(id) : n.add(id); setDone(n); try { localStorage.setItem(KEY, JSON.stringify([...n])); } catch { /* private mode */ } };
   // action ids are chapter + index among that chapter's action marks
-  const actionIds = useMemo(() => new Set(CHECKLIST.map(c => c.id)), []);
+  const actionIds = useMemo(() => new Set(CHECKLIST.map(c => c.id)), [CHECKLIST]);
   const doneCount = [...done].filter(id => actionIds.has(id)).length;
 
   // highlight the question whose heading most recently passed the top third of the screen
@@ -124,7 +127,7 @@ export default function Careers({ navigate }) {
     };
     window.addEventListener("scroll", on, { passive: true }); on();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", on); };
-  }, []);
+  }, [CHAPTERS]);
   const jump = (id) => document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   let n = 0;
 
@@ -144,14 +147,28 @@ export default function Careers({ navigate }) {
         <img src={ART("career-hero")} alt="" width="1200" height="800" />
       </section>
 
-      <div className="cg-body">
+      <section className="cg-aud" aria-label="Choose your stage">
+        <span className="cg-aud-ask">Where are you now?</span>
+        <div className="cg-aud-row">
+          {AUDIENCES.map((a, i) => (
+            <button key={a.id} className={a.id === aud ? "is-on" : ""} aria-pressed={a.id === aud} onClick={() => navigate("careers", a.id)}>
+              <span className="cg-aud-n sv-mono">0{i + 1}</span>
+              <strong>{a.name}</strong>
+              <em>{a.years}</em>
+              <span className="cg-aud-line">{a.line}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <div className="cg-body" key={aud}>
         <nav className="cg-toc" aria-label="Questions">
           <div className="cg-progress">
             <span>Your actions</span>
             <strong>{doneCount} of {CHECKLIST.length}</strong>
             <i style={{ "--p": `${(doneCount / CHECKLIST.length) * 100}%` }} />
           </div>
-          {PARTS.map(p => (
+          {PARTS.filter(p => CHAPTERS.some(c => c.part === p.id)).map(p => (
             <div key={p.id} className="cg-toc-part">
               <span>{p.title}</span>
               <ol>
@@ -164,7 +181,7 @@ export default function Careers({ navigate }) {
         </nav>
 
         <main className="cg-main">
-          {PARTS.map((p, pi) => (
+          {PARTS.filter(p => CHAPTERS.some(c => c.part === p.id)).map((p, pi) => (
             <section key={p.id} className="cg-part" aria-labelledby={`part-${p.id}`}>
               <header className="cg-part-head">
                 <div>

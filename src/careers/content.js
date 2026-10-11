@@ -96,6 +96,12 @@ export const COMPANIES = {
   note: "Examples you may know: large pharma such as Roche, Novartis, AstraZeneca; CDMOs such as Lonza, Samsung Biologics, Fujifilm Diosynth; suppliers such as Cytiva, Sartorius, Thermo Fisher. Names change through mergers; check before you apply.",
 };
 
+export const AUDIENCES = [
+  { id: "student", name: "Student or graduate", years: "0 to 2 years", line: "Getting the first job: routes in, what your degree leads to, CV and interviews with little experience." },
+  { id: "mid", name: "Building your career", years: "about 2 to 8 years", line: "Specialise or broaden, switch function, get promoted, negotiate." },
+  { id: "senior", name: "Experienced", years: "about 8 years and more", line: "Manager or expert, director level, hiring, reputation, consulting." },
+];
+
 export const PARTS = [
   { id: "orient", art: "career-orient", title: "Find your direction", line: "Understand the field before you choose a corner of it." },
   { id: "build", art: "career-build", title: "Build the foundation", line: "Learn what employers actually test you on." },
@@ -104,14 +110,42 @@ export const PARTS = [
 ];
 
 export const CHAPTERS = [
-  { id: "start", part: "orient", q: "What should I know before I start?", short: "Before you start",
+  { id: "grad", for: ["student"], part: "orient", q: "What is different when you are fresh out of university?", short: "From degree to first job",
+    blocks: [
+      { t: "p", text: "Employers know you have little industry experience. They hire graduates on three things: solid fundamentals, evidence you can work carefully in a lab or plant, and how you learn." },
+      { t: "table", head: ["Route in", "How it works", "Good for"], rows: [
+        ["Graduate scheme", "A structured programme, often with rotations, recruited once a year by larger companies", "Breadth, training and a network across functions"],
+        ["Direct entry role", "A normal job advert for a research associate, QC analyst or manufacturing technician", "Starting faster and going deep in one area"],
+        ["Contract or agency role", "Work through a recruitment agency for a fixed term, often 6 to 12 months", "Getting your first GMP or industry experience quickly"],
+        ["Placement or internship", "A year or summer in industry during your degree", "Turning into a job offer, or at least a reference"],
+      ] },
+      { t: "mark", kind: "tip", text: "Contract roles are a common way into biopharma. Many contractors are offered permanent roles once the team knows them." },
+      { t: "mark", kind: "warn", text: "Graduate schemes often close months before they start. Check the dates in your final year, not after you graduate." },
+    ] },
+  { id: "degree-fit", for: ["student"], part: "orient", q: "What can my degree lead to?", short: "Your degree and your options",
+    blocks: [
+      { t: "table", head: ["Degree", "Common entry roles", "Worth adding"], rows: [
+        ["Biology, biochemistry, biomedical science", "Research associate, QC analyst, QC microbiologist, manufacturing technician", "Cell culture and protein lab hours; GMP awareness"],
+        ["Chemistry", "QC analyst, analytical development associate", "Chromatography and mass spectrometry experience"],
+        ["Chemical or biochemical engineering", "Process engineer, MSAT associate, validation engineer, manufacturing", "Bioprocess modules; a plant placement"],
+        ["Pharmacy or pharmaceutical science", "Formulation, QA, regulatory affairs", "GMP and regulatory modules"],
+        ["Data science, computing, statistics", "Data analyst, lab automation, LIMS and digital roles", "One project using real biological or process data"],
+      ] },
+      { t: "mark", kind: "action", text: "Pick the row closest to you and search job boards for the entry roles listed. Save ten adverts and note what they ask for." },
+    ] },
+  { id: "final-year", for: ["student"], part: "build", q: "How do I make the most of my final year?", short: "Your final year",
+    blocks: [
+      { t: "steps", items: ["Choose a project with real lab or data work; you will talk about it in every interview.", "Write down every technique and instrument you use, with what you measured and why.", "Apply for summer placements and graduate schemes early in the year.", "Go to one industry event or careers fair and talk to people working in the roles you want.", "Keep your grades up, but don't neglect practical experience; employers ask about both."] },
+      { t: "mark", kind: "myth", text: "Myth: only top grades get you hired. Reality: grades help you through screening; your project, practical skills and how you explain them win the interview." },
+    ] },
+  { id: "start", for: ["student", "mid"], part: "orient", q: "What should I know before I start?", short: "Before you start",
     blocks: [
       { t: "p", text: "Biopharma careers sit in four broad areas: research at the bench, development and manufacturing (CMC), automation and data, and leadership. Most people enter as a scientist or associate in one of them and move between them later." },
       { t: "steps", items: ["See the whole map of roles first.", "Pick two roles that fit you.", "Learn the fundamentals those roles are tested on.", "Get one real foothold: a lab, a plant, an internship or a project.", "Apply with a system, not at random.", "Keep learning once you are in."] },
       { t: "mark", kind: "warn", text: "Keep your current job while you prepare. Most people need months, not weeks. Do not quit to study unless you have to." },
       { t: "mark", kind: "myth", text: "Myth: you need a PhD to work in biopharma. Reality: research associate, QC, manufacturing, QA and validation roles hire graduates every day. A PhD mainly changes the level you enter at as a scientist." },
     ] },
-  { id: "roles", part: "orient", q: "Which role fits me?", short: "Roles",
+  { id: "roles", for: ["student", "mid", "senior"], part: "orient", q: "Which role fits me?", short: "Roles",
     blocks: [
       { t: "p", text: "Pick a role to see the day, the entry titles, the tools and where it leads." },
       { t: "widget", id: "roles" },
@@ -119,7 +153,7 @@ export const CHAPTERS = [
       { t: "list", items: ["What does a normal day look like?", "Which entry titles do companies use near me?", "Which tools and skills appear in every job advert?", "Is demand rising: new plants, new modalities?", "Where can it lead in 5, 10 and 15 years?", "Which parts are likely to be automated?", "Does it actually interest you?"] },
       { t: "mark", kind: "action", text: "Read 20 job adverts for each of your two favourite roles. List the skills that appear in more than half of them. That list is your study plan." },
     ] },
-  { id: "operations", part: "orient", q: "What are careers in manufacturing and QC like?", short: "Manufacturing and QC",
+  { id: "operations", for: ["student", "mid"], part: "orient", q: "What are careers in manufacturing and QC like?", short: "Manufacturing and QC",
     blocks: [
       { t: "p", text: "Manufacturing and QC are the biggest employers in biopharma, and the fastest way into GMP. You can start with a bachelor's degree, sometimes with a diploma or apprenticeship." },
       { t: "table", head: ["", "Manufacturing", "Quality control"], rows: [
@@ -133,14 +167,14 @@ export const CHAPTERS = [
       { t: "mark", kind: "tip", text: "Shift premiums can make manufacturing pay well early on. Ask how shifts rotate and what overtime looks like before you accept." },
       { t: "mark", kind: "warn", text: "Gowning, aseptic work and detailed documentation are daily. If you hate routine and paperwork, choose development instead." },
     ] },
-  { id: "cdmo", part: "orient", q: "What is it like to work at a CDMO?", short: "Working at a CDMO",
+  { id: "cdmo", for: ["student", "mid", "senior"], part: "orient", q: "What is it like to work at a CDMO?", short: "Working at a CDMO",
     blocks: [
       { t: "p", text: "A contract development and manufacturing organisation develops and makes medicines for other companies. You see many molecules and many clients, often in your first year." },
       { t: "list", items: ["**Speed:** client deadlines drive the work; projects start and finish quickly.", "**Variety:** different molecules, processes and client expectations.", "**Visibility:** clients see your data and sometimes your batch records; quality of documentation matters even more.", "**Roles you won't find in pharma:** client project managers, technical account leads, business development scientists."] },
       { t: "dodont", do: ["Ask how many client programmes each team runs at once.", "Ask how tech transfers in from clients are handled.", "Use the variety to build a broad CV fast."], dont: ["Expect to follow one molecule to approval.", "Underestimate the pace; it suits some people and burns out others."] },
       { t: "mark", kind: "tip", text: "Two to three years at a CDMO often makes you attractive to biotechs, who need people who have seen many processes." },
     ] },
-  { id: "ladder", part: "orient", q: "How does the scientist career ladder work?", short: "The scientist ladder",
+  { id: "ladder", for: ["student", "mid", "senior"], part: "orient", q: "How does the scientist career ladder work?", short: "The scientist ladder",
     blocks: [
       { t: "p", text: "Most bench careers follow a ladder like this. Titles and the number of rungs vary by company, so read the job description, not just the title." },
       { t: "table", head: ["Level", "Typical entry point", "What changes at this level"], rows: [
@@ -154,20 +188,20 @@ export const CHAPTERS = [
       { t: "mark", kind: "tip", text: "Promotion comes from owning outcomes, not only from doing more experiments. Ask early what the next level is judged on." },
       { t: "mark", kind: "myth", text: "Myth: without a PhD you hit a ceiling. Reality: many people reach senior and principal roles through experience, especially in development, manufacturing and quality. It usually takes longer." },
     ] },
-  { id: "automation", part: "orient", q: "What about lab automation and digital roles?", short: "Automation and data",
+  { id: "automation", for: ["student", "mid"], part: "orient", q: "What about lab automation and digital roles?", short: "Automation and data",
     blocks: [
       { t: "p", text: "Labs are moving work onto robots and data platforms. That creates roles for people who understand both the science and the tools." },
       { t: "list", items: ["**Lab automation:** program and run liquid handlers and integrated robotic systems.", "**Data and analytics:** clean, analyse and model experimental and process data.", "**Digital and LIMS:** configure the systems that hold GMP and research data.", "**Process analytics:** in-line sensors and models that monitor manufacturing in real time."] },
       { t: "mark", kind: "action", text: "If you are a bench scientist, learn Python and automate one analysis you do by hand. That single project is the start of an automation CV." },
       { t: "mark", kind: "tip", text: "Equipment and software vendors hire application scientists: a strong route from the bench into automation." },
     ] },
-  { id: "companies", part: "orient", q: "Pharma, biotech or CDMO?", short: "Company types",
+  { id: "companies", for: ["student", "mid", "senior"], part: "orient", q: "Pharma, biotech or CDMO?", short: "Company types",
     blocks: [
       { t: "widget", id: "companies" },
       { t: "mark", kind: "tip", text: "A CDMO or a testing lab is often the fastest way into GMP. Two years there and many doors open." },
       { t: "p", text: "No company gives you everything. Pick the two or three things that matter most to you now: learning, money, location, stability or responsibility. If a company meets those, it is a good match." },
     ] },
-  { id: "fundamentals", part: "build", q: "Which fundamentals matter most?", short: "Fundamentals",
+  { id: "fundamentals", for: ["student"], part: "build", q: "Which fundamentals matter most?", short: "Fundamentals",
     blocks: [
       { t: "table", head: ["Area", "What to know", "How to learn it"], rows: [
         ["Bench skills", "Cell culture, aseptic technique, molecular biology, protein assays, careful record keeping", "Lab courses, research projects, internships"],
@@ -184,7 +218,7 @@ export const CHAPTERS = [
       { t: "p", text: "Bench roles weigh the first two rows most. Manufacturing, QC and QA roles weigh GMP and documentation most. Everyone needs the last two." },
       { t: "mark", kind: "myth", text: "Myth: you must know everything before applying. Reality: hiring managers test fundamentals and attitude. They expect to train you on their process." },
     ] },
-  { id: "learn", part: "build", q: "What's the best way to learn?", short: "How to learn",
+  { id: "learn", for: ["student", "mid"], part: "build", q: "What's the best way to learn?", short: "How to learn",
     blocks: [
       { t: "table", head: ["Option", "Best for", "Watch out"], rows: [
         ["Free guidance (ICH, FDA, EMA)", "The real requirements, in the regulators' own words", "Dense; read summaries first, then the source"],
@@ -198,7 +232,7 @@ export const CHAPTERS = [
       { t: "mark", kind: "tip", text: "Fixed hours beat good intentions. Five hours a week on fixed evenings, kept for six months, is more than most people manage." },
       { t: "mark", kind: "action", text: "Put your plan where you see it daily. Review it every two weeks and adjust." },
     ] },
-  { id: "degrees", part: "build", q: "Is a master's or PhD worth it?", short: "Degrees",
+  { id: "degrees", for: ["student"], part: "build", q: "Is a master's or PhD worth it?", short: "Degrees",
     blocks: [
       { t: "table", head: ["Myth", "Reality"], rows: [
         ["You need a master's to get in", "Not for manufacturing, QC or QA entry roles. Often helpful for development roles."],
@@ -208,7 +242,7 @@ export const CHAPTERS = [
       { t: "list", items: ["**Worth it when:** you want process or analytical development, the course has an industry placement, or it gives you a work visa route.", "**Not worth it when:** you want GMP operations, it costs years of experience you could be earning, or the placement and visa path are unclear."] },
       { t: "mark", kind: "action", text: "Before enrolling, ask the course for its graduate destinations and which companies host placements." },
     ] },
-  { id: "certs", part: "build", q: "Do certifications matter?", short: "Certifications",
+  { id: "certs", for: ["student", "mid"], part: "build", q: "Do certifications matter?", short: "Certifications",
     blocks: [
       { t: "p", text: "Less than in IT. Biopharma hires on experience and fundamentals. A few credentials do carry weight in the right role:" },
       { t: "table", head: ["Credential", "Useful for"], rows: [
@@ -219,12 +253,12 @@ export const CHAPTERS = [
       ] },
       { t: "mark", kind: "warn", text: "Do not pay for an expensive certificate hoping it gets you a job. Check that adverts for your target role actually ask for it." },
     ] },
-  { id: "internships", part: "build", q: "How do I get the most from an internship?", short: "Internships",
+  { id: "internships", for: ["student"], part: "build", q: "How do I get the most from an internship?", short: "Internships",
     blocks: [
       { t: "dodont", do: ["Start looking six months ahead; many companies run graduate and placement schemes on a fixed cycle.", "Ask what project you will own and who will supervise you.", "Talk to past interns.", "Keep a log of methods, equipment and results you worked on.", "Ask for feedback every two weeks."], dont: ["Accept a role with no real project.", "Choose on brand name alone.", "Leave without a reference and a clear summary of what you did."] },
       { t: "mark", kind: "tip", text: "Your internship log becomes your CV bullets and your interview examples. Write it as you go." },
     ] },
-  { id: "research", part: "hired", q: "How do I research companies?", short: "Researching companies",
+  { id: "research", for: ["student", "mid", "senior"], part: "hired", q: "How do I research companies?", short: "Researching companies",
     blocks: [
       { t: "table", head: ["Check", "Why"], rows: [
         ["Pipeline and products", "Is there work, and will there be next year?"],
@@ -236,37 +270,97 @@ export const CHAPTERS = [
       ] },
       { t: "mark", kind: "action", text: "Keep one spreadsheet: company, site, role, contact, date applied, stage, notes. You will need it when a recruiter calls back months later." },
     ] },
-  { id: "cv", part: "hired", q: "How do I write a CV that stands out?", short: "CV",
+  { id: "cv", for: ["student", "mid"], part: "hired", q: "How do I write a CV that stands out?", short: "CV",
     blocks: [
       { t: "list", items: ["**Lead with results:** \"Qualified an SEC method used for release of 40 lots\" beats \"Responsible for HPLC\".", "**Use the advert's words:** many companies screen CVs with software.", "**Show GMP:** systems used (LIMS, eQMS), documents written, deviations closed.", "**Two pages at most.** One for graduates.", "**Name the techniques** you actually ran, not every one you have read about."] },
       { t: "dodont", do: ["Quantify: batches, methods, samples, timelines, money saved.", "Tailor it to each role.", "Match it to your LinkedIn profile.", "Proofread it, then ask someone else to."], dont: ["List duties instead of results.", "Add a photo, age or marital status unless the country expects it.", "Use one CV for every job.", "Exaggerate. Interviewers will ask you to explain every line."] },
       { t: "mark", kind: "action", text: "No experience yet? Add projects: a literature review on a CMC topic, a lab course, a data analysis of public stability data, volunteering at a conference." },
     ] },
-  { id: "linkedin", part: "hired", q: "Is LinkedIn worth the time?", short: "LinkedIn",
+  { id: "linkedin", for: ["student", "mid", "senior"], part: "hired", q: "Is LinkedIn worth the time?", short: "LinkedIn",
     blocks: [
       { t: "p", text: "Yes. Recruiters search it daily, and hiring managers check it before an interview." },
       { t: "list", items: ["**Headline:** the role you want and your strongest skill, not just \"Student\".", "**About:** three short lines: who you are, what you can do, what you want next.", "**Experience:** the same results as your CV.", "**Activity:** share what you learn. One useful post a week beats daily noise."] },
       { t: "mark", kind: "warn", text: "Don't open with \"Please refer me\". Start with a genuine question about their work. Referrals come from relationships." },
     ] },
-  { id: "apply", part: "hired", q: "How do I apply and prepare for interviews?", short: "Applying and interviews",
+  { id: "apply", for: ["student", "mid"], part: "hired", q: "How do I apply and prepare for interviews?", short: "Applying and interviews",
     blocks: [
       { t: "steps", items: ["Break the job advert into lines. Each line is a likely question.", "Write one real example for each, using situation, task, action, result.", "Revise the science behind the role: Pipeline deep dives and interview questions are built for this.", "Prepare two questions for them about the team and the first six months.", "Run at least two mock interviews out loud."] },
       { t: "mark", kind: "tip", text: "Expect a GMP scenario: \"You find an out-of-specification result. What do you do?\" Practise it until the steps come naturally." },
       { t: "mark", kind: "tip", text: "Ask the recruiter for their full name and number at the first call. You often won't get an email until later." },
     ] },
-  { id: "abroad", part: "hired", q: "Why is it hard to get a job abroad?", short: "Working abroad",
+  { id: "abroad", for: ["student", "mid", "senior"], part: "hired", q: "Why is it hard to get a job abroad?", short: "Working abroad",
     blocks: [
       { t: "p", text: "Sponsoring a work visa costs an employer money, paperwork and time, and comes with ongoing legal duties. If they have good local candidates, many won't sponsor." },
       { t: "list", items: ["**United Kingdom:** employers need a sponsor licence and assign a certificate of sponsorship under the Skilled Worker route; fees and salary thresholds are set by the Home Office and change regularly.", "**United States:** most routes involve the H-1B lottery or other employer-sponsored visas.", "**European Union:** the EU Blue Card and national permits vary by country."] },
       { t: "mark", kind: "warn", text: "Rules and fees change often. Check the government's own website, not a forum post." },
       { t: "steps", items: ["Pick a region, not a single dream country.", "Target companies that already sponsor; their past hires are public on some government registers.", "Build a network there before you need it.", "Apply steadily for months and track everything.", "Consider a degree or intra-company transfer as a route in."] },
     ] },
-  { id: "first90", part: "grow", q: "What should I focus on in my first job?", short: "First 90 days",
+  { id: "specialise", for: ["mid"], part: "orient", q: "Should I specialise or broaden?", short: "Specialise or broaden",
+    blocks: [
+      { t: "p", text: "Between about two and eight years in, you choose whether to become the person who knows one area deeply or the person who connects several." },
+      { t: "table", head: ["", "Specialise", "Broaden"], rows: [
+        ["Looks like", "Expert in a technique, modality or process step", "Moving across functions: QC, development, MSAT, QA"],
+        ["Leads to", "Principal scientist, subject-matter expert, method or process owner", "Project lead, CMC lead, operations or quality management"],
+        ["Risk", "Your niche shrinks if the technology changes", "Seen as general, without depth"],
+      ] },
+      { t: "mark", kind: "tip", text: "The strongest profiles are T-shaped: deep in one area, and fluent enough in the neighbouring ones to work across them." },
+    ] },
+  { id: "switch-function", for: ["mid"], part: "hired", q: "How do I switch to a different function?", short: "Switching function",
+    blocks: [
+      { t: "table", head: ["Move", "What carries over", "What to add"], rows: [
+        ["QC to analytical development", "Methods, data review, GMP", "Method development, characterisation, presenting data"],
+        ["Bench science to regulatory CMC", "Understanding the science and data", "CTD structure, guidance, writing for reviewers"],
+        ["Manufacturing to MSAT or validation", "Process and equipment knowledge, GMP", "Data analysis, protocols, investigations"],
+        ["Any lab role to lab automation", "Knowing the workflows", "Python, liquid handler programming"],
+        ["Technical role to project management", "Credibility with technical teams", "Planning tools, budgets, stakeholder management"],
+      ] },
+      { t: "steps", items: ["Find someone already in the target role and ask what they actually look for.", "Get one piece of target-role work in your current job: write a section, run an investigation, automate a task.", "Rewrite your CV around the skills that carry over.", "Apply internally first; it is usually the easiest move."] },
+    ] },
+  { id: "promotion", for: ["mid"], part: "grow", q: "How do I get promoted to senior scientist or lead?", short: "Getting promoted",
+    blocks: [
+      { t: "list", items: ["**Own outcomes, not tasks:** be the person a project question belongs to.", "**Make your work visible:** present results, write short summaries, share what worked.", "**Develop someone:** train an associate or an intern; it is often a promotion criterion.", "**Ask what the next level is judged on,** and agree a plan with your manager."] },
+      { t: "mark", kind: "action", text: "Ask your manager this month: what would I need to show to be ready for the next level in a year?" },
+      { t: "mark", kind: "warn", text: "Moving companies for a bigger title can help, but leave a role half-learned too often and it shows on your CV." },
+    ] },
+  { id: "negotiate", for: ["mid", "senior"], part: "hired", q: "How do I negotiate an offer?", short: "Negotiating",
+    blocks: [
+      { t: "steps", items: ["Know the market range for the role and location from several sources.", "Let them make the first offer where you can.", "Negotiate the whole package: base pay, bonus, shares, title, start date, training, flexibility.", "Ask once, clearly and politely, with a reason.", "Get the final offer in writing before you resign."] },
+      { t: "mark", kind: "tip", text: "Title and scope matter for your next move as much as salary does now." },
+    ] },
+  { id: "director", for: ["senior"], part: "grow", q: "What changes at director level?", short: "Leading at director level",
+    blocks: [
+      { t: "table", head: ["You stop", "You start"], rows: [
+        ["Solving problems yourself", "Making sure the right people solve them"],
+        ["Optimising one project", "Choosing which projects to do at all"],
+        ["Reporting results", "Making decisions with incomplete data and owning them"],
+        ["Managing a team", "Managing managers, budgets and other functions' expectations"],
+      ] },
+      { t: "mark", kind: "warn", text: "Many strong scientists struggle here because they keep doing the work. Your job is now the team's capacity and direction." },
+    ] },
+  { id: "hiring", for: ["senior"], part: "grow", q: "How do I hire and grow a strong team?", short: "Hiring and growing a team",
+    blocks: [
+      { t: "dodont", do: ["Hire for fundamentals, judgement and learning speed, then train the specifics.", "Give each person a clear next step and check it every quarter.", "Give credit publicly and feedback privately.", "Build a team that can run without you for two weeks."], dont: ["Hire copies of yourself.", "Hoard your best people; letting them move up is how you attract more.", "Leave poor performance unaddressed; the team notices."] },
+    ] },
+  { id: "reputation", for: ["senior"], part: "grow", q: "How do I build a reputation in the industry?", short: "Building a reputation",
+    blocks: [
+      { t: "list", items: ["Speak at conferences run by industry bodies such as ISPE, PDA or CASSS.", "Publish: papers, case studies or short practical articles.", "Join working groups that write guidance or best practice.", "Mentor people outside your company.", "Share what you learned, carefully, within confidentiality limits."] },
+      { t: "mark", kind: "warn", text: "Check what you can say publicly with your company first. Confidential data and unpublished programmes are off limits." },
+    ] },
+  { id: "consulting", for: ["senior"], part: "grow", q: "Should I consider consulting or interim work?", short: "Consulting and interim work",
+    blocks: [
+      { t: "table", head: ["", "Benefits", "Trade-offs"], rows: [
+        ["Independent consulting", "Variety, flexibility, higher day rates", "No guaranteed income; you sell your own work"],
+        ["Consultancy firm", "Varied clients with support and training", "Travel, utilisation targets"],
+        ["Interim or fractional roles", "Lead a function for a defined period, often at a biotech", "Short tenure; you start fresh often"],
+      ] },
+      { t: "mark", kind: "tip", text: "Your network is your pipeline. Most consulting work comes from people who have already worked with you." },
+    ] },
+  { id: "first90", for: ["student"], part: "grow", q: "What should I focus on in my first job?", short: "First 90 days",
     blocks: [
       { t: "steps", items: ["Learn the SOPs and the quality system before trying to change anything.", "Find out who reviews your work, and what good looks like to them.", "Keep a notebook of every system, acronym and contact.", "Volunteer for one deviation or investigation; you learn the most there.", "After six months, ask your manager what the next level looks like."] },
       { t: "mark", kind: "myth", text: "Myth: the job is the finish line. Reality: the first two years decide the next ten. Keep learning on purpose." },
     ] },
-  { id: "switch", part: "grow", q: "When is it time to switch jobs?", short: "Switching jobs",
+  { id: "switch", for: ["mid", "senior"], part: "grow", q: "When is it time to switch jobs?", short: "Switching jobs",
     blocks: [
       { t: "table", head: ["Signal", "Consider moving if"], rows: [
         ["Learning", "You have learned little new in a year and there is no path to change that."],
@@ -276,7 +370,7 @@ export const CHAPTERS = [
       ] },
       { t: "mark", kind: "warn", text: "Leave on good terms. The industry is small; your old manager may interview you again." },
     ] },
-  { id: "manager", part: "grow", q: "Should I become a manager?", short: "Manager or expert",
+  { id: "manager", for: ["mid", "senior"], part: "grow", q: "Should I become a manager?", short: "Manager or expert",
     blocks: [
       { t: "p", text: "Many companies offer two ladders: a people-management track and a technical or expert track. Both can reach senior levels." },
       { t: "table", head: ["", "People manager", "Technical expert"], rows: [
@@ -287,20 +381,24 @@ export const CHAPTERS = [
       { t: "mark", kind: "action", text: "Try it before you commit: supervise an intern or lead a small project team for six months." },
       { t: "mark", kind: "warn", text: "Don't take a management role only for the title or pay. If you miss the science every day, it will show." },
     ] },
-  { id: "current", part: "grow", q: "How do I stay current?", short: "Staying current",
+  { id: "current", for: ["student", "mid", "senior"], part: "grow", q: "How do I stay current?", short: "Staying current",
     blocks: [
       { t: "list", items: ["**Regulators:** FDA guidance pages, EMA, ICH, MHRA.", "**Industry bodies:** ISPE, PDA, BioPhorum, CASSS, RAPS.", "**News:** trade publications on bioprocessing and pharma manufacturing.", "**Research:** journals such as mAbs, Biotechnology and Bioengineering, Journal of Pharmaceutical Sciences.", "**People:** a short list of practitioners who explain their work."] },
       { t: "mark", kind: "action", text: "Set one hour a week, same time, to read. Write one line on what you learned. In a year that is fifty ideas you can talk about." },
     ] },
-  { id: "mentor", part: "grow", q: "How do I find a good mentor?", short: "Mentors",
+  { id: "mentor", for: ["student", "mid", "senior"], part: "grow", q: "How do I find a good mentor?", short: "Mentors",
     blocks: [
       { t: "dodont", do: ["Pick someone one or two steps ahead of you, in the role you want.", "Bring specific questions to each conversation.", "Have more than one mentor for different things.", "Report back what you did with their advice."], dont: ["Choose by follower count.", "Expect them to find you a job.", "Take up time without preparing."] },
     ] },
-  { id: "setbacks", part: "grow", q: "How do I stay motivated through setbacks?", short: "Setbacks",
+  { id: "setbacks", for: ["student", "mid"], part: "grow", q: "How do I stay motivated through setbacks?", short: "Setbacks",
     blocks: [
       { t: "list", items: ["Rejections are normal. Many good candidates send dozens of applications before an offer.", "Compare yourself with yourself six months ago, not with someone ten years ahead.", "Write down what you learn each week; progress is easy to forget.", "When stuck, change one thing: the role, the region or how you apply."] },
       { t: "mark", kind: "tip", text: "Experience gaps close with time. The people ahead of you started where you are." },
     ] },
 ];
 
-export const CHECKLIST = CHAPTERS.flatMap(c => c.blocks.filter(b => b.t === "mark" && b.kind === "action").map((b, i) => ({ id: `${c.id}-${i}`, chapter: c.id, text: b.text })));
+// within each part, chapters written for this stage alone come before shared ones
+export const chaptersFor = (aud) => CHAPTERS.filter(c => c.for.includes(aud))
+  .map((c, i) => ({ c, i })).sort((a, b) => (a.c.for.length === 1 ? 0 : 1) - (b.c.for.length === 1 ? 0 : 1) || a.i - b.i).map(x => x.c);
+export const checklistFor = (aud) => chaptersFor(aud).flatMap(c => c.blocks.filter(b => b.t === "mark" && b.kind === "action").map((b, i) => ({ id: `${c.id}-${i}`, chapter: c.id, text: b.text })));
+export const CHECKLIST = checklistFor("student");

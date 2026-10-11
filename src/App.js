@@ -312,7 +312,7 @@ export default function App() {
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
         {view==="pipeline"   && <Pipeline navigate={navigate} focus={focus} />}
         {view==="tools"      && <Tools navigate={navigate} focus={focus} />}
-        {view==="careers"    && <Careers navigate={navigate} />}
+        {view==="careers"    && <Careers navigate={navigate} focus={focus} />}
         {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="science"    && <Science navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="domains"    && <DomainsView />}
