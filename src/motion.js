@@ -44,7 +44,7 @@ function useInView(ref) {
   return seen;
 }
 
-export function InstrumentTrace() {
+export function InstrumentTrace({ bare = false } = {}) {
   const host = useRef(null);
   const clip = useRef(null), cursor = useRef(null), rt = useRef(null), abs = useRef(null), plot = useRef(null);
   const inView = useInView(host);
@@ -88,7 +88,7 @@ export function InstrumentTrace() {
 
   return (
     <div ref={host} aria-label="Animated SEC-HPLC chromatogram of a monoclonal antibody drug substance" role="img"
-      style={{ border:"1px solid var(--hairline)", borderRadius:2, background:"var(--panel)", fontFamily:MONO }}>
+      className={bare ? "mo-bare" : undefined} style={bare ? { fontFamily:MONO } : { border:"1px solid var(--hairline)", borderRadius:2, background:"var(--panel)", fontFamily:MONO }}>
       {/* instrument header */}
       <div style={{ display:"flex", justifyContent:"space-between", gap:12, padding:"12px 16px", borderBottom:"1px solid var(--hairline)", fontSize:11, letterSpacing:".02em", color:"var(--text-faint)" }}>
         <span><span style={{ color:"var(--accent)", fontWeight:700 }}>SEC-HPLC</span>, mAb drug substance, lot 24-017</span>

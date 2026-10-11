@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Reveal } from "../lc";
 import { InstrumentTrace } from "../motion";
 import Molecule, { DOMAIN_INFO } from "../molecule";
-import { LineGlyph, FunnelGlyph, TraceGlyph } from "./home/Glyphs";
+import Explore from "./home/Explore";
 import { PIPELINE, DOMAINS, GLOSSARY } from "../cmc-data";
 import { ANALYTICAL_METHODS } from "../extra-data";
 import { CASE_STUDIES } from "../case-study-data";
@@ -44,8 +44,6 @@ const WAYS = [
   { id: "science", name: "Why it is done", line: "Follow the development programme to the dossier." },
   { id: "analytical", name: "How it is measured", line: "Run the assays and read the results." },
 ];
-const GLYPH = { pipeline: LineGlyph, science: FunnelGlyph, analytical: TraceGlyph };
-const ASK = { pipeline: "How is it done?", science: "Why, and what does it prove?", analytical: "How is it measured?" };
 
 export default function Dashboard({ setView, dark }) {
   const [hover, setHover] = useState(null);
@@ -105,20 +103,7 @@ export default function Dashboard({ setView, dark }) {
           <h2 className="hm-h2">Everything on the site.</h2>
           <p className="hm-sub">Start with the three explorations. The tools, practice and reference are there when you need them.</p>
         </Reveal>
-        <div className="hm-ways3">
-          {GROUPS[0].items.map(it => {
-            const G = GLYPH[it.id];
-            return (
-              <button key={it.id} className="hm-way" onClick={() => go(it.id)}>
-                <G />
-                <span className="hm-way-ask">{ASK[it.id]}</span>
-                <strong>{it.name}</strong>
-                <span className="hm-way-line">{it.line}</span>
-                <span className="hm-way-go">Enter</span>
-              </button>
-            );
-          })}
-        </div>
+        <Explore go={go} />
         <div className="hm-dir">
           {GROUPS.slice(1).map(g => (
             <div key={g.label} className="hm-dir-col" style={{ "--seg": g.color }}>
@@ -145,7 +130,7 @@ export default function Dashboard({ setView, dark }) {
             <button className="hm-link" onClick={() => go("methods", "am-sec")}>How SEC-HPLC is run and validated</button>
           </div>
         </Reveal>
-        <Reveal delay={80}><InstrumentTrace /></Reveal>
+        <Reveal delay={80}><InstrumentTrace bare /></Reveal>
       </section>
 
       {/* ── One question ── */}

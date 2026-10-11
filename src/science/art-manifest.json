@@ -510,6 +510,51 @@
       "lastPrompt": "Premium scientific editorial illustration for an advanced biopharmaceutical CMC learning platform. Restrained palette of indigo, warm amber, slate and neutral greys matching the site's CPK roles. Precise, scientifically plausible structures, soft directional light, clean composition with generous negative space for HTML/SVG annotations. No text, no labels, no logos, no glowing DNA, no neon, no stock-lab clichés.\n\nSubject: A smooth closed loop track shaped like an infinity sign made of brushed metal, with a few small vials and a gear travelling along it, representing continuous lifecycle improvement. Isometric three-quarter view. Isolated object composition on a fully transparent background: no floor plane, no backdrop, no scene, no frame, only a faint soft contact shadow directly beneath. Premium product-render lighting, precise and scientifically plausible, restrained palette of stainless steel, clear glass, indigo and warm amber accents. No text, no labels, no logos, no people.",
       "reviewNote": "Transparent station object; equipment plausible for the stage; no text.",
       "optimised": "1000 px WebP with alpha"
+    },
+    {
+      "id": "home-pipeline",
+      "section": "Home: three explorations",
+      "objective": "Large floating hero object for the home page exploration row.",
+      "prompt": "A long, low isometric miniature biomanufacturing line on a single floating white platform, seen from a three-quarter angle: a small shake flask of cells, a stainless stirred-tank bioreactor with amber culture glowing through its sight glass, a three-column chromatography skid, a virus-filter housing, an aseptic filling isolator with a row of prefilled syringes, and a small cold-chain shipper at the far end, all joined by one continuous run of polished stainless piping with tiny amber light pulses travelling along it. A few tiny gowned operators for scale. Isolated composition on a fully transparent background: no floor plane, no backdrop, no frame, only a faint soft contact shadow. Premium cinematic product-render lighting with subtle rim light, precise and scientifically plausible, restrained palette of brushed stainless steel, clear glass, deep indigo and warm amber accents. No text, no labels, no logos.",
+      "size": "1536x1024",
+      "background": "transparent",
+      "scientificReview": "model check done 2026-10-11, human review pending",
+      "approval": "not approved",
+      "file": "science-art/home-pipeline.webp",
+      "model": "gpt-image-2.5-sunburst",
+      "generatedAt": "2026-10-11T08:08:46.257Z",
+      "lastPrompt": "Premium scientific editorial illustration for an advanced biopharmaceutical CMC learning platform. Restrained palette of indigo, warm amber, slate and neutral greys matching the site's CPK roles. Precise, scientifically plausible structures, soft directional light, clean composition with generous negative space for HTML/SVG annotations. No text, no labels, no logos, no glowing DNA, no neon, no stock-lab clichés.\n\nSubject: A long, low isometric miniature biomanufacturing line on a single floating white platform, seen from a three-quarter angle: a small shake flask of cells, a stainless stirred-tank bioreactor with amber culture glowing through its sight glass, a three-column chromatography skid, a virus-filter housing, an aseptic filling isolator with a row of prefilled syringes, and a small cold-chain shipper at the far end, all joined by one continuous run of polished stainless piping with tiny amber light pulses travelling along it. A few tiny gowned operators for scale. Isolated composition on a fully transparent background: no floor plane, no backdrop, no frame, only a faint soft contact shadow. Premium cinematic product-render lighting with subtle rim light, precise and scientifically plausible, restrained palette of brushed stainless steel, clear glass, deep indigo and warm amber accents. No text, no labels, no logos.",
+      "optimised": "1400 px WebP with alpha"
+    },
+    {
+      "id": "home-journey",
+      "section": "Home: three explorations",
+      "objective": "Large floating hero object for the home page exploration row.",
+      "prompt": "Several thin luminous streams of light in indigo, amber, teal and red rising from scattered points at the lower left, converging and braiding together as they travel, and flowing into a crystal-clear glass pyramid made of five stacked glass slabs (one small slab on top, one wider beneath, three side by side at the base) that glows softly from inside. Elegant, abstract, sculptural. Isolated composition on a fully transparent background: no floor plane, no backdrop, no frame, only a faint soft contact shadow. Premium cinematic product-render lighting with subtle rim light, precise and scientifically plausible, restrained palette of brushed stainless steel, clear glass, deep indigo and warm amber accents. No text, no labels, no logos.",
+      "size": "1536x1024",
+      "background": "transparent",
+      "scientificReview": "model check done 2026-10-11, human review pending",
+      "approval": "not approved",
+      "file": "science-art/home-journey.webp",
+      "model": "gpt-image-2.5-sunburst",
+      "generatedAt": "2026-10-11T08:09:17.445Z",
+      "lastPrompt": "Premium scientific editorial illustration for an advanced biopharmaceutical CMC learning platform. Restrained palette of indigo, warm amber, slate and neutral greys matching the site's CPK roles. Precise, scientifically plausible structures, soft directional light, clean composition with generous negative space for HTML/SVG annotations. No text, no labels, no logos, no glowing DNA, no neon, no stock-lab clichés.\n\nSubject: Several thin luminous streams of light in indigo, amber, teal and red rising from scattered points at the lower left, converging and braiding together as they travel, and flowing into a crystal-clear glass pyramid made of five stacked glass slabs (one small slab on top, one wider beneath, three side by side at the base) that glows softly from inside. Elegant, abstract, sculptural. Isolated composition on a fully transparent background: no floor plane, no backdrop, no frame, only a faint soft contact shadow. Premium cinematic product-render lighting with subtle rim light, precise and scientifically plausible, restrained palette of brushed stainless steel, clear glass, deep indigo and warm amber accents. No text, no labels, no logos.",
+      "optimised": "1400 px WebP with alpha"
+    },
+    {
+      "id": "home-analytical",
+      "section": "Home: three explorations",
+      "objective": "Large floating hero object for the home page exploration row.",
+      "prompt": "A tall clear glass chromatography column packed with white resin beads standing upright, with sharp horizontal bands of indigo, amber and red separating inside it, and above it a single continuous ribbon of light rising from the column outlet and drawing a smooth chromatogram curve with one tall peak and two small peaks in mid-air. A few small autosampler vials at its base. Isolated composition on a fully transparent background: no floor plane, no backdrop, no frame, only a faint soft contact shadow. Premium cinematic product-render lighting with subtle rim light, precise and scientifically plausible, restrained palette of brushed stainless steel, clear glass, deep indigo and warm amber accents. No text, no labels, no logos.",
+      "size": "1536x1024",
+      "background": "transparent",
+      "scientificReview": "model check done 2026-10-11, human review pending",
+      "approval": "not approved",
+      "file": "science-art/home-analytical.webp",
+      "model": "gpt-image-2.5-sunburst",
+      "generatedAt": "2026-10-11T08:09:42.086Z",
+      "lastPrompt": "Premium scientific editorial illustration for an advanced biopharmaceutical CMC learning platform. Restrained palette of indigo, warm amber, slate and neutral greys matching the site's CPK roles. Precise, scientifically plausible structures, soft directional light, clean composition with generous negative space for HTML/SVG annotations. No text, no labels, no logos, no glowing DNA, no neon, no stock-lab clichés.\n\nSubject: A tall clear glass chromatography column packed with white resin beads standing upright, with sharp horizontal bands of indigo, amber and red separating inside it, and above it a single continuous ribbon of light rising from the column outlet and drawing a smooth chromatogram curve with one tall peak and two small peaks in mid-air. A few small autosampler vials at its base. Isolated composition on a fully transparent background: no floor plane, no backdrop, no frame, only a faint soft contact shadow. Premium cinematic product-render lighting with subtle rim light, precise and scientifically plausible, restrained palette of brushed stainless steel, clear glass, deep indigo and warm amber accents. No text, no labels, no logos.",
+      "optimised": "1400 px WebP with alpha"
     }
   ]
 }

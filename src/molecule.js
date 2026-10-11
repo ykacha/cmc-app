@@ -227,7 +227,7 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
       const cy = Math.cos(S.yaw), sy = Math.sin(S.yaw), cp = Math.cos(S.pitch), sp = Math.sin(S.pitch);
       const scale = Math.min(W, H);
       const f = Math.min(H * 1.55, W * 1.9), D = 44;   // model ~19 units tall -> ~70% of the stage
-      const asm = still ? 1 : Math.min(Math.max(0, now - S.t0) / 2600, 1);
+      const asm = still ? 1 : Math.min(Math.max(0, now - S.t0) / 1500, 1);
 
       for (let i = 0; i < B.length; i++) {
         const b = B[i];
@@ -263,7 +263,7 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
 
       // leader lines + labels
       // labels fade in where they belong once the molecule has assembled; hidden until then
-      const labelIn = still ? 1 : Math.min(1, Math.max(0, (now - S.t0 - 2600) / 450));
+      const labelIn = still ? 1 : Math.min(1, Math.max(0, (now - S.t0 - 1450) / 350));
       if (labels && labelIn > 0) {
         ctx.strokeStyle = ink; ctx.lineWidth = 1;
         for (const [g, a] of Object.entries(model.anchors)) {
