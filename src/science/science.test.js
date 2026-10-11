@@ -10,6 +10,7 @@ import { TOPICS, topicOf } from "./content";
 import { WIDGETS } from "../views/science/widgets";
 import { RELATIONS } from "./content/quality";
 import { OPERATIONS } from "./content/downstream";
+import { QC_TESTS, BR_ISSUES } from "./content/records";
 
 const methodIds = new Set(ANALYTICAL_METHODS.map(m => m.id));
 const ctdIds = new Set(CTD.map(c => c.id));
@@ -99,6 +100,7 @@ describe("Deep-dive content integrity", () => {
   test("relationship explorer and process data use real method ids", () => {
     RELATIONS.forEach(r => r.analytical.forEach(([, m]) => expect(methodIds.has(m)).toBe(true)));
     OPERATIONS.forEach(o => o.methods.forEach(m => expect(methodIds.has(m)).toBe(true)));
+    QC_TESTS.forEach(t => expect(methodIds.has(t.method)).toBe(true));
   });
   test("every topic page renders, including its widgets", () => {
     all.forEach(t => {
@@ -126,6 +128,16 @@ describe("Science views", () => {
     expect(screen.getByText("The QTPP for CMX-417.")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Aggregates (HMW), score 80" }));
     expect(screen.getAllByText(/16 × 5 = 80/).length).toBeGreaterThan(0);
+  });
+  test("the batch record review scores raised findings", () => {
+    render(<Science navigate={() => {}} focus="specs/batchrecord" />);
+    expect(BR_ISSUES).toHaveLength(6);
+    fireEvent.click(screen.getByRole("button", { name: "Review it as QA" }));
+    fireEvent.click(screen.getByRole("button", { name: "Equipment" }));
+    fireEvent.click(screen.getByRole("button", { name: "Raise PHM-114" }));
+    fireEvent.click(screen.getByRole("button", { name: "Raise CHR-02" }));
+    fireEvent.click(screen.getByRole("button", { name: "Check my review" }));
+    expect(screen.getByText("1 of 6 found, 1 not an issue")).toBeInTheDocument();
   });
   test("the overview switches to the CTD evidence map", () => {
     render(<Science navigate={() => {}} focus={null} />);
