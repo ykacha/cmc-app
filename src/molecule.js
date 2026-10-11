@@ -167,7 +167,7 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
     const ctx = canvas.getContext("2d");
     const still = reducedMotion();
     const S = state.current;
-    if (!S.t0) S.t0 = performance.now();   // assemble once, not on theme change
+    if (!S.t0) S.t0 = performance.now() + 120;   // assemble once (not on theme change), just after first paint
 
     // theme colours come from the app root (data-theme lives there)
     const css = getComputedStyle(el);
@@ -179,9 +179,15 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
 
     // scattered start positions for the assembly moment
     const B = model.beads;
-    const start = B.map(() => { const a = rnd() * Math.PI * 2, z = rnd() * 2 - 1, r = 22 + rnd() * 10; return [Math.cos(a) * r * Math.sqrt(1 - z * z), Math.sin(a) * r * Math.sqrt(1 - z * z), z * r]; });
+    // start each bead a little way out from where it belongs, pushed back from the camera, so the
+    // molecule condenses in place instead of flying in from huge, close-up beads
+    const start = B.map(b => { const a = rnd() * Math.PI * 2, z = rnd() * 2 - 1, r = 3 + rnd() * 4, s = Math.sqrt(1 - z * z); return [b.p[0] * 1.25 + Math.cos(a) * r * s, b.p[1] * 1.25 + Math.sin(a) * r * s, b.p[2] - 6 + z * r]; });
     const proj = new Float32Array(B.length * 4); // x, y, scale, depth
     const order = B.map((_, i) => i);
+    // assemble in a wave from the Fc up to the Fab tips: each bead gets a start delay by height
+    const ys = B.map(b => b.p[1]), yMin = Math.min(...ys), ySpan = (Math.max(...ys) - yMin) || 1;
+    const delay = B.map((b, i) => 0.32 * (b.p[1] - yMin) / ySpan + 0.04 * ((i * 7919) % 97) / 97);
+    const easeOut = (t) => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
 
     let W = 0, H = 0, dpr = 1, raf = 0, visible = true, last = performance.now();
     const resize = () => {
@@ -200,7 +206,7 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
       let x = p[0] * cy + p[2] * sy, z = -p[0] * sy + p[2] * cy, y = p[1];
       const y2 = y * cp - z * sp, z2 = y * sp + z * cp;
       const k = f / (D - z2);
-      return [W / 2 + x * k, H * 0.45 - y2 * k, k, z2];
+      return [W / 2 + x * k, H * 0.5 - y2 * k, k, z2];
     };
 
     function frame(now) {
@@ -221,12 +227,12 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
       const cy = Math.cos(S.yaw), sy = Math.sin(S.yaw), cp = Math.cos(S.pitch), sp = Math.sin(S.pitch);
       const scale = Math.min(W, H);
       const f = Math.min(H * 1.55, W * 1.9), D = 44;   // model ~19 units tall -> ~70% of the stage
-      const asm = still ? 1 : Math.min((now - S.t0) / 2200, 1);
-      const e = 1 - Math.pow(1 - asm, 4);
+      const asm = still ? 1 : Math.min(Math.max(0, now - S.t0) / 2600, 1);
 
       for (let i = 0; i < B.length; i++) {
         const b = B[i];
-        const p = e < 1 ? [start[i][0] + (b.p[0] - start[i][0]) * e, start[i][1] + (b.p[1] - start[i][1]) * e, start[i][2] + (b.p[2] - start[i][2]) * e] : b.p;
+        const ei = still ? 1 : easeOut((asm - delay[i]) / (1 - 0.36));
+        const p = ei < 1 ? [start[i][0] + (b.p[0] - start[i][0]) * ei, start[i][1] + (b.p[1] - start[i][1]) * ei, start[i][2] + (b.p[2] - start[i][2]) * ei] : b.p;
         const q = project(p, cy, sy, cp, sp, f, D);
         proj[i * 4] = q[0]; proj[i * 4 + 1] = q[1]; proj[i * 4 + 2] = q[2]; proj[i * 4 + 3] = q[3];
       }
@@ -249,28 +255,32 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
           if (st.hit(b)) { img = b.role === "bridge" ? sprites.hotb : sprites.hot; a = Math.max(a, 0.7 + pulse * 0.3); }
           else a *= 0.42;
         }
-        ctx.globalAlpha = a * (e < 1 ? 0.35 + 0.65 * e : 1);
+        const ei = still ? 1 : easeOut((asm - delay[i]) / (1 - 0.36));
+        ctx.globalAlpha = a * (ei < 1 ? ei * ei : 1);
         ctx.drawImage(img, proj[i * 4] - r, proj[i * 4 + 1] - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
 
       // leader lines + labels
-      if (labels && e > 0.98) {
+      // labels fade in where they belong once the molecule has assembled; hidden until then
+      const labelIn = still ? 1 : Math.min(1, Math.max(0, (now - S.t0 - 2600) / 450));
+      if (labels && labelIn > 0) {
         ctx.strokeStyle = ink; ctx.lineWidth = 1;
         for (const [g, a] of Object.entries(model.anchors)) {
           const q = project(a, cy, sy, cp, sp, f, D);
           const lab = labelRefs.current[g]; if (!lab) continue;
-          const dx = q[0] - W / 2, dy = q[1] - H * 0.45, l = Math.hypot(dx, dy) || 1;
+          const dx = q[0] - W / 2, dy = q[1] - H * 0.5, l = Math.hypot(dx, dy) || 1;
           const reach = g === "hinge" || g === "glycan" ? 0.26 * scale : 0.13 * scale;
           const sideX = g === "glycan" ? 1 : g === "hinge" ? -1 : Math.sign(dx) || 1;
           const lx = g === "hinge" || g === "glycan" ? q[0] + sideX * reach : q[0] + (dx / l) * reach;
           let ly = g === "hinge" || g === "glycan" ? q[1] : q[1] + (dy / l) * reach;
           ly = Math.max(30, Math.min(H - (W < 600 ? 70 : 30), ly));
-          ctx.globalAlpha = hg && hg !== g ? 0.25 : 0.8;
+          ctx.globalAlpha = (hg && hg !== g ? 0.25 : 0.8) * labelIn;
           ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(lx, ly); ctx.stroke();
           ctx.beginPath(); ctx.arc(q[0], q[1], 2.2, 0, Math.PI * 2); ctx.fillStyle = ink; ctx.fill();
           lab.style.transform = `translate(${lx.toFixed(1)}px, ${ly.toFixed(1)}px) translate(${lx < q[0] ? "-100%" : "0"}, -50%)`;
-          lab.style.opacity = hg && hg !== g ? 0.35 : 1;
+          lab.style.opacity = String((hg && hg !== g ? 0.35 : 1) * labelIn);
+          lab.style.visibility = "visible";
         }
         ctx.globalAlpha = 1;
       }
@@ -339,7 +349,7 @@ export default function Molecule({ dark, stress, hit, onHover, onPick, labels = 
       <canvas ref={cvs} role="img" aria-label="Rotating 3D model of an IgG1 monoclonal antibody: two Fab arms, the hinge with its disulfide bonds, the N297 glycans and the Fc region. Drag to rotate."
         style={{ display:"block", touchAction:"pan-y", cursor:"grab" }} />
       {labels && Object.entries(DOMAIN_INFO).map(([g, info]) => (
-        <button key={g} ref={el => (labelRefs.current[g] = el)} className="mv-label" onClick={() => onPick?.(g)}
+        <button key={g} ref={el => (labelRefs.current[g] = el)} className="mv-label" style={{ opacity: 0, visibility: "hidden" }} onClick={() => onPick?.(g)}
           onMouseEnter={() => { state.current.hover = g; setHoverGroup(g); onHover?.(g); }}
           onMouseLeave={() => { state.current.hover = null; setHoverGroup(null); onHover?.(null); }}
           aria-pressed={hoverGroup === g}>

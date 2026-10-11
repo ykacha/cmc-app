@@ -267,7 +267,7 @@ html.mo-vt main.view-enter{ animation:none; }
 .hm-readout strong{ font:800 19px/1.1 var(--font-display); font-stretch:115%; color:var(--text-h); }
 .hm-readout span{ font-size:14px; line-height:1.55; color:var(--text-sec); }
 .hm-readout .hm-link{ align-self:flex-start; margin-top:2px; }
-.hm-hint{ color:var(--text-muted) !important; }
+
 
 .hm-stress{ margin-top:clamp(22px, 4.5vh, 44px); padding-top:18px; border-top:1px solid var(--hairline); max-width:560px; }
 .hm-stress-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }

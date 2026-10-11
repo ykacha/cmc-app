@@ -65,14 +65,12 @@ export default function Dashboard({ setView, dark }) {
         <div className="hm-stage">
           <Molecule dark={dark} stress={null} onHover={setHover} onPick={onPick} />
           <div className="hm-readout" aria-live="polite">
-            {info ? (
+            {info && (
               <>
                 <strong>{info.name}</strong>
                 <span>{info.line}</span>
                 <button className="hm-link" onClick={() => go("methods", info.method)}>Open {methodName(info.method)}</button>
               </>
-            ) : (
-              <span className="hm-hint">Drag to turn the molecule. Hover or tap a domain to see what lives there.</span>
             )}
           </div>
         </div>
