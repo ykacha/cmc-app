@@ -4,9 +4,9 @@ import { useEffect, useRef } from "react";
    the page (transparent art), drifts with scroll and leans toward the cursor. */
 const ART = (id) => `${process.env.PUBLIC_URL || ""}/science-art/home-${id}.webp`;
 const ROWS = [
-  { id: "pipeline", art: "pipeline", ask: "How is it done?", name: "Pipeline Explorer", line: "Walk the production line: sixteen stations from a DNA construct to a medicine on the market, with the people, equipment and research papers at each one.", go: "Walk the line" },
-  { id: "science", art: "journey", ask: "Why, and what does it prove?", name: "Science journey", line: "The development programme from proposal to dossier: the decisions, the evidence, the interactive tools, and where every result is filed.", go: "Start the journey" },
-  { id: "analytical", art: "analytical", ask: "How is it measured?", name: "Analytical", line: "Thirty-three assays run live, a validation lab, specifications and comparability, all from the bench chemist's point of view.", go: "Open the assays" },
+  { id: "pipeline", art: "pipeline", ask: "How is it done?", name: "Pipeline Explorer", line: "Sixteen stations from a DNA construct to a medicine on the market, with the people, equipment and papers at each.", go: "Walk the line" },
+  { id: "science", art: "journey", ask: "Why, and what does it prove?", name: "Science journey", line: "The programme from proposal to dossier: the decisions, the evidence, and where every result is filed.", go: "Start the journey" },
+  { id: "analytical", art: "analytical", ask: "How is it measured?", name: "Analytical", line: "Thirty-three assays run live, a validation lab, specifications and comparability.", go: "Open the assays" },
 ];
 
 export default function Explore({ go }) {
@@ -20,7 +20,7 @@ export default function Explore({ go }) {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => figs.forEach(f => {
         const r = f.getBoundingClientRect(), mid = r.top + r.height / 2 - window.innerHeight / 2;
-        f.style.setProperty("--py", `${(mid * -0.08).toFixed(1)}px`);
+        f.style.setProperty("--py", `${(mid * -0.04).toFixed(1)}px`);
       }));
     };
     const onMove = (e) => {
