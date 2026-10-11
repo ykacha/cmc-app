@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { GLOSSARY } from "../../cmc-data";
 import { WIDGETS } from "./widgets";
 
 /* Renders structured deep-dive content. Content lives in src/science/content;
@@ -17,13 +18,32 @@ import { WIDGETS } from "./widgets";
      links    { items: [{ label, to }] }       cross-links: "stage/topic" or "view:focus"
      refs     { items }                        references, collapsed */
 
-// minimal inline formatting: **bold**
-function rich(text) {
-  const parts = String(text).split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((p, i) => p.startsWith("**") ? <strong key={i}>{p.slice(2, -2)}</strong> : <Fragment key={i}>{p}</Fragment>);
+// glossary terms get a hover definition the first time they appear on a page
+const GLOSS = Object.fromEntries(GLOSSARY.map(g => [g.term, g.def]));
+const GLOSS_RE = new RegExp(`\\b(${GLOSSARY.map(g => g.term.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")).sort((a, b) => b.length - a.length).join("|")})\\b`);
+function gloss(text, seen, key) {
+  if (!seen) return text;
+  const out = []; let rest = String(text), k = 0;
+  for (;;) {
+    const m = rest.match(GLOSS_RE);
+    if (!m || seen.has(m[1])) { out.push(rest); break; }
+    seen.add(m[1]);
+    out.push(rest.slice(0, m.index));
+    out.push(<abbr key={`${key}-${k++}`} className="bk-gloss" title={GLOSS[m[1]]} tabIndex={0}>{m[1]}</abbr>);
+    rest = rest.slice(m.index + m[1].length);
+  }
+  return out;
 }
 
+// minimal inline formatting: **bold**, plus glossary definitions
+function rich(text, seen) {
+  const parts = String(text).split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((p, i) => p.startsWith("**") ? <strong key={i}>{p.slice(2, -2)}</strong> : <Fragment key={i}>{gloss(p, seen, i)}</Fragment>);
+}
+export const slug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
 export function Blocks({ blocks, go, nav, dark }) {
+  const seen = new Set();   // rebuilt every render, so the first mention is always the one defined
   const follow = (to) => {
     if (to.includes(":")) { const [view, focus] = to.split(":"); nav(view, focus || null); }
     else go(to);
@@ -32,11 +52,11 @@ export function Blocks({ blocks, go, nav, dark }) {
     <div className="bk">
       {blocks.map((b, i) => {
         switch (b.t) {
-          case "p": return <p key={i} className="an-prose bk-p">{rich(b.text)}</p>;
-          case "h": return <h3 key={i} className="bk-h">{b.text}</h3>;
-          case "list": return <ul key={i} className="an-list bk-list">{b.items.map((x, k) => <li key={k}>{rich(x)}</li>)}</ul>;
+          case "p": return <p key={i} className="an-prose bk-p">{rich(b.text, seen)}</p>;
+          case "h": return <h3 key={i} id={slug(b.text)} className="bk-h">{b.text}</h3>;
+          case "list": return <ul key={i} className="an-list bk-list">{b.items.map((x, k) => <li key={k}>{rich(x, seen)}</li>)}</ul>;
           case "steps": return (
-            <ol key={i} className="bk-steps">{b.items.map((x, k) => <li key={k}><span className="sv-mono">{String(k + 1).padStart(2, "0")}</span><span>{rich(x)}</span></li>)}</ol>
+            <ol key={i} className="bk-steps">{b.items.map((x, k) => <li key={k}><span className="sv-mono">{String(k + 1).padStart(2, "0")}</span><span>{rich(x, seen)}</span></li>)}</ol>
           );
           case "chain": return (
             <div key={i} className="bk-chain" role="list">
@@ -57,9 +77,9 @@ export function Blocks({ blocks, go, nav, dark }) {
             </div>
           );
           case "grid": return (
-            <div key={i} className={`bk-grid bk-grid-${b.cols || 3}`}>{b.items.map((x, k) => <div key={k}><i /><strong>{x.title}</strong><p>{rich(x.text)}</p></div>)}</div>
+            <div key={i} className={`bk-grid bk-grid-${b.cols || 3}`}>{b.items.map((x, k) => <div key={k}><i /><strong>{x.title}</strong><p>{rich(x.text, seen)}</p></div>)}</div>
           );
-          case "callout": return <div key={i} className={`bk-callout bk-${b.tone || "note"}`}><strong>{b.title}</strong><p>{rich(b.text)}</p></div>;
+          case "callout": return <div key={i} className={`bk-callout bk-${b.tone || "note"}`}><strong>{b.title}</strong><p>{rich(b.text, seen)}</p></div>;
           case "widget": { const W = WIDGETS[b.id]; return W ? <div key={i} className="bk-widget"><W {...(b.props || {})} go={go} nav={nav} dark={dark} /></div> : null; }
           case "links": return (
             <div key={i} className="bk-links"><span>Connects to</span>{b.items.map(x => <button key={x.label} className="sv-tab" onClick={() => follow(x.to)}>{x.label}</button>)}</div>

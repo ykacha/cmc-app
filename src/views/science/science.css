@@ -698,3 +698,25 @@ button.sc-tl-head.is-on{ box-shadow:inset 0 -3px 0 var(--accent); }
 .sc-due-grid strong{ display:block; font:700 13.5px var(--font-sans); color:var(--text-h); padding-bottom:6px; border-bottom:1px solid var(--hairline); }
 .sc-due-grid ul{ margin:8px 0 0; padding-left:16px; display:grid; gap:4px; font-size:13.5px; line-height:1.45; color:var(--text-sec); }
 @media (max-width:900px){ .sc-due-head, .sc-due-head dl{ grid-template-columns:1fr; } }
+
+/* deep-dive reading aids */
+.sc-glance{ display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 22px; margin:18px 0 0; padding:12px 0; border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline); }
+.sc-glance > .sv-mono{ font-size:12.5px; color:var(--accent); }
+.sc-glance nav{ display:flex; flex-wrap:wrap; gap:6px 18px; }
+.sc-glance .hm-link{ font-size:13.5px; }
+.bk-gloss{ text-decoration:underline dotted var(--text-muted); text-underline-offset:3px; cursor:help; }
+.bk-gloss:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:2px; }
+.bk-h{ scroll-margin-top:120px; }
+.sc-practice{ margin-top:56px; padding-top:28px; border-top:3px solid var(--accent); }
+.sc-practice-h{ margin:0; font:850 clamp(24px, 2.4vw, 32px)/1.1 var(--font-display); font-stretch:110%; color:var(--text-h); }
+.sc-practice-sub{ margin:8px 0 16px; font-size:14.5px; color:var(--text-sec); }
+.sc-practice ol{ list-style:none; margin:0; padding:0; display:grid; gap:2px; }
+.sc-practice details{ padding:14px 0; border-bottom:1px solid var(--hairline); }
+.sc-practice summary{ cursor:pointer; font:600 15.5px/1.5 var(--font-sans); color:var(--text-h); list-style:none; }
+.sc-practice summary::-webkit-details-marker{ display:none; }
+.sc-lv{ display:inline-block; margin-right:10px; font:700 11px/1 var(--font-sans); color:var(--accent); padding:3px 8px; border:1px solid var(--accent); border-radius:999px; vertical-align:2px; }
+.sc-practice-ans{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:14px 0 10px; }
+.sc-practice-ans strong{ font:700 12.5px var(--font-sans); color:var(--text-h); }
+.sc-practice-ans p{ margin:4px 0 0; font-size:14.5px; line-height:1.6; color:var(--text-sec); }
+.sc-readmark{ display:inline-block; width:7px; height:7px; margin-left:8px; border-radius:50%; background:var(--ok); vertical-align:1px; }
+@media (max-width:720px){ .sc-practice-ans{ grid-template-columns:1fr; } }

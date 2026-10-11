@@ -1,6 +1,6 @@
 import "./science.css";
 import "../analytical/analytical.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { STAGES, STAGE, GROUPS, CTD, EVIDENCE, MILESTONES, GATES, GLANCE } from "../../science/journey";
 import { TOPICS, topicOf } from "../../science/content";
 import { WIDGETS } from "./widgets";
@@ -8,7 +8,8 @@ import { ProvLegend, EvidenceLegend } from "../../science/ui";
 import StageHero from "./StageHero";
 import Proposal from "./Proposal";
 import Qtpp from "./Qtpp";
-import { Blocks } from "./Blocks";
+import { Blocks, slug } from "./Blocks";
+import { markRead, useRead, readingMinutes, outline, practiceFor } from "../../science/reading";
 import FlowHero from "./FlowHero";
 import { Icon } from "../../icons";
 import { CMC_TIMELINE } from "../../extra-data";
@@ -25,6 +26,7 @@ const num = (n) => String(n).padStart(2, "0");
 const SEQUENCE = STAGES.flatMap(s => [{ stage: s.id }, ...(TOPICS[s.id] || []).map(t => ({ stage: s.id, topic: t.id }))]);
 
 export default function Science({ navigate, focus, dark }) {
+  const read = useRead();
   const [id, tid] = (focus || "overview").split("/");
   const go = (path) => navigate("science", path === "overview" ? null : path);
   const stage = STAGE[id];
@@ -46,7 +48,7 @@ export default function Science({ navigate, focus, dark }) {
                   {id === s.id && TOPICS[s.id] && (
                     <ul className="sc-rail-topics">
                       {TOPICS[s.id].map(t => (
-                        <li key={t.id}><button className={tid === t.id ? "is-on" : ""} aria-current={tid === t.id ? "page" : undefined} onClick={() => go(`${s.id}/${t.id}`)}>{t.title}</button></li>
+                        <li key={t.id}><button className={`${tid === t.id ? "is-on" : ""}${read.has(`${s.id}/${t.id}`) ? " is-read" : ""}`} aria-current={tid === t.id ? "page" : undefined} onClick={() => go(`${s.id}/${t.id}`)}>{t.title}{read.has(`${s.id}/${t.id}`) && <span className="sc-readmark" aria-label="read" />}</button></li>
                       ))}
                     </ul>
                   )}
@@ -131,6 +133,16 @@ function StagePage({ stage, go, nav, dark }) {
 
 function TopicPage({ stage, topic, go, nav, dark }) {
   const topics = TOPICS[stage.id];
+  const end = useRef(null);
+  const key = `${stage.id}/${topic.id}`;
+  const heads = outline(topic.blocks);
+  const practice = practiceFor(stage.id, topic.id);
+  // a topic counts as read once its end has been on screen
+  useEffect(() => {
+    const el = end.current; if (!el || !("IntersectionObserver" in window)) return undefined;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { markRead(key); io.disconnect(); } });
+    io.observe(el); return () => io.disconnect();
+  }, [key]);
   return (
     <article className="sc-topic">
       <nav className="an-crumbs">
@@ -138,10 +150,39 @@ function TopicPage({ stage, topic, go, nav, dark }) {
       </nav>
       <h1 className="sc-topic-h">{topic.title}</h1>
       <p className="sc-topic-lede">{topic.lede}</p>
+      <div className="sc-glance">
+        <span className="sv-mono">{readingMinutes(topic.blocks)} min read</span>
+        {heads.length > 0 && (
+          <nav aria-label="On this page">
+            {heads.map(h => <button key={h} className="hm-link" onClick={() => document.getElementById(slug(h))?.scrollIntoView({ behavior: "smooth", block: "start" })}>{h}</button>)}
+          </nav>
+        )}
+      </div>
       <div className="sc-topic-tabs" role="navigation" aria-label={`Topics in ${stage.short}`}>
         {topics.map(t => <button key={t.id} className={`sv-tab${t.id === topic.id ? " is-on" : ""}`} aria-current={t.id === topic.id ? "page" : undefined} onClick={() => go(`${stage.id}/${t.id}`)}>{t.title}</button>)}
       </div>
       <Blocks blocks={topic.blocks} go={go} nav={nav} dark={dark} />
+      {practice.length > 0 && (
+        <section className="sc-practice" aria-labelledby="practice-h">
+          <h2 id="practice-h" className="sc-practice-h">Check yourself.</h2>
+          <p className="sc-practice-sub">Interview questions on this part of the process. Think through your answer, then open the reasoning.</p>
+          <ol>
+            {practice.map(q => (
+              <li key={q.id}>
+                <details>
+                  <summary><span className="sc-lv">{q.level}</span>{q.q}</summary>
+                  <div className="sc-practice-ans">
+                    <div><strong>What it tests</strong><p>{q.why}</p></div>
+                    <div><strong>How to approach it</strong><p>{q.how}</p></div>
+                  </div>
+                  <button className="hm-link" onClick={() => nav("pipeline", q.station.id)}>More at Pipeline station {q.station.stage}: {q.station.label}</button>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+      <div ref={end} aria-hidden="true" />
       <Pager at={{ stage: stage.id, topic: topic.id }} go={go} />
     </article>
   );

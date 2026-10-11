@@ -135,3 +135,27 @@ Rules:
   - `src/pipeline/plant.js` (in hand, people, equipment, links to Journey stages)
   - existing `PIPELINE` cards and `STAGE_OVERVIEWS`, kept in full
 - **Old view**: backed up at `src/versions/PipelineView-pre-production-line.js`.
+
+## Status (2026-10-11)
+
+- **Phase 1, done.** Navigation restructured; QbD and CTD Navigator retired.
+- **Phase 2, done.** Timeline, Stability and Viral merged into the Journey:
+  - clickable milestones on the Journey timeline (the old timeline data was corrected first)
+  - new topics: `stability/conditions` and `downstream/viralstudies`
+  - the old views are redirected and backed up in `src/versions/`
+- **Phase 3, done.** Deep-dive upgrades:
+  - reading time and an outline on every topic
+  - glossary hover definitions
+  - read marks in the sidebar (stored in this browser)
+  - "Check yourself" interview questions from the matching Pipeline stations
+  - Pipeline research papers, checked against PubMed
+- **Phase 4, done.** The CMC workbench at `#/tools/<id>`, with nine calculators: LRV and safety margin, shelf life (ICH Q1E), tolerance-interval limits, endotoxin K/M and MVD, HCP ppm, diafiltration, column sizing, yield and injection force.
+  - The product context is saved in this browser only.
+  - The calculations are tested.
+- **Also done:**
+  - Career, Pathways, Exam, Notes and Progress removed; their old links go to the home page.
+  - Q-Bank moved to Library.
+  - New brand mark (an SEC chromatogram) for the header, favicon and app icons.
+- **Remaining:**
+  - Phase 5: refresh ICH, Glossary, Compendial, Excipients, Cases and Q-Bank in the current design.
+  - Human scientific review of the example values and the generated images.
