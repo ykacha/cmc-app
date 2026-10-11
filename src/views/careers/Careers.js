@@ -103,7 +103,15 @@ function Block({ b, done, toggle, cid, idx }) {
 }
 
 export default function Careers({ navigate, focus }) {
-  const aud = AUDIENCES.some(a => a.id === focus) ? focus : "student";
+  const fromFocus = AUDIENCES.some(a => a.id === focus) ? focus : "student";
+  const [aud, setAud] = useState(fromFocus);
+  useEffect(() => setAud(fromFocus), [fromFocus]);   // back/forward and pasted links
+  // switching track updates the link without leaving the page or jumping to the top
+  const chooseTrack = (id) => {
+    if (id === aud) return;
+    setAud(id);
+    try { window.history.replaceState(null, "", `#/careers/${id}`); } catch { /* ignore */ }
+  };
   const CHAPTERS = useMemo(() => chaptersFor(aud), [aud]);
   const CHECKLIST = useMemo(() => checklistFor(aud), [aud]);
   const [done, setDone] = useState(loadDone);
@@ -151,7 +159,7 @@ export default function Careers({ navigate, focus }) {
         <span className="cg-aud-ask">Where are you now?</span>
         <div className="cg-aud-row">
           {AUDIENCES.map((a, i) => (
-            <button key={a.id} className={a.id === aud ? "is-on" : ""} aria-pressed={a.id === aud} onClick={() => navigate("careers", a.id)}>
+            <button key={a.id} className={a.id === aud ? "is-on" : ""} aria-pressed={a.id === aud} onClick={() => chooseTrack(a.id)}>
               <span className="cg-aud-n sv-mono">0{i + 1}</span>
               <strong>{a.name}</strong>
               <em>{a.years}</em>
