@@ -602,24 +602,26 @@
 @media (max-width:720px){ .sh-keys{ grid-template-columns:1fr; gap:10px; } .sc-tl-grid{ --name:120px; grid-template-columns:var(--name) repeat(var(--cols), minmax(64px,1fr)); min-width:600px; } }
 @media (prefers-reduced-motion: reduce){ .sc-tl-bar{ transition:none; } }
 
-/* overview hero: the title over a self-assembling antibody */
-.sc-hero{ position:relative; display:block; min-height:min(78vh, 720px); padding:40px 0 64px; isolation:isolate; }
-.sc-ab{ position:absolute; z-index:-1; top:-40px; right:-48px; width:min(62%, 760px); height:calc(100% + 40px); pointer-events:none; }
-.sc-ab canvas{ display:block; }
-.sc-ab::after{ content:""; position:absolute; inset:0; background:radial-gradient(60% 55% at 55% 48%, color-mix(in srgb, var(--chain-h) 9%, transparent), transparent 70%); z-index:-1; }
-.sc-hero-text{ position:relative; max-width:720px; padding-top:min(10vh, 96px); }
-.sc-hero-text .ov-h1{ font-size:clamp(48px, 7vw, 116px); line-height:.9; letter-spacing:-.035em; max-width:9.5em; text-wrap:balance; }
-.sc-hero-text .ov-lede{ max-width:52ch; }
-.sc-hero-text .ov-lede, .sc-hero-text .ov-h1{ text-shadow:0 0 24px var(--bg-base), 0 0 2px var(--bg-base); }
-.sc-ab-key{ position:absolute; right:0; bottom:48px; list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 18px; font:500 12px/1 var(--font-sans); color:var(--text-muted); }
-.sc-ab-key li{ display:flex; align-items:center; gap:7px; }
-.sc-ab-key li::before{ content:""; width:8px; height:8px; border-radius:50%; background:var(--k); }
-.sc-ab-key .is-h{ --k:var(--chain-h); } .sc-ab-key .is-l{ --k:var(--chain-l); } .sc-ab-key .is-b{ --k:var(--bridge); } .sc-ab-key .is-g{ --k:var(--glycan); }
-@media (max-width:1100px){
-  .sc-hero{ min-height:0; padding:12px 0 24px; display:flex; flex-direction:column; }
-  .sc-ab{ position:relative; order:2; top:0; right:0; width:100%; height:min(70vw, 460px); z-index:0; margin-top:8px; }
-  .sc-hero-text{ padding-top:0; }
-  .sc-ab-key{ position:static; order:3; justify-content:flex-start; }
+/* overview hero: the title, then the journey drawn as a stream */
+.sc-hero{ display:block; padding:8px 0 0; }
+.sc-hero-top{ display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:24px 48px; align-items:end; }
+.sc-hero-h{ margin:0; font:850 clamp(34px, 3.7vw, 60px)/1.02 var(--font-display); font-stretch:115%; letter-spacing:-.025em; color:var(--text-h); text-wrap:balance; }
+.sc-hero-side .ov-lede{ margin:0; font-size:16px; max-width:56ch; }
+.sc-hero-side .hm-actions{ margin-top:20px; }
+.sc-flow{ margin:36px 0 0; }
+.sc-flow-stage{ position:relative; height:clamp(220px, 30vh, 320px); border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline); background:radial-gradient(80% 120% at 90% 50%, color-mix(in srgb, var(--chain-h) 6%, transparent), transparent 60%); }
+.sc-flow-stage canvas{ display:block; }
+.sc-flow-ticks{ list-style:none; margin:0; padding:0; position:absolute; left:0; right:0; bottom:6px; height:14px; pointer-events:none; }
+.sc-flow-ticks li{ position:absolute; transform:translateX(-50%); font:500 11px/1 var(--font-mono); color:var(--text-faint); }
+.sc-flow-end{ position:absolute; top:10px; font:700 12px/1 var(--font-sans); color:var(--text-muted); pointer-events:none; }
+.sc-flow-end.is-start{ left:0; }
+.sc-flow-end.is-end{ right:0; }
+.sc-flow figcaption{ margin-top:10px; font-size:13px; line-height:1.5; color:var(--text-muted); max-width:80ch; }
+@media (max-width:900px){
+  .sc-hero-top{ grid-template-columns:1fr; }
+  .sc-hero-h{ font-size:clamp(32px, 8vw, 44px); }
+  .sc-flow-stage{ height:220px; }
+  .sc-flow-ticks li:nth-child(even){ display:none; }
 }
 
 /* overview: the journey as a route map */

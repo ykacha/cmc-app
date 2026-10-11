@@ -9,7 +9,7 @@ import StageHero from "./StageHero";
 import Proposal from "./Proposal";
 import Qtpp from "./Qtpp";
 import { Blocks } from "./Blocks";
-import AntibodyHero from "./AntibodyHero";
+import FlowHero from "./FlowHero";
 import { Icon } from "../../icons";
 
 /* The Science journey. Routes:
@@ -165,24 +165,20 @@ function Overview({ go, dark }) {
   return (
     <>
       <section className="sc-hero">
-        <AntibodyHero dark={dark} />
-        <div className="sc-hero-text">
-          <h1 className="ov-h1">Biologics CMC, from proposal to dossier.</h1>
-          <p className="ov-lede">
-            The stages of a therapeutic protein programme, in the order the work happens. Each stage explains the science,
-            the decisions it supports, how it connects to the others, and where its evidence ends up in the Common Technical Document.
-          </p>
-          <div className="hm-actions">
-            <button className="hm-primary" onClick={() => go("proposal")}>Start at the beginning</button>
-            <button className="hm-secondary" onClick={() => go("qbd/explorer")}>Follow one attribute end to end</button>
+        <div className="sc-hero-top">
+          <h1 className="sc-hero-h">Biologics CMC,<br />from proposal to dossier.</h1>
+          <div className="sc-hero-side">
+            <p className="ov-lede">
+              The stages of a therapeutic protein programme in the order the work happens: the science, the decisions,
+              how each stage feeds the next, and where its evidence ends up in the Common Technical Document.
+            </p>
+            <div className="hm-actions">
+              <button className="hm-primary" onClick={() => go("proposal")}>Start at the beginning</button>
+              <button className="hm-secondary" onClick={() => go("qbd/explorer")}>Follow one attribute end to end</button>
+            </div>
           </div>
         </div>
-        <ul className="sc-ab-key" aria-label="Colours in the antibody">
-          <li className="is-h">Heavy chains</li>
-          <li className="is-l">Light chains</li>
-          <li className="is-b">Hinge disulfides</li>
-          <li className="is-g">N-glycans</li>
-        </ul>
+        <FlowHero dark={dark} />
       </section>
 
       <section className="sc-persp">
