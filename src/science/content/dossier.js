@@ -64,7 +64,7 @@ export const MODULES = [
         why: "The quality reviewer's first read. It should explain the control strategy logic, not repeat data." },
       { id: "2.4", title: "Nonclinical overview", status: "later",
         fill: "Pharmacology in human and cynomolgus monkey systems shows equivalent IFX binding and neutralisation, so the monkey is the only relevant species. Repeat-dose toxicity up to 26 weeks in monkeys showed no adverse findings at doses giving exposures more than 20-fold the clinical exposure. Genotoxicity and standard carcinogenicity studies were not conducted, consistent with ICH S6(R1).",
-        from: "GLP toxicology studies, which need GLP-grade material representative of the clinical process.", links: [{ label: "Candidate developability", to: "candidate/developability" }],
+        from: "GLP toxicology studies, which need GLP-grade material representative of the clinical process.", links: [{ label: "Candidate developability", to: "proposal/developability" }],
         why: "Interprets the nonclinical data for human risk and justifies the first doses used in people.",
         gap: "No GLP study has run. The CMC link: toxicology material must be made by a process representative of the clinical one, and its quality is compared with clinical lots." },
       { id: "2.5", title: "Clinical overview", status: "later",
@@ -87,7 +87,7 @@ export const MODULES = [
     sections: [
       { id: "3.2.S.1", title: "Drug substance: general information", status: "now",
         fill: "Nomenclature: CMX-417 (fictional INN pending). Structure: humanised IgG1κ, two heavy chains of 449 and two light chains of 214 amino acids, 16 disulfide bonds, one N-glycosylation site per heavy chain at Asn297 (EU numbering). Molecular mass about 146 kDa (G0F/G0F). Properties: pI of main isoform 8.4; extinction coefficient 1.46 (mg/mL)⁻¹ cm⁻¹ at 280 nm.",
-        from: "Candidate sequence and early characterisation.", links: [{ label: "Candidate nomination", to: "candidate/nomination" }],
+        from: "Candidate sequence and early characterisation.", links: [{ label: "Candidate nomination", to: "proposal/nomination" }],
         why: "Tells the reviewer exactly what the molecule is before anything else." },
       { id: "3.2.S.2.1", title: "Manufacturer(s)", status: "later",
         fill: "Drug substance manufacture and in-process testing: commercial biologics site, Building 2. Cell bank storage: same site and a secondary site. Release and stability testing: QC laboratories at the same site; mycoplasma and adventitious virus testing at a contract laboratory.",
@@ -191,7 +191,7 @@ export const MODULES = [
     sections: [
       { id: "4.2.1", title: "Pharmacology", status: "now",
         fill: "Primary pharmacodynamics: CMX-417 binds human and cynomolgus IFX with similar affinity (KD 45 and 60 pM) and neutralises both in cell assays; no binding to rodent IFX. Secondary pharmacodynamics: no off-target binding in a membrane protein array. Safety pharmacology endpoints included in the repeat-dose monkey study.",
-        from: "Discovery and candidate characterisation.", links: [{ label: "Developability", to: "candidate/developability" }],
+        from: "Discovery and candidate characterisation.", links: [{ label: "Developability", to: "proposal/developability" }],
         why: "Establishes the mechanism and identifies the relevant species for toxicology." },
       { id: "4.2.2", title: "Pharmacokinetics", status: "later",
         fill: "Single- and repeat-dose PK in cynomolgus monkeys, subcutaneous bioavailability about 70%, half-life about 12 days in monkeys, with toxicokinetics and anti-drug antibody assessment in each toxicology study.",

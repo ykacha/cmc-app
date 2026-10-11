@@ -158,7 +158,6 @@ export const scoreOf = (a) => a.impact * a.uncertainty;
 export const STAGE_STATE = {
   proposal: { know: "A nominated IgG1 with one CDR deamidation motif; a target presentation of 150 mg/mL in a 1 mL syringe.", next: "Confirm the concept is feasible and write the QTPP." },
   qtpp: { know: "A draft QTPP and a provisional list of CQAs scored for impact and uncertainty.", next: "Generate data on the highest-priority attributes: CDR deamidation, aggregation, particles." },
-  candidate: { know: "Developability screening complete (hypothetical); the Asn-Gly motif accepted for now.", next: "Decide whether to re-engineer the motif if forced deamidation shows potency loss." },
   cellline: { know: "Not started. Platform CHO host and vector are available.", next: "Generate a clonal, stable production cell line and qualified cell banks." },
   upstream: { know: "Platform fed-batch conditions are expected to apply.", next: "Show how culture conditions affect glycans, charge and titer for this molecule." },
   downstream: { know: "Platform three-column purification is expected to apply.", next: "Measure HCP, DNA and aggregate clearance and run viral clearance studies." },

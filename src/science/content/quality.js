@@ -327,7 +327,7 @@ export const SPECS = [
 /* ICH M4Q Module 3 with the development activities that feed each section. */
 export const CTD_SECTIONS = [
   { id: "2.3", title: "Quality Overall Summary", what: "A summary of Module 3 that follows its structure and highlights critical issues and how they were resolved.", from: ["All stages"], studies: ["Written last, from the final Module 3"] },
-  { id: "3.2.S.1", title: "General information", what: "Nomenclature, structure, general properties.", from: ["candidate"], studies: ["Sequence, structure, physicochemical properties"] },
+  { id: "3.2.S.1", title: "General information", what: "Nomenclature, structure, general properties.", from: ["proposal"], studies: ["Sequence, structure, physicochemical properties"] },
   { id: "3.2.S.2", title: "Manufacture", what: "Manufacturers; process description; control of materials; controls of critical steps; process validation; development history.", from: ["cellline", "upstream", "downstream", "qbd"], studies: ["Cell bank history and testing (S.2.3)", "In-process controls and CPPs (S.2.4)", "PPQ, viral clearance support, hold times (S.2.5)", "Process development and comparability (S.2.6)"] },
   { id: "3.2.S.3", title: "Characterisation", what: "Elucidation of structure and other characteristics (S.3.1); impurities (S.3.2).", from: ["analytical"], studies: ["Structure, PTMs, HOS, variants, biological activity", "Product- and process-related impurities"] },
   { id: "3.2.S.4", title: "Control of drug substance", what: "Specification, procedures, validation, batch analyses, justification.", from: ["analytical", "specs"], studies: ["Validation reports", "Batch data", "Specification justification"] },

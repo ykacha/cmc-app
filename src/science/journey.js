@@ -50,14 +50,15 @@ export const GROUPS = [
    other stages link to existing modules until their phase is delivered. */
 export const STAGES = [
   {
-    id: "proposal", group: "plan", title: "Development proposal and product definition", short: "Proposal", built: true, phase: 1,
-    purpose: "State what the product must be before deciding how to make or test it.",
-    inputs: ["Clinical hypothesis and target", "Candidate molecule", "Platform capabilities"],
-    activities: ["Define therapeutic intent and target product concept", "Choose route, presentation and strength", "List the main development uncertainties"],
-    outputs: ["Development proposal", "Target product concept", "Draft CMC plan"],
-    decisions: ["Is the product concept technically feasible on the platform?", "Which uncertainties must be resolved first?"],
-    risks: ["A presentation goal (150 mg/mL) the molecule cannot meet", "Unstated assumptions that resurface late"],
-    feeds: ["qtpp"], ctd: [{ s: "3.2.S.1", status: "dev" }, { s: "3.2.P.1", status: "dev" }, { s: "2.3", status: "none" }],
+    id: "proposal", group: "plan", title: "Candidate selection and product definition", short: "Proposal", built: true, phase: 1,
+    purpose: "Choose a molecule that can be both effective and manufacturable, and state what the product must be before deciding how to make or test it.",
+    inputs: ["Clinical hypothesis and target", "Lead candidates and developability data", "Platform capabilities"],
+    activities: ["Screen candidates for developability and sequence liabilities", "Nominate one candidate", "Define therapeutic intent and target product concept", "Choose route, presentation and strength"],
+    outputs: ["Nominated candidate and developability report", "Development proposal and target product concept", "Draft CMC plan"],
+    decisions: ["Which candidate goes forward, and should a liability be engineered out or controlled?", "Is the product concept technically feasible on the platform?"],
+    risks: ["Liabilities found only after the cell line is made", "A presentation goal (150 mg/mL) the molecule cannot meet"],
+    feeds: ["qtpp", "cellline"], ctd: [{ s: "3.2.S.1", status: "dev" }, { s: "3.2.P.1", status: "dev" }, { s: "2.3", status: "none" }],
+    links: [{ view: "pipeline", focus: "s01", label: "Pipeline: gene construction" }],
   },
   {
     id: "qtpp", group: "plan", title: "QTPP, initial CQAs and early risk assessment", short: "QTPP & CQAs", built: true, phase: 1,
@@ -67,15 +68,7 @@ export const STAGES = [
     outputs: ["QTPP", "Provisional CQA list", "Risk assessment and study plan"],
     decisions: ["Which attributes are provisional CQAs?", "Which studies come first?"],
     risks: ["Treating every measured attribute as a CQA", "Locking criticality before evidence exists"],
-    feeds: ["candidate", "upstream", "analytical", "formulation", "qbd"], ctd: [{ s: "3.2.P.2", status: "dev" }, { s: "3.2.S.3", status: "dev" }],
-  },
-  {
-    id: "candidate", group: "make", title: "Development pipeline and candidate selection", short: "Candidate", built: true, phase: 2,
-    purpose: "Choose the molecule most likely to be both effective and manufacturable.",
-    inputs: ["Lead candidates", "Developability data", "QTPP"], activities: ["Developability screening", "Sequence liability review", "Candidate nomination"],
-    outputs: ["Nominated candidate", "Developability report"], decisions: ["Which candidate goes forward?", "Re-engineer a liability or accept and control it?"],
-    risks: ["Liabilities found only after the cell line is made"], feeds: ["cellline"], ctd: [{ s: "3.2.S.1", status: "dev" }],
-    links: [{ view: "pipeline", label: "Pipeline Explorer" }],
+    feeds: ["cellline", "upstream", "analytical", "formulation", "qbd"], ctd: [{ s: "3.2.P.2", status: "dev" }, { s: "3.2.S.3", status: "dev" }],
   },
   {
     id: "cellline", group: "make", title: "Cell line construction and cell substrate", short: "Cell line", built: true, phase: 2,
@@ -176,9 +169,8 @@ export const GATES = [{ after: 1, label: "IND / IMPD" }, { after: 5, label: "App
 /* For each stage: when the work is most active (first and last milestone
    column) and the three things to remember. */
 export const GLANCE = {
-  proposal: { span: [0, 1], keys: ["The product is defined before the process: route, dose, presentation and storage goals.", "The main technical uncertainties are named early so the first studies target them.", "Assumptions are written down, because they resurface as risks later."] },
+  proposal: { span: [0, 1], keys: ["A candidate is chosen for manufacturability as well as biology: liabilities are found before the cell line is made.", "The product is defined before the process: route, dose, presentation and storage goals.", "The main uncertainties are named early so the first studies target them."] },
   qtpp: { span: [1, 4], keys: ["The QTPP is a set of product targets, not a specification.", "Quality attributes are ranked by impact and uncertainty; criticality is revisited as data arrive.", "The ranking decides which studies come first."] },
-  candidate: { span: [0, 1], keys: ["Developability screens for sequence and biophysical liabilities before a molecule is chosen.", "A liability can be engineered out or accepted and controlled; the choice needs data.", "The nomination rationale is part of the development history."] },
   cellline: { span: [1, 1], keys: ["The host, vector and clone fix much of the product's quality profile for life.", "Clonality and cell line stability must be demonstrated.", "Cell banks are tested once, thoroughly, because every batch starts from them."] },
   upstream: { span: [1, 4], keys: ["Culture conditions move glycosylation, charge variants and aggregation, not only titre.", "Scale-up changes oxygen transfer, CO2 removal and mixing.", "Qualified scale-down models are how CPPs and ranges are found."] },
   downstream: { span: [1, 4], keys: ["Each step has a job: capture, inactivate, polish, remove virus, formulate.", "Purity rises as yield falls; pooling decisions trade one for the other.", "Viral safety rests on prevention, testing and validated clearance together."] },

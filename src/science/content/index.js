@@ -6,10 +6,10 @@ import { FORMULATION, STABILITY } from "./formulation";
 import { QBD, SPECS, CTD_TOPICS } from "./quality";
 import { TRANSFER } from "./transfer";
 
-/* Deep-dive topics per journey stage. Proposal and QTPP are taught through
-   a worked example instead (src/views/science/Proposal.js, Qtpp.js). */
+/* Deep-dive topics per journey stage. Proposal and QTPP also have a worked
+   example (src/views/science/Proposal.js, Qtpp.js). */
 export const TOPICS = {
-  candidate: CANDIDATE,
+  proposal: CANDIDATE,
   cellline: CELLLINE,
   upstream: UPSTREAM,
   downstream: DOWNSTREAM,

@@ -32,7 +32,7 @@ export const FORMULATION = [
         ["Glycation", "Reducing sugars react with lysines", "Glucose in culture, reducing sugars from sucrose hydrolysis", "LC-MS, boronate affinity"],
       ]},
       { t: "callout", tone: "note", title: "Pathways compete", text: "Lowering pH slows deamidation but can speed fragmentation and isomerisation. Formulation is a search for the condition where the overall rate of change is lowest, not the elimination of one pathway." },
-      { t: "links", items: [{ label: "Forced degradation", to: "analytical:stability" }, { label: "Developability liabilities", to: "candidate/developability" }] },
+      { t: "links", items: [{ label: "Forced degradation", to: "analytical:stability" }, { label: "Developability liabilities", to: "proposal/developability" }] },
     ],
   },
   {

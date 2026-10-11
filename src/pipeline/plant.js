@@ -159,7 +159,7 @@ export const PLANT = {
 
 // Pipeline stage id to the Science journey stage that explains why it matters
 export const TO_JOURNEY = {
-  s01: "candidate", s02: "cellline", s03: "cellline", s04: "cellline", s05: "upstream", s06: "downstream",
+  s01: "proposal", s02: "cellline", s03: "cellline", s04: "cellline", s05: "upstream", s06: "downstream",
   s07: "analytical", s08: "formulation", s09: "transfer", s10: "transfer", s11: "qbd", s12: "transfer",
   s13: "specs", s14: "stability", s15: "ctd", s16: "specs",
 };

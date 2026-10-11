@@ -266,7 +266,7 @@ function Timeline({ go }) {
   );
 }
 
-const STAGE_ICON = { proposal: "target", qtpp: "chartbar", candidate: "gene", cellline: "cell", upstream: "bioreactor", downstream: "filter", analytical: "wave", formulation: "vial", stability: "thermometer", qbd: "shieldcheck", transfer: "factory", specs: "check", ctd: "book" };
+const STAGE_ICON = { proposal: "target", qtpp: "chartbar", cellline: "cell", upstream: "bioreactor", downstream: "filter", analytical: "wave", formulation: "vial", stability: "thermometer", qbd: "shieldcheck", transfer: "factory", specs: "check", ctd: "book" };
 
 /* The journey as one metro line: a station per stage, grouped into parts.
    Picking a station opens its card underneath, so the whole route fits on
