@@ -199,7 +199,7 @@ function Station({ s, i, left, w, y, on, go }) {
         <div className="pl2-st-foot">
           <span className="pl2-st-time">{ov.duration.split(/[;(]/)[0]}</span>
           {next && <span className="pl2-st-pass">Passes on to {next.label}</span>}
-          <button className="hm-primary" onClick={() => go(s.id)} tabIndex={on ? 0 : -1}>Deep dive: {s.topics.length} topics</button>
+          <button className="pl2-dive" onClick={() => go(s.id)} tabIndex={on ? 0 : -1}>Open the deep dive, {s.topics.length} topics</button>
         </div>
       </div>
     </article>
@@ -244,7 +244,7 @@ function Vertical({ go }) {
             <div className="pl2-st-hand"><span>In hand</span><strong>{plant.inHand.big}</strong><em>{plant.inHand.unit}</em><p>{plant.inHand.note}</p></div>
             <div className="pl2-st-who"><span>Who is at work</span><ul>{plant.people.map(p => <li key={p.role}><b>{p.role}</b>{p.does}</li>)}</ul></div>
             {next && <span className="pl2-st-pass">Passes on to {next.label}</span>}
-            <button className="hm-primary" onClick={() => go(s.id)}>Deep dive: {s.topics.length} topics</button>
+            <button className="pl2-dive" onClick={() => go(s.id)}>Open the deep dive, {s.topics.length} topics</button>
           </li>
         );
       })}
