@@ -6,6 +6,7 @@ import Dashboard from "./views/Dashboard";
 import { Icon } from "./icons";
 import Pipeline       from "./views/pipeline/Pipeline";
 import Tools          from "./views/tools/Tools";
+import Careers        from "./views/careers/Careers";
 import Analytical     from "./views/analytical/Analytical";
 import Science        from "./views/science/Science";
 import DomainsView    from "./views/DomainsView";
@@ -37,13 +38,17 @@ const NAV_GROUPS = [
     { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
     { id:"cases", label:"Case Studies", short:"Cases" },
   ]},
+  { id:"career",   label:"Careers",  color:"var(--text-muted)", items:[
+    { id:"careers", label:"Career guide", short:"Career guide" },
+  ]},
 ];
 // Retired sections: old links land on the Journey page that replaced them.
 const QBD_TAB = { qtpp:"qtpp", cqa:"qbd/cqa", fmea:"qbd/fmea", cpp:"qbd/cpp", doe:"qbd/doe", strategy:"qbd/control", coa:"specs/coa" };
 function redirect(v, f) {
   if (v === "qbd") return { view: "science", focus: (f && QBD_TAB[f.split("/")[0]]) || "qbd" };
   if (v === "ctd") return { view: "science", focus: "ctd/dossier" };
-  if (["career", "pathway", "exam", "notes", "progress"].includes(v)) return { view: "dashboard", focus: null };
+  if (v === "career" || v === "pathway") return { view: "careers", focus: null };
+  if (["exam", "notes", "progress"].includes(v)) return { view: "dashboard", focus: null };
   if (v === "viral") return { view: "science", focus: "downstream/viralstudies" };
   if (v === "stability") return { view: "science", focus: "stability/conditions" };
   if (v === "timeline") return { view: "science", focus: null };
@@ -307,6 +312,7 @@ export default function App() {
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
         {view==="pipeline"   && <Pipeline navigate={navigate} focus={focus} />}
         {view==="tools"      && <Tools navigate={navigate} focus={focus} />}
+        {view==="careers"    && <Careers navigate={navigate} />}
         {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="science"    && <Science navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="domains"    && <DomainsView />}

@@ -20,6 +20,9 @@ const GROUPS = [
     { id:"oos",   name:"OOS / OOT",    line:"The FDA 2006 investigation, worked as a decision tree." },
     { id:"batch", name:"Batch Record", line:"A sterile mAb batch to execute, deviations included." },
   ]},
+  { label:"Careers", color:"var(--text-muted)", items:[
+    { id:"careers", name:"Career guide", line:"Bench, manufacturing and QC, CDMO, automation and leadership careers: short, direct answers." },
+  ]},
   { label:"Library", color:"var(--chain-l)", items:[
     { id:"domains",   name:"Domain Q-Bank",        line:`${DOMAINS.length} domains of interview-grade questions.` },
     { id:"ich",       name:"ICH Guidelines",       line:"The guidelines, decoded into what they mean for CMC." },
