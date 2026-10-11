@@ -1,6 +1,7 @@
 import { Bioreactor, CultureProfile, Train, Clearance, Formulations, Injection, StabilityTrend } from "./process";
 import { Explorer, Fmea, Doe, DesignSpace, ControlLayers, Coa, CtdNavigator } from "./quality";
 import { BatchRecord, QcRecord } from "./records";
+import { Dossier } from "./dossier";
 
 /* Interactive teaching components, referenced by id from content blocks. */
 export const WIDGETS = {
@@ -20,4 +21,5 @@ export const WIDGETS = {
   ctdNavigator: CtdNavigator,
   batchRecord: BatchRecord,
   qcRecord: QcRecord,
+  dossier: Dossier,
 };

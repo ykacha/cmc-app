@@ -361,6 +361,27 @@ export const CTD_SECTIONS = [
 
 export const CTD_TOPICS = [
   {
+    id: "dossier", title: "The complete dossier, Module 1 to 5",
+    lede: "A whole marketing application for one fictional antibody, filled in end to end, with where each section's evidence comes from and why the reviewer needs it.",
+    blocks: [
+      { t: "p", text: "The Common Technical Document is the shared format for marketing applications in ICH regions. **Modules 2 to 5** are harmonised by ICH M4: summaries, quality, nonclinical and clinical. **Module 1** belongs to each region and holds forms, labelling and administrative content. The dossier below is complete in every module, so you can see what the finished application looks like and trace each section back to the work that produced it." },
+      { t: "widget", id: "dossier" },
+      { t: "h", text: "One study, many sections" },
+      { t: "p", text: "Evidence does not map one to one onto the dossier. A single forced degradation study, for example, is filed in several places, each for a different purpose:" },
+      { t: "table", head: ["Section", "What the forced degradation study shows there"], rows: [
+        ["3.2.S.3.1 and 3.2.S.3.2", "Which degradation products form and how they affect structure and potency"],
+        ["3.2.S.4.3 and 3.2.P.5.3", "That the methods are stability-indicating: they detect the degradation products"],
+        ["3.2.S.4.5 and 3.2.P.5.6", "Part of the justification for which attributes are tested and why"],
+        ["3.2.P.2.2", "Why the formulation protects against the dominant pathways"],
+        ["3.2.S.7 and 3.2.P.8", "Supportive stress data alongside the real-time programme"],
+        ["2.3", "Summarised in one paragraph of the quality story"],
+      ]},
+      { t: "callout", tone: "note", title: "Reading this against a real programme", text: "This example programme has finished development at laboratory and scale-down scale. Switch the widget to 'What exists today' to see the honest picture: most of the characterisation, process design and formulation evidence exists, while anything that needs GMP lots, process performance qualification, long-term stability, GLP toxicology or clinical studies does not. A real application cannot be filed until those sections are backed by real data." },
+      { t: "links", items: [{ label: "Evidence navigator", to: "ctd/navigator" }, { label: "Chronology versus structure", to: "ctd/chronology" }, { label: "The executed batch record", to: "specs/batchrecord" }] },
+      { t: "refs", items: ["ICH M4 (R4): Organisation of the Common Technical Document; M4Q (R1) Quality; M4S (R2) Safety; M4E (R2) Efficacy", "FDA, Comprehensive Table of Contents Headings and Hierarchy (eCTD Module 1)", "ICH S6(R1): Preclinical safety evaluation of biotechnology-derived pharmaceuticals", "ICH Q5A(R2), Q5C, Q6B, Q1E, Q2(R2) and M10, as cited in the sections"] },
+    ],
+  },
+  {
     id: "navigator", title: "CTD evidence navigator",
     lede: "Every Module 3 section, the activities that produce its evidence, and a readiness view you can use for your own programme.",
     blocks: [

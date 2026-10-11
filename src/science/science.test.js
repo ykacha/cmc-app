@@ -11,6 +11,7 @@ import { WIDGETS } from "../views/science/widgets";
 import { RELATIONS } from "./content/quality";
 import { OPERATIONS } from "./content/downstream";
 import { QC_TESTS, BR_ISSUES } from "./content/records";
+import { ALL_SECTIONS } from "./content/dossier";
 
 const methodIds = new Set(ANALYTICAL_METHODS.map(m => m.id));
 const ctdIds = new Set(CTD.map(c => c.id));
@@ -94,6 +95,16 @@ describe("Deep-dive content integrity", () => {
     });
     expect(broken).toEqual([]);
   });
+  test("every dossier link resolves", () => {
+    const ids = new Set(ALL_SECTIONS.map(s => s.id));
+    const broken = ALL_SECTIONS.flatMap(s => s.links).filter(({ to }) => {
+      if (to.startsWith("#")) return !ids.has(to.slice(1));
+      if (to.includes(":")) return !VIEWS.has(to.split(":")[0]) || (to.startsWith("analytical:") && !ANALYTICAL_CH.has(to.split(":")[1].split("/")[0]));
+      const [stage, topic] = to.split("/");
+      return !STAGE[stage] || (topic && !topicOf(stage, topic));
+    });
+    expect(broken).toEqual([]);
+  });
   test("every widget referenced by content exists", () => {
     all.flatMap(t => t.blocks.filter(b => b.t === "widget")).forEach(b => expect(WIDGETS[b.id]).toBeDefined());
   });
@@ -138,6 +149,12 @@ describe("Science views", () => {
     fireEvent.click(screen.getByRole("button", { name: "Raise CHR-02" }));
     fireEvent.click(screen.getByRole("button", { name: "Check my review" }));
     expect(screen.getByText("1 of 6 found, 1 not an issue")).toBeInTheDocument();
+  });
+  test("the dossier marks sections that do not exist yet", () => {
+    render(<Science navigate={() => {}} focus="ctd/dossier" />);
+    fireEvent.click(screen.getByRole("button", { name: "What exists today" }));
+    fireEvent.click(screen.getByRole("button", { name: /Process validation and evaluation/ }));
+    expect(screen.getByText("Not generated yet")).toBeInTheDocument();
   });
   test("the overview switches to the CTD evidence map", () => {
     render(<Science navigate={() => {}} focus={null} />);

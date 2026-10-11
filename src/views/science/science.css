@@ -532,3 +532,46 @@
   .wg-br-pages button.is-on{ border-bottom-color:var(--chain-h); }
   .wg-br-sheet{ padding:14px 12px 16px; }
 }
+
+/* CTD dossier, Module 1 to 5 */
+.wg-dz-top{ display:grid; grid-template-columns:minmax(0,360px) minmax(0,1fr); gap:28px; align-items:center; }
+.wg-dz-tri{ width:100%; height:auto; display:block; }
+.wg-dz-tier{ cursor:pointer; outline:none; }
+.wg-dz-tier polygon{ fill:color-mix(in srgb, var(--chain-h) 6%, var(--panel)); stroke:var(--hairline); stroke-width:1.5; transition:fill .2s, stroke .2s; }
+.wg-dz-tier.is-regional polygon{ stroke-dasharray:5 4; stroke:var(--text-muted); }
+.wg-dz-tier:hover polygon, .wg-dz-tier:focus-visible polygon{ stroke:var(--chain-h); }
+.wg-dz-tier.is-on polygon{ fill:color-mix(in srgb, var(--chain-h) 22%, var(--panel)); stroke:var(--chain-h); stroke-width:2.5; }
+.wg-dz-tn{ font:700 13px var(--font-sans); fill:var(--text-h); pointer-events:none; }
+.wg-dz-ts{ font:500 11.5px var(--font-sans); fill:var(--text-muted); pointer-events:none; }
+.wg-dz-sum{ display:flex; flex-direction:column; gap:12px; }
+.wg-dz-counts{ margin:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; }
+.wg-dz-counts > div{ border-top:1px solid var(--hairline); padding-top:10px; }
+.wg-dz-counts dt{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-muted); }
+.wg-dz-counts dd{ margin:6px 0 0; font-size:22px; color:var(--text-h); }
+.wg-dz-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+.wg-dz-dot.is-now{ background:var(--ok); }
+.wg-dz-dot.is-later{ background:transparent; box-shadow:inset 0 0 0 2px var(--warn); }
+.wg-dz-dot.is-filing{ background:var(--text-muted); }
+.wg-dz-modhead{ border-top:2px solid var(--text-h); padding-top:14px; display:flex; flex-direction:column; gap:6px; }
+.wg-dz-modhead .sv-mono{ color:var(--chain-h); }
+.wg-dz{ display:grid; grid-template-columns:minmax(0,0.85fr) minmax(0,1.6fr); gap:24px; align-items:start; }
+.wg-dz-list{ list-style:none; margin:0; padding:0; display:grid; gap:1px; }
+.wg-dz-list button{ width:100%; display:grid; grid-template-columns:12px 82px 1fr; align-items:baseline; gap:8px; text-align:left; background:none; border:none; border-radius:2px; padding:8px; cursor:pointer; font:500 13.5px/1.35 var(--font-sans); color:var(--text-sec); }
+.wg-dz-list .sv-mono{ font-size:12.5px; color:var(--text-muted); }
+.wg-dz-list button:hover{ color:var(--text-h); background:color-mix(in srgb, var(--chain-h) 5%, transparent); }
+.wg-dz-list button.is-on{ color:var(--text-h); background:color-mix(in srgb, var(--chain-h) 11%, transparent); font-weight:700; }
+.wg-dz-list button.is-later:not(.is-on){ opacity:.55; }
+.wg-dz-detail{ display:flex; flex-direction:column; gap:14px; min-width:0; }
+.wg-dz-dh{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; }
+.wg-dz-dh .sv-mono{ color:var(--chain-h); }
+.wg-dz-chip{ font:600 12px var(--font-sans); padding:3px 10px; border-radius:999px; border:1px solid var(--hairline); color:var(--text-sec); }
+.wg-dz-chip.is-now{ border-color:var(--ok); color:var(--text-h); }
+.wg-dz-chip.is-later{ border-color:var(--warn); color:var(--text-h); }
+.wg-dz-chip.is-filing{ border-color:var(--text-muted); color:var(--text-h); }
+.wg-dz-doc{ border:1px solid var(--hairline); border-left:4px solid var(--chain-h); border-radius:2px; background:var(--bg-base); padding:14px 16px; display:flex; flex-direction:column; gap:6px; }
+.wg-dz-doc.is-ghost{ border-left-color:var(--warn); border-style:dashed; border-left-style:solid; }
+.wg-dz-doc.is-ghost p{ color:var(--text-sec); }
+.wg-dz-doclabel{ font:700 12px/1 var(--font-sans); color:var(--text-muted); }
+.wg-dz-doc p{ margin:0; font-size:15px; line-height:1.65; color:var(--text-body); max-width:72ch; }
+@media (max-width:1100px){ .wg-dz{ grid-template-columns:1fr; } .wg-dz-list{ max-height:340px; overflow:auto; } }
+@media (max-width:720px){ .wg-dz-top{ grid-template-columns:1fr; gap:16px; } .wg-dz-tri{ max-width:320px; margin:0 auto; } .wg-dz-counts dd{ font-size:17px; } }
