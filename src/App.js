@@ -4,7 +4,7 @@ import { reducedMotion } from "./motion";
 import "./fx.css";
 import Dashboard from "./views/Dashboard";
 import { Icon } from "./icons";
-import PipelineView   from "./views/PipelineView";
+import Pipeline       from "./views/pipeline/Pipeline";
 import Analytical     from "./views/analytical/Analytical";
 import Science        from "./views/science/Science";
 import TimelineView   from "./views/TimelineView";
@@ -317,7 +317,7 @@ export default function App() {
 
       <main key={view} className={`view-enter ${SURFACE_VIEWS.includes(view) ? "lc-surface" : ""}`} style={{ position:"relative", zIndex:1 }}>
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
-        {view==="pipeline"   && <PipelineView />}
+        {view==="pipeline"   && <Pipeline navigate={navigate} focus={focus} />}
         {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="science"    && <Science navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="timeline"   && <TimelineView />}

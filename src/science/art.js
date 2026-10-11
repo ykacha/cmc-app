@@ -4,3 +4,4 @@ import manifest from "./art-manifest.json";
    only once its file has been generated (see scripts/generate-art.mjs). */
 const live = new Set(manifest.assets.filter(a => a.file && !a.status).map(a => a.id));
 export const stageArt = (id) => (live.has(`stage-${id}`) ? `${process.env.PUBLIC_URL || ""}/science-art/stage-${id}.webp` : null);
+export const pipeArt = (id) => (live.has(`pipe-${id}`) ? `${process.env.PUBLIC_URL || ""}/science-art/pipe-${id}.webp` : null);

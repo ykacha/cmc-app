@@ -115,3 +115,23 @@ Rules:
 3. Pipeline uplift (art, people, cross-links) and deep-dive uplift.
 4. Tools workbench: product context, then calculators, data tools, builders.
 5. Library refresh: ICH, Glossary, Compendial, Excipients and Cases in the current design.
+
+## Pipeline Explorer rebuild (done 2026-10-11)
+
+- **The production line**: scrolling down moves the page sideways through 16 stations on one continuous pipe.
+  - The pipe is coloured by phase.
+  - Each station shows a transparent isometric object standing on the pipe, an "In hand" figure, the people at work and the hand-off to the next station.
+  - A phase minimap along the bottom jumps between stations.
+  - The arrow keys work when the line has keyboard focus.
+- **Phone and reduced motion**: the same stations in a vertical column.
+- **Station deep dives** (`#/pipeline/<sid>`, `#/pipeline/<sid>/<card>`) show, in order:
+  - arrives and leaves
+  - what actually happens, step by step
+  - who and with what
+  - every knowledge card (expandable, deep-linkable)
+  - interview questions
+  - a link to the matching Journey stage
+- **Content**:
+  - `src/pipeline/plant.js` (in hand, people, equipment, links to Journey stages)
+  - existing `PIPELINE` cards and `STAGE_OVERVIEWS`, kept in full
+- **Old view**: backed up at `src/versions/PipelineView-pre-production-line.js`.
