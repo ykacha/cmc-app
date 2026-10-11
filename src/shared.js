@@ -181,21 +181,6 @@ export const HeroBiologic = () => (
   </>
 );
 
-export function sm2Update(card, quality) {
-  let { n = 0, ef = 2.5, interval = 1 } = card;
-  if (quality >= 3) {
-    if (n === 0) interval = 1;
-    else if (n === 1) interval = 6;
-    else interval = Math.round(interval * ef);
-    n++;
-  } else {
-    n = 0;
-    interval = 1;
-  }
-  ef = Math.max(1.3, ef + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-  const nextDue = new Date(Date.now() + interval * 86400000).toISOString().slice(0, 10);
-  return { n, ef: parseFloat(ef.toFixed(2)), interval, nextDue };
-}
 
 /* ── QC release stamp: the app's "you earned this" moment ──
    Evokes a batch-release / CoA approval stamp. Used at genuine

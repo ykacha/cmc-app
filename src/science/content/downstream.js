@@ -163,7 +163,7 @@ export const DOWNSTREAM = [
         "Compare the total clearance with the estimated retrovirus-like particle load per dose to show an adequate safety margin.",
       ]},
       { t: "callout", tone: "note", title: "Three different things", text: "Viral clearance, bioburden control and endotoxin control are separate. Bioburden concerns living bacteria and fungi, controlled by filtration and hold times; endotoxin is a bacterial cell-wall component measured by LAL and cleared by steps such as AEX; viral clearance concerns viruses and is shown by spiking studies." },
-      { t: "links", items: [{ label: "LRV calculator and model viruses", to: "viral:" }, { label: "Cell bank testing", to: "cellline/banks" }, { label: "Mycoplasma and virus tests", to: "analytical:atlas/am-myco" }] },
+      { t: "links", items: [{ label: "LRV calculator and model viruses", to: "tools:lrv" }, { label: "Cell bank testing", to: "cellline/banks" }, { label: "Mycoplasma and virus tests", to: "analytical:atlas/am-myco" }] },
       { t: "refs", items: ["ICH Q5A(R2): Viral safety evaluation of biotechnology products derived from cell lines of human or animal origin (Step 4, 2023)", "Steps with LRV of about 1 log or less are generally not counted toward overall clearance (ICH Q5A)."] },
     ],
   },

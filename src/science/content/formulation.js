@@ -130,7 +130,7 @@ export const STABILITY = [
         { title: "Which lots", text: "Representative of the commercial process and container; for the application, typically at least three lots of drug substance and drug product." },
       ]},
       { t: "callout", tone: "risk", title: "Accelerated data do not set the shelf life", text: "For proteins, degradation at 25 or 40 °C can follow different pathways from those at 2–8 °C, so accelerated results support understanding and excursions but cannot be used to extrapolate a biologic's shelf life." },
-      { t: "links", items: [{ label: "Stability-indicating testing", to: "analytical:stability" }, { label: "Stability Studies module", to: "stability:" }] },
+      { t: "links", items: [{ label: "Stability-indicating testing", to: "analytical:stability" }, { label: "Storage conditions and zones", to: "stability/conditions" }] },
     ],
   },
   {

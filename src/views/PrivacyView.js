@@ -5,10 +5,6 @@ const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
 
 const STORAGE_KEYS = [
   { key: "cmc-theme", desc: "Your light or dark theme preference." },
-  { key: "cmc-notes", desc: "Notes you create in the Notes section." },
-  { key: "cmc-quiz-progress", desc: "Spaced-repetition scheduling data for exam questions you have answered." },
-  { key: "cmc-visited-views", desc: "Which sections of the app you have opened, used to show your progress." },
-  { key: "cmc-pathway-progress", desc: "Which learning-pathway milestone badges you have marked as earned." },
   { key: "cmc-bpr-state", desc: "Your in-progress state in the Batch Record Simulator." },
 ];
 

@@ -92,7 +92,7 @@ export const STAGES = [
     inputs: ["Clarified harvest", "Impurity burden", "Platform purification"], activities: ["Capture, viral inactivation, polishing, virus filtration, UF/DF", "Impurity clearance studies", "Viral clearance validation"],
     outputs: ["Drug substance", "Clearance and recovery data", "Log reduction values"], decisions: ["Which steps and ranges deliver required purity and viral safety?"],
     risks: ["Aggregate formation at low pH", "Insufficient clearance margin"], feeds: ["analytical", "formulation"], ctd: [{ s: "3.2.S.2", status: "dev" }, { s: "3.2.A", status: "qual" }],
-    links: [{ view: "viral", label: "Viral Clearance module" }, { view: "batch", label: "Batch Record Simulator" }],
+    links: [{ view: "tools", focus: "lrv", label: "Viral clearance calculator" }, { view: "batch", label: "Batch Record Simulator" }],
   },
   {
     id: "analytical", group: "measure", title: "Analytical development and characterisation", short: "Analytical", built: true, phase: 4,
@@ -116,7 +116,7 @@ export const STAGES = [
     inputs: ["Formulation", "Stability-indicating methods"], activities: ["Forced degradation", "Long-term and accelerated studies", "Trend analysis"],
     outputs: ["Shelf life and storage conditions", "Stability commitments"], decisions: ["What shelf life does the data support?"],
     risks: ["Extrapolating beyond real-time data", "An unexpected degradation pathway late in development"], feeds: ["specs", "qbd"], ctd: [{ s: "3.2.S.7", status: "dev" }, { s: "3.2.P.8", status: "dev" }],
-    links: [{ view: "stability", label: "Stability Studies module" }],
+    links: [{ view: "tools", focus: "shelf", label: "Shelf-life calculator" }],
   },
   {
     id: "qbd", group: "control", title: "QbD, risk management and control strategy", short: "QbD & control", built: true, phase: 6,

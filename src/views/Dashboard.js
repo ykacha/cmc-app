@@ -20,22 +20,13 @@ const GROUPS = [
     { id:"oos",   name:"OOS / OOT",    line:"The FDA 2006 investigation, worked as a decision tree." },
     { id:"batch", name:"Batch Record", line:"A sterile mAb batch to execute, deviations included." },
   ]},
-  { label:"Practice", color:"var(--glycan)", items:[
-    { id:"domains", name:"Domain Q-Bank", line:`${DOMAINS.length} domains of interview-grade questions.` },
-    { id:"exam",  name:"Exam Mode", line:"Spaced repetition with written answers, no multiple choice." },
-    { id:"notes", name:"Notes",     line:"Your own notes, kept in this browser." },
-  ]},
   { label:"Library", color:"var(--chain-l)", items:[
+    { id:"domains",   name:"Domain Q-Bank",        line:`${DOMAINS.length} domains of interview-grade questions.` },
     { id:"ich",       name:"ICH Guidelines",       line:"The guidelines, decoded into what they mean for CMC." },
     { id:"glossary",  name:"Glossary",             line:`${GLOSSARY.length} terms, defined the way a mentor would.` },
     { id:"compendial",name:"Compendial Reference", line:"USP, EP and JP methods, cross-referenced." },
     { id:"excipient", name:"Excipients",           line:"What can share a vial, and what cannot." },
     { id:"cases",     name:"Case Studies",         line:`${CASE_STUDIES.length} CMC failures, examined in full.` },
-  ]},
-  { label:"Career", color:"var(--text-muted)", items:[
-    { id:"career",   name:"Career & Interviews", line:"The ladder from associate to VP, and what each rung is asked." },
-    { id:"pathway",  name:"Learning Pathways",   line:"30, 60 and 90-day plans by level." },
-    { id:"progress", name:"Progress",            line:"What you have covered and what is due for review." },
   ]},
 ];
 
@@ -159,7 +150,7 @@ export default function Dashboard({ setView, dark }) {
         <h2 className="hm-close-h">Start at stage 01.</h2>
         <div className="hm-actions">
           <button className="hm-primary" onClick={() => go("pipeline")}>Enter the pipeline</button>
-          <button className="hm-secondary" onClick={() => go("exam")}>Test yourself first</button>
+          <button className="hm-secondary" onClick={() => go("science")}>Start the Science journey</button>
         </div>
       </section>
     </div>

@@ -175,7 +175,7 @@ export const MODULES = [
         from: "The commercial site.", links: [], why: "Assesses cross-contamination and adventitious agent risks at the site.", gap: "No commercial site yet." },
       { id: "3.2.A.2", title: "Adventitious agents safety evaluation", status: "now",
         fill: "Three complementary controls per ICH Q5A(R2): selection and testing of cell banks and raw materials; testing of unprocessed bulk for adventitious viruses and mycoplasma; validated viral clearance. Estimated retrovirus-like particles per dose and the resulting safety margin are calculated. No materials of animal origin are used in production; TSE risk assessed as negligible.",
-        from: "Cell bank testing and viral clearance studies at scale-down.", links: [{ label: "Viral safety", to: "downstream/viral" }, { label: "Cell banks", to: "cellline/banks" }, { label: "LRV calculator", to: "viral:" }],
+        from: "Cell bank testing and viral clearance studies at scale-down.", links: [{ label: "Viral safety", to: "downstream/viral" }, { label: "Cell banks", to: "cellline/banks" }, { label: "LRV calculator", to: "tools:lrv" }],
         why: "The core safety argument for a product made in mammalian cells." },
       { id: "3.2.A.3", title: "Novel excipients", status: "now", fill: "Not applicable; no novel excipients.", from: "Formulation choice.", links: [], why: "Novel excipients need the same data package as a drug substance." },
       { id: "3.2.R", title: "Regional information", status: "later",

@@ -5,24 +5,17 @@ import "./fx.css";
 import Dashboard from "./views/Dashboard";
 import { Icon } from "./icons";
 import Pipeline       from "./views/pipeline/Pipeline";
+import Tools          from "./views/tools/Tools";
 import Analytical     from "./views/analytical/Analytical";
 import Science        from "./views/science/Science";
-import TimelineView   from "./views/TimelineView";
 import DomainsView    from "./views/DomainsView";
-import ExamView       from "./views/ExamView";
 import ICHView        from "./views/ICHView";
 import GlossaryView   from "./views/GlossaryView";
-import CareerView     from "./views/CareerView";
-import NotesView      from "./views/NotesView";
-import StabilityView  from "./views/StabilityView";
 import OOSView        from "./views/OOSView";
 import CaseStudiesView from "./views/CaseStudiesView";
 import CompendialView from "./views/CompendialView";
 import ExcipientView  from "./views/ExcipientView";
-import PathwayView    from "./views/PathwayView";
 import BatchRecordView from "./views/BatchRecordView";
-import ProgressView   from "./views/ProgressView";
-import ViralClearanceView from "./views/ViralClearanceView";
 import PrivacyView    from "./views/PrivacyView";
 import TermsView      from "./views/TermsView";
 import { DNALogo }    from "./shared";
@@ -37,30 +30,26 @@ const NAV_GROUPS = [
     { id:"analytical", label:"Analytical", short:"Analytical" },
   ]},
   { id:"tools",    label:"Tools",    color:"var(--bridge)", items:[
-    { id:"oos", label:"OOS/OOT Investigation", short:"OOS/OOT" }, { id:"batch", label:"Batch Record Simulator", short:"Batch" },
-  ]},
-  { id:"practice", label:"Practice", color:"var(--glycan)", items:[
-    { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"exam", label:"Exam Mode", short:"Exam" }, { id:"notes", label:"My Notes", short:"Notes" },
+    { id:"tools", label:"CMC workbench", short:"Workbench" }, { id:"oos", label:"OOS/OOT Investigation", short:"OOS/OOT" }, { id:"batch", label:"Batch Record Simulator", short:"Batch" },
   ]},
   { id:"science",  label:"Library",  color:"var(--chain-l)", items:[
-    { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
+    { id:"domains", label:"Domain Q-Bank", short:"Q-Bank" }, { id:"ich", label:"ICH Guidelines", short:"ICH" }, { id:"glossary", label:"CMC Glossary", short:"Glossary" },
     { id:"compendial", label:"Compendial Reference", short:"Compendial" }, { id:"excipient", label:"Excipient Compatibility", short:"Excipients" },
     { id:"cases", label:"Case Studies", short:"Cases" },
   ]},
-  { id:"career",   label:"Career",   color:"var(--text-muted)", items:[
-    { id:"career", label:"Career & Interviews", short:"Career" }, { id:"pathway", label:"Learning Pathways", short:"Pathways" }, { id:"progress", label:"My Progress", short:"Progress" },
-  ]},
 ];
-// Out of the nav but still reachable until their content moves into the Journey (docs/SITE_PLAN.md).
-const INTERIM_VIEWS = ["viral", "stability", "timeline"];
 // Retired sections: old links land on the Journey page that replaced them.
 const QBD_TAB = { qtpp:"qtpp", cqa:"qbd/cqa", fmea:"qbd/fmea", cpp:"qbd/cpp", doe:"qbd/doe", strategy:"qbd/control", coa:"specs/coa" };
 function redirect(v, f) {
   if (v === "qbd") return { view: "science", focus: (f && QBD_TAB[f.split("/")[0]]) || "qbd" };
   if (v === "ctd") return { view: "science", focus: "ctd/dossier" };
+  if (["career", "pathway", "exam", "notes", "progress"].includes(v)) return { view: "dashboard", focus: null };
+  if (v === "viral") return { view: "science", focus: "downstream/viralstudies" };
+  if (v === "stability") return { view: "science", focus: "stability/conditions" };
+  if (v === "timeline") return { view: "science", focus: null };
   return null;
 }
-const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...INTERIM_VIEWS, ...NAV_GROUPS.flatMap(g => g.items.map(i => i.id))]);
+const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...NAV_GROUPS.flatMap(g => g.items.map(i => i.id))]);
 
 // "#/methods/am-sec" -> { view:"methods", focus:"am-sec" }
 function readHash() {
@@ -267,7 +256,6 @@ export default function App() {
     { key:"__home", icon:<Icon name="home" size={16} />, label:"Go to Dashboard", hint:"HOME", type:"home" },
     { key:"__theme", icon:<Icon name={darkMode ? "sun" : "moon"} size={16} />, label:`Switch to ${darkMode ? "light" : "dark"} theme`, hint:"THEME", type:"theme" },
     ...NAV_GROUPS.flatMap(g => g.items.map(it => ({ key:it.id, id:it.id, icon:<Icon name={it.id} size={16} />, label:it.label, hint:g.label.toUpperCase(), type:"nav" }))),
-    ...[["viral", "Viral Clearance"], ["stability", "Stability Studies"], ["timeline", "CMC Timeline"]].map(([id, label]) => ({ key:id, id, icon:<Icon name={id} size={16} />, label, hint:"MOVING TO JOURNEY", type:"nav" })),
   ];
   const pickPalette = (it) => {
     setPalette(false);
@@ -308,7 +296,7 @@ export default function App() {
       {adminMode && (
         <div style={{ background:"color-mix(in srgb, var(--accent-2) 12%, transparent)", borderBottom:"1px solid color-mix(in srgb, var(--accent-2) 35%, transparent)", padding:"6px 16px", display:"flex", alignItems:"center", gap:12, fontSize:12, position:"relative", zIndex:5 }}>
           <span style={{ color:"var(--accent-2)", fontWeight:800, display:"flex", alignItems:"center", gap:6 }}><Icon name="unlock" size={13} sw={2} /> Admin mode active</span>
-          <span style={{ color:"var(--text-muted)" }}>Logged in as ykacha. Notes fully editable. Full access enabled.</span>
+          <span style={{ color:"var(--text-muted)" }}>Logged in as ykacha. Full access enabled.</span>
           <button onClick={() => setAdminMode(false)} className="lc-ghost" style={{ marginLeft:"auto", padding:"2px 12px", fontSize:11 }}>Logout</button>
         </div>
       )}
@@ -318,24 +306,17 @@ export default function App() {
       <main key={view} className={`view-enter ${SURFACE_VIEWS.includes(view) ? "lc-surface" : ""}`} style={{ position:"relative", zIndex:1 }}>
         {view==="dashboard"  && <Dashboard setView={navigate} dark={darkMode} />}
         {view==="pipeline"   && <Pipeline navigate={navigate} focus={focus} />}
+        {view==="tools"      && <Tools navigate={navigate} focus={focus} />}
         {view==="analytical" && <Analytical navigate={navigate} focus={focus} dark={darkMode} />}
         {view==="science"    && <Science navigate={navigate} focus={focus} dark={darkMode} />}
-        {view==="timeline"   && <TimelineView />}
         {view==="domains"    && <DomainsView />}
-        {view==="exam"       && <ExamView />}
         {view==="ich"        && <ICHView />}
-        {view==="career"     && <CareerView navigate={navigate} />}
-        {view==="notes"      && <NotesView adminMode={adminMode} />}
         {view==="glossary"   && <GlossaryView />}
-        {view==="stability"  && <StabilityView />}
         {view==="oos"        && <OOSView />}
         {view==="batch"      && <BatchRecordView />}
         {view==="cases"      && <CaseStudiesView />}
         {view==="compendial" && <CompendialView />}
         {view==="excipient"  && <ExcipientView />}
-        {view==="pathway"    && <PathwayView />}
-        {view==="progress"   && <ProgressView />}
-        {view==="viral"      && <ViralClearanceView />}
         {view==="privacy"    && <PrivacyView />}
         {view==="terms"      && <TermsView />}
       </main>

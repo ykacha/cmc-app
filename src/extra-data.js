@@ -1057,11 +1057,11 @@ export const CMC_TIMELINE = [
     regulatoryEvent:"IND filing; Pre-IND meeting with FDA (optional but recommended)",
     deliverables:[
       { category:"Cell Line & Manufacturing", items:["Research cell bank (RCB) established","Small-scale process development (bioreactor <100L)","Protein A capture + polishing steps defined","DS manufacturing for tox studies (GLP lots)","Process characterization at small scale"] },
-      { category:"Characterization (Abbreviated)", items:["Primary sequence confirmed (peptide mapping)","Molecular weight confirmed (intact MS)","SEC-HPLC purity (≥85%)","CE-SDS (reduced + non-reduced)","Glycan profiling initiated","Potency assay (cell-based) development"] },
+      { category:"Characterization (Abbreviated)", items:["Primary sequence confirmed (peptide mapping)","Molecular weight confirmed (intact MS)","SEC-HPLC purity","CE-SDS (reduced + non-reduced)","Glycan profiling initiated","Potency assay (cell-based) development"] },
       { category:"Analytical Development", items:["QC release methods developed","Potency assay qualified (not validated)","Reference standard established (initial)","In-process assays developed"] },
       { category:"Formulation", items:["Formulation screening (pH, ionic strength, excipients)","Initial forced degradation studies","Select tentative DP formulation","Compatibility with container closure"] },
       { category:"GMP Manufacturing", items:["First GMP DS lots (Phase 1 clinical)","First GMP DP lots (Phase 1 clinical)","Initial specifications set (broad)","Certificate of Analysis generated"] },
-      { category:"Regulatory", items:["IND Module 2 QOS draft","Module 3 (CMC): abbreviated characterization","DS and DP specifications","Stability commitments (≥3 months at 3 temperatures)"] },
+      { category:"Regulatory", items:["IND Module 2 QOS draft","Module 3 (CMC): abbreviated characterization","DS and DP specifications","Available stability data and a protocol supporting the planned clinical use period"] },
     ]
   },
   {
@@ -1074,11 +1074,11 @@ export const CMC_TIMELINE = [
     regulatoryEvent:"IND Annual Reports; CMC amendments for process changes; Type B meeting for Phase 2",
     deliverables:[
       { category:"Manufacturing Scale-Up", items:["Scale-up to Phase 1/2 scale (200–2000L)","Process optimization and characterization","Hold time studies (DS and intermediates)","Resin lifetime studies initiated"] },
-      { category:"Analytics & Methods", items:["Full ICH Q2 method validation for release assays","Potency assay validation in progress","Reference standard fully characterized (Phase 1 RS)","SEC, CE-SDS, cIEF/icIEF, A280 validated"] },
+      { category:"Analytics & Methods", items:["Release methods qualified as suitable for their use; validation planned before pivotal or commercial use","Potency assay qualified; robustness work continues","Reference standard fully characterized (Phase 1 RS)","SEC, CE-SDS, icIEF and A280 in routine use for release and stability"] },
       { category:"Characterization (Extended)", items:["Full peptide mapping with modifications","Intact mass analysis","Glycan profiling (HILIC-UPLC)","DLS (colloidal stability)","DSC (thermal stability)","CD spectroscopy (HOS) initial data"] },
       { category:"Formulation", items:["Formulation finalized (if not planned change)","In-use stability study","Freeze-thaw characterization (≥5 cycles)","Extractables/leachables (Phase 1)","Photostability (ICH Q1B)"] },
       { category:"Stability", items:["Ongoing long-term stability for DS and DP","Accelerated stability (25°C or 37°C, 6 months)","Stability results support Phase 1 shelf-life","Stability protocol per ICH Q5C"] },
-      { category:"CMC Amendments", items:["Any manufacturing process change requires CMC amendment","Comparability studies if change post-Phase 1 start","Updated specifications based on clinical lot data"] },
+      { category:"CMC Amendments", items:["Process changes reported in IND amendments as appropriate","Comparability studies if change post-Phase 1 start","Updated specifications based on clinical lot data"] },
     ]
   },
   {
@@ -1090,7 +1090,7 @@ export const CMC_TIMELINE = [
     keyMilestone:"Establish Phase 3 dose(s); lock commercial process",
     regulatoryEvent:"End of Phase 2 (EOP2) meeting with FDA: critical CMC discussion",
     deliverables:[
-      { category:"Process Lock", items:["Commercial-scale process defined","Upstream parameters locked (bioreactor conditions, media)","Downstream steps fixed (columns, ultrafiltration)","Hold times validated","Cell age (EOPC) established"] },
+      { category:"Process Lock", items:["Commercial-scale process defined","Upstream parameters locked (bioreactor conditions, media)","Downstream steps fixed (columns, ultrafiltration)","Hold times studied","Cell age (EOPC) established"] },
       { category:"Full Characterization", items:["Complete ICH Q6B characterization package","HOS full toolkit (CD, DSC, DLS, FTIR, HDX-MS)","Biological activity: potency assay validated","FcR binding panel (FcγRI, FcγRIIIa, FcRn, C1q)","Glycan CQA assessment and spec setting"] },
       { category:"Control Strategy", items:["Formal CQA risk assessment (Criticality scoring)","Design space definition (if QbD approach)","In-process controls and raw material controls","Impurity profiles and acceptance criteria","Extractables & leachables: full study"] },
       { category:"Reference Standard", items:["Phase 2/3 reference standard established","Full characterization vs. Phase 1 RS","Bridging study data (RS-to-RS)","RS vial stability study"] },
@@ -1107,10 +1107,10 @@ export const CMC_TIMELINE = [
     keyMilestone:"Generate data to support BLA submission; process validation",
     regulatoryEvent:"Pre-BLA meeting; Rolling Review submission possible; Facility inspection preparation",
     deliverables:[
-      { category:"Process Performance Qualification (PPQ)", items:["≥3 commercial-scale PPQ batches","PPQ batches at intended commercial site","Demonstrate consistent process performance","PPQ report with all batch data and statistical analysis","Annual Product Review (APR) data"] },
-      { category:"Analytical Method Revalidation", items:["Validate all commercial QC methods (ICH Q2)","Technology transfer to commercial QC lab","Method transfer studies (pass/fail criteria)","Laboratory equivalency demonstrated"] },
-      { category:"Validation Studies", items:["Viral clearance validation (2–4 steps, ≥4-log clearance each)","Mycoplasma testing of cell banks","Adventitious virus testing (in vitro/in vivo)","Filter integrity validation at scale","Cleaning validation (equipment, facilities)"] },
-      { category:"Specifications Tightening", items:["Refine specifications based on PPQ and Phase 3 lots","Statisticalspec setting (mean ± 3σ for continuous parameters)","Trending analysis of process controls","Justify each acceptance criterion"] },
+      { category:"Process Performance Qualification (PPQ)", items:["≥3 commercial-scale PPQ batches","PPQ batches at intended commercial site","Demonstrate consistent process performance","PPQ report with all batch data and statistical analysis","Enhanced sampling and statistical evaluation per the PPQ protocol"] },
+      { category:"Analytical Method Revalidation", items:["Validate commercial QC methods (ICH Q2(R2))","Technology transfer to commercial QC lab","Method transfer studies (pass/fail criteria)","Laboratory equivalency demonstrated"] },
+      { category:"Validation Studies", items:["Viral clearance studies on the commercial process steps, typically two or more orthogonal steps (ICH Q5A(R2))","Mycoplasma testing of cell banks","Adventitious agent testing package confirmed","Filter integrity validation at scale","Cleaning validation (equipment, facilities)"] },
+      { category:"Specifications Tightening", items:["Refine specifications based on PPQ and Phase 3 lots","Statistical approaches (for example tolerance intervals) applied to clinical and PPQ lot data","Trending analysis of process controls","Justify each acceptance criterion"] },
       { category:"Stability: Final", items:["≥3 PPQ batches on stability","Real-time data to support proposed shelf-life","Trend analysis per ICH Q1E","Post-approval stability commitment defined"] },
       { category:"Supplier Qualification", items:["Critical raw material supplier audits","Cell culture media and feed qualification","Biocontainer extractables clearance","Regulatory starting material (RSM) designation"] },
     ]
@@ -1122,9 +1122,9 @@ export const CMC_TIMELINE = [
     icon:"flag",
     color:"#E0393E",
     keyMilestone:"File Biologics License Application (BLA) or NDA",
-    regulatoryEvent:"FDA PDUFA goal: 12-month standard review; 6-month priority review; Facility inspection",
+    regulatoryEvent:"FDA review under PDUFA goals (for new molecular entity BLAs, about 12 months standard and 8 months priority from submission); pre-licence inspection",
     deliverables:[
-      { category:"eCTD Assembly", items:["Complete Module 2 QOS (quality narrative)","Module 3 CMC sections fully compiled","All referenced studies cross-linked","Electronic submission validation (eCTD v4.0)"] },
+      { category:"eCTD Assembly", items:["Complete Module 2 QOS (quality narrative)","Module 3 CMC sections fully compiled","All referenced studies cross-linked","Electronic submission validation (eCTD)"] },
       { category:"FDA Interactions", items:["Pre-BLA meeting (discuss data needs, strategy)","Respond to FDA information requests (IRs / CRs)","Facility inspection readiness","PAI (Pre-Approval Inspection) at manufacturing site"] },
       { category:"Post-Submission CMC", items:["Respond to deficiency letters","Manufacturing changes during review require Prior Approval Supplements (PAS) or CBE-30","Labeling negotiations (CMC-relevant claims)"] },
     ]

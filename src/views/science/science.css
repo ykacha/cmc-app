@@ -682,3 +682,19 @@
   .sh-top.has-art > .sh-keys{ order:4; }
 }
 
+
+/* timeline milestones: what is due */
+button.sc-tl-head{ background:none; border-top:none; border-right:none; text-align:left; cursor:pointer; font:600 12px/1.2 var(--font-sans); color:var(--text-muted); transition:color .2s; }
+button.sc-tl-head:hover, button.sc-tl-head.is-on{ color:var(--accent); }
+button.sc-tl-head.is-on{ box-shadow:inset 0 -3px 0 var(--accent); }
+.sc-due{ margin-top:20px; padding:20px 0 4px; border-top:2px solid var(--accent); animation:lc-dropin .3s cubic-bezier(.16,.6,.2,1); }
+.sc-due-head{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,2fr) auto; gap:20px; align-items:start; }
+.sc-due-head span{ font:500 12px var(--font-mono); color:var(--accent); }
+.sc-due-head h3{ margin:4px 0 0; font:800 20px/1.2 var(--font-display); color:var(--text-h); }
+.sc-due-head dl{ margin:0; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.sc-due-head dt{ font:700 11.5px var(--font-sans); color:var(--text-muted); margin-bottom:4px; }
+.sc-due-head dd{ margin:0; font-size:14px; line-height:1.5; color:var(--text-body); }
+.sc-due-grid{ margin-top:18px; display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:18px 28px; }
+.sc-due-grid strong{ display:block; font:700 13.5px var(--font-sans); color:var(--text-h); padding-bottom:6px; border-bottom:1px solid var(--hairline); }
+.sc-due-grid ul{ margin:8px 0 0; padding-left:16px; display:grid; gap:4px; font-size:13.5px; line-height:1.45; color:var(--text-sec); }
+@media (max-width:900px){ .sc-due-head, .sc-due-head dl{ grid-template-columns:1fr; } }

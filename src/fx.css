@@ -417,7 +417,7 @@ html.mo-vt main.view-enter{ animation:none; }
 @media (prefers-reduced-motion: reduce){ .hx-art img{ transition:none; transform:none; } }
 
 /* home: everything else as a quiet directory */
-.hm-dir{ margin-top:48px; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:32px; }
+.hm-dir{ margin-top:48px; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:40px; }
 .hm-dir-col h3{ margin:0; padding-bottom:10px; border-bottom:3px solid var(--seg); font:700 13px var(--font-sans); color:var(--text-h); }
 .hm-dir-col ul{ list-style:none; margin:0; padding:0; }
 .hm-dir-col li{ border-bottom:1px solid var(--hairline); }

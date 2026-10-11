@@ -11,6 +11,7 @@ import Qtpp from "./Qtpp";
 import { Blocks } from "./Blocks";
 import FlowHero from "./FlowHero";
 import { Icon } from "../../icons";
+import { CMC_TIMELINE } from "../../extra-data";
 
 /* The Science journey. Routes:
      #/science                     overview
@@ -237,15 +238,17 @@ function Overview({ go, dark }) {
    antibody programme. Stages overlap: that is the point of the picture. */
 function Timeline({ go }) {
   const cols = MILESTONES.length;
+  const [ms, setMs] = useState(null);
+  const due = ms === null ? null : CMC_TIMELINE[ms];
   return (
     <figure className="sc-tl" aria-label="When each stage happens">
       <div className="sc-tl-scroll">
         <div className="sc-tl-grid" style={{ "--cols": cols }}>
           <span className="sc-tl-corner" />
-          {MILESTONES.map(m => (
-            <span key={m.id} className="sc-tl-head">
+          {MILESTONES.map((m, i) => (
+            <button key={m.id} className={`sc-tl-head${ms === i ? " is-on" : ""}`} aria-pressed={ms === i} onClick={() => setMs(ms === i ? null : i)} title={`What is due at ${m.label}`}>
               {m.label}
-            </span>
+            </button>
           ))}
           {GATES.map(g => <i key={g.label} className="sc-tl-gate" style={{ "--at": (g.after + 1) / cols }} aria-hidden="true"><b>{g.label}</b></i>)}
           {STAGES.map(s => {
@@ -261,7 +264,19 @@ function Timeline({ go }) {
           })}
         </div>
       </div>
-      <figcaption>Typical timing for a monoclonal antibody. Bars show when each stage's work is most active; real programmes vary, and many stages run in parallel. Analytical work runs from the first screen to the last variation.</figcaption>
+      {due && (
+        <div className="sc-due" aria-live="polite">
+          <div className="sc-due-head">
+            <div><span>{due.years}</span><h3>{due.phase}</h3></div>
+            <dl><div><dt>Key milestone</dt><dd>{due.keyMilestone}</dd></div><div><dt>Regulatory events</dt><dd>{due.regulatoryEvent}</dd></div></dl>
+            <button className="hm-link" onClick={() => setMs(null)}>Close</button>
+          </div>
+          <div className="sc-due-grid">
+            {due.deliverables.map(d => <div key={d.category}><strong>{d.category}</strong><ul>{d.items.map(x => <li key={x}>{x}</li>)}</ul></div>)}
+          </div>
+        </div>
+      )}
+      <figcaption>Select a milestone to see what is typically due by then. Typical timing for a monoclonal antibody. Bars show when each stage's work is most active; real programmes vary, and many stages run in parallel. Analytical work runs from the first screen to the last variation.</figcaption>
     </figure>
   );
 }

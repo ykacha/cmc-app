@@ -63,7 +63,7 @@ export default function StabilityTesting({ dark, go, nav }) {
         <p className="vl-explain">A point that is still inside the specification but off the expected trend is out of trend (OOT). It is investigated before it becomes an out-of-specification result; see the next chapter.</p>
         <div className="jn-next">
           <button className="hm-secondary" onClick={() => go("oos")}>Next: OOS, OOT and data integrity</button>
-          {nav && <button className="hm-secondary" onClick={() => nav("stability")}>Open the Stability Studies module</button>}
+          {nav && <button className="hm-secondary" onClick={() => nav("science", "stability/strategy")}>Stability strategy in the Science journey</button>}
         </div>
       </section>
     </div>
