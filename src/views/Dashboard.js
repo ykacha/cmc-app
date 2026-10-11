@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import { Reveal } from "../lc";
 import { InstrumentTrace } from "../motion";
-import Molecule, { DOMAIN_INFO, STRESSES } from "../molecule";
+import Molecule, { DOMAIN_INFO } from "../molecule";
+import { pipeArt, stageArt } from "../science/art";
 import { PIPELINE, DOMAINS, GLOSSARY } from "../cmc-data";
 import { ANALYTICAL_METHODS } from "../extra-data";
 import { CASE_STUDIES } from "../case-study-data";
@@ -38,10 +39,15 @@ const GROUPS = [
   ]},
 ];
 
+const WAYS = [
+  { id: "pipeline", name: "How it is made", line: "Walk the production line, station by station." },
+  { id: "science", name: "Why it is done", line: "Follow the development programme to the dossier." },
+  { id: "analytical", name: "How it is measured", line: "Run the assays and read the results." },
+];
+const FEATURE_ART = { pipeline: pipeArt("s05"), science: stageArt("ctd"), analytical: stageArt("analytical") };
+
 export default function Dashboard({ setView, dark }) {
   const [hover, setHover] = useState(null);
-  const [stress, setStress] = useState(null);
-  const st = STRESSES.find(s => s.id === stress);
   const go = (id, focus) => setView(id, focus);
   const onPick = useCallback((g) => setView("methods", DOMAIN_INFO[g].method), [setView]);
 
@@ -56,7 +62,7 @@ export default function Dashboard({ setView, dark }) {
       {/* ── The molecule ── */}
       <section className="hm-hero">
         <div className="hm-stage">
-          <Molecule dark={dark} stress={stress} onHover={setHover} onPick={onPick} />
+          <Molecule dark={dark} stress={null} onHover={setHover} onPick={onPick} />
           <div className="hm-readout" aria-live="polite">
             {info ? (
               <>
@@ -81,55 +87,43 @@ export default function Dashboard({ setView, dark }) {
             <button className="hm-secondary" onClick={() => go("methods")}>Open the assays</button>
           </div>
 
-          <div className="hm-stress">
-            <div className="hm-stress-head">
-              <strong>Stress the molecule</strong>
-              <div className="hm-stress-tabs" role="group" aria-label="Stress condition">
-                {STRESSES.map(s => (
-                  <button key={s.id} className={`sv-tab${stress === s.id ? " is-on" : ""}`} style={{ "--tab":"#C8262C" }}
-                    aria-pressed={stress === s.id} onClick={() => setStress(stress === s.id ? null : s.id)}>{s.label}</button>
-                ))}
-              </div>
-            </div>
-            {st ? (
-              <div className="hm-stress-body" key={st.id}>
-                <div className="hm-cond sv-mono">{st.cond}</div>
-                <p>{st.what}</p>
-                <div className="hm-measure">
-                  <span>Measured by</span>
-                  {st.how.map(([n, id, unit]) => (
-                    <button key={id + n} className="hm-assay" onClick={() => go("methods", id)}>
-                      {n} <em className="sv-mono">{unit}</em>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <p className="hm-stress-empty">Pick a condition to see where an IgG1 degrades, and which assay catches it.</p>
-            )}
-          </div>
+          <ul className="hm-ways" aria-label="Three ways in">
+            {WAYS.map(w => (
+              <li key={w.id}>
+                <button onClick={() => go(w.id)}>
+                  <strong>{w.name}</strong>
+                  <span>{w.line}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ── The sections, read like a chain ── */}
+      {/* ── Everything on the site: three explorations, then the rest ── */}
       <section className="hm-section">
         <Reveal>
-          <h2 className="hm-h2">Twenty sections, one molecule's life.</h2>
-          <p className="hm-sub">Each row is a segment of the track at the top of every page.</p>
+          <h2 className="hm-h2">Everything on the site.</h2>
+          <p className="hm-sub">Start with the three explorations. The tools, practice and reference are there when you need them.</p>
         </Reveal>
-        <div className="hm-chain">
-          {GROUPS.map(g => (
-            <div key={g.label} className="hm-row" style={{ "--seg": g.color }}>
-              <div className="hm-row-name">{g.label}</div>
-              <div className="hm-cells">
+        <div className="hm-feature">
+          {GROUPS[0].items.map(it => (
+            <button key={it.id} className="hm-tile" onClick={() => go(it.id)}>
+              <span className="hm-tile-art">{FEATURE_ART[it.id] && <img src={FEATURE_ART[it.id]} alt="" loading="lazy" width="1200" height="800" />}</span>
+              <strong>{it.name}</strong>
+              <span>{it.line}</span>
+            </button>
+          ))}
+        </div>
+        <div className="hm-dir">
+          {GROUPS.slice(1).map(g => (
+            <div key={g.label} className="hm-dir-col" style={{ "--seg": g.color }}>
+              <h3>{g.label}</h3>
+              <ul>
                 {g.items.map(it => (
-                  <button key={it.id} className="hm-cell" onClick={() => go(it.id)}>
-                    <i />
-                    <strong>{it.name}</strong>
-                    <span>{it.line}</span>
-                  </button>
+                  <li key={it.id}><button onClick={() => go(it.id)}><strong>{it.name}</strong><span>{it.line}</span></button></li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
         </div>
