@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Reveal } from "../lc";
 import { InstrumentTrace } from "../motion";
 import Molecule, { DOMAIN_INFO } from "../molecule";
-import { pipeArt, stageArt } from "../science/art";
+import { LineGlyph, FunnelGlyph, TraceGlyph } from "./home/Glyphs";
 import { PIPELINE, DOMAINS, GLOSSARY } from "../cmc-data";
 import { ANALYTICAL_METHODS } from "../extra-data";
 import { CASE_STUDIES } from "../case-study-data";
@@ -44,7 +44,8 @@ const WAYS = [
   { id: "science", name: "Why it is done", line: "Follow the development programme to the dossier." },
   { id: "analytical", name: "How it is measured", line: "Run the assays and read the results." },
 ];
-const FEATURE_ART = { pipeline: pipeArt("s05"), science: stageArt("ctd"), analytical: stageArt("analytical") };
+const GLYPH = { pipeline: LineGlyph, science: FunnelGlyph, analytical: TraceGlyph };
+const ASK = { pipeline: "How is it done?", science: "Why, and what does it prove?", analytical: "How is it measured?" };
 
 export default function Dashboard({ setView, dark }) {
   const [hover, setHover] = useState(null);
@@ -106,14 +107,19 @@ export default function Dashboard({ setView, dark }) {
           <h2 className="hm-h2">Everything on the site.</h2>
           <p className="hm-sub">Start with the three explorations. The tools, practice and reference are there when you need them.</p>
         </Reveal>
-        <div className="hm-feature">
-          {GROUPS[0].items.map(it => (
-            <button key={it.id} className="hm-tile" onClick={() => go(it.id)}>
-              <span className="hm-tile-art">{FEATURE_ART[it.id] && <img src={FEATURE_ART[it.id]} alt="" loading="lazy" width="1200" height="800" />}</span>
-              <strong>{it.name}</strong>
-              <span>{it.line}</span>
-            </button>
-          ))}
+        <div className="hm-ways3">
+          {GROUPS[0].items.map(it => {
+            const G = GLYPH[it.id];
+            return (
+              <button key={it.id} className="hm-way" onClick={() => go(it.id)}>
+                <G />
+                <span className="hm-way-ask">{ASK[it.id]}</span>
+                <strong>{it.name}</strong>
+                <span className="hm-way-line">{it.line}</span>
+                <span className="hm-way-go">Enter</span>
+              </button>
+            );
+          })}
         </div>
         <div className="hm-dir">
           {GROUPS.slice(1).map(g => (
