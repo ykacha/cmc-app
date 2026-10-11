@@ -674,3 +674,23 @@
 .sc-stage-art{ margin:56px 0 0; }
 .sc-stage-art img{ display:block; width:100%; max-height:420px; height:auto; object-fit:cover; border-radius:16px; border:1px solid var(--hairline); }
 .sc-stage-art figcaption{ margin-top:10px; font-size:12px; color:var(--text-muted); max-width:78ch; }
+
+/* stage illustrations */
+.sh-top.has-art{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.72fr); column-gap:40px; align-items:start; }
+.sh-top.has-art > .sh-title, .sh-top.has-art > .sh-purpose{ grid-column:1; }
+.sh-top.has-art > .sh-art{ grid-column:2; grid-row:1 / span 2; }
+.sh-top.has-art > .sh-keys{ grid-column:1 / -1; }
+.sh-art{ margin:0; }
+.sh-art img{ display:block; width:100%; height:auto; aspect-ratio:3 / 2; object-fit:cover; border-radius:16px; border:1px solid var(--hairline); background:var(--panel); }
+.sh-art figcaption{ margin-top:6px; font-size:11.5px; color:var(--text-faint); text-align:right; }
+@media (max-width:1100px){
+  .sh-top.has-art{ grid-template-columns:1fr; }
+  .sh-top.has-art > .sh-art{ grid-column:1; grid-row:auto; order:3; margin-top:20px; }
+  .sh-top.has-art > .sh-keys{ order:4; }
+}
+
+/* light theme: the stream keeps its dark stage, set into the page like an instrument display */
+[data-theme="light"] .sc-flow-stage{ border:none; border-radius:16px; background:radial-gradient(70% 120% at 88% 50%, color-mix(in srgb, var(--chain-h) 16%, var(--bg-base)), var(--bg-base) 65%); box-shadow:0 24px 60px -30px rgba(10,11,17,.55); }
+[data-theme="light"] .sc-flow-end{ top:14px; }
+[data-theme="light"] .sc-flow-end.is-start{ left:18px; }
+[data-theme="light"] .sc-flow-end.is-end{ right:18px; }

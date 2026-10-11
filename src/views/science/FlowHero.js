@@ -5,6 +5,8 @@ import { STAGES } from "../../science/journey";
    as scattered, noisy points, travel through the stages (taking each stage's
    colour), lose their scatter as each stage removes variability, and are
    finally filed by subject into the five CTD modules on the right.
+   The stage is always drawn on the dark palette; in light theme it sits on the
+   page as a dark instrument panel.
    Chronology in, subject structure out. The cursor causes a local excursion. */
 
 function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
@@ -126,7 +128,7 @@ export default function FlowHero({ dark }) {
         if (d2 < 9000 && p.u < 0.9) p.kick = Math.min(28, p.kick + (9000 - d2) / 900);
         p.kick *= 0.94; y += Math.sin(p.ph + t * 9) * p.kick;
 
-        ctx.globalAlpha = alpha * (dark ? 0.95 : 0.85);
+        ctx.globalAlpha = alpha * 0.95;
         ctx.strokeStyle = col; ctx.fillStyle = col;
         if (p.px !== null && p.u < 1 && !reduce) {
           ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(x, y); ctx.stroke();
@@ -162,7 +164,7 @@ export default function FlowHero({ dark }) {
 
   return (
     <figure className="sc-flow">
-      <div className="sc-flow-stage" ref={host}>
+      <div className="sc-flow-stage" data-theme="dark" ref={host}>
         <canvas ref={canvas} aria-hidden="true" />
         <ol className="sc-flow-ticks" aria-hidden="true">
           {STAGES.map((s, i) => <li key={s.id} style={{ left: `${((i + 0.5) / STAGES.length) * RUN * 100}%` }}>{String(i + 1).padStart(2, "0")}</li>)}

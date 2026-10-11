@@ -18,11 +18,6 @@ import { Icon } from "../../icons";
      #/science/<stage>/<topic>     deep-dive topic */
 
 const DEEP = { proposal: Proposal, qtpp: Qtpp };
-// AI-generated illustrations for the worked-example stages (see src/science/art-manifest.json)
-const ART = {
-  proposal: { src: "proposal-blueprint.webp", alt: "Illustration of an IgG antibody beside a 1 mL prefilled syringe.", cap: "The molecule and the presentation it must fit. AI-generated illustration: domain structure is simplified and not accurate." },
-  qtpp: { src: "qtpp-cqa-network.webp", alt: "Illustration of an antibody surface with highlighted regions at the binding tips, hinge and Fc glycans.", cap: "Where quality attributes live on the molecule: binding regions, hinge and Fc glycans highlighted. AI-generated illustration, not a structural model." },
-};
 const num = (n) => String(n).padStart(2, "0");
 
 // every topic in journey order, for prev/next across stage boundaries
@@ -121,12 +116,6 @@ function StagePage({ stage, go, nav, dark }) {
       )}
       {Deep && (
         <>
-          {ART[stage.id] && (
-            <figure className="sc-stage-art">
-              <img src={`${process.env.PUBLIC_URL || ""}/science-art/${ART[stage.id].src}`} alt={ART[stage.id].alt} loading="lazy" width="1600" height="1067" />
-              <figcaption>{ART[stage.id].cap}</figcaption>
-            </figure>
-          )}
           <div className="sc-example">
             <h2 className="hm-h2">Worked example.</h2>
             <p className="hm-sub sv-measure">This stage is easiest to learn by doing it once. The example follows a fictional antibody; the method applies to any biologic.</p>
