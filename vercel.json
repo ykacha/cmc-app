@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/((?!MY(?:/|$)|static/|og/|science-art/|.*\\.[a-zA-Z0-9]+$).*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

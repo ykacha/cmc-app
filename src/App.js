@@ -56,9 +56,16 @@ function redirect(v, f) {
 }
 const ALL_VIEWS = new Set(["dashboard", "privacy", "terms", ...NAV_GROUPS.flatMap(g => g.items.map(i => i.id))]);
 
-// "#/methods/am-sec" -> { view:"methods", focus:"am-sec" }
+// "/methods/am-sec" -> { view:"methods", focus:"am-sec" }
+// Old shared links used "/#/careers/student"; rewrite them to "/careers/student" on load.
 function readHash() {
-  const [v, ...rest] = window.location.hash.replace(/^#\/?/, "").split("/");
+  const { hash, pathname } = window.location;
+  let path = pathname;
+  if (hash.startsWith("#/")) {
+    path = hash.slice(1);
+    try { window.history.replaceState(null, "", path); } catch { /* ignore */ }
+  }
+  const [v, ...rest] = path.replace(/^\/+/, "").split("/");
   const f = rest.filter(Boolean).join("/") || null;
   if (v === "methods") return { view: "analytical", focus: f ? "atlas/" + f : "atlas" };   // legacy links
   const r = redirect(v, f); if (r) return r;
@@ -226,8 +233,8 @@ export default function App() {
   const navigate = (id, f = null) => {
     if (id === "methods") { f = f ? "atlas/" + f : "atlas"; id = "analytical"; }   // legacy callers
     const r = redirect(id, f); if (r) { id = r.view; f = r.focus; }
-    const hash = id === "dashboard" ? "#/" : `#/${id}${f ? "/" + f : ""}`;
-    if (window.location.hash !== hash) window.history.pushState(null, "", hash);
+    const path = id === "dashboard" ? "/" : `/${id}${f ? "/" + f : ""}`;
+    if (window.location.pathname !== path) window.history.pushState(null, "", path);
     const swap = () => { flushSync(() => setView(id, f)); window.scrollTo(0, 0); };
     if (document.startViewTransition && id !== view && !reducedMotion()) {
       document.documentElement.classList.add("mo-vt");

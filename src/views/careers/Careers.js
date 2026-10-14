@@ -110,7 +110,7 @@ export default function Careers({ navigate, focus }) {
   const chooseTrack = (id) => {
     if (id === aud) return;
     setAud(id);
-    try { window.history.replaceState(null, "", `#/careers/${id}`); } catch { /* ignore */ }
+    try { window.history.replaceState(null, "", `/careers/${id}`); } catch { /* ignore */ }
   };
   const CHAPTERS = useMemo(() => chaptersFor(aud), [aud]);
   const CHECKLIST = useMemo(() => checklistFor(aud), [aud]);
